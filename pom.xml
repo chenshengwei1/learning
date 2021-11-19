@@ -1,0 +1,1408 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  
+  <groupId>com.huawei.bes.cpq.pccw</groupId>
+  <artifactId>com.huawei.bes.cpq.pccw</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  
+	<properties>
+		<!-- platform version -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<impl.vendor>HUAWEI CRM</impl.vendor>
+		<impl.version>CRM R003C01L00002</impl.version>
+		
+		<bdf.version>6.1.71</bdf.version>
+		<vsearch.version>6.1.51.B120</vsearch.version>
+		<bdf.maven.version>6.1.70.B061</bdf.maven.version>
+		<autotest.version>6.1.10.B032</autotest.version>
+		<bme.version>3.5.20.SPC027</bme.version>
+		<bme.ssoclient.version>3.5.20.SPC027</bme.ssoclient.version>
+		<usf.version>6.1.51.B120</usf.version>
+		<jetmq.version>6.1.51.B120</jetmq.version>
+		<bpm.version>6.1.51.B120</bpm.version>
+		<bpm.trace.version>6.1.51.B120</bpm.trace.version>
+		<foundation.version>6.1.51.B120</foundation.version>
+		<trace.server.version>6.1.51.B120</trace.server.version>
+		<openas.version>6.1.51.B120</openas.version>
+		<netrix.version>6.1.51.B120</netrix.version>
+		<uee.version>6.1.71</uee.version>
+		<ddsclient.version>6.1.51.B120</ddsclient.version>
+		
+		<soa.jaxrs.version>6.1.20.B042</soa.jaxrs.version>
+		<maven.plugin.version>1.0.2</maven.plugin.version>
+		<maven.car.plugin>1.0.0</maven.car.plugin>
+		<html.compile.maven.plugin>1.4.9</html.compile.maven.plugin>
+		<maven.surefire.plugin>2.12.4</maven.surefire.plugin>
+		<build.helper.maven.plugin>1.5</build.helper.maven.plugin>
+		<maven.autorun.plugin.version>1.3</maven.autorun.plugin.version>
+		<maven.source.plugin.version>3.0.1</maven.source.plugin.version>
+		
+		
+		<!-- third version-->
+		
+		<org.jdom.version>2.0.5</org.jdom.version>
+		<javax.servlet.version>3.1.0</javax.servlet.version>
+		<org.apache.ant.version>1.9.5</org.apache.ant.version>
+		
+		
+		<redis.clients.version>2.9.0</redis.clients.version>
+		<com.alibaba.fastjson.version>1.2.60</com.alibaba.fastjson.version>
+		<org.hyperic.sigar.version>1.6.4</org.hyperic.sigar.version>
+		<com.google.zxing.core.version>3.3.3</com.google.zxing.core.version>
+		<com.lmax.disruptor.version>3.4.2</com.lmax.disruptor.version>
+		<org.restlet.lib.org.json.version>2.0</org.restlet.lib.org.json.version>
+		
+		<!-- SC -->
+		<org.jsoup.version>1.11.3</org.jsoup.version>
+		<junit.version>4.12</junit.version>
+		<!-- CE -->
+		<net.lingala.zip4j.version>1.3.3</net.lingala.zip4j.version>
+		<com.huawei.uniportal.version>1.8.11.012</com.huawei.uniportal.version>
+		<com.springsource.org.jdom.version>1.1.3</com.springsource.org.jdom.version>
+		<bme12.version>1.8.11.012</bme12.version>
+		<com.huawei.pangu.version>1.0.0</com.huawei.pangu.version>
+		<org.apache.logging.log4j.version>2.1</org.apache.logging.log4j.version>
+		
+		<com.lowagie.itext.version>2.1.7</com.lowagie.itext.version>
+		<com.lowagie.iTextAsian.version>1.0</com.lowagie.iTextAsian.version>
+		<ch.qos.logback.version>1.2.3</ch.qos.logback.version>
+		<org.bouncycastle.bcprov.version>1.60</org.bouncycastle.bcprov.version>
+		<commons.net.version>3.6</commons.net.version>
+		<com.jcraft.jsch.version>0.1.55</com.jcraft.jsch.version>
+		<com.thoughtworks.xstream.version>1.4.10</com.thoughtworks.xstream.version>
+		
+		<org.apache.commons.commons-lang3.version>3.3.2</org.apache.commons.commons-lang3.version>
+		<org.apache.commons.httpclient.version>3.1.0</org.apache.commons.httpclient.version>
+		<!-- suite version -->
+		<bes.ce.version>2.710.0</bes.ce.version>
+		<bes.cm.version>2.710.0</bes.cm.version>
+		<bes.common.version>2.710.0</bes.common.version>
+		<bes.if.version>2.710.0</bes.if.version>
+		<bes.inv.version>2.710.0</bes.inv.version>
+		<bes.om.version>2.710.0</bes.om.version>
+		<bes.omnichannel.version>2.710.0</bes.omnichannel.version>
+		<bes.pc.version>2.710.0</bes.pc.version>
+		<bes.pm.version>2.710.0</bes.pm.version>
+		<bes.promotion.version>2.710.0</bes.promotion.version>
+		<bes.rs.version>2.500.0.B110</bes.rs.version>
+		<bes.sc.version>2.710.0</bes.sc.version>
+		<bes.shoppingcart.version>2.710.0</bes.shoppingcart.version>
+		<bes.sm.version>2.710.0</bes.sm.version>
+		<bes.bp.version>2.710.0</bes.bp.version>
+		<bes.wcms.version>2.500.0.B110</bes.wcms.version>
+		<bes.ces.version>2.500.0.B110</bes.ces.version>
+		
+		<!--cm version-->
+		<cobertura.plugin.version>2.5.1</cobertura.plugin.version>
+		<assembly.plugin.version>2.4.1</assembly.plugin.version>
+		<maven.war.version>2.4.fixed.3510</maven.war.version>
+		<!--promotion version-->
+		<!--tag version-->
+		<cmp.version>V100R001C07B042</cmp.version>
+		<commons.configuration.version>1.10</commons.configuration.version>
+		<org.mybatis.version>2.3.5</org.mybatis.version>
+		<commons.dbcp.version>1.4.fixed.6100</commons.dbcp.version>
+		<com.typesafe.akka.version>2.4.17</com.typesafe.akka.version>
+		<com.typesafe.config>1.3.0</com.typesafe.config>
+		<org.apache.commons.lang.version>2.6.0</org.apache.commons.lang.version>	
+		<!--org.apache.commons.version>3.3.2</org.apache.commons.version-->
+		<org.codehaus.jackson.version>1.9.13</org.codehaus.jackson.version>
+		<org.apache.lucene.version>4.10.4</org.apache.lucene.version>
+		<!--com.jcraft.jsch.version>0.1.54</com.jcraft.jsch.version-->
+		<com.dyuproject.protostuff.version>1.0.7.fixed.3500</com.dyuproject.protostuff.version>
+		<javax.ws.rs.version>1.1.1</javax.ws.rs.version>
+		<findbugs.version>1.0</findbugs.version>
+		<scala.library.version>2.11.8</scala.library.version>
+		<foundation.commons.version>6.1.20.B130</foundation.commons.version>
+		<!--proe version-->
+		<usf.restful.version>6.1.26.B120</usf.restful.version>	
+		<com.huawei.jetmq.version>6.1.00.RC1B110</com.huawei.jetmq.version>
+		<org.restlet.ext.jaxrs.version>3.0-M1</org.restlet.ext.jaxrs.version>
+		<dep.testngtool.version>1.51</dep.testngtool.version>
+		<qdox.version>1.4</qdox.version>
+		<bsh.version>2.0b4</bsh.version>
+		<awtools.version>1.0</awtools.version>
+		<dom4j.version>1.6</dom4j.version>
+		<xmlunit.version>1.5</xmlunit.version>
+		<commons.lang.version>2.5</commons.lang.version>
+		<jdom.version>1.1</jdom.version>
+		<protostuff.core.version>1.0.7</protostuff.core.version>
+		<saxon.version>8.7</saxon.version>
+		<fastel.version>1.01fixed </fastel.version>
+		<httpclient.version>4.5.4</httpclient.version>
+		<commons.io.version>2.5</commons.io.version>
+		<ommons.codec.version>1.9 </ommons.codec.version>
+		<commons.httpclient.version>3.1</commons.httpclient.version>
+		<org.restlet.version>3.0-M1</org.restlet.version>
+		<testng.jdk15.version>151</testng.jdk15.version>
+		<ebus.quartz.version>3.5.20.SPC009</ebus.quartz.version>
+		
+		<!-- prom version -->
+		<hibernate.validator.version>5.0.1.Final</hibernate.validator.version>
+		<com.h2database.h2.version>1.3.175</com.h2database.h2.version>
+		<das.version>3.5.20.B142</das.version>
+		<org.projectlombok.lombok.version>1.14.8</org.projectlombok.lombok.version>
+		<commons.collections4.version>4.1</commons.collections4.version>
+		<com.springsource.org.jmock.version>2.4.0</com.springsource.org.jmock.version>
+		
+		<!-- portal version -->
+		<campaign.version>V500R005C10B120-SNAPSHOT</campaign.version>
+		<tvvas.product.api.version>V500R005C00B100-SNAPSHOT</tvvas.product.api.version>
+		<backlego.core.version>6.12.0</backlego.core.version>
+		<com.huawei.uee.web.version>6.1.00.RC2B012</com.huawei.uee.web.version>
+		
+		<easymock.version>3.4</easymock.version> 
+		<objenesis.version>1.0</objenesis.version> 	
+		<wiremock.version>1.52</wiremock.version>
+		<oraclepki.version>11</oraclepki.version>
+		
+			
+		<!-- OM version -->
+		<com.huawei.fdf.version>3.5.10.B030</com.huawei.fdf.version>
+		<com.esotericsoftware.version>4.0.1</com.esotericsoftware.version>
+		<org.apache.commons.version>2.3</org.apache.commons.version>
+
+		
+		<!-- plugin version-->
+		<maven.compiler.plugin.version>3.1</maven.compiler.plugin.version>
+		<maven.resource.plugin.version>2.5</maven.resource.plugin.version>
+		<maven.jar.pulgin.version>2.3.1</maven.jar.pulgin.version>
+		<life.style.version>1.0.0</life.style.version>
+		<maven.checkstyle.plugin.version>2.17</maven.checkstyle.plugin.version>
+		<maven.dependency.version>2.8</maven.dependency.version>
+		<maven.surefire.report.version>2.5</maven.surefire.report.version>	
+		
+		
+		
+	</properties>
+
+	<dependencies>		
+		<dependency>
+  			<groupId>com.huawei.findbugs</groupId>
+ 		 	<artifactId>jsr305</artifactId>
+ 		 	<version>0.0</version>
+ 		 	<scope>provided</scope>
+		</dependency>
+		<dependency>
+  			<groupId>com.huawei.findbugs</groupId>
+  			<artifactId>annotations</artifactId>
+  			<version>0.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.huawei.ces.communicationengine</groupId>
+			<artifactId>com.huawei.ces.communicationengine.meta.sdk</artifactId>
+			<version>2.710.0</version>
+			<type>car</type>
+      		<scope>provided</scope>
+		</dependency>
+		<dependency>
+		  <groupId>com.huawei.ces.communicationengine</groupId>
+		  <artifactId>com.huawei.ces.communicationengine.meta.object</artifactId>
+		  <version>2.710.0</version>
+		  <type>car</type>
+      		<scope>provided</scope>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+					<groupId>com.huawei.openas</groupId>
+					<artifactId>com.huawei.openas.maven.car.plugin</artifactId>
+					<version>${maven.car.plugin}</version>
+					<configuration>
+							<archive>
+									<manifestEntries>
+											<Build-Time>${maven.build.timestamp}</Build-Time>
+											<Implementation-Version>${impl.version}</Implementation-Version>
+											<Implementation-Vendor>${impl.vendor}</Implementation-Vendor>
+									</manifestEntries>
+							</archive>
+					</configuration>
+			</plugin>
+
+			<plugin>
+				   <groupId>com.huawei.openas</groupId>
+				   <artifactId>com.huawei.openas.maven.compiler.plugin</artifactId>
+				   <version>${maven.plugin.version}</version>
+				   <extensions>true</extensions>
+			</plugin>
+			
+			
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven.compiler.plugin.version}</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>${build.helper.maven.plugin}</version>
+				<executions>
+					<execution>
+						<id>add-resource</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>add-resource</goal>
+						</goals>
+						<configuration>
+							<resources>
+								<resource>
+									<directory>src/main/java</directory>
+									<excludes>
+										<exclude>**/*.java</exclude>
+									</excludes>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>${maven.resource.plugin.version}</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>${maven.jar.pulgin.version}</version>
+				<configuration>
+					<archive>
+						<manifestEntries>
+							<Build-Time>${maven.build.timestamp}</Build-Time>
+							<Implementation-Version>${impl.version}</Implementation-Version>
+							<Implementation-Vendor>${impl.vendor}</Implementation-Vendor>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+			
+			
+		</plugins>
+
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
+				<excludes>
+					<exclude>config/properties/besUnionConfig.properties</exclude>
+					<exclude>log4j.xml</exclude>
+					<exclude>metadata/**/*.*</exclude>
+					<exclude>data/**/*.*</exclude>
+					<exclude>doc-i18n/**/*.*</exclude>
+				</excludes>
+			</resource>
+		</resources>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.eclipse.m2e</groupId>
+                    <artifactId>lifecycle-mapping</artifactId>
+                    <version>${life.style.version}</version>
+                    <configuration>
+                        <lifecycleMappingMetadata>
+                            <pluginExecutions>
+                                <pluginExecution>
+                                    <pluginExecutionFilter>
+                                        <groupId>com.huawei.bes.base</groupId>
+                                        <artifactId>com.huawei.bes.common.maven.autogenerate-transaction.plugin</artifactId>
+                                        <versionRange>[8.1.30.100,)</versionRange>
+                                        <goals>
+                                            <goal>bo2localtrans</goal>
+                                        </goals>
+                                    </pluginExecutionFilter>
+                                    <action>
+                                        <ignore />
+                                    </action>
+                                </pluginExecution>
+                            </pluginExecutions>
+                        </lifecycleMappingMetadata>
+                    </configuration>
+                </plugin>
+                <plugin>
+					<groupId>com.huawei.bdf</groupId>
+					<artifactId>com.huawei.bdf.maven.compiler.plugin</artifactId>
+					<version>${bdf.maven.version}</version>
+					<executions>
+						<execution>
+							<id>vo-build</id>
+							<goals>
+								<goal>vo-build</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-checkstyle-plugin</artifactId>
+					<version>${maven.checkstyle.plugin.version}</version>
+					<dependencies>
+						<dependency>
+							<groupId>com.puppycrawl.tools</groupId>
+							<artifactId>checkstyle</artifactId>
+							<version>6.12</version>
+						</dependency>
+					</dependencies>
+				</plugin>
+				
+				<plugin>
+					<groupId>com.huawei.uee</groupId>
+					<artifactId>html-compile-maven-plugin</artifactId>
+					<version>${html.compile.maven.plugin}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>${maven.surefire.plugin}</version>					
+				</plugin>
+				<plugin>
+					<groupId>com.huawei.openas</groupId>
+                    <artifactId>com.huawei.openas.maven.car.plugin</artifactId>
+					<version>${maven.car.plugin}</version>					
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>build-helper-maven-plugin</artifactId>
+					<version>${build.helper.maven.plugin}</version>					
+				</plugin>
+				<plugin>
+					<groupId>com.huawei.openas</groupId>
+					<artifactId>com.huawei.openas.maven.compiler.plugin</artifactId>
+					<version>${maven.plugin.version}</version>
+					<extensions>true</extensions>
+				</plugin>
+				<plugin>
+					<groupId>com.huawei.soa</groupId>
+					<artifactId>com.huawei.soa.precompile.document</artifactId>
+					<version>${bdf.maven.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>com.huawei.soa</groupId>
+					<artifactId>com.huawei.soa.precompile.upgrade</artifactId>
+					<version>${bdf.maven.version}</version>
+				</plugin>
+	
+			   <!-- 棰勭紪璇戞墦鐗堟湰鍙峰拰鏃堕棿鎴虫彃浠?  add by y00348553-->
+			    
+				
+				<!--CM ADD-->
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>cobertura-maven-plugin</artifactId>
+					<version>${cobertura.plugin.version}</version>
+				</plugin>
+
+				<plugin>  
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>${assembly.plugin.version}</version> 
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-war-plugin</artifactId>
+					<version>${maven.war.version}</version>
+				</plugin>
+				<!--promotion ADD-->
+				<plugin>
+					<artifactId>maven-dependency-plugin</artifactId>
+					<version>${maven.dependency.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-report-plugin</artifactId>
+					<version>${maven.surefire.report.version}</version>		
+				</plugin>	
+				
+				<!-- OM start -->
+				<plugin>
+					<groupId>com.huawei.fdf</groupId>
+					<artifactId>com.huawei.fdf.metadata.document</artifactId>
+					<version>${com.huawei.fdf.version}</version>
+				</plugin>
+				<!-- OM end -->
+				
+				</plugins>
+        </pluginManagement>
+	</build>
+	
+	<dependencyManagement>
+		  <dependencies>
+		  
+			<!-- BDF start -->
+            <dependency>
+                <groupId>com.huawei.bdf</groupId>
+                <artifactId>appmw-bdf</artifactId>
+                <version>${bdf.version}</version>
+				<type>car</type>
+            </dependency>
+			
+			<dependency>
+                <groupId>com.huawei.bdf</groupId>
+                <artifactId>appmw-bdf-business-event</artifactId>
+                <version>${bdf.version}</version>
+				<type>car</type>
+            </dependency>
+			
+			<dependency>
+                <groupId>com.huawei.bdf</groupId>
+                <artifactId>appmw-bdf-business-process-bpm-impl</artifactId>
+                <version>${bdf.version}</version>
+				<type>car</type>
+            </dependency>
+			
+			<dependency>
+                <groupId>com.huawei.bdf</groupId>
+                <artifactId>appmw-bdf-business-process-script-impl</artifactId>
+                <version>${bdf.version}</version>
+				<type>car</type>
+            </dependency>
+			
+			<dependency>
+                <groupId>com.huawei.bdf</groupId>
+                <artifactId>appmw-bdf-data-access</artifactId>
+                <version>${bdf.version}</version>
+				<type>car</type>
+            </dependency>
+			
+			<dependency>
+                <groupId>com.huawei.bdf</groupId>
+                <artifactId>appmw-bdf-data-cache-core</artifactId>
+                <version>${bdf.version}</version>
+				<type>car</type>
+            </dependency>
+			
+			<dependency>
+                <groupId>com.huawei.bdf</groupId>
+                <artifactId>appmw-bdf-file-system</artifactId>
+                <version>${bdf.version}</version>
+				<type>car</type>
+            </dependency>
+			
+			<dependency>
+                <groupId>com.huawei.bdf</groupId>
+                <artifactId>appmw-bdf-flow-trace-ui</artifactId>
+                <version>${bdf.version}</version>
+				<type>car</type>
+            </dependency>
+			
+			<dependency>
+                <groupId>com.huawei.bdf</groupId>
+                <artifactId>appmw-bdf-framework</artifactId>
+                <version>${bdf.version}</version>
+				<type>car</type>
+            </dependency>
+			
+			<dependency>
+                <groupId>com.huawei.bdf</groupId>
+                <artifactId>appmw-bdf-microflow</artifactId>
+                <version>${bdf.version}</version>
+				<type>car</type>
+            </dependency>
+			
+			<dependency>
+                <groupId>com.huawei.bdf</groupId>
+                <artifactId>appmw-bdf-online-manage</artifactId>
+                <version>${bdf.version}</version>
+				<type>car</type>
+            </dependency>
+			
+			<dependency>
+                <groupId>com.huawei.bdf</groupId>
+                <artifactId>appmw-bdf-online-manage-meta</artifactId>
+                <version>${bdf.version}</version>
+				<type>car</type>
+            </dependency>
+			
+			<dependency>
+                <groupId>com.huawei.bdf</groupId>
+                <artifactId>appmw-bdf-online-manage-meta-sdk</artifactId>
+                <version>${bdf.version}</version>
+				<type>car</type>
+            </dependency>
+			
+			<dependency>
+                <groupId>com.huawei.bdf</groupId>
+                <artifactId>appmw-bdf-search</artifactId>
+                <version>${bdf.version}</version>
+				<type>car</type>
+            </dependency>
+			<!--  BDF End -->
+			
+			<!-- BME Start -->
+			<dependency>
+                <groupId>com.huawei.bme</groupId>
+                <artifactId>appmw-bme</artifactId>
+                <version>${bme.version}</version>
+				<type>car</type>
+            </dependency>
+			
+			<dependency>
+                <groupId>com.huawei.bme</groupId>
+                <artifactId>appmw-micro-container-Integration</artifactId>
+                <version>${bme.version}</version>
+				<type>car</type>
+            </dependency>
+			<!-- BME End -->
+			
+			
+			<!-- BPM Start -->
+			<dependency>
+                <groupId>com.huawei.bpm</groupId>
+                <artifactId>appmw-bpm</artifactId>
+                <version>${bpm.version}</version>
+				<type>car</type>
+            </dependency>
+			
+			<dependency>
+                <groupId>com.huawei.bpm</groupId>
+                <artifactId>appmw-bpm-bamintf</artifactId>
+                <version>${bpm.version}</version>
+				<type>car</type>
+            </dependency>
+			
+			<dependency>
+                <groupId>com.huawei.bpm.uee.trace</groupId>
+                <artifactId>appmw-bpm-trace-service</artifactId>
+                <version>${bpm.trace.version}</version>
+				<type>car</type>
+            </dependency>
+			
+			<dependency>
+                <groupId>com.huawei.bpm.uee.trace</groupId>
+                <artifactId>appmw-bpm-trace-ui</artifactId>
+                <version>${bpm.trace.version}</version>
+				<type>car</type>
+            </dependency>
+			<!-- BPM End -->
+			
+			<!-- DSF Start -->
+			<dependency>
+                <groupId>com.huawei.csc.usf</groupId>
+                <artifactId>appmw-usf-adapter-dsf</artifactId>
+                <version>${usf.version}</version>
+				<type>car</type>
+            </dependency>
+			
+			<dependency>
+                <groupId>com.huawei.csc.usf</groupId>
+                <artifactId>appmw-usf-adapter-ebus</artifactId>
+                <version>${usf.version}</version>
+				<type>car</type>
+            </dependency>
+			
+			<dependency>
+                <groupId>com.huawei.csc.usf</groupId>
+                <artifactId>appmw-usf-framework</artifactId>
+                <version>${usf.version}</version>
+				<type>car</type>
+            </dependency>
+			
+			<dependency>
+                <groupId>com.huawei.csc.usf</groupId>
+                <artifactId>appmw-usf-restful</artifactId>
+                <version>${usf.version}</version>
+				<type>car</type>
+            </dependency>
+			
+			<dependency>
+                <groupId>com.huawei.csc.usf</groupId>
+                <artifactId>appmw-usf-restful-ext-gateway</artifactId>
+                <version>${usf.version}</version>
+				<type>car</type>
+            </dependency>
+			
+			<dependency>
+                <groupId>com.huawei.csc.usf</groupId>
+                <artifactId>appmw-usf-restful-foundation</artifactId>
+                <version>${usf.version}</version>
+				<type>car</type>
+            </dependency>
+			<!-- DSF End -->
+			
+			<!-- Foundation Start -->
+			<!-- <dependency>
+                <groupId>com.huawei.csc.cachesdk.car</groupId>
+                <artifactId>appmw-CacheSDKCoherence</artifactId>
+                <version>${foundation.version}</version>
+				<type>car</type>
+            </dependency> -->
+			
+			<!-- <dependency>
+                <groupId>com.huawei.csc.cachesdk.car</groupId>
+                <artifactId>appmw-CacheSDKRedis</artifactId>
+                <version>${foundation.version}</version>
+				<type>car</type>
+            </dependency> -->
+			
+			<dependency>
+                <groupId>com.huawei.openas</groupId>
+                <artifactId>appmw-das</artifactId>
+                <version>${foundation.version}</version>
+				<type>car</type>
+            </dependency>
+			
+			<dependency>
+                <groupId>com.huawei.openas</groupId>
+                <artifactId>appmw-epf</artifactId>
+                <version>${foundation.version}</version>
+				<type>car</type>
+            </dependency>
+			
+			<dependency>
+                <groupId>com.huawei.soa.foundation</groupId>
+                <artifactId>appmw-foundation</artifactId>
+                <version>${foundation.version}</version>
+				<type>car</type>
+            </dependency>
+			
+			<dependency>
+                <groupId>com.huawei.csc</groupId>
+                <artifactId>appmw-foundation-adapter</artifactId>
+                <version>${foundation.version}</version>
+				<type>car</type>
+            </dependency>
+			
+			<dependency>
+                <groupId>com.huawei.csc</groupId>
+                <artifactId>appmw-foundation-api</artifactId>
+                <version>${foundation.version}</version>
+				<type>car</type>
+            </dependency>
+			
+			<dependency>
+                <groupId>com.huawei.soa.foundation</groupId>
+                <artifactId>appmw-foundation-extend</artifactId>
+                <version>${foundation.version}</version>
+				<type>car</type>
+            </dependency>
+			
+			<dependency>
+                <groupId>com.huawei.soa.foundation</groupId>
+                <artifactId>appmw-foundation-trace-server</artifactId>
+                <version>${foundation.version}</version>
+				<type>car</type>
+            </dependency>
+
+			<dependency>
+				<groupId>com.huawei.soa</groupId>
+				<artifactId>com.huawei.soa.jaxrs</artifactId>
+				<!-- <version>${soa.jaxrs.version}</version> -->
+				<version>${uee.version}</version>
+				<type>car</type>
+            </dependency>
+			
+			<dependency>
+                <groupId>com.huawei.openas</groupId>
+                <artifactId>appmw-microflow</artifactId>
+                <version>${foundation.version}</version>
+				<type>car</type>
+            </dependency>
+			
+			<dependency>
+                <groupId>com.huawei.openas</groupId>
+                <artifactId>appmw-ruleengine</artifactId>
+                <version>${foundation.version}</version>
+				<type>car</type>
+            </dependency>
+			<!-- Foundation End -->
+			
+			<!-- JetMQ Start -->
+			<dependency>
+                <groupId>com.huawei.jetmq</groupId>
+                <artifactId>appmw-jetmqclient</artifactId>
+                <version>${jetmq.version}</version>
+				<type>car</type>
+            </dependency>
+			<!-- JetMQ End -->
+			
+			<!-- LSS Start -->
+			<dependency>
+                <groupId>com.huawei.netrix.ncss</groupId>
+                <artifactId>com.huawei.netrix.ncss.web.client</artifactId>
+                <version>${netrix.version}</version>
+				<type>car</type>
+            </dependency>
+			<!-- LSS End -->
+			
+			<!-- SsoClient Start -->
+			<dependency>
+                <groupId>com.huawei.bme</groupId>
+                <artifactId>appmw-ssoclient</artifactId>
+                <version>${bme.ssoclient.version}</version>
+				<type>car</type>
+            </dependency>
+			<!-- SsoClient End -->
+			
+			<!-- UEE Start -->
+			<dependency>
+                <groupId>com.huawei.uee</groupId>
+                <artifactId>appmw-uee-frontend</artifactId>
+                <version>${uee.version}</version>
+				<type>car</type>
+            </dependency>
+			
+			<dependency>
+                <groupId>com.huawei.uee</groupId>
+                <artifactId>appmw-uee-gateway</artifactId>
+                <version>${uee.version}</version>
+				<type>car</type>
+            </dependency>
+			
+			<dependency>
+                <groupId>com.huawei.uee</groupId>
+                <artifactId>appmw-uee-statical</artifactId>
+                <version>${uee.version}</version>
+				<type>car</type>
+            </dependency>
+			
+			
+			<dependency>
+			    <groupId>com.huawei.uee</groupId>
+			    <artifactId>ds-uiassets</artifactId>
+                <version>${uee.version}</version>
+				<type>car</type>
+            </dependency>
+			<!-- UEE End -->
+			
+			<!-- Vsearch Start -->
+			<dependency>
+                <groupId>com.huawei.netrix.search</groupId>
+                <artifactId>vsearch-client-rest-mContainer-car</artifactId>
+                <version>${vsearch.version}</version>
+				<type>car</type>
+            </dependency>
+			<!-- Vsearch End -->
+			
+			
+			<!-- Openas Start -->
+			<dependency>
+                <groupId>com.huawei.openas</groupId>
+                <artifactId>appmw-openasperfreport</artifactId>
+                <version>${openas.version}</version>
+				<type>car</type>
+            </dependency>
+			<!-- Openas End -->
+			
+			<!-- autotest Start -->
+			<dependency>
+				<groupId>com.huawei.soa</groupId>
+				<artifactId>com.huawei.soa.precompile.autotest</artifactId>
+				<version>${autotest.version}</version>
+				<type>car</type>
+            </dependency>
+			<!-- autotest End -->
+
+			
+			<dependency>
+				<groupId>org.jdom</groupId>
+				<artifactId>jdom2</artifactId>
+				<version>${org.jdom.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>javax.servlet-api</artifactId>
+				<version>${javax.servlet.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.ant</groupId>
+				<artifactId>ant</artifactId>
+				<version>${org.apache.ant.version}</version>
+			</dependency>
+
+			<!-- Common thrid start -->
+			
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>fastjson</artifactId>
+				<version>${com.alibaba.fastjson.version}</version>
+			</dependency>
+			
+			<dependency>
+					<groupId>com.google.zxing</groupId>
+					<artifactId>core</artifactId>
+					<version>${com.google.zxing.core.version}</version>
+			</dependency>
+			
+		    <dependency>
+               <groupId>com.lmax</groupId>
+               <artifactId>disruptor</artifactId>
+               <version>${com.lmax.disruptor.version}</version>
+            </dependency>
+
+			
+		    <dependency>
+				<groupId>org.restlet.osgi</groupId>
+				<artifactId>org.restlet.lib.org.json</artifactId>
+				<version>${org.restlet.lib.org.json.version}</version>
+			</dependency>
+			
+			
+	        <dependency>
+	              <groupId>com.huawei.bes.common</groupId>
+	              <artifactId>jedis.bes.fix</artifactId>
+	              <version>2.9.0</version>
+             </dependency>		
+			
+
+			<dependency>
+				<groupId>org.hyperic</groupId>
+				<artifactId>sigar</artifactId>
+				<version>${org.hyperic.sigar.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.jsoup</groupId>
+				<artifactId>jsoup</artifactId>
+				<version>${org.jsoup.version}</version>
+			</dependency> 
+		
+			<dependency> 
+				<groupId>junit</groupId> 
+				<artifactId>junit</artifactId> 
+				<version>${junit.version}</version> 
+				<scope>test</scope> 
+			</dependency> 
+			
+			<dependency>
+				<groupId>com.lowagie</groupId>
+				<artifactId>itext</artifactId>
+				<version>${com.lowagie.itext.version}</version>
+				<type>jar</type>
+		    </dependency>
+			
+			<dependency>
+				<groupId>com.lowagie</groupId>
+				<artifactId>iTextAsian</artifactId>
+				<version>${com.lowagie.iTextAsian.version}</version>
+				<type>jar</type>
+		    </dependency>
+			
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-classic</artifactId>
+				<version>${ch.qos.logback.version}</version>
+		    </dependency>
+			
+			<dependency>
+				<groupId>org.bouncycastle</groupId>
+				<artifactId>bcprov-jdk15on</artifactId>
+				<version>${org.bouncycastle.bcprov.version}</version>
+		    </dependency>
+			
+			<dependency>
+				<groupId>commons-net</groupId>
+				<artifactId>commons-net</artifactId>
+				<version>${commons.net.version}</version>
+		    </dependency>
+			
+			<dependency>
+				<groupId>com.huawei.pdm.com.jcraft</groupId>
+				<artifactId>jsch</artifactId>
+				<version>${com.jcraft.jsch.version}</version>
+		    </dependency>
+			
+			<dependency>
+			    <groupId>com.thoughtworks.xstream</groupId>
+			    <artifactId>xstream</artifactId>
+			    <version>${com.thoughtworks.xstream.version}</version>
+		    </dependency>
+
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-lang3</artifactId>
+				<version>${org.apache.commons.commons-lang3.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>com.springsource.org.apache.commons.httpclient</artifactId>
+				<version>${org.apache.commons.httpclient.version}</version>
+			</dependency>
+			
+		<!-- promotion version -->
+		<!-- promotion tag -->
+			<!-- 3party -->
+		<dependency>
+			<groupId>commons-configuration</groupId>
+			<artifactId>commons-configuration</artifactId>
+			<version>${commons.configuration.version}</version>
+		</dependency>
+	    	<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>${org.mybatis.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
+			<version>${commons.dbcp.version}</version>
+		</dependency>	
+		<dependency>
+			<groupId>com.typesafe.akka</groupId>
+			<artifactId>akka-remote_2.11</artifactId>
+			<version>${com.typesafe.akka.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.typesafe.akka</groupId>
+			<artifactId>akka-cluster_2.11</artifactId>
+			<version>${com.typesafe.akka.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.typesafe.akka</groupId>
+			<artifactId>akka-actor_2.11</artifactId>
+			<version>${com.typesafe.akka.version}</version>
+		</dependency>
+			<dependency>
+			<groupId>com.typesafe</groupId>
+			<artifactId>config</artifactId>
+			<version>${com.typesafe.config}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-queryparser</artifactId>
+			<version>${org.apache.lucene.version}</version>
+		</dependency>			
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>com.springsource.org.apache.commons.lang</artifactId>
+			<version>${org.apache.commons.lang.version}</version>
+		</dependency>	
+		<!--
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>${org.apache.commons.version}</version>
+		</dependency> -->				
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-core-asl</artifactId>
+			<version>${org.codehaus.jackson.version}</version>
+		</dependency>		
+		<!--
+		<dependency>
+			<groupId>com.jcraft</groupId>
+			<artifactId>jsch</artifactId>
+			<version>${com.jcraft.jsch.version}</version>
+		</dependency> -->		
+		<dependency>
+			<groupId>findbugs</groupId>
+			<artifactId>edu.umd.cs.findbugs</artifactId>
+			<version>${findbugs.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.dyuproject.protostuff</groupId>
+			<artifactId>protostuff-api</artifactId>
+			<version>${com.dyuproject.protostuff.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.ws.rs</groupId>
+			<artifactId>jsr311-api</artifactId>
+			<version>${javax.ws.rs.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.huawei.soa.foundation</groupId>
+			<artifactId>com.huawei.soa.foundation.commons</artifactId>
+			<version>${foundation.commons.version}</version>
+		</dependency>
+	    <!-- cmp -->
+		<dependency>
+			<groupId>com.huawei.bme.cmp</groupId>
+			<artifactId>cmp-commons</artifactId>
+			<version>${cmp.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.huawei.bme.cmp</groupId>
+			<artifactId>cmp-chain</artifactId>
+			<version>${cmp.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.huawei.bme.cmp</groupId>
+			<artifactId>cmp-cache</artifactId>
+			<version>${cmp.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.huawei.bme.cmp</groupId>
+			<artifactId>cmp-event</artifactId>
+			<version>${cmp.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.scala-lang</groupId>
+			<artifactId>scala-library</artifactId>
+			<version>${scala.library.version}</version>
+		</dependency>
+		<!-- proe -->
+			<dependency>
+				<groupId>org.restlet.jse</groupId>
+				<artifactId>org.restlet.ext.jaxrs</artifactId>
+				<version>${org.restlet.ext.jaxrs.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>com.huawei.dep</groupId>
+				<artifactId>dep.testngtool</artifactId>
+				<version>${dep.testngtool.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>qdox</groupId>
+				<artifactId>qdox</artifactId>
+				<version>${qdox.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.beanshell</groupId>
+				<artifactId>bsh</artifactId>
+				<version>${bsh.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.huawei.tmss</groupId>
+				<artifactId>awtools</artifactId>
+				<version>${awtools.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>dom4j</groupId>
+				<artifactId>dom4j</artifactId>
+				<version>${dom4j.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>xmlunit</groupId>
+				<artifactId>xmlunit</artifactId>
+				<version>${xmlunit.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>commons-lang</groupId>
+				<artifactId>commons-lang</artifactId>
+				<version>${commons.lang.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>jdom</groupId>
+				<artifactId>jdom</artifactId>
+				<version>${jdom.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.dyuproject.protostuff </groupId>
+				<artifactId>protostuff-core</artifactId>
+				<version>${protostuff.core.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.sf.saxon</groupId>
+				<artifactId>saxon</artifactId>
+				<version>${saxon.version}</version>
+			</dependency>
+		
+			<dependency>
+				<groupId>com.huawei.ebus.thirdparty</groupId>
+				<artifactId>ebus-quartz</artifactId>
+				<version>${ebus.quartz.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.huawei.bes</groupId>
+				<artifactId>testng-jdk15</artifactId>
+				<version>${testng.jdk15.version}</version>
+				<classifier>fixed</classifier>
+			</dependency>
+
+			<dependency>
+				<groupId>org.restlet.jse</groupId>
+				<artifactId>org.restlet</artifactId>
+				<version>${org.restlet.version}</version>
+			</dependency>
+						<!-- BDF start -->
+            <!--
+			<dependency>
+				<groupId>com.dyuproject.protostuff</groupId>
+				<artifactId>protostuff-api</artifactId>
+				<version>1.0.7.fixed.3500</version>
+				<scope>provided</scope>
+            </dependency>-->
+
+			
+			
+			<dependency>
+				<groupId>commons-httpclient</groupId>
+				<artifactId>commons-httpclient</artifactId>
+				 <version>${commons.httpclient.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-codec</groupId>
+				<artifactId>commons-codec</artifactId>
+				<version>${ommons.codec.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>${commons.io.version}</version>
+			</dependency>
+			 <!--
+			 <dependency>
+				<groupId>com.jcraft</groupId>
+				<artifactId>jsch</artifactId>
+				<version>0.1.54</version>
+			</dependency>
+			<dependency>
+			  <groupId>commons-dbcp</groupId>
+			  <artifactId>commons-dbcp</artifactId>
+			  <version>1.4.fixed.6100</version>
+			</dependency>-->
+			<dependency>
+			  <groupId>com.huawei.jaguar.commons</groupId>
+			  <artifactId>fastel</artifactId>
+			  <version>${fastel.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpclient</artifactId>
+				<version>${httpclient.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<!--
+			<dependency>
+				<groupId>org.mybatis</groupId>
+				<artifactId>mybatis</artifactId>
+				<version>2.3.5</version>
+			</dependency> -->
+			<!-- usf -->
+			<dependency>
+				<groupId>com.huawei.csc.usf</groupId>
+				<artifactId>com.huawei.csc.usf.restful</artifactId>
+				<version>${usf.restful.version}</version>	       
+			</dependency>	
+			
+			<dependency>
+				<groupId>com.huawei.csc.usf</groupId>
+				<artifactId>com.huawei.csc.usf.restful.ext.gateway</artifactId>
+				<version>${usf.restful.version}</version>	  
+			</dependency>	
+			<!-- jetmq -->		
+			<dependency>
+				<groupId>com.huawei.jetmq</groupId>
+				<artifactId>com.huawei.jetmq.client</artifactId>
+				<version>${com.huawei.jetmq.version}</version>	
+			</dependency>		
+			<dependency>
+				<groupId>com.huawei.jetmq</groupId>
+				<artifactId>com.huawei.jetmq.jmsclient</artifactId>
+				<version>${com.huawei.jetmq.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.huawei.jetmq</groupId>
+				<artifactId>com.huawei.jetmq.amqp.balance</artifactId>
+				<version>${com.huawei.jetmq.version}</version>	
+			</dependency>
+			
+			<!-- PROM -->
+
+				<dependency>
+					<groupId>org.hibernate</groupId>
+					<artifactId>hibernate-validator</artifactId>
+					<version>${hibernate.validator.version}</version>
+				</dependency>
+				<dependency>
+					<groupId>com.h2database</groupId>
+					<artifactId>h2</artifactId>
+					<version>${com.h2database.h2.version}</version>
+				</dependency>
+				<dependency>
+					<groupId>com.huawei.bme</groupId>
+					<artifactId>com.huawei.bme.das.defaultdb</artifactId>
+					<version>${das.version}</version>
+				</dependency>
+				<dependency>
+					<groupId>org.jmock</groupId>
+					<artifactId>com.springsource.org.jmock</artifactId>
+					<version>${com.springsource.org.jmock.version}</version>
+				</dependency>	
+				<dependency>
+					<groupId>org.projectlombok</groupId>
+					<artifactId>lombok</artifactId>
+					<version>${org.projectlombok.lombok.version}</version>
+				</dependency> 
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-collections4</artifactId>
+				<version>${commons.collections4.version}</version>
+				<scope>provided</scope>
+			</dependency>	
+			
+			<!-- portal -->
+		<dependency>
+			<groupId>com.huawei.jaguar</groupId>
+			<artifactId>campaign.base</artifactId>
+			<version>${campaign.version}</version>
+		</dependency>
+
+		<!-- dsf dependency end -->
+		<dependency>
+			<groupId>com.huawei.jaguar</groupId>
+			<artifactId>campaign.groupbuy.api</artifactId>
+			<version>${campaign.version}</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>com.huawei.jaguar</groupId>
+			<artifactId>campaign.spike.api</artifactId>
+			<version>${campaign.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.huawei.jaguar</groupId>
+			<artifactId>campaign.activity.manage.api</artifactId>
+			<version>${campaign.version}</version>
+		</dependency>
+			<dependency>
+			<groupId>com.huawei.tvvas</groupId>
+			<artifactId>tvvas.product.api</artifactId>
+			<version>${tvvas.product.api.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.huawei.backlego</groupId>
+			<artifactId>backlego-core</artifactId>
+			<version>${backlego.core.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.huawei.uee</groupId>
+			<artifactId>com.huawei.uee.web</artifactId>
+			<!-- <version>${com.huawei.uee.web.version}</version> -->
+			<version>${uee.version}</version>
+		</dependency>	
+
+		
+		<dependency>
+			<groupId>org.easymock</groupId>
+			<artifactId>easymock</artifactId>
+			<version>${easymock.version}</version> 
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.objenesis</groupId>
+			<artifactId>objenesis</artifactId>
+			<version>${objenesis.version}</version> 
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.github.tomakehurst</groupId>
+			<artifactId>wiremock</artifactId>
+			<version>${wiremock.version}</version>
+			<classifier>standalone</classifier>
+            <scope>test</scope>
+		</dependency>
+		<dependency>
+		   <groupId>com.oracle.jdbc</groupId>
+		   <artifactId>oraclepki</artifactId>
+		   <version>${oraclepki.version}</version>
+		   <scope>test</scope>
+  		</dependency>		
+			
+			
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+		    <!-- CE -->
+		    <dependency>
+      			<groupId>com.huawei.bes.om.ext_hkt</groupId>
+		      <artifactId>com.huawei.bes.om.ext_hkt.meta.object</artifactId>
+		      <version>8.2.20.LG0023</version>
+		      <type>car</type>
+		    </dependency>
+		    <dependency>
+      			<groupId>com.huawei.ces.communicationengine.common</groupId>
+		      <artifactId>com.huawei.ces.communicationengine.common.lib</artifactId>
+		      <version>2.710.0</version>
+		      <type>car</type>
+		    </dependency>
+            <dependency>
+                <groupId>net.lingala.zip4j</groupId>
+                <artifactId>zip4j</artifactId>
+			    <version>${net.lingala.zip4j.version}</version>
+            </dependency>
+      
+            <dependency>
+                <groupId>com.huawei.uniportal</groupId>
+    			<artifactId>utilities</artifactId>
+    			<version>${com.huawei.uniportal.version}</version>
+            </dependency>
+    		<dependency>
+    			<groupId>com.huawei.uniportal</groupId>
+    			<artifactId>comm</artifactId>
+    			<version>${com.huawei.uniportal.version}</version>
+    		</dependency>
+    		<dependency>
+			  <groupId>org.jdom</groupId>
+			  <artifactId>com.springsource.org.jdom</artifactId>
+			  <version>${com.springsource.org.jdom.version}</version>
+			  <type>jar</type>
+    		</dependency>
+    		<dependency>
+    			<groupId>bme12</groupId>
+    			<artifactId>comm-impl</artifactId>
+    			<version>${bme12.version}</version>
+    		</dependency>
+    		<dependency>
+    			<groupId>com.huawei.pangu</groupId>
+    			<artifactId>pangu-framework</artifactId>
+    			<version>${com.huawei.pangu.version}</version>
+    		</dependency>
+    		<dependency>
+    			<groupId>com.huawei.pangu</groupId>
+    			<artifactId>pangu-common</artifactId>
+    			<version>${com.huawei.pangu.version}</version>
+    		</dependency>
+    		<dependency>
+    			<groupId>org.apache.logging.log4j</groupId>
+    			<artifactId>log4j-api</artifactId>
+    			<version>${org.apache.logging.log4j.version}</version>
+    		</dependency>
+    		<dependency>
+    			<groupId>org.apache.logging.log4j</groupId>
+    			<artifactId>log4j-core</artifactId>
+    			<version>${org.apache.logging.log4j.version}</version>
+    		</dependency>
+			
+			<!-- OM start -->
+			<dependency>
+				<groupId>com.esotericsoftware</groupId>
+				<artifactId>kryo</artifactId>
+				<version>${com.esotericsoftware.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-pool2</artifactId>
+				<version>${org.apache.commons.version}</version>
+			</dependency>
+			<!-- OM end -->
+			
+        </dependencies>
+	</dependencyManagement>
+	
+</project>
