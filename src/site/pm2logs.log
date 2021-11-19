@@ -1,0 +1,1323 @@
+[2021-07-09T15:41:41.714] [INFO] appenders - this no error
+[2021-07-09T15:41:41.764] [INFO] appenders - [
+	{
+		"name": "mySheetName",
+		"data": [
+			[
+				"name",
+				"age",
+				"geneder"
+			],
+			[
+				"jack",
+				"18",
+				"man"
+			],
+			[
+				"Rose",
+				null,
+				"man"
+			]
+		]
+	}
+]
+[2021-07-09T15:43:35.137] [INFO] npm test - this no error
+[2021-07-09T15:43:35.167] [INFO] npm test - [
+	{
+		"name": "mySheetName",
+		"data": [
+			[
+				"name",
+				"age",
+				"geneder"
+			],
+			[
+				"jack",
+				"18",
+				"man"
+			],
+			[
+				"Rose",
+				null,
+				"man"
+			]
+		]
+	}
+]
+[2021-07-09T16:36:32.185] [INFO] npm test - this no error
+[2021-07-09T16:46:11.593] [INFO] npm test - this no error
+[2021-07-09T16:46:40.774] [INFO] npm test - this no error
+[2021-07-09T16:46:40.949] [INFO] npm test - ID	|Label	|Table Name	|Cust|
+[2021-07-09T16:46:40.949] [INFO] npm test - 01I1s000000A2BA	|Vlocity State Transition	|vlocity_cmt__VlocityStateTransition__c	|true|
+[2021-07-09T16:46:40.949] [INFO] npm test - 01I1s000000A2BB	|Vlocity State	|vlocity_cmt__VlocityState__c	|true|
+[2021-07-09T16:46:40.949] [INFO] npm test - 01I1s000000A2BE	|Vlocity Tracking Entry	|vlocity_cmt__VlocityTrackingEntry__c	|true|
+[2021-07-09T16:46:40.950] [INFO] npm test - 01I1s000000A2BC	|Vlocity System Log	|vlocity_cmt__VlocitySystemLog__c	|true|
+[2021-07-09T16:46:40.950] [INFO] npm test - 01I1s000000A2BD	|Vlocity Tracking Component	|vlocity_cmt__VlocityTrackingComponent__c	|true|
+[2021-07-09T16:46:40.950] [INFO] npm test - 01I1s000000A2B9	|Vlocity State Transition Rule	|vlocity_cmt__VlocityStateTransitionRule__c	|true|
+[2021-07-09T16:46:40.950] [INFO] npm test - 01I1s000000A2B7	|Vlocity State Model Version	|vlocity_cmt__VlocityStateModelVersion__c	|true|
+[2021-07-09T16:46:40.950] [INFO] npm test - 01I1s000000A2B8	|Vlocity State Model	|vlocity_cmt__VlocityStateModel__c	|true|
+[2021-07-09T16:46:40.950] [INFO] npm test - 01I1s000000A2AP	|Vlocity UI Facet	|vlocity_cmt__UIFacet__c	|true|
+[2021-07-09T16:46:40.950] [INFO] npm test - 01I1s000000A2AQ	|Vlocity UI Section	|vlocity_cmt__UISection__c	|true|
+[2021-07-09T16:46:40.950] [INFO] npm test - 01I1s000000A2B5	|Vlocity Interaction Launcher Action	|vlocity_cmt__VlocitySearchWidgetActionsSetup__c	|true|
+[2021-07-09T16:46:40.950] [INFO] npm test - 01I1s000000A2B6	|Vlocity Interaction Launcher	|vlocity_cmt__VlocitySearchWidgetSetup__c	|true|
+[2021-07-09T16:46:40.950] [INFO] npm test - 01I1s000000A2AS	|User Calendar	|vlocity_cmt__UserCalendar__c	|true|
+[2021-07-09T16:46:40.950] [INFO] npm test - 01I1s000000A2B4	|Vlocity Scheduled Job	|vlocity_cmt__VlocityScheduledJob__c	|true|
+[2021-07-09T16:46:40.950] [INFO] npm test - 01I1s000000A2Ay	|Vlocity Function Argument	|vlocity_cmt__VlocityFunctionArgument__c	|true|
+[2021-07-09T16:46:40.951] [INFO] npm test - 01I1s000000A2Av	|Vlocity DocuSign Template	|vlocity_cmt__VlocityDocuSignTemplate__c	|true|
+[2021-07-09T16:46:40.951] [INFO] npm test - 01I1s000000A2Aw	|Vlocity Error Log Entry	|vlocity_cmt__VlocityErrorLogEntry__c	|true|
+[2021-07-09T16:46:40.951] [INFO] npm test - PricebookEntry	|Price Book Entry	|PricebookEntry	|false|
+[2021-07-09T16:46:40.951] [INFO] npm test - 01I1s000000A2Az	|Vlocity Function	|vlocity_cmt__VlocityFunction__c	|true|
+[2021-07-09T16:46:40.951] [INFO] npm test - 01I1s000000A2At	|Vlocity DataPack Object	|vlocity_cmt__VlocityDataPack__c	|true|
+[2021-07-09T16:46:40.951] [INFO] npm test - 01I1s000000A2Au	|Vlocity DocuSign Branding	|vlocity_cmt__VlocityDocuSignBranding__c	|true|
+[2021-07-09T16:46:40.951] [INFO] npm test - 01I1s000000A2Ah	|Vlocity API Metadata	|vlocity_cmt__VlocityAPIMetadata__c	|true|
+[2021-07-09T16:46:40.951] [INFO] npm test - 01I1s000000A2BI	|Vlocity UI Template	|vlocity_cmt__VlocityUITemplate__c	|true|
+[2021-07-09T16:46:40.951] [INFO] npm test - ContactPointPhone	|Contact Point Phone	|ContactPointPhone	|false|
+[2021-07-09T16:46:40.951] [INFO] npm test - SessionHijackingEventStore	|Session Hijacking Event Store	|SessionHijackingEventStore	|false|
+[2021-07-09T16:46:40.951] [INFO] npm test - 01I1s000000A2Ai	|Vlocity Action	|vlocity_cmt__VlocityAction__c	|true|
+[2021-07-09T16:46:40.951] [INFO] npm test - 01I1s000000A2BJ	|Vlocity Web Tracking Configuration	|vlocity_cmt__VlocityWebTrackingConfiguration__c	|true|
+[2021-07-09T16:46:40.951] [INFO] npm test - 01I1s000000A2BG	|Vlocity Tracking Group	|vlocity_cmt__VlocityTrackingGroup__c	|true|
+[2021-07-09T16:46:40.951] [INFO] npm test - 01I1s000000A2BH	|Vlocity UI Layout	|vlocity_cmt__VlocityUILayout__c	|true|
+[2021-07-09T16:46:40.951] [INFO] npm test - 01I1s000000A2Al	|Vlocity Contract Service Log	|vlocity_cmt__VlocityContractServiceLog__c	|true|
+[2021-07-09T16:46:40.951] [INFO] npm test - 01I1s000000A2BM	|Vlocity Intelligence Machine	|vlocity_cmt__VqMachine__c	|true|
+[2021-07-09T16:46:40.952] [INFO] npm test - 01I1s000000A2BN	|Vlocity Intelligence Resource	|vlocity_cmt__VqResource__c	|true|
+[2021-07-09T16:46:40.952] [INFO] npm test - 01I1s000000A2Aj	|Vlocity Attachment	|vlocity_cmt__VlocityAttachment__c	|true|
+[2021-07-09T16:46:40.952] [INFO] npm test - 01I1s000000A2BK	|Vlocity Web Tracking Event Type	|vlocity_cmt__VlocityWebTrackingEventType__c	|true|
+[2021-07-09T16:46:40.952] [INFO] npm test - 01I1s000000A2Ak	|Vlocity Card	|vlocity_cmt__VlocityCard__c	|true|
+[2021-07-09T16:46:40.952] [INFO] npm test - 01I1s000000A2BL	|Vlocity Intelligence Machine Resource	|vlocity_cmt__VqMachineResource__c	|true|
+[2021-07-09T16:46:40.952] [INFO] npm test - ProfileSkill	|Skill	|ProfileSkill	|false|
+[2021-07-09T16:46:40.952] [INFO] npm test - ServiceResource	|Service Resource	|ServiceResource	|false|
+[2021-07-09T16:46:40.952] [INFO] npm test - QuickText	|Quick Text	|QuickText	|false|
+[2021-07-09T16:46:40.952] [INFO] npm test - 01I1s000000A2AA	|Thor Orchestration Queue	|vlocity_cmt__ThorOrchestrationQueue__c	|true|
+[2021-07-09T16:46:40.952] [INFO] npm test - DataUseLegalBasis	|Data Use Legal Basis	|DataUseLegalBasis	|false|
+[2021-07-09T16:46:40.952] [INFO] npm test - 01I1s000000A2AB	|Time Plan	|vlocity_cmt__TimePlan__c	|true|
+[2021-07-09T16:46:40.953] [INFO] npm test - 01I1s000000A2AC	|Time Policy	|vlocity_cmt__TimePolicy__c	|true|
+[2021-07-09T16:46:40.953] [INFO] npm test - 01I1s000000A2A9	|Test Result	|vlocity_cmt__TestResult__c	|true|
+[2021-07-09T16:46:40.953] [INFO] npm test - 01I1s000000A2A0	|Sync Delta Snapshot	|vlocity_cmt__SyncDeltaSnapshot__c	|true|
+[2021-07-09T16:46:40.953] [INFO] npm test - 01I1s000000A2A1	|System Interface	|vlocity_cmt__SystemInterface__c	|true|
+[2021-07-09T16:46:40.953] [INFO] npm test - CommSubscriptionTiming	|Communication Subscription Timing	|CommSubscriptionTiming	|false|
+[2021-07-09T16:46:40.953] [INFO] npm test - 01I1s000000A2A2	|System	|vlocity_cmt__System__c	|true|
+[2021-07-09T16:46:40.953] [INFO] npm test - WorkOrderLineItem	|Work Order Line Item	|WorkOrderLineItem	|false|
+[2021-07-09T16:46:40.953] [INFO] npm test - LiveAgentSession	|Chat Session	|LiveAgentSession	|false|
+[2021-07-09T16:46:40.953] [INFO] npm test - ContactRequest	|Contact Request	|ContactRequest	|false|
+[2021-07-09T16:46:40.953] [INFO] npm test - CommSubscription	|Communication Subscription	|CommSubscription	|false|
+[2021-07-09T16:46:40.953] [INFO] npm test - Opportunity	|Opportunity	|Opportunity	|false|
+[2021-07-09T16:46:40.953] [INFO] npm test - LiveChatTranscript	|Chat Transcript	|LiveChatTranscript	|false|
+[2021-07-09T16:46:40.954] [INFO] npm test - OpportunityLineItemSchedule	|Line Item Schedule	|OpportunityLineItemSchedule	|false|
+[2021-07-09T16:46:40.954] [INFO] npm test - EngagementChannelType	|Engagement Channel Type	|EngagementChannelType	|false|
+[2021-07-09T16:46:40.954] [INFO] npm test - Image	|Image	|Image	|false|
+[2021-07-09T16:46:40.954] [INFO] npm test - SkillRequirement	|Skill Requirement	|SkillRequirement	|false|
+[2021-07-09T16:46:40.954] [INFO] npm test - WorkOrder	|Work Order	|WorkOrder	|false|
+[2021-07-09T16:46:40.954] [INFO] npm test - Asset	|Asset	|Asset	|false|
+[2021-07-09T16:46:40.954] [INFO] npm test - CampaignMember	|Campaign Member	|CampaignMember	|false|
+[2021-07-09T16:46:40.954] [INFO] npm test - Pricebook2	|Price Book	|Pricebook2	|false|
+[2021-07-09T16:46:40.954] [INFO] npm test - ContactPointAddress	|Contact Point Address	|ContactPointAddress	|false|
+[2021-07-09T16:46:40.954] [INFO] npm test - Recommendation	|Recommendation	|Recommendation	|false|
+[2021-07-09T16:46:40.954] [INFO] npm test - ServiceResourceSkill	|Service Resource Skill	|ServiceResourceSkill	|false|
+[2021-07-09T16:46:40.954] [INFO] npm test - ContactPointEmail	|Contact Point Email	|ContactPointEmail	|false|
+[2021-07-09T16:46:40.954] [INFO] npm test - Product2	|Product	|Product2	|false|
+[2021-07-09T16:46:40.954] [INFO] npm test - PartyConsent	|Party Consent	|PartyConsent	|false|
+[2021-07-09T16:46:40.954] [INFO] npm test - ProfileSkillEndorsement	|Endorsement	|ProfileSkillEndorsement	|false|
+[2021-07-09T16:46:40.954] [INFO] npm test - AuthorizationFormText	|Authorization Form Text	|AuthorizationFormText	|false|
+[2021-07-09T16:46:40.954] [INFO] npm test - Solution	|Solution	|Solution	|false|
+[2021-07-09T16:46:40.954] [INFO] npm test - AuthorizationFormDataUse	|Authorization Form Data Use	|AuthorizationFormDataUse	|false|
+[2021-07-09T16:46:40.954] [INFO] npm test - 01I1s000000A540	|Gateway	|rsplus__GateWay__c	|true|
+[2021-07-09T16:46:40.954] [INFO] npm test - Task	|Task	|Task	|false|
+[2021-07-09T16:46:40.954] [INFO] npm test - 01I1s000000A544	|SMS Inbox (legacy)	|rsplus__Inbound_SMS__c	|true|
+[2021-07-09T16:46:40.954] [INFO] npm test - 01I1s000000A542	|Gateway Status	|rsplus__Gateway_Status__c	|true|
+[2021-07-09T16:46:40.955] [INFO] npm test - 01I2w000000OFlU	|Badge	|trailheadapp__Badge__c	|true|
+[2021-07-09T16:46:40.955] [INFO] npm test - 01I2w000000OFlW	|Debug Log	|trailheadapp__Debug_Log__c	|true|
+[2021-07-09T16:46:40.955] [INFO] npm test - 01I1s000000ABmk	|LiveChatSession	|rsplus__LiveChatSession__c	|true|
+[2021-07-09T16:46:40.955] [INFO] npm test - 01I2w000000OFlY	|Trail	|trailheadapp__Trail__c	|true|
+[2021-07-09T16:46:40.955] [INFO] npm test - 01I2w000000OFlZ	|Trailhead User Data	|trailheadapp__Trailhead_User_Data__c	|true|
+[2021-07-09T16:46:40.955] [INFO] npm test - 01I2w000000OFld	|User Trailmix	|trailheadapp__User_Trailmix__c	|true|
+[2021-07-09T16:46:40.955] [INFO] npm test - 01I2w000000OFla	|Trailmix Assignment	|trailheadapp__Trailmix_Assignment__c	|true|
+[2021-07-09T16:46:40.955] [INFO] npm test - 01I2w000000OFlc	|User Badge	|trailheadapp__User_Badge__c	|true|
+[2021-07-09T16:46:40.955] [INFO] npm test - 01I2w000000OFlb	|Trailmix	|trailheadapp__Trailmix__c	|true|
+[2021-07-09T16:46:40.955] [INFO] npm test - 01I1s000000A54Q	|Chat Dashboard	|rsplus__ValueText_Helper__c	|true|
+[2021-07-09T16:46:40.955] [INFO] npm test - 01I1s000000A53m	|Bot Form	|rsplus__Bot_Form__c	|true|
+[2021-07-09T16:46:40.956] [INFO] npm test - 01I1s000000A53n	|Bot	|rsplus__Bot__c	|true|
+[2021-07-09T16:46:40.956] [INFO] npm test - 01I1s000000A54O	|SMS VTexception	|rsplus__VTexception__c	|true|
+[2021-07-09T16:46:40.956] [INFO] npm test - 01I1s000000A53s	|Call Legs	|rsplus__Call_Legs__c	|true|
+[2021-07-09T16:46:40.956] [INFO] npm test - 01I1s000000A53q	|Call Center User	|rsplus__Call_Center_User__c	|true|
+[2021-07-09T16:46:40.956] [INFO] npm test - 01I1s000000A54R	|VtDefaultOptions	|rsplus__VtDefaultOptions__c	|true|
+[2021-07-09T16:46:40.956] [INFO] npm test - 01I1s000000A53r	|Call History	|rsplus__Call_History__c	|true|
+[2021-07-09T16:46:40.956] [INFO] npm test - 01I1s000000A54H	|Text Schedules & Follow Up	|rsplus__SMS_Scheduler__c	|true|
+[2021-07-09T16:46:40.956] [INFO] npm test - UserProvisioningRequest	|User Provisioning Request	|UserProvisioningRequest	|false|
+[2021-07-09T16:46:40.956] [INFO] npm test - 01I1s000000A54I	|Workflow Schedules & Follow Ups	|rsplus__SMS_Workflow_schedule__c	|true|
+[2021-07-09T16:46:40.956] [INFO] npm test - 01I1s000000A54F	|SMS Inbox Actions (legacy)	|rsplus__SMS_Inbox_Actions__c	|true|
+[2021-07-09T16:46:40.956] [INFO] npm test - 01I1s000000A54G	|ValueText Notification	|rsplus__SMS_Notification__c	|true|
+[2021-07-09T16:46:40.956] [INFO] npm test - 01I1s000000A53k	|Bot Element Dynamic Options	|rsplus__Bot_Element_Dynamic_Options__c	|true|
+[2021-07-09T16:46:40.956] [INFO] npm test - ApiAnomalyEventStore	|API Anomaly Event Store	|ApiAnomalyEventStore	|false|
+[2021-07-09T16:46:40.956] [INFO] npm test - 01I1s000000A53l	|Bot Element	|rsplus__Bot_Element__c	|true|
+[2021-07-09T16:46:40.956] [INFO] npm test - 01I1s000000A54M	|MMS	|rsplus__VT_MMS__c	|true|
+[2021-07-09T16:46:40.956] [INFO] npm test - AssociatedLocation	|Associated Location	|AssociatedLocation	|false|
+[2021-07-09T16:46:40.956] [INFO] npm test - 01I1s000000A54J	|Sender ID	|rsplus__Sender_Id_Registration__c	|true|
+[2021-07-09T16:46:40.956] [INFO] npm test - 01I1s000000A53j	|Access Level	|rsplus__Access_Level__c	|true|
+[2021-07-09T16:46:40.956] [INFO] npm test - 01I1s000000A54K	|Short Link	|rsplus__Short_Link__c	|true|
+[2021-07-09T16:46:40.956] [INFO] npm test - 01I1s000000A54A	|Phone Numbers	|rsplus__Phone_Numbers__c	|true|
+[2021-07-09T16:46:40.956] [INFO] npm test - 01I1s000000A54D	|Text Campaign Member	|rsplus__SMS_Campaign_Member__c	|true|
+[2021-07-09T16:46:40.956] [INFO] npm test - 01I1s000000A54E	|Text Campaign	|rsplus__SMS_Campaign__c	|true|
+[2021-07-09T16:46:40.956] [INFO] npm test - 01I1s000000A54B	|Dynamic Templates	|rsplus__RSP_Templates__c	|true|
+[2021-07-09T16:46:40.956] [INFO] npm test - 01I1s000000A54C	|Message Bucket	|rsplus__SMS_Bucket__c	|true|
+[2021-07-09T16:46:40.957] [INFO] npm test - 01I1s000000A549	|Custom Phone Fields	|rsplus__Phone_Field_Settings__c	|true|
+[2021-07-09T16:46:40.957] [INFO] npm test - 01I1s000000A547	|OTP	|rsplus__OTP__c	|true|
+[2021-07-09T16:46:40.957] [INFO] npm test - CredentialStuffingEventStore	|Credential Stuffing Event Store	|CredentialStuffingEventStore	|false|
+[2021-07-09T16:46:40.957] [INFO] npm test - 01I1s000000A2L7	|Upgrade Step	|UpgradeStep__c	|true|
+[2021-07-09T16:46:40.957] [INFO] npm test - 01I1s000000A2L6	|Upgrade Plan	|UpgradePlan__c	|true|
+[2021-07-09T16:46:40.957] [INFO] npm test - LiveChatVisitor	|Chat Visitor	|LiveChatVisitor	|false|
+[2021-07-09T16:46:40.957] [INFO] npm test - Activity	|Activity	|Activity	|false|
+[2021-07-09T16:46:40.957] [INFO] npm test - ProfileSkillUser	|Skill User	|ProfileSkillUser	|false|
+[2021-07-09T16:46:40.957] [INFO] npm test - LinkedArticle	|Linked Article	|LinkedArticle	|false|
+[2021-07-09T16:46:40.957] [INFO] npm test - SocialPost	|Social Post	|SocialPost	|false|
+[2021-07-09T16:46:40.957] [INFO] npm test - 01I1s000000A53w	|Channel Open Id	|rsplus__Channel_Open_Ids__c	|true|
+[2021-07-09T16:46:40.957] [INFO] npm test - 01I1s000000A54Y	|Legacy Object	|rsplus__plate__c	|true|
+[2021-07-09T16:46:40.957] [INFO] npm test - 01I1s000000A53u	|Channel Group Member	|rsplus__Channel_Group_Member__c	|true|
+[2021-07-09T16:46:40.957] [INFO] npm test - 01I1s000000A53v	|Channel Group	|rsplus__Channel_Group__c	|true|
+[2021-07-09T16:46:40.957] [INFO] npm test - 01I1s000000A54W	|Opted Numbers	|rsplus__Vt_Opted_Numbers__c	|true|
+[2021-07-09T16:46:40.957] [INFO] npm test - 01I1s000000A53z	|Donation	|rsplus__Donation__c	|true|
+[2021-07-09T16:46:40.957] [INFO] npm test - AssetRelationship	|Asset Relationship	|AssetRelationship	|false|
+[2021-07-09T16:46:40.957] [INFO] npm test - QuoteLineItem	|Quote Line Item	|QuoteLineItem	|false|
+[2021-07-09T16:46:40.957] [INFO] npm test - Event	|Event	|Event	|false|
+[2021-07-09T16:46:40.957] [INFO] npm test - 01I1s000000A25T	|CachedAPIChange	|vlocity_cmt__CachedAPIChange__c	|true|
+[2021-07-09T16:46:40.957] [INFO] npm test - 01I1s000000A265	|Context Scope	|vlocity_cmt__ContextScope__c	|true|
+[2021-07-09T16:46:40.957] [INFO] npm test - 01I1s000000A25U	|CachedAPIMigrate	|vlocity_cmt__CachedAPIMigrate__c	|true|
+[2021-07-09T16:46:40.957] [INFO] npm test - 01I1s000000A25R	|Store Location	|vlocity_cmt__BusinessSite__c	|true|
+[2021-07-09T16:46:40.957] [INFO] npm test - 01I1s000000A263	|Vlocity Context Rule	|vlocity_cmt__ContextRule__c	|true|
+[2021-07-09T16:46:40.957] [INFO] npm test - 01I1s000000A25S	|CachedAPIChangeEntry	|vlocity_cmt__CachedAPIChangeEntry__c	|true|
+[2021-07-09T16:46:40.957] [INFO] npm test - 01I1s000000A264	|Vlocity Context Ruleset	|vlocity_cmt__ContextRuleset__c	|true|
+[2021-07-09T16:46:40.957] [INFO] npm test - AuthorizationFormConsent	|Authorization Form Consent	|AuthorizationFormConsent	|false|
+[2021-07-09T16:46:40.957] [INFO] npm test - 01I1s000000A25X	|Cached Data Set	|vlocity_cmt__CachedDataSet__c	|true|
+[2021-07-09T16:46:40.957] [INFO] npm test - 01I1s000000A269	|Contract Group	|vlocity_cmt__ContractGroup__c	|true|
+[2021-07-09T16:46:40.957] [INFO] npm test - OpportunityLineItem	|Opportunity Product	|OpportunityLineItem	|false|
+[2021-07-09T16:46:40.957] [INFO] npm test - 01I1s000000A25Y	|Cached Filterable Attribute	|vlocity_cmt__CachedFilterableAttribute__c	|true|
+[2021-07-09T16:46:40.957] [INFO] npm test - 01I1s000000A25V	|CachedAPIResponseOffers	|vlocity_cmt__CachedAPIResponseOffers__c	|true|
+[2021-07-09T16:46:40.957] [INFO] npm test - 01I1s000000A267	|Contract Document Element	|vlocity_cmt__ContractDocumentCollection__c	|true|
+[2021-07-09T16:46:40.958] [INFO] npm test - 01I1s000000A25W	|CachedAPIResponse	|vlocity_cmt__CachedAPIResponse__c	|true|
+[2021-07-09T16:46:40.958] [INFO] npm test - 01I1s000000A268	|Contract Document Envelope	|vlocity_cmt__ContractEnvelope__c	|true|
+[2021-07-09T16:46:40.958] [INFO] npm test - 01I1s000000A25L	|Attribute Assignment	|vlocity_cmt__AttributeAssignment__c	|true|
+[2021-07-09T16:46:40.958] [INFO] npm test - 01I1s000000A25M	|Vlocity Attribute Binding	|vlocity_cmt__AttributeBinding__c	|true|
+[2021-07-09T16:46:40.958] [INFO] npm test - 01I1s000000A25J	|Attribute Assignment Export	|vlocity_cmt__AttributeAssignmentExport__c	|true|
+[2021-07-09T16:46:40.958] [INFO] npm test - 01I1s000000A25K	|Vlocity Attribute Assignment Rule	|vlocity_cmt__AttributeAssignmentRule__c	|true|
+[2021-07-09T16:46:40.958] [INFO] npm test - 01I1s000000A261	|Vlocity Context Mapping Argument	|vlocity_cmt__ContextMappingArgument__c	|true|
+[2021-07-09T16:46:40.958] [INFO] npm test - 01I1s000000A25Q	|Store Offering	|vlocity_cmt__BusinessSiteOffering__c	|true|
+[2021-07-09T16:46:40.958] [INFO] npm test - 01I1s000000A262	|Vlocity Context Mapping	|vlocity_cmt__ContextMapping__c	|true|
+[2021-07-09T16:46:40.958] [INFO] npm test - 01I1s000000A25N	|Vlocity Attribute Category	|vlocity_cmt__AttributeCategory__c	|true|
+[2021-07-09T16:46:40.958] [INFO] npm test - 01I1s000000A25O	|Vlocity Attribute	|vlocity_cmt__Attribute__c	|true|
+[2021-07-09T16:46:40.958] [INFO] npm test - 01I1s000000A260	|Vlocity Context Dimension	|vlocity_cmt__ContextDimension__c	|true|
+[2021-07-09T16:46:40.958] [INFO] npm test - 01I1s000000A25D	|Application	|vlocity_cmt__Application__c	|true|
+[2021-07-09T16:46:40.958] [INFO] npm test - 01I1s000000A25E	|Assessment Answer	|vlocity_cmt__AssessmentAnswer__c	|true|
+[2021-07-09T16:46:40.958] [INFO] npm test - 01I1s000000A25B	|Application Party Relationship	|vlocity_cmt__ApplicationPartyRelationship__c	|true|
+[2021-07-09T16:46:40.959] [INFO] npm test - 01I1s000000A25C	|Application Template	|vlocity_cmt__ApplicationTemplate__c	|true|
+[2021-07-09T16:46:40.959] [INFO] npm test - 01I1s000000A25H	|Asset Pricing Adjustment	|vlocity_cmt__AssetPricingAdjustment__c	|true|
+[2021-07-09T16:46:40.960] [INFO] npm test - 01I1s000000A25I	|Manual Queue Assignment Rule	|vlocity_cmt__AssignmentRule__c	|true|
+[2021-07-09T16:46:40.960] [INFO] npm test - 01I1s000000A25F	|Assessment Question	|vlocity_cmt__AssessmentQuestion__c	|true|
+[2021-07-09T16:46:40.960] [INFO] npm test - 01I1s000000A25G	|Assessment	|vlocity_cmt__Assessment__c	|true|
+[2021-07-09T16:46:40.960] [INFO] npm test - 01I1s000000A25A	|Admin Tab Layout	|vlocity_cmt__AdminTabLayout__c	|true|
+[2021-07-09T16:46:40.960] [INFO] npm test - 01I1s000000A25t	|Catalog Product Relationship	|vlocity_cmt__CatalogProductRelationship__c	|true|
+[2021-07-09T16:46:40.960] [INFO] npm test - 01I1s000000A26U	|Customer Interaction	|vlocity_cmt__CustomerInteraction__c	|true|
+[2021-07-09T16:46:40.960] [INFO] npm test - 01I1s000000A25u	|Catalog Relationship	|vlocity_cmt__CatalogRelationship__c	|true|
+[2021-07-09T16:46:40.960] [INFO] npm test - 01I1s000000A26V	|Vlocity DataRaptor Batch Queue	|vlocity_cmt__DRBatchQueue__c	|true|
+[2021-07-09T16:46:40.960] [INFO] npm test - 01I1s000000A25r	|Cart Item	|vlocity_cmt__CartItem__c	|true|
+[2021-07-09T16:46:40.960] [INFO] npm test - 01I1s000000A25s	|Cart	|vlocity_cmt__Cart__c	|true|
+[2021-07-09T16:46:40.960] [INFO] npm test - 01I1s000000A26T	|Customer Interaction Topic	|vlocity_cmt__CustomerInteractionTopic__c	|true|
+[2021-07-09T16:46:40.960] [INFO] npm test - 01I1s000000A25x	|Compiled Attribute Override	|vlocity_cmt__CompiledAttributeOverride__c	|true|
+[2021-07-09T16:46:40.960] [INFO] npm test - 01I1s000000A25y	|Console Action Log	|vlocity_cmt__ConsoleActionLog__c	|true|
+[2021-07-09T16:46:40.961] [INFO] npm test - 01I1s000000A26Z	|Vlocity DataRaptor Map Item	|vlocity_cmt__DRMapItem__c	|true|
+[2021-07-09T16:46:40.961] [INFO] npm test - 01I1s000000A25v	|Catalog	|vlocity_cmt__Catalog__c	|true|
+[2021-07-09T16:46:40.961] [INFO] npm test - 01I1s000000A26W	|DataRaptor Bulk Data	|vlocity_cmt__DRBulkData__c	|true|
+[2021-07-09T16:46:40.961] [INFO] npm test - 01I1s000000A278	|Fulfilment Request Decomposition Rel	|vlocity_cmt__FulfilmentRequestDecompRelationship__c	|true|
+[2021-07-09T16:46:40.961] [INFO] npm test - 01I1s000000A25w	|Charge Measurement	|vlocity_cmt__ChargeMeasurement__c	|true|
+[2021-07-09T16:46:40.961] [INFO] npm test - 01I1s000000A26X	|Vlocity DataRaptor Bundle	|vlocity_cmt__DRBundle__c	|true|
+[2021-07-09T16:46:40.961] [INFO] npm test - 01I1s000000A279	|FulfilmentRequestLineDecompRelationship	|vlocity_cmt__FulfilmentRequestLineDecompRelationship__c	|true|
+[2021-07-09T16:46:40.961] [INFO] npm test - 01I1s000000A25l	|Vlocity Calculation Procedure	|vlocity_cmt__CalculationProcedure__c	|true|
+[2021-07-09T16:46:40.961] [INFO] npm test - 01I1s000000A25m	|CallbackURI	|vlocity_cmt__CallbackURI__c	|true|
+[2021-07-09T16:46:40.961] [INFO] npm test - 01I1s000000A25j	|Vlocity Calculation Procedure Variable	|vlocity_cmt__CalculationProcedureVariable__c	|true|
+[2021-07-09T16:46:40.961] [INFO] npm test - 01I1s000000A26K	|Contract Document Discount	|vlocity_cmt__ContractVersionDiscount__c	|true|
+[2021-07-09T16:46:40.961] [INFO] npm test - 01I1s000000A25k	|Vlocity Calculation Procedure Version	|vlocity_cmt__CalculationProcedureVersion__c	|true|
+[2021-07-09T16:46:40.961] [INFO] npm test - 01I1s000000A26L	|Contract Document	|vlocity_cmt__ContractVersion__c	|true|
+[2021-07-09T16:46:40.961] [INFO] npm test - 01I1s000000A25p	|Campaign Member Action Log	|vlocity_cmt__CampaignMemberActionLog__c	|true|
+[2021-07-09T16:46:40.961] [INFO] npm test - 01I1s000000A272	|Vlocity Event Message	|vlocity_cmt__EventMessage__c	|true|
+[2021-07-09T16:46:40.961] [INFO] npm test - 01I1s000000A273	|Expanded Interaction Log	|vlocity_cmt__ExpandedInteractionLog__c	|true|
+[2021-07-09T16:46:40.961] [INFO] npm test - 01I1s000000A270	|Error Code	|vlocity_cmt__Error_Code__c	|true|
+[2021-07-09T16:46:40.962] [INFO] npm test - 01I1s000000A25o	|Campaign Content Document	|vlocity_cmt__CampaignContentDocument__c	|true|
+[2021-07-09T16:46:40.962] [INFO] npm test - 01I1s000000A271	|Event During Interaction	|vlocity_cmt__EventDuringInteraction__c	|true|
+[2021-07-09T16:46:40.962] [INFO] npm test - 01I1s000000A25d	|Vlocity Calculation Matrix Column	|vlocity_cmt__CalculationMatrixColumn__c	|true|
+[2021-07-09T16:46:40.962] [INFO] npm test - 01I1s000000A26E	|Contract Term	|vlocity_cmt__ContractTerm__c	|true|
+[2021-07-09T16:46:40.962] [INFO] npm test - 01I1s000000A25e	|Vlocity Calculation Matrix Dimension	|vlocity_cmt__CalculationMatrixDimension__c	|true|
+[2021-07-09T16:46:40.962] [INFO] npm test - 01I1s000000A26F	|Contract Type Setting	|vlocity_cmt__ContractTypeSetting__c	|true|
+[2021-07-09T16:46:40.962] [INFO] npm test - 01I1s000000A25b	|Cached Product Translation	|vlocity_cmt__CachedProduct2Translation__c	|true|
+[2021-07-09T16:46:40.962] [INFO] npm test - 01I1s000000A26C	|Contract Recipient	|vlocity_cmt__ContractRecipient__c	|true|
+[2021-07-09T16:46:40.962] [INFO] npm test - Campaign	|Campaign	|Campaign	|false|
+[2021-07-09T16:46:40.962] [INFO] npm test - 01I1s000000A25c	|Cached Promotion Translation	|vlocity_cmt__CachedPromotionTranslation__c	|true|
+[2021-07-09T16:46:40.962] [INFO] npm test - 01I1s000000A26D	|Contract Document Section	|vlocity_cmt__ContractSection__c	|true|
+[2021-07-09T16:46:40.962] [INFO] npm test - 01I1s000000A25h	|Vlocity Calculation Matrix	|vlocity_cmt__CalculationMatrix__c	|true|
+[2021-07-09T16:46:40.962] [INFO] npm test - 01I1s000000A26I	|Contract Document Discount Item	|vlocity_cmt__ContractVersionDiscountItem__c	|true|
+[2021-07-09T16:46:40.962] [INFO] npm test - 01I1s000000A25i	|Vlocity Calculation Procedure Step	|vlocity_cmt__CalculationProcedureStep__c	|true|
+[2021-07-09T16:46:40.962] [INFO] npm test - 01I1s000000A26J	|Contract Document Discount Pricing	|vlocity_cmt__ContractVersionDiscountPricing__c	|true|
+[2021-07-09T16:46:40.963] [INFO] npm test - Individual	|Individual	|Individual	|false|
+[2021-07-09T16:46:40.963] [INFO] npm test - 01I1s000000A25f	|Vlocity Calculation Matrix Row	|vlocity_cmt__CalculationMatrixRow__c	|true|
+[2021-07-09T16:46:40.963] [INFO] npm test - 01I1s000000A26G	|Contract Type Term	|vlocity_cmt__ContractTypeTerm__c	|true|
+[2021-07-09T16:46:40.963] [INFO] npm test - 01I1s000000A25g	|Vlocity Calculation Matrix Version	|vlocity_cmt__CalculationMatrixVersion__c	|true|
+[2021-07-09T16:46:40.963] [INFO] npm test - 01I1s000000A26H	|Contract Type	|vlocity_cmt__ContractType__c	|true|
+[2021-07-09T16:46:40.963] [INFO] npm test - 01I1s000000A24y	|Applied Promotion Affected Asset	|vlocity_cmt__AccountAppliedPromotionItem__c	|true|
+[2021-07-09T16:46:40.963] [INFO] npm test - 01I1s000000A25Z	|CachedKeyMapping	|vlocity_cmt__CachedKeyMapping__c	|true|
+[2021-07-09T16:46:40.963] [INFO] npm test - 01I1s000000A24z	|Applied Promotion	|vlocity_cmt__AccountAppliedPromotion__c	|true|
+[2021-07-09T16:46:40.963] [INFO] npm test - 01I1s000000A26A	|Contract Line	|vlocity_cmt__ContractLineItem__c	|true|
+[2021-07-09T16:46:40.963] [INFO] npm test - 01I1s000000A25a	|Cached PriceBookEntry Attribute Value	|vlocity_cmt__CachedPriceBookEntryAttributeValue__c	|true|
+[2021-07-09T16:46:40.963] [INFO] npm test - DuplicateRecordItem	|Duplicate Record Item	|DuplicateRecordItem	|false|
+[2021-07-09T16:46:40.963] [INFO] npm test - 01I1s000000A254	|Account Hold	|vlocity_cmt__AccountHold__c	|true|
+[2021-07-09T16:46:40.963] [INFO] npm test - 01I1s000000A255	|Account Offer	|vlocity_cmt__AccountOffer__c	|true|
+[2021-07-09T16:46:40.963] [INFO] npm test - 01I1s000000A252	|Account Discount Pricing	|vlocity_cmt__AccountDiscountPricing__c	|true|
+[2021-07-09T16:46:40.963] [INFO] npm test - 01I1s000000A253	|Account Discount	|vlocity_cmt__AccountDiscount__c	|true|
+[2021-07-09T16:46:40.963] [INFO] npm test - 01I1s000000A258	|Activity Content Document	|vlocity_cmt__ActivityContentDocument__c	|true|
+[2021-07-09T16:46:40.963] [INFO] npm test - 01I1s000000A259	|Activity Template	|vlocity_cmt__ActivityTemplate__c	|true|
+[2021-07-09T16:46:40.964] [INFO] npm test - 01I1s000000A256	|Account Pricing	|vlocity_cmt__AccountPriceAdjustment__c	|true|
+[2021-07-09T16:46:40.964] [INFO] npm test - 01I1s000000A257	|Account Product Rollup	|vlocity_cmt__AccountProductRollup__c	|true|
+[2021-07-09T16:46:40.964] [INFO] npm test - ContactPointConsent	|Contact Point Consent	|ContactPointConsent	|false|
+[2021-07-09T16:46:40.964] [INFO] npm test - 01I1s000000A250	|Account Balance	|vlocity_cmt__AccountBalance__c	|true|
+[2021-07-09T16:46:40.964] [INFO] npm test - 01I1s000000A251	|Account Discount Item	|vlocity_cmt__AccountDiscountItem__c	|true|
+[2021-07-09T16:46:40.964] [INFO] npm test - Quote	|Quote	|Quote	|false|
+[2021-07-09T16:46:40.964] [INFO] npm test - Location	|Location	|Location	|false|
+[2021-07-09T16:46:40.964] [INFO] npm test - 01I1s000000A28w	|Pricing Element	|vlocity_cmt__PricingElement__c	|true|
+[2021-07-09T16:46:40.964] [INFO] npm test - Account	|Account	|Account	|false|
+[2021-07-09T16:46:40.964] [INFO] npm test - 01I1s000000A28x	|Pricing Plan Step	|vlocity_cmt__PricingPlanStep__c	|true|
+[2021-07-09T16:46:40.964] [INFO] npm test - 01I1s000000A29Y	|Relationship Graph Node Type	|vlocity_cmt__RelationshipGraphNodeType__c	|true|
+[2021-07-09T16:46:40.964] [INFO] npm test - 01I1s000000A28u	|Pricing Component Relationship	|vlocity_cmt__PricingComponentRelationship__c	|true|
+[2021-07-09T16:46:40.964] [INFO] npm test - 01I1s000000A29V	|Quote Product Rollup	|vlocity_cmt__QuoteProductRollup__c	|true|
+[2021-07-09T16:46:40.964] [INFO] npm test - 01I1s000000A28v	|Pricing Component	|vlocity_cmt__PricingComponent__c	|true|
+[2021-07-09T16:46:40.964] [INFO] npm test - 01I1s000000A28y	|Pricing Plan	|vlocity_cmt__PricingPlan__c	|true|
+[2021-07-09T16:46:40.964] [INFO] npm test - 01I1s000000A29Z	|Relationship Graph Traversal	|vlocity_cmt__RelationshipGraphTraversal__c	|true|
+[2021-07-09T16:46:40.964] [INFO] npm test - 01I1s000000A28z	|Pricing Variable Binding	|vlocity_cmt__PricingVariableBinding__c	|true|
+[2021-07-09T16:46:40.964] [INFO] npm test - 01I1s000000A28o	|Vlocity Picklist Value	|vlocity_cmt__PicklistValue__c	|true|
+[2021-07-09T16:46:40.964] [INFO] npm test - 01I1s000000A29P	|Quote Discount	|vlocity_cmt__QuoteDiscount__c	|true|
+[2021-07-09T16:46:40.964] [INFO] npm test - 01I1s000000A28p	|Vlocity Picklist	|vlocity_cmt__Picklist__c	|true|
+[2021-07-09T16:46:40.964] [INFO] npm test - 01I1s000000A29Q	|Quote Group	|vlocity_cmt__QuoteGroup__c	|true|
+[2021-07-09T16:46:40.964] [INFO] npm test - 01I1s000000A29N	|Quote Discount Item	|vlocity_cmt__QuoteDiscountItem__c	|true|
+[2021-07-09T16:46:40.964] [INFO] npm test - 01I1s000000A28n	|Picklist Selection Entry	|vlocity_cmt__PicklistSelectionEntry__c	|true|
+[2021-07-09T16:46:40.964] [INFO] npm test - 01I1s000000A29O	|Quote Discount Pricing	|vlocity_cmt__QuoteDiscountPricing__c	|true|
+[2021-07-09T16:46:40.964] [INFO] npm test - 01I1s000000A28s	|Price List Entry	|vlocity_cmt__PriceListEntry__c	|true|
+[2021-07-09T16:46:40.964] [INFO] npm test - 01I1s000000A29T	|Quote Member	|vlocity_cmt__QuoteMember__c	|true|
+[2021-07-09T16:46:40.964] [INFO] npm test - 01I1s000000A28t	|Price List	|vlocity_cmt__PriceList__c	|true|
+[2021-07-09T16:46:40.964] [INFO] npm test - 01I1s000000A29U	|Quote Pricing	|vlocity_cmt__QuotePricingAdjustment__c	|true|
+[2021-07-09T16:46:40.964] [INFO] npm test - 01I1s000000A28q	|PremisesPartyRelationship	|vlocity_cmt__PremisesPartyRelationship__c	|true|
+[2021-07-09T16:46:40.964] [INFO] npm test - 01I1s000000A29R	|Quote Line Item Pricing Adjustment	|vlocity_cmt__QuoteLineItemPricingAdjustment__c	|true|
+[2021-07-09T16:46:40.964] [INFO] npm test - 01I1s000000A28r	|Premises	|vlocity_cmt__Premises__c	|true|
+[2021-07-09T16:46:40.964] [INFO] npm test - 01I1s000000A29S	|Quote Product Relationship	|vlocity_cmt__QuoteLineItemRelationship__c	|true|
+[2021-07-09T16:46:40.964] [INFO] npm test - 01I1s000000A28g	|Party Relationship	|vlocity_cmt__PartyRelationship__c	|true|
+[2021-07-09T16:46:40.964] [INFO] npm test - 01I1s000000A29H	|Promotion Item	|vlocity_cmt__PromotionItem__c	|true|
+[2021-07-09T16:46:40.965] [INFO] npm test - 01I1s000000A28h	|Party Association	|vlocity_cmt__Party_Association__c	|true|
+[2021-07-09T16:46:40.965] [INFO] npm test - 01I1s000000A29I	|Promotion Pricing Alteration	|vlocity_cmt__PromotionPricingAlteration__c	|true|
+[2021-07-09T16:46:40.965] [INFO] npm test - 01I1s000000A28e	|Party Merge Request	|vlocity_cmt__PartyMergeRequest__c	|true|
+[2021-07-09T16:46:40.965] [INFO] npm test - 01I1s000000A29F	|Promotion Applicable Product	|vlocity_cmt__PromotionApplicableProduct__c	|true|
+[2021-07-09T16:46:40.965] [INFO] npm test - 01I1s000000A28f	|Vlocity Party Relationship Type	|vlocity_cmt__PartyRelationshipType__c	|true|
+[2021-07-09T16:46:40.965] [INFO] npm test - 01I1s000000A29G	|Promotion Included Product	|vlocity_cmt__PromotionIncludedProduct__c	|true|
+[2021-07-09T16:46:40.965] [INFO] npm test - 01I1s000000A28k	|Payment Method	|vlocity_cmt__PaymentMethod__c	|true|
+[2021-07-09T16:46:40.965] [INFO] npm test - 01I1s000000A29L	|Quote Applied Promotion	|vlocity_cmt__QuoteAppliedPromotion__c	|true|
+[2021-07-09T16:46:40.965] [INFO] npm test - 01I1s000000A28l	|Payment Plan	|vlocity_cmt__PaymentPlan__c	|true|
+[2021-07-09T16:46:40.965] [INFO] npm test - 01I1s000000A28i	|Party	|vlocity_cmt__Party__c	|true|
+[2021-07-09T16:46:40.965] [INFO] npm test - 01I1s000000A29J	|Promotion	|vlocity_cmt__Promotion__c	|true|
+[2021-07-09T16:46:40.965] [INFO] npm test - 01I1s000000A28j	|Payment Adjustment	|vlocity_cmt__PaymentAdjustment__c	|true|
+[2021-07-09T16:46:40.965] [INFO] npm test - 01I1s000000A29K	|Quote Applied Promotion Affected Item	|vlocity_cmt__QuoteAppliedPromotionItem__c	|true|
+[2021-07-09T16:46:40.965] [INFO] npm test - 01I1s000000A29A	|Product Template Assignment	|vlocity_cmt__ProfileCategoryAssignment__c	|true|
+[2021-07-09T16:46:40.965] [INFO] npm test - ContactPointTypeConsent	|Contact Point Type Consent	|ContactPointTypeConsent	|false|
+[2021-07-09T16:46:40.965] [INFO] npm test - 01I1s000000A29D	|Project Item	|vlocity_cmt__ProjectItem__c	|true|
+[2021-07-09T16:46:40.965] [INFO] npm test - 01I1s000000A29E	|Project	|vlocity_cmt__Project__c	|true|
+[2021-07-09T16:46:40.965] [INFO] npm test - 01I1s000000A29B	|Profiling Segment Category	|vlocity_cmt__ProfilingSegmentCategory__c	|true|
+[2021-07-09T16:46:40.965] [INFO] npm test - 01I1s000000A29C	|Profiling Segment	|vlocity_cmt__ProfilingSegment__c	|true|
+[2021-07-09T16:46:40.965] [INFO] npm test - 01I1s000000A29x	|Subscription	|vlocity_cmt__Subscription__c	|true|
+[2021-07-09T16:46:40.965] [INFO] npm test - 01I1s000000A29v	|Vlocity String Translation	|vlocity_cmt__StringTranslation__c	|true|
+[2021-07-09T16:46:40.965] [INFO] npm test - 01I1s000000A29w	|Vlocity String	|vlocity_cmt__String__c	|true|
+[2021-07-09T16:46:40.965] [INFO] npm test - 01I1s000000A29z	|Sync Delta Object	|vlocity_cmt__SyncDeltaObject__c	|true|
+[2021-07-09T16:46:40.965] [INFO] npm test - 01I1s000000A29p	|Vlocity DataRaptor Staged Data	|vlocity_cmt__Stage__c	|true|
+[2021-07-09T16:46:40.965] [INFO] npm test - 01I1s000000A29q	|State Transition	|vlocity_cmt__StateTransition__c	|true|
+[2021-07-09T16:46:40.965] [INFO] npm test - 01I1s000000A29n	|Spec Template Attribute Mapping	|vlocity_cmt__SpecTemplateAttributeMapping__c	|true|
+[2021-07-09T16:46:40.965] [INFO] npm test - 01I1s000000A29o	|Spec Template Mapping	|vlocity_cmt__SpecTemplateMapping__c	|true|
+[2021-07-09T16:46:40.965] [INFO] npm test - 01I1s000000A29r	|Statement Line Item	|vlocity_cmt__StatementLineItem__c	|true|
+[2021-07-09T16:46:40.965] [INFO] npm test - 01I1s000000A29s	|Statement	|vlocity_cmt__Statement__c	|true|
+[2021-07-09T16:46:40.965] [INFO] npm test - 01I1s000000A29h	|Vlocity Rule	|vlocity_cmt__Rule__c	|true|
+[2021-07-09T16:46:40.965] [INFO] npm test - 01I1s000000A29f	|Screening Rule Property	|vlocity_cmt__RuleProperty__c	|true|
+[2021-07-09T16:46:40.965] [INFO] npm test - 01I1s000000A29g	|Vlocity Rule Variable	|vlocity_cmt__RuleVariable__c	|true|
+[2021-07-09T16:46:40.965] [INFO] npm test - 01I1s000000A29l	|Security Deposit	|vlocity_cmt__SecurityDeposit__c	|true|
+[2021-07-09T16:46:40.965] [INFO] npm test - Idea	|Idea	|Idea	|false|
+[2021-07-09T16:46:40.965] [INFO] npm test - 01I1s000000A29m	|Service Point	|vlocity_cmt__ServicePoint__c	|true|
+[2021-07-09T16:46:40.965] [INFO] npm test - 01I1s000000A29j	|Screening Rule Group	|vlocity_cmt__ScreeningRuleGroup__c	|true|
+[2021-07-09T16:46:40.966] [INFO] npm test - 01I1s000000A29k	|Screening Rule	|vlocity_cmt__ScreeningRule__c	|true|
+[2021-07-09T16:46:40.966] [INFO] npm test - 01I1s000000A29a	|Relationship Graph	|vlocity_cmt__RelationshipGraph__c	|true|
+[2021-07-09T16:46:40.966] [INFO] npm test - 01I1s000000A29d	|Vlocity Rule Assignment	|vlocity_cmt__RuleAssignment__c	|true|
+[2021-07-09T16:46:40.966] [INFO] npm test - Contract	|Contract	|Contract	|false|
+[2021-07-09T16:46:40.966] [INFO] npm test - 01I1s000000A29e	|Vlocity Rule Filter	|vlocity_cmt__RuleFilter__c	|true|
+[2021-07-09T16:46:40.966] [INFO] npm test - 01I1s000000A29c	|Vlocity Rule Action	|vlocity_cmt__RuleAction__c	|true|
+[2021-07-09T16:46:40.966] [INFO] npm test - 01I1s000000A26u	|Vlocity Entity Filter Condition	|vlocity_cmt__EntityFilterCondition__c	|true|
+[2021-07-09T16:46:40.966] [INFO] npm test - 01I1s000000A27V	|Product Attribute Interface	|vlocity_cmt__Interface_ProductAttribute__c	|true|
+[2021-07-09T16:46:40.966] [INFO] npm test - 01I1s000000A287	|Orchestration Dependency	|vlocity_cmt__OrchestrationDependency__c	|true|
+[2021-07-09T16:46:40.966] [INFO] npm test - 01I1s000000A26v	|Vlocity Entity Filter Member	|vlocity_cmt__EntityFilterMember__c	|true|
+[2021-07-09T16:46:40.966] [INFO] npm test - 01I1s000000A27W	|Inventory Item DecompositionRelationship	|vlocity_cmt__InventoryItemDecompositionRelationship__c	|true|
+[2021-07-09T16:46:40.966] [INFO] npm test - 01I1s000000A26s	|Vlocity OmniScript Element	|vlocity_cmt__Element__c	|true|
+[2021-07-09T16:46:40.966] [INFO] npm test - 01I1s000000A27T	|Interface_BillingInfo	|vlocity_cmt__Interface_BillingInfo__c	|true|
+[2021-07-09T16:46:40.966] [INFO] npm test - 01I1s000000A285	|Opportunity Pricing	|vlocity_cmt__OpportunityPriceAdjustment__c	|true|
+[2021-07-09T16:46:40.966] [INFO] npm test - 01I1s000000A26t	|Vlocity Entity Filter Condition Argument	|vlocity_cmt__EntityFilterConditionArgument__c	|true|
+[2021-07-09T16:46:40.966] [INFO] npm test - 01I1s000000A27U	|Vlocity DataRaptor Object Interface	|vlocity_cmt__Interface_DRGeneric__c	|true|
+[2021-07-09T16:46:40.966] [INFO] npm test - 01I1s000000A286	|Orchestration Dependency Definition	|vlocity_cmt__OrchestrationDependencyDefinition__c	|true|
+[2021-07-09T16:46:40.966] [INFO] npm test - 01I1s000000A26y	|Error Code	|vlocity_cmt__ErrorCode__c	|true|
+[2021-07-09T16:46:40.966] [INFO] npm test - 01I1s000000A27Z	|Jurisdiction	|vlocity_cmt__Jurisdiction__c	|true|
+[2021-07-09T16:46:40.966] [INFO] npm test - 01I1s000000A26z	|Error Code Namespace	|vlocity_cmt__Error_Code_Namespace__c	|true|
+[2021-07-09T16:46:40.966] [INFO] npm test - 01I1s000000A26w	|Vlocity Entity Filter	|vlocity_cmt__EntityFilter__c	|true|
+[2021-07-09T16:46:40.966] [INFO] npm test - 01I1s000000A27X	|Inventory Item	|vlocity_cmt__InventoryItem__c	|true|
+[2021-07-09T16:46:40.966] [INFO] npm test - 01I1s000000A289	|Orchestration Item Definition	|vlocity_cmt__OrchestrationItemDefinition__c	|true|
+[2021-07-09T16:46:40.966] [INFO] npm test - 01I1s000000A26x	|Error Code Namespace	|vlocity_cmt__ErrorCodeNamespace__c	|true|
+[2021-07-09T16:46:40.966] [INFO] npm test - 01I1s000000A27Y	|Item Implementation	|vlocity_cmt__ItemImplementation__c	|true|
+[2021-07-09T16:46:40.966] [INFO] npm test - 01I1s000000A26m	|Document Template Section Condition	|vlocity_cmt__DocumentTemplateSectionCondition__c	|true|
+[2021-07-09T16:46:40.966] [INFO] npm test - 01I1s000000A27N	|Household	|vlocity_cmt__Household__c	|true|
+[2021-07-09T16:46:40.966] [INFO] npm test - 01I1s000000A26n	|Document Template Section	|vlocity_cmt__DocumentTemplateSection__c	|true|
+[2021-07-09T16:46:40.966] [INFO] npm test - 01I1s000000A27O	|Inbound REST Interface	|vlocity_cmt__InboundRESTInterface__c	|true|
+[2021-07-09T16:46:40.966] [INFO] npm test - 01I1s000000A280	|Opportunity Discount Pricing	|vlocity_cmt__OpportunityDiscountPricing__c	|true|
+[2021-07-09T16:46:40.966] [INFO] npm test - ReportAnomalyEventStore	|Report Anomaly Event Store	|ReportAnomalyEventStore	|false|
+[2021-07-09T16:46:40.966] [INFO] npm test - 01I1s000000A26k	|Document Section	|vlocity_cmt__DocumentSection__c	|true|
+[2021-07-09T16:46:40.966] [INFO] npm test - 01I1s000000A27L	|Graph Clone	|vlocity_cmt__GraphClone__c	|true|
+[2021-07-09T16:46:40.966] [INFO] npm test - 01I1s000000A26l	|Document Template Element	|vlocity_cmt__DocumentTemplateElement__c	|true|
+[2021-07-09T16:46:40.966] [INFO] npm test - 01I1s000000A26q	|Document	|vlocity_cmt__Document__c	|true|
+[2021-07-09T16:46:40.966] [INFO] npm test - 01I1s000000A27R	|Interface Implementation Detail	|vlocity_cmt__InterfaceImplementationDetail__c	|true|
+[2021-07-09T16:46:40.966] [INFO] npm test - 01I1s000000A283	|Opportunity Product Relationship	|vlocity_cmt__OpportunityLineItemRelationship__c	|true|
+[2021-07-09T16:46:40.967] [INFO] npm test - 01I1s000000A26r	|Collections Activity	|vlocity_cmt__Dunning__c	|true|
+[2021-07-09T16:46:40.967] [INFO] npm test - 01I1s000000A27S	|Interface Implementation	|vlocity_cmt__InterfaceImplementation__c	|true|
+[2021-07-09T16:46:40.967] [INFO] npm test - 01I1s000000A284	|Opportunity Member	|vlocity_cmt__OpportunityMember__c	|true|
+[2021-07-09T16:46:40.967] [INFO] npm test - 01I1s000000A26o	|Document Template	|vlocity_cmt__DocumentTemplate__c	|true|
+[2021-07-09T16:46:40.967] [INFO] npm test - 01I1s000000A27P	|Integration Retry Policy	|vlocity_cmt__IntegrationRetryPolicy__c	|true|
+[2021-07-09T16:46:40.967] [INFO] npm test - 01I1s000000A281	|Opportunity Discount	|vlocity_cmt__OpportunityDiscount__c	|true|
+[2021-07-09T16:46:40.967] [INFO] npm test - Case	|Case	|Case	|false|
+[2021-07-09T16:46:40.967] [INFO] npm test - 01I1s000000A26p	|Document Token	|vlocity_cmt__DocumentToken__c	|true|
+[2021-07-09T16:46:40.967] [INFO] npm test - 01I1s000000A282	|Opportunity Group	|vlocity_cmt__OpportunityGroup__c	|true|
+[2021-07-09T16:46:40.967] [INFO] npm test - 01I1s000000A27G	|Generic DocuSign Document	|vlocity_cmt__GenericDocument__c	|true|
+[2021-07-09T16:46:40.967] [INFO] npm test - 01I1s000000A26c	|Vlocity Data Store	|vlocity_cmt__Datastore__c	|true|
+[2021-07-09T16:46:40.967] [INFO] npm test - 01I1s000000A27D	|Fulfilment Request	|vlocity_cmt__FulfilmentRequest__c	|true|
+[2021-07-09T16:46:40.967] [INFO] npm test - 01I1s000000A26d	|Decomposition Relationship	|vlocity_cmt__DecompositionRelationship__c	|true|
+[2021-07-09T16:46:40.967] [INFO] npm test - 01I1s000000A26j	|Document Clause	|vlocity_cmt__DocumentClause__c	|true|
+[2021-07-09T16:46:40.968] [INFO] npm test - 01I1s000000A27H	|Generic DocuSign Envelope	|vlocity_cmt__GenericEnvelope__c	|true|
+[2021-07-09T16:46:40.968] [INFO] npm test - 01I1s000000A27I	|Generic DocuSign Recipient	|vlocity_cmt__GenericRecipient__c	|true|
+[2021-07-09T16:46:40.968] [INFO] npm test - Lead	|Lead	|Lead	|false|
+[2021-07-09T16:46:40.968] [INFO] npm test - DuplicateRecordSet	|Duplicate Record Set	|DuplicateRecordSet	|false|
+[2021-07-09T16:46:40.968] [INFO] npm test - 01I1s000000A25z	|Context Action	|vlocity_cmt__ContextAction__c	|true|
+[2021-07-09T16:46:40.968] [INFO] npm test - 01I1s000000A27B	|FRL Source Bundle Relationship	|vlocity_cmt__FulfilmentRequestLineSourceRootOrderItem__c	|true|
+[2021-07-09T16:46:40.968] [INFO] npm test - 01I1s000000A27C	|Fulfilment Request Line	|vlocity_cmt__FulfilmentRequestLine__c	|true|
+[2021-07-09T16:46:40.968] [INFO] npm test - 01I1s000000A27A	|FulfilmentRequestLineRelationship	|vlocity_cmt__FulfilmentRequestLineRelationship__c	|true|
+[2021-07-09T16:46:40.968] [INFO] npm test - 01I1s000000A27v	|Operating Hours and Exceptions	|vlocity_cmt__OperatingHoursEntry__c	|true|
+[2021-07-09T16:46:40.968] [INFO] npm test - 01I1s000000A298	|Product Relationship	|vlocity_cmt__ProductRelationship__c	|true|
+[2021-07-09T16:46:40.968] [INFO] npm test - 01I1s000000A27w	|Operating Hours	|vlocity_cmt__OperatingHours__c	|true|
+[2021-07-09T16:46:40.968] [INFO] npm test - 01I1s000000A28X	|Vlocity Outbound Configuration	|vlocity_cmt__OutboundConfiguration__c	|true|
+[2021-07-09T16:46:40.968] [INFO] npm test - 01I1s000000A299	|Product Template	|vlocity_cmt__ProductTemplate__c	|true|
+[2021-07-09T16:46:40.968] [INFO] npm test - 01I1s000000A27t	|Vlocity OmniScript	|vlocity_cmt__OmniScript__c	|true|
+[2021-07-09T16:46:40.968] [INFO] npm test - 01I1s000000A28U	|Order Product Rollup	|vlocity_cmt__OrderProductRollup__c	|true|
+[2021-07-09T16:46:40.968] [INFO] npm test - 01I1s000000A27u	|Omni User Session	|vlocity_cmt__OmniUserSession__c	|true|
+[2021-07-09T16:46:40.969] [INFO] npm test - 01I1s000000A28V	|Order Relationship	|vlocity_cmt__OrderRelationship__c	|true|
+[2021-07-09T16:46:40.969] [INFO] npm test - 01I1s000000A297	|Product Relationship Type	|vlocity_cmt__ProductRelationshipType__c	|true|
+[2021-07-09T16:46:40.969] [INFO] npm test - 01I1s000000A27z	|Opportunity Discount Item	|vlocity_cmt__OpportunityDiscountItem__c	|true|
+[2021-07-09T16:46:40.969] [INFO] npm test - 01I1s000000A27x	|Opportunity Applied Promotion Item	|vlocity_cmt__OpportunityAppliedPromotionItem__c	|true|
+[2021-07-09T16:46:40.969] [INFO] npm test - 01I1s000000A28Y	|Product Override Definition	|vlocity_cmt__OverrideDefinition__c	|true|
+[2021-07-09T16:46:40.969] [INFO] npm test - 01I1s000000A27y	|Opportunity Applied Promotion	|vlocity_cmt__OpportunityAppliedPromotion__c	|true|
+[2021-07-09T16:46:40.969] [INFO] npm test - 01I1s000000A27n	|Offer Migration Component Mapping	|vlocity_cmt__OfferMigrationComponentMapping__c	|true|
+[2021-07-09T16:46:40.969] [INFO] npm test - 01I1s000000A290	|Pricing Variable	|vlocity_cmt__PricingVariable__c	|true|
+[2021-07-09T16:46:40.969] [INFO] npm test - 01I1s000000A27o	|Offer Migration Plan	|vlocity_cmt__OfferMigrationPlan__c	|true|
+[2021-07-09T16:46:40.969] [INFO] npm test - 01I1s000000A28P	|Order Group	|vlocity_cmt__OrderGroup__c	|true|
+[2021-07-09T16:46:40.969] [INFO] npm test - 01I1s000000A291	|ProductAttribXN	|vlocity_cmt__ProductAttribXN__c	|true|
+[2021-07-09T16:46:40.969] [INFO] npm test - 01I1s000000A27l	|Vlocity Object Rule Assignment	|vlocity_cmt__ObjectRuleAssignment__c	|true|
+[2021-07-09T16:46:40.969] [INFO] npm test - 01I1s000000A28M	|Order Discount Pricing	|vlocity_cmt__OrderDiscountPricing__c	|true|
+[2021-07-09T16:46:40.970] [INFO] npm test - 01I1s000000A27m	|Vlocity Object Section	|vlocity_cmt__ObjectSection__c	|true|
+[2021-07-09T16:46:40.970] [INFO] npm test - 01I1s000000A28N	|Order Discount	|vlocity_cmt__OrderDiscount__c	|true|
+[2021-07-09T16:46:40.970] [INFO] npm test - 01I1s000000A27r	|Vlocity OmniScript Compiled Definition	|vlocity_cmt__OmniScriptDefinition__c	|true|
+[2021-07-09T16:46:40.970] [INFO] npm test - 01I1s000000A28S	|Order Member	|vlocity_cmt__OrderMember__c	|true|
+[2021-07-09T16:46:40.970] [INFO] npm test - 01I1s000000A294	|Product Configuration Procedure	|vlocity_cmt__ProductConfigurationProcedure__c	|true|
+[2021-07-09T16:46:40.970] [INFO] npm test - 01I1s000000A27s	|Saved OmniScript	|vlocity_cmt__OmniScriptInstance__c	|true|
+[2021-07-09T16:46:40.970] [INFO] npm test - 01I1s000000A28T	|Order Pricing	|vlocity_cmt__OrderPriceAdjustment__c	|true|
+[2021-07-09T16:46:40.970] [INFO] npm test - 01I1s000000A295	|Product Not Eligible	|vlocity_cmt__ProductEligibility__c	|true|
+[2021-07-09T16:46:40.970] [INFO] npm test - 01I1s000000A27p	|Offer Pricing Component	|vlocity_cmt__OfferPricingComponent__c	|true|
+[2021-07-09T16:46:40.970] [INFO] npm test - 01I1s000000A28Q	|Order Item Pricing Adjustment	|vlocity_cmt__OrderItemPriceAdjustment__c	|true|
+[2021-07-09T16:46:40.970] [INFO] npm test - 01I1s000000A292	|Product Not Available	|vlocity_cmt__ProductAvailability__c	|true|
+[2021-07-09T16:46:40.970] [INFO] npm test - 01I1s000000A27q	|Vlocity Offering Procedure	|vlocity_cmt__OfferingProcedure__c	|true|
+[2021-07-09T16:46:40.970] [INFO] npm test - 01I1s000000A28R	|Order Product Relationship	|vlocity_cmt__OrderItemRelationship__c	|true|
+[2021-07-09T16:46:40.970] [INFO] npm test - 01I1s000000A293	|Product Child Item	|vlocity_cmt__ProductChildItem__c	|true|
+[2021-07-09T16:46:40.970] [INFO] npm test - 01I1s000000A27f	|Object Applied Result	|vlocity_cmt__ObjectAppliedResult__c	|true|
+[2021-07-09T16:46:40.970] [INFO] npm test - 01I1s000000A28G	|Orchestration Scenario	|vlocity_cmt__OrchestrationScenario__c	|true|
+[2021-07-09T16:46:40.970] [INFO] npm test - 01I1s000000A27g	|Vlocity Object or Object Type	|vlocity_cmt__ObjectClass__c	|true|
+[2021-07-09T16:46:40.971] [INFO] npm test - 01I1s000000A28H	|Orchestration Scheduler Implementation	|vlocity_cmt__OrchestrationSchedulerImplementation__c	|true|
+[2021-07-09T16:46:40.971] [INFO] npm test - ProcessException	|Process Exception	|ProcessException	|false|
+[2021-07-09T16:46:40.971] [INFO] npm test - 01I1s000000A27d	|Manual Queue	|vlocity_cmt__ManualQueue__c	|true|
+[2021-07-09T16:46:40.971] [INFO] npm test - 01I1s000000A28E	|Orchestration Queue Assignment Rule	|vlocity_cmt__OrchestrationQueueAssignmentRule__c	|true|
+[2021-07-09T16:46:40.971] [INFO] npm test - 01I1s000000A28F	|Orchestration Queue	|vlocity_cmt__OrchestrationQueue__c	|true|
+[2021-07-09T16:46:40.971] [INFO] npm test - 01I1s000000A27j	|Vlocity Object Field Attribute	|vlocity_cmt__ObjectFieldAttribute__c	|true|
+[2021-07-09T16:46:40.971] [INFO] npm test - 01I1s000000A27k	|Vlocity Object Layout	|vlocity_cmt__ObjectLayout__c	|true|
+[2021-07-09T16:46:40.971] [INFO] npm test - 01I1s000000A28L	|Order Discount Item	|vlocity_cmt__OrderDiscountItem__c	|true|
+[2021-07-09T16:46:40.971] [INFO] npm test - CommSubscriptionChannelType	|Communication Subscription Channel Type	|CommSubscriptionChannelType	|false|
+[2021-07-09T16:46:40.971] [INFO] npm test - 01I1s000000A27h	|Vlocity Object Section Element	|vlocity_cmt__ObjectElement__c	|true|
+[2021-07-09T16:46:40.971] [INFO] npm test - 01I1s000000A28I	|Order Applied Promotion Affected Item	|vlocity_cmt__OrderAppliedPromotionItem__c	|true|
+[2021-07-09T16:46:40.971] [INFO] npm test - OrderItem	|Order Product	|OrderItem	|false|
+[2021-07-09T16:46:40.971] [INFO] npm test - 01I1s000000A27i	|Vlocity Object Facet	|vlocity_cmt__ObjectFacet__c	|true|
+[2021-07-09T16:46:40.972] [INFO] npm test - 01I1s000000A28J	|Order Applied Promotion	|vlocity_cmt__OrderAppliedPromotion__c	|true|
+[2021-07-09T16:46:40.972] [INFO] npm test - 01I1s000000A27b	|Line of Business	|vlocity_cmt__LineOfBusiness__c	|true|
+[2021-07-09T16:46:40.972] [INFO] npm test - 01I1s000000A28C	|Orchestration Plan Definition	|vlocity_cmt__OrchestrationPlanDefinition__c	|true|
+[2021-07-09T16:46:40.972] [INFO] npm test - 01I1s000000A27c	|Manual Queue Member	|vlocity_cmt__ManualQueueMember__c	|true|
+[2021-07-09T16:46:40.972] [INFO] npm test - 01I1s000000A28D	|Orchestration Plan	|vlocity_cmt__OrchestrationPlan__c	|true|
+[2021-07-09T16:46:40.972] [INFO] npm test - 01I1s000000A28A	|Orchestration Item Source	|vlocity_cmt__OrchestrationItemSource__c	|true|
+[2021-07-09T16:46:40.972] [INFO] npm test - 01I1s000000A27a	|Large Data Store	|vlocity_cmt__LargeDataStore__c	|true|
+[2021-07-09T16:46:40.973] [INFO] npm test - 01I1s000000A28B	|Orchestration Item	|vlocity_cmt__OrchestrationItem__c	|true|
+[2021-07-09T16:46:40.973] [INFO] npm test - VideoCall	|Video Call	|VideoCall	|false|
+[2021-07-09T16:46:40.973] [INFO] npm test - SocialPersona	|Social Persona	|SocialPersona	|false|
+[2021-07-09T16:46:40.973] [INFO] npm test - Order	|Order	|Order	|false|
+[2021-07-09T16:46:40.973] [INFO] npm test - EmailMessage	|Email Message	|EmailMessage	|false|
+[2021-07-09T16:46:40.973] [INFO] npm test - AuthorizationForm	|Authorization Form	|AuthorizationForm	|false|
+[2021-07-09T16:46:40.973] [INFO] npm test - LocationTrustMeasure	|Location Trust Measure	|LocationTrustMeasure	|false|
+[2021-07-09T16:46:40.973] [INFO] npm test - DataUsePurpose	|Data Use Purpose	|DataUsePurpose	|false|
+[2021-07-09T16:46:40.973] [INFO] npm test - User	|User	|User	|false|
+[2021-07-09T16:46:40.973] [INFO] npm test - Macro	|Macro	|Macro	|false|
+[2021-07-09T16:46:40.973] [INFO] npm test - CommSubscriptionConsent	|Communication Subscription Consent	|CommSubscriptionConsent	|false|
+[2021-07-09T16:46:40.973] [INFO] npm test - OpportunityContactRole	|Opportunity Contact Role	|OpportunityContactRole	|false|
+[2021-07-09T16:46:40.973] [INFO] npm test - Contact	|Contact	|Contact	|false|
+[2021-07-09T16:48:30.942] [INFO] npm test - this no error
+[2021-07-09T16:48:31.201] [INFO] npm test - ID	|Label	|Table Name	|Cust|
+[2021-07-09T16:48:31.202] [INFO] npm test - 01I1s000000A2BA	|Vlocity State Transition	|vlocity_cmt__VlocityStateTransition__c	|true|
+[2021-07-09T16:48:31.202] [INFO] npm test - 01I1s000000A2BB	|Vlocity State	|vlocity_cmt__VlocityState__c	|true|
+[2021-07-09T16:48:31.202] [INFO] npm test - 01I1s000000A2BE	|Vlocity Tracking Entry	|vlocity_cmt__VlocityTrackingEntry__c	|true|
+[2021-07-09T16:48:31.203] [INFO] npm test - 01I1s000000A2BC	|Vlocity System Log	|vlocity_cmt__VlocitySystemLog__c	|true|
+[2021-07-09T16:48:31.203] [INFO] npm test - 01I1s000000A2BD	|Vlocity Tracking Component	|vlocity_cmt__VlocityTrackingComponent__c	|true|
+[2021-07-09T16:48:31.203] [INFO] npm test - 01I1s000000A2B9	|Vlocity State Transition Rule	|vlocity_cmt__VlocityStateTransitionRule__c	|true|
+[2021-07-09T16:48:31.203] [INFO] npm test - 01I1s000000A2B7	|Vlocity State Model Version	|vlocity_cmt__VlocityStateModelVersion__c	|true|
+[2021-07-09T16:48:31.203] [INFO] npm test - 01I1s000000A2B8	|Vlocity State Model	|vlocity_cmt__VlocityStateModel__c	|true|
+[2021-07-09T16:48:31.203] [INFO] npm test - 01I1s000000A2AP	|Vlocity UI Facet	|vlocity_cmt__UIFacet__c	|true|
+[2021-07-09T16:48:31.203] [INFO] npm test - 01I1s000000A2AQ	|Vlocity UI Section	|vlocity_cmt__UISection__c	|true|
+[2021-07-09T16:48:31.204] [INFO] npm test - 01I1s000000A2B5	|Vlocity Interaction Launcher Action	|vlocity_cmt__VlocitySearchWidgetActionsSetup__c	|true|
+[2021-07-09T16:48:31.204] [INFO] npm test - 01I1s000000A2B6	|Vlocity Interaction Launcher	|vlocity_cmt__VlocitySearchWidgetSetup__c	|true|
+[2021-07-09T16:48:31.204] [INFO] npm test - 01I1s000000A2AS	|User Calendar	|vlocity_cmt__UserCalendar__c	|true|
+[2021-07-09T16:48:31.204] [INFO] npm test - 01I1s000000A2B4	|Vlocity Scheduled Job	|vlocity_cmt__VlocityScheduledJob__c	|true|
+[2021-07-09T16:48:31.204] [INFO] npm test - 01I1s000000A2Ay	|Vlocity Function Argument	|vlocity_cmt__VlocityFunctionArgument__c	|true|
+[2021-07-09T16:48:31.204] [INFO] npm test - 01I1s000000A2Av	|Vlocity DocuSign Template	|vlocity_cmt__VlocityDocuSignTemplate__c	|true|
+[2021-07-09T16:48:31.204] [INFO] npm test - 01I1s000000A2Aw	|Vlocity Error Log Entry	|vlocity_cmt__VlocityErrorLogEntry__c	|true|
+[2021-07-09T16:48:31.205] [INFO] npm test - PricebookEntry	|Price Book Entry	|PricebookEntry	|false|
+[2021-07-09T16:48:31.205] [INFO] npm test - 01I1s000000A2Az	|Vlocity Function	|vlocity_cmt__VlocityFunction__c	|true|
+[2021-07-09T16:48:31.206] [INFO] npm test - 01I1s000000A2At	|Vlocity DataPack Object	|vlocity_cmt__VlocityDataPack__c	|true|
+[2021-07-09T16:48:31.206] [INFO] npm test - 01I1s000000A2Au	|Vlocity DocuSign Branding	|vlocity_cmt__VlocityDocuSignBranding__c	|true|
+[2021-07-09T16:48:31.207] [INFO] npm test - 01I1s000000A2Ah	|Vlocity API Metadata	|vlocity_cmt__VlocityAPIMetadata__c	|true|
+[2021-07-09T16:48:31.207] [INFO] npm test - 01I1s000000A2BI	|Vlocity UI Template	|vlocity_cmt__VlocityUITemplate__c	|true|
+[2021-07-09T16:48:31.207] [INFO] npm test - ContactPointPhone	|Contact Point Phone	|ContactPointPhone	|false|
+[2021-07-09T16:48:31.208] [INFO] npm test - SessionHijackingEventStore	|Session Hijacking Event Store	|SessionHijackingEventStore	|false|
+[2021-07-09T16:48:31.208] [INFO] npm test - 01I1s000000A2Ai	|Vlocity Action	|vlocity_cmt__VlocityAction__c	|true|
+[2021-07-09T16:48:31.208] [INFO] npm test - 01I1s000000A2BJ	|Vlocity Web Tracking Configuration	|vlocity_cmt__VlocityWebTrackingConfiguration__c	|true|
+[2021-07-09T16:48:31.208] [INFO] npm test - 01I1s000000A2BG	|Vlocity Tracking Group	|vlocity_cmt__VlocityTrackingGroup__c	|true|
+[2021-07-09T16:48:31.208] [INFO] npm test - 01I1s000000A2BH	|Vlocity UI Layout	|vlocity_cmt__VlocityUILayout__c	|true|
+[2021-07-09T16:48:31.208] [INFO] npm test - 01I1s000000A2Al	|Vlocity Contract Service Log	|vlocity_cmt__VlocityContractServiceLog__c	|true|
+[2021-07-09T16:48:31.209] [INFO] npm test - 01I1s000000A2BM	|Vlocity Intelligence Machine	|vlocity_cmt__VqMachine__c	|true|
+[2021-07-09T16:48:31.209] [INFO] npm test - 01I1s000000A2BN	|Vlocity Intelligence Resource	|vlocity_cmt__VqResource__c	|true|
+[2021-07-09T16:48:31.209] [INFO] npm test - 01I1s000000A2Aj	|Vlocity Attachment	|vlocity_cmt__VlocityAttachment__c	|true|
+[2021-07-09T16:48:31.209] [INFO] npm test - 01I1s000000A2BK	|Vlocity Web Tracking Event Type	|vlocity_cmt__VlocityWebTrackingEventType__c	|true|
+[2021-07-09T16:48:31.209] [INFO] npm test - 01I1s000000A2Ak	|Vlocity Card	|vlocity_cmt__VlocityCard__c	|true|
+[2021-07-09T16:48:31.209] [INFO] npm test - 01I1s000000A2BL	|Vlocity Intelligence Machine Resource	|vlocity_cmt__VqMachineResource__c	|true|
+[2021-07-09T16:48:31.209] [INFO] npm test - ProfileSkill	|Skill	|ProfileSkill	|false|
+[2021-07-09T16:48:31.209] [INFO] npm test - ServiceResource	|Service Resource	|ServiceResource	|false|
+[2021-07-09T16:48:31.209] [INFO] npm test - QuickText	|Quick Text	|QuickText	|false|
+[2021-07-09T16:48:31.209] [INFO] npm test - 01I1s000000A2AA	|Thor Orchestration Queue	|vlocity_cmt__ThorOrchestrationQueue__c	|true|
+[2021-07-09T16:48:31.210] [INFO] npm test - DataUseLegalBasis	|Data Use Legal Basis	|DataUseLegalBasis	|false|
+[2021-07-09T16:48:31.210] [INFO] npm test - 01I1s000000A2AB	|Time Plan	|vlocity_cmt__TimePlan__c	|true|
+[2021-07-09T16:48:31.210] [INFO] npm test - 01I1s000000A2AC	|Time Policy	|vlocity_cmt__TimePolicy__c	|true|
+[2021-07-09T16:48:31.210] [INFO] npm test - 01I1s000000A2A9	|Test Result	|vlocity_cmt__TestResult__c	|true|
+[2021-07-09T16:48:31.210] [INFO] npm test - 01I1s000000A2A0	|Sync Delta Snapshot	|vlocity_cmt__SyncDeltaSnapshot__c	|true|
+[2021-07-09T16:48:31.210] [INFO] npm test - 01I1s000000A2A1	|System Interface	|vlocity_cmt__SystemInterface__c	|true|
+[2021-07-09T16:48:31.210] [INFO] npm test - CommSubscriptionTiming	|Communication Subscription Timing	|CommSubscriptionTiming	|false|
+[2021-07-09T16:48:31.210] [INFO] npm test - 01I1s000000A2A2	|System	|vlocity_cmt__System__c	|true|
+[2021-07-09T16:48:31.210] [INFO] npm test - WorkOrderLineItem	|Work Order Line Item	|WorkOrderLineItem	|false|
+[2021-07-09T16:48:31.211] [INFO] npm test - LiveAgentSession	|Chat Session	|LiveAgentSession	|false|
+[2021-07-09T16:48:31.211] [INFO] npm test - ContactRequest	|Contact Request	|ContactRequest	|false|
+[2021-07-09T16:48:31.211] [INFO] npm test - CommSubscription	|Communication Subscription	|CommSubscription	|false|
+[2021-07-09T16:48:31.211] [INFO] npm test - Opportunity	|Opportunity	|Opportunity	|false|
+[2021-07-09T16:48:31.211] [INFO] npm test - LiveChatTranscript	|Chat Transcript	|LiveChatTranscript	|false|
+[2021-07-09T16:48:31.211] [INFO] npm test - OpportunityLineItemSchedule	|Line Item Schedule	|OpportunityLineItemSchedule	|false|
+[2021-07-09T16:48:31.211] [INFO] npm test - EngagementChannelType	|Engagement Channel Type	|EngagementChannelType	|false|
+[2021-07-09T16:48:31.211] [INFO] npm test - Image	|Image	|Image	|false|
+[2021-07-09T16:48:31.211] [INFO] npm test - SkillRequirement	|Skill Requirement	|SkillRequirement	|false|
+[2021-07-09T16:48:31.211] [INFO] npm test - WorkOrder	|Work Order	|WorkOrder	|false|
+[2021-07-09T16:48:31.211] [INFO] npm test - Asset	|Asset	|Asset	|false|
+[2021-07-09T16:48:31.211] [INFO] npm test - CampaignMember	|Campaign Member	|CampaignMember	|false|
+[2021-07-09T16:48:31.211] [INFO] npm test - Pricebook2	|Price Book	|Pricebook2	|false|
+[2021-07-09T16:48:31.211] [INFO] npm test - ContactPointAddress	|Contact Point Address	|ContactPointAddress	|false|
+[2021-07-09T16:48:31.211] [INFO] npm test - Recommendation	|Recommendation	|Recommendation	|false|
+[2021-07-09T16:48:31.211] [INFO] npm test - ServiceResourceSkill	|Service Resource Skill	|ServiceResourceSkill	|false|
+[2021-07-09T16:48:31.211] [INFO] npm test - ContactPointEmail	|Contact Point Email	|ContactPointEmail	|false|
+[2021-07-09T16:48:31.211] [INFO] npm test - Product2	|Product	|Product2	|false|
+[2021-07-09T16:48:31.211] [INFO] npm test - PartyConsent	|Party Consent	|PartyConsent	|false|
+[2021-07-09T16:48:31.211] [INFO] npm test - ProfileSkillEndorsement	|Endorsement	|ProfileSkillEndorsement	|false|
+[2021-07-09T16:48:31.211] [INFO] npm test - AuthorizationFormText	|Authorization Form Text	|AuthorizationFormText	|false|
+[2021-07-09T16:48:31.211] [INFO] npm test - Solution	|Solution	|Solution	|false|
+[2021-07-09T16:48:31.212] [INFO] npm test - AuthorizationFormDataUse	|Authorization Form Data Use	|AuthorizationFormDataUse	|false|
+[2021-07-09T16:48:31.212] [INFO] npm test - 01I1s000000A540	|Gateway	|rsplus__GateWay__c	|true|
+[2021-07-09T16:48:31.212] [INFO] npm test - Task	|Task	|Task	|false|
+[2021-07-09T16:48:31.212] [INFO] npm test - 01I1s000000A544	|SMS Inbox (legacy)	|rsplus__Inbound_SMS__c	|true|
+[2021-07-09T16:48:31.212] [INFO] npm test - 01I1s000000A542	|Gateway Status	|rsplus__Gateway_Status__c	|true|
+[2021-07-09T16:48:31.212] [INFO] npm test - 01I2w000000OFlU	|Badge	|trailheadapp__Badge__c	|true|
+[2021-07-09T16:48:31.212] [INFO] npm test - 01I2w000000OFlW	|Debug Log	|trailheadapp__Debug_Log__c	|true|
+[2021-07-09T16:48:31.212] [INFO] npm test - 01I1s000000ABmk	|LiveChatSession	|rsplus__LiveChatSession__c	|true|
+[2021-07-09T16:48:31.212] [INFO] npm test - 01I2w000000OFlY	|Trail	|trailheadapp__Trail__c	|true|
+[2021-07-09T16:48:31.212] [INFO] npm test - 01I2w000000OFlZ	|Trailhead User Data	|trailheadapp__Trailhead_User_Data__c	|true|
+[2021-07-09T16:48:31.212] [INFO] npm test - 01I2w000000OFld	|User Trailmix	|trailheadapp__User_Trailmix__c	|true|
+[2021-07-09T16:48:31.212] [INFO] npm test - 01I2w000000OFla	|Trailmix Assignment	|trailheadapp__Trailmix_Assignment__c	|true|
+[2021-07-09T16:48:31.212] [INFO] npm test - 01I2w000000OFlc	|User Badge	|trailheadapp__User_Badge__c	|true|
+[2021-07-09T16:48:31.212] [INFO] npm test - 01I2w000000OFlb	|Trailmix	|trailheadapp__Trailmix__c	|true|
+[2021-07-09T16:48:31.212] [INFO] npm test - 01I1s000000A54Q	|Chat Dashboard	|rsplus__ValueText_Helper__c	|true|
+[2021-07-09T16:48:31.212] [INFO] npm test - 01I1s000000A53m	|Bot Form	|rsplus__Bot_Form__c	|true|
+[2021-07-09T16:48:31.212] [INFO] npm test - 01I1s000000A53n	|Bot	|rsplus__Bot__c	|true|
+[2021-07-09T16:48:31.212] [INFO] npm test - 01I1s000000A54O	|SMS VTexception	|rsplus__VTexception__c	|true|
+[2021-07-09T16:48:31.212] [INFO] npm test - 01I1s000000A53s	|Call Legs	|rsplus__Call_Legs__c	|true|
+[2021-07-09T16:48:31.212] [INFO] npm test - 01I1s000000A53q	|Call Center User	|rsplus__Call_Center_User__c	|true|
+[2021-07-09T16:48:31.212] [INFO] npm test - 01I1s000000A54R	|VtDefaultOptions	|rsplus__VtDefaultOptions__c	|true|
+[2021-07-09T16:48:31.212] [INFO] npm test - 01I1s000000A53r	|Call History	|rsplus__Call_History__c	|true|
+[2021-07-09T16:48:31.212] [INFO] npm test - 01I1s000000A54H	|Text Schedules & Follow Up	|rsplus__SMS_Scheduler__c	|true|
+[2021-07-09T16:48:31.212] [INFO] npm test - UserProvisioningRequest	|User Provisioning Request	|UserProvisioningRequest	|false|
+[2021-07-09T16:48:31.213] [INFO] npm test - 01I1s000000A54I	|Workflow Schedules & Follow Ups	|rsplus__SMS_Workflow_schedule__c	|true|
+[2021-07-09T16:48:31.213] [INFO] npm test - 01I1s000000A54F	|SMS Inbox Actions (legacy)	|rsplus__SMS_Inbox_Actions__c	|true|
+[2021-07-09T16:48:31.213] [INFO] npm test - 01I1s000000A54G	|ValueText Notification	|rsplus__SMS_Notification__c	|true|
+[2021-07-09T16:48:31.213] [INFO] npm test - 01I1s000000A53k	|Bot Element Dynamic Options	|rsplus__Bot_Element_Dynamic_Options__c	|true|
+[2021-07-09T16:48:31.213] [INFO] npm test - ApiAnomalyEventStore	|API Anomaly Event Store	|ApiAnomalyEventStore	|false|
+[2021-07-09T16:48:31.213] [INFO] npm test - 01I1s000000A53l	|Bot Element	|rsplus__Bot_Element__c	|true|
+[2021-07-09T16:48:31.213] [INFO] npm test - 01I1s000000A54M	|MMS	|rsplus__VT_MMS__c	|true|
+[2021-07-09T16:48:31.213] [INFO] npm test - AssociatedLocation	|Associated Location	|AssociatedLocation	|false|
+[2021-07-09T16:48:31.213] [INFO] npm test - 01I1s000000A54J	|Sender ID	|rsplus__Sender_Id_Registration__c	|true|
+[2021-07-09T16:48:31.213] [INFO] npm test - 01I1s000000A53j	|Access Level	|rsplus__Access_Level__c	|true|
+[2021-07-09T16:48:31.213] [INFO] npm test - 01I1s000000A54K	|Short Link	|rsplus__Short_Link__c	|true|
+[2021-07-09T16:48:31.213] [INFO] npm test - 01I1s000000A54A	|Phone Numbers	|rsplus__Phone_Numbers__c	|true|
+[2021-07-09T16:48:31.213] [INFO] npm test - 01I1s000000A54D	|Text Campaign Member	|rsplus__SMS_Campaign_Member__c	|true|
+[2021-07-09T16:48:31.213] [INFO] npm test - 01I1s000000A54E	|Text Campaign	|rsplus__SMS_Campaign__c	|true|
+[2021-07-09T16:48:31.213] [INFO] npm test - 01I1s000000A54B	|Dynamic Templates	|rsplus__RSP_Templates__c	|true|
+[2021-07-09T16:48:31.213] [INFO] npm test - 01I1s000000A54C	|Message Bucket	|rsplus__SMS_Bucket__c	|true|
+[2021-07-09T16:48:31.213] [INFO] npm test - 01I1s000000A549	|Custom Phone Fields	|rsplus__Phone_Field_Settings__c	|true|
+[2021-07-09T16:48:31.213] [INFO] npm test - 01I1s000000A547	|OTP	|rsplus__OTP__c	|true|
+[2021-07-09T16:48:31.213] [INFO] npm test - CredentialStuffingEventStore	|Credential Stuffing Event Store	|CredentialStuffingEventStore	|false|
+[2021-07-09T16:48:31.213] [INFO] npm test - 01I1s000000A2L7	|Upgrade Step	|UpgradeStep__c	|true|
+[2021-07-09T16:48:31.213] [INFO] npm test - 01I1s000000A2L6	|Upgrade Plan	|UpgradePlan__c	|true|
+[2021-07-09T16:48:31.213] [INFO] npm test - LiveChatVisitor	|Chat Visitor	|LiveChatVisitor	|false|
+[2021-07-09T16:48:31.213] [INFO] npm test - Activity	|Activity	|Activity	|false|
+[2021-07-09T16:48:31.214] [INFO] npm test - ProfileSkillUser	|Skill User	|ProfileSkillUser	|false|
+[2021-07-09T16:48:31.214] [INFO] npm test - LinkedArticle	|Linked Article	|LinkedArticle	|false|
+[2021-07-09T16:48:31.214] [INFO] npm test - SocialPost	|Social Post	|SocialPost	|false|
+[2021-07-09T16:48:31.214] [INFO] npm test - 01I1s000000A53w	|Channel Open Id	|rsplus__Channel_Open_Ids__c	|true|
+[2021-07-09T16:48:31.214] [INFO] npm test - 01I1s000000A54Y	|Legacy Object	|rsplus__plate__c	|true|
+[2021-07-09T16:48:31.214] [INFO] npm test - 01I1s000000A53u	|Channel Group Member	|rsplus__Channel_Group_Member__c	|true|
+[2021-07-09T16:48:31.214] [INFO] npm test - 01I1s000000A53v	|Channel Group	|rsplus__Channel_Group__c	|true|
+[2021-07-09T16:48:31.214] [INFO] npm test - 01I1s000000A54W	|Opted Numbers	|rsplus__Vt_Opted_Numbers__c	|true|
+[2021-07-09T16:48:31.214] [INFO] npm test - 01I1s000000A53z	|Donation	|rsplus__Donation__c	|true|
+[2021-07-09T16:48:31.214] [INFO] npm test - AssetRelationship	|Asset Relationship	|AssetRelationship	|false|
+[2021-07-09T16:48:31.214] [INFO] npm test - QuoteLineItem	|Quote Line Item	|QuoteLineItem	|false|
+[2021-07-09T16:48:31.214] [INFO] npm test - Event	|Event	|Event	|false|
+[2021-07-09T16:48:31.214] [INFO] npm test - 01I1s000000A25T	|CachedAPIChange	|vlocity_cmt__CachedAPIChange__c	|true|
+[2021-07-09T16:48:31.214] [INFO] npm test - 01I1s000000A265	|Context Scope	|vlocity_cmt__ContextScope__c	|true|
+[2021-07-09T16:48:31.214] [INFO] npm test - 01I1s000000A25U	|CachedAPIMigrate	|vlocity_cmt__CachedAPIMigrate__c	|true|
+[2021-07-09T16:48:31.214] [INFO] npm test - 01I1s000000A25R	|Store Location	|vlocity_cmt__BusinessSite__c	|true|
+[2021-07-09T16:48:31.214] [INFO] npm test - 01I1s000000A263	|Vlocity Context Rule	|vlocity_cmt__ContextRule__c	|true|
+[2021-07-09T16:48:31.214] [INFO] npm test - 01I1s000000A25S	|CachedAPIChangeEntry	|vlocity_cmt__CachedAPIChangeEntry__c	|true|
+[2021-07-09T16:48:31.214] [INFO] npm test - 01I1s000000A264	|Vlocity Context Ruleset	|vlocity_cmt__ContextRuleset__c	|true|
+[2021-07-09T16:48:31.214] [INFO] npm test - AuthorizationFormConsent	|Authorization Form Consent	|AuthorizationFormConsent	|false|
+[2021-07-09T16:48:31.214] [INFO] npm test - 01I1s000000A25X	|Cached Data Set	|vlocity_cmt__CachedDataSet__c	|true|
+[2021-07-09T16:48:31.214] [INFO] npm test - 01I1s000000A269	|Contract Group	|vlocity_cmt__ContractGroup__c	|true|
+[2021-07-09T16:48:31.214] [INFO] npm test - OpportunityLineItem	|Opportunity Product	|OpportunityLineItem	|false|
+[2021-07-09T16:48:31.214] [INFO] npm test - 01I1s000000A25Y	|Cached Filterable Attribute	|vlocity_cmt__CachedFilterableAttribute__c	|true|
+[2021-07-09T16:48:31.214] [INFO] npm test - 01I1s000000A25V	|CachedAPIResponseOffers	|vlocity_cmt__CachedAPIResponseOffers__c	|true|
+[2021-07-09T16:48:31.215] [INFO] npm test - 01I1s000000A267	|Contract Document Element	|vlocity_cmt__ContractDocumentCollection__c	|true|
+[2021-07-09T16:48:31.215] [INFO] npm test - 01I1s000000A25W	|CachedAPIResponse	|vlocity_cmt__CachedAPIResponse__c	|true|
+[2021-07-09T16:48:31.215] [INFO] npm test - 01I1s000000A268	|Contract Document Envelope	|vlocity_cmt__ContractEnvelope__c	|true|
+[2021-07-09T16:48:31.215] [INFO] npm test - 01I1s000000A25L	|Attribute Assignment	|vlocity_cmt__AttributeAssignment__c	|true|
+[2021-07-09T16:48:31.215] [INFO] npm test - 01I1s000000A25M	|Vlocity Attribute Binding	|vlocity_cmt__AttributeBinding__c	|true|
+[2021-07-09T16:48:31.215] [INFO] npm test - 01I1s000000A25J	|Attribute Assignment Export	|vlocity_cmt__AttributeAssignmentExport__c	|true|
+[2021-07-09T16:48:31.215] [INFO] npm test - 01I1s000000A25K	|Vlocity Attribute Assignment Rule	|vlocity_cmt__AttributeAssignmentRule__c	|true|
+[2021-07-09T16:48:31.215] [INFO] npm test - 01I1s000000A261	|Vlocity Context Mapping Argument	|vlocity_cmt__ContextMappingArgument__c	|true|
+[2021-07-09T16:48:31.215] [INFO] npm test - 01I1s000000A25Q	|Store Offering	|vlocity_cmt__BusinessSiteOffering__c	|true|
+[2021-07-09T16:48:31.215] [INFO] npm test - 01I1s000000A262	|Vlocity Context Mapping	|vlocity_cmt__ContextMapping__c	|true|
+[2021-07-09T16:48:31.215] [INFO] npm test - 01I1s000000A25N	|Vlocity Attribute Category	|vlocity_cmt__AttributeCategory__c	|true|
+[2021-07-09T16:48:31.215] [INFO] npm test - 01I1s000000A25O	|Vlocity Attribute	|vlocity_cmt__Attribute__c	|true|
+[2021-07-09T16:48:31.215] [INFO] npm test - 01I1s000000A260	|Vlocity Context Dimension	|vlocity_cmt__ContextDimension__c	|true|
+[2021-07-09T16:48:31.215] [INFO] npm test - 01I1s000000A25D	|Application	|vlocity_cmt__Application__c	|true|
+[2021-07-09T16:48:31.215] [INFO] npm test - 01I1s000000A25E	|Assessment Answer	|vlocity_cmt__AssessmentAnswer__c	|true|
+[2021-07-09T16:48:31.215] [INFO] npm test - 01I1s000000A25B	|Application Party Relationship	|vlocity_cmt__ApplicationPartyRelationship__c	|true|
+[2021-07-09T16:48:31.215] [INFO] npm test - 01I1s000000A25C	|Application Template	|vlocity_cmt__ApplicationTemplate__c	|true|
+[2021-07-09T16:48:31.215] [INFO] npm test - 01I1s000000A25H	|Asset Pricing Adjustment	|vlocity_cmt__AssetPricingAdjustment__c	|true|
+[2021-07-09T16:48:31.215] [INFO] npm test - 01I1s000000A25I	|Manual Queue Assignment Rule	|vlocity_cmt__AssignmentRule__c	|true|
+[2021-07-09T16:48:31.215] [INFO] npm test - 01I1s000000A25F	|Assessment Question	|vlocity_cmt__AssessmentQuestion__c	|true|
+[2021-07-09T16:48:31.215] [INFO] npm test - 01I1s000000A25G	|Assessment	|vlocity_cmt__Assessment__c	|true|
+[2021-07-09T16:48:31.215] [INFO] npm test - 01I1s000000A25A	|Admin Tab Layout	|vlocity_cmt__AdminTabLayout__c	|true|
+[2021-07-09T16:48:31.215] [INFO] npm test - 01I1s000000A25t	|Catalog Product Relationship	|vlocity_cmt__CatalogProductRelationship__c	|true|
+[2021-07-09T16:48:31.215] [INFO] npm test - 01I1s000000A26U	|Customer Interaction	|vlocity_cmt__CustomerInteraction__c	|true|
+[2021-07-09T16:48:31.216] [INFO] npm test - 01I1s000000A25u	|Catalog Relationship	|vlocity_cmt__CatalogRelationship__c	|true|
+[2021-07-09T16:48:31.216] [INFO] npm test - 01I1s000000A26V	|Vlocity DataRaptor Batch Queue	|vlocity_cmt__DRBatchQueue__c	|true|
+[2021-07-09T16:48:31.216] [INFO] npm test - 01I1s000000A25r	|Cart Item	|vlocity_cmt__CartItem__c	|true|
+[2021-07-09T16:48:31.216] [INFO] npm test - 01I1s000000A25s	|Cart	|vlocity_cmt__Cart__c	|true|
+[2021-07-09T16:48:31.216] [INFO] npm test - 01I1s000000A26T	|Customer Interaction Topic	|vlocity_cmt__CustomerInteractionTopic__c	|true|
+[2021-07-09T16:48:31.216] [INFO] npm test - 01I1s000000A25x	|Compiled Attribute Override	|vlocity_cmt__CompiledAttributeOverride__c	|true|
+[2021-07-09T16:48:31.216] [INFO] npm test - 01I1s000000A25y	|Console Action Log	|vlocity_cmt__ConsoleActionLog__c	|true|
+[2021-07-09T16:48:31.216] [INFO] npm test - 01I1s000000A26Z	|Vlocity DataRaptor Map Item	|vlocity_cmt__DRMapItem__c	|true|
+[2021-07-09T16:48:31.216] [INFO] npm test - 01I1s000000A25v	|Catalog	|vlocity_cmt__Catalog__c	|true|
+[2021-07-09T16:48:31.216] [INFO] npm test - 01I1s000000A26W	|DataRaptor Bulk Data	|vlocity_cmt__DRBulkData__c	|true|
+[2021-07-09T16:48:31.216] [INFO] npm test - 01I1s000000A278	|Fulfilment Request Decomposition Rel	|vlocity_cmt__FulfilmentRequestDecompRelationship__c	|true|
+[2021-07-09T16:48:31.216] [INFO] npm test - 01I1s000000A25w	|Charge Measurement	|vlocity_cmt__ChargeMeasurement__c	|true|
+[2021-07-09T16:48:31.216] [INFO] npm test - 01I1s000000A26X	|Vlocity DataRaptor Bundle	|vlocity_cmt__DRBundle__c	|true|
+[2021-07-09T16:48:31.216] [INFO] npm test - 01I1s000000A279	|FulfilmentRequestLineDecompRelationship	|vlocity_cmt__FulfilmentRequestLineDecompRelationship__c	|true|
+[2021-07-09T16:48:31.216] [INFO] npm test - 01I1s000000A25l	|Vlocity Calculation Procedure	|vlocity_cmt__CalculationProcedure__c	|true|
+[2021-07-09T16:48:31.216] [INFO] npm test - 01I1s000000A25m	|CallbackURI	|vlocity_cmt__CallbackURI__c	|true|
+[2021-07-09T16:48:31.216] [INFO] npm test - 01I1s000000A25j	|Vlocity Calculation Procedure Variable	|vlocity_cmt__CalculationProcedureVariable__c	|true|
+[2021-07-09T16:48:31.216] [INFO] npm test - 01I1s000000A26K	|Contract Document Discount	|vlocity_cmt__ContractVersionDiscount__c	|true|
+[2021-07-09T16:48:31.216] [INFO] npm test - 01I1s000000A25k	|Vlocity Calculation Procedure Version	|vlocity_cmt__CalculationProcedureVersion__c	|true|
+[2021-07-09T16:48:31.216] [INFO] npm test - 01I1s000000A26L	|Contract Document	|vlocity_cmt__ContractVersion__c	|true|
+[2021-07-09T16:48:31.216] [INFO] npm test - 01I1s000000A25p	|Campaign Member Action Log	|vlocity_cmt__CampaignMemberActionLog__c	|true|
+[2021-07-09T16:48:31.216] [INFO] npm test - 01I1s000000A272	|Vlocity Event Message	|vlocity_cmt__EventMessage__c	|true|
+[2021-07-09T16:48:31.216] [INFO] npm test - 01I1s000000A273	|Expanded Interaction Log	|vlocity_cmt__ExpandedInteractionLog__c	|true|
+[2021-07-09T16:48:31.216] [INFO] npm test - 01I1s000000A270	|Error Code	|vlocity_cmt__Error_Code__c	|true|
+[2021-07-09T16:48:31.216] [INFO] npm test - 01I1s000000A25o	|Campaign Content Document	|vlocity_cmt__CampaignContentDocument__c	|true|
+[2021-07-09T16:48:31.216] [INFO] npm test - 01I1s000000A271	|Event During Interaction	|vlocity_cmt__EventDuringInteraction__c	|true|
+[2021-07-09T16:48:31.216] [INFO] npm test - 01I1s000000A25d	|Vlocity Calculation Matrix Column	|vlocity_cmt__CalculationMatrixColumn__c	|true|
+[2021-07-09T16:48:31.217] [INFO] npm test - 01I1s000000A26E	|Contract Term	|vlocity_cmt__ContractTerm__c	|true|
+[2021-07-09T16:48:31.217] [INFO] npm test - 01I1s000000A25e	|Vlocity Calculation Matrix Dimension	|vlocity_cmt__CalculationMatrixDimension__c	|true|
+[2021-07-09T16:48:31.217] [INFO] npm test - 01I1s000000A26F	|Contract Type Setting	|vlocity_cmt__ContractTypeSetting__c	|true|
+[2021-07-09T16:48:31.217] [INFO] npm test - 01I1s000000A25b	|Cached Product Translation	|vlocity_cmt__CachedProduct2Translation__c	|true|
+[2021-07-09T16:48:31.217] [INFO] npm test - 01I1s000000A26C	|Contract Recipient	|vlocity_cmt__ContractRecipient__c	|true|
+[2021-07-09T16:48:31.217] [INFO] npm test - Campaign	|Campaign	|Campaign	|false|
+[2021-07-09T16:48:31.217] [INFO] npm test - 01I1s000000A25c	|Cached Promotion Translation	|vlocity_cmt__CachedPromotionTranslation__c	|true|
+[2021-07-09T16:48:31.217] [INFO] npm test - 01I1s000000A26D	|Contract Document Section	|vlocity_cmt__ContractSection__c	|true|
+[2021-07-09T16:48:31.217] [INFO] npm test - 01I1s000000A25h	|Vlocity Calculation Matrix	|vlocity_cmt__CalculationMatrix__c	|true|
+[2021-07-09T16:48:31.217] [INFO] npm test - 01I1s000000A26I	|Contract Document Discount Item	|vlocity_cmt__ContractVersionDiscountItem__c	|true|
+[2021-07-09T16:48:31.217] [INFO] npm test - 01I1s000000A25i	|Vlocity Calculation Procedure Step	|vlocity_cmt__CalculationProcedureStep__c	|true|
+[2021-07-09T16:48:31.217] [INFO] npm test - 01I1s000000A26J	|Contract Document Discount Pricing	|vlocity_cmt__ContractVersionDiscountPricing__c	|true|
+[2021-07-09T16:48:31.217] [INFO] npm test - Individual	|Individual	|Individual	|false|
+[2021-07-09T16:48:31.217] [INFO] npm test - 01I1s000000A25f	|Vlocity Calculation Matrix Row	|vlocity_cmt__CalculationMatrixRow__c	|true|
+[2021-07-09T16:48:31.217] [INFO] npm test - 01I1s000000A26G	|Contract Type Term	|vlocity_cmt__ContractTypeTerm__c	|true|
+[2021-07-09T16:48:31.217] [INFO] npm test - 01I1s000000A25g	|Vlocity Calculation Matrix Version	|vlocity_cmt__CalculationMatrixVersion__c	|true|
+[2021-07-09T16:48:31.217] [INFO] npm test - 01I1s000000A26H	|Contract Type	|vlocity_cmt__ContractType__c	|true|
+[2021-07-09T16:48:31.217] [INFO] npm test - 01I1s000000A24y	|Applied Promotion Affected Asset	|vlocity_cmt__AccountAppliedPromotionItem__c	|true|
+[2021-07-09T16:48:31.217] [INFO] npm test - 01I1s000000A25Z	|CachedKeyMapping	|vlocity_cmt__CachedKeyMapping__c	|true|
+[2021-07-09T16:48:31.217] [INFO] npm test - 01I1s000000A24z	|Applied Promotion	|vlocity_cmt__AccountAppliedPromotion__c	|true|
+[2021-07-09T16:48:31.218] [INFO] npm test - 01I1s000000A26A	|Contract Line	|vlocity_cmt__ContractLineItem__c	|true|
+[2021-07-09T16:48:31.218] [INFO] npm test - 01I1s000000A25a	|Cached PriceBookEntry Attribute Value	|vlocity_cmt__CachedPriceBookEntryAttributeValue__c	|true|
+[2021-07-09T16:48:31.218] [INFO] npm test - DuplicateRecordItem	|Duplicate Record Item	|DuplicateRecordItem	|false|
+[2021-07-09T16:48:31.218] [INFO] npm test - 01I1s000000A254	|Account Hold	|vlocity_cmt__AccountHold__c	|true|
+[2021-07-09T16:48:31.218] [INFO] npm test - 01I1s000000A255	|Account Offer	|vlocity_cmt__AccountOffer__c	|true|
+[2021-07-09T16:48:31.218] [INFO] npm test - 01I1s000000A252	|Account Discount Pricing	|vlocity_cmt__AccountDiscountPricing__c	|true|
+[2021-07-09T16:48:31.218] [INFO] npm test - 01I1s000000A253	|Account Discount	|vlocity_cmt__AccountDiscount__c	|true|
+[2021-07-09T16:48:31.218] [INFO] npm test - 01I1s000000A258	|Activity Content Document	|vlocity_cmt__ActivityContentDocument__c	|true|
+[2021-07-09T16:48:31.218] [INFO] npm test - 01I1s000000A259	|Activity Template	|vlocity_cmt__ActivityTemplate__c	|true|
+[2021-07-09T16:48:31.218] [INFO] npm test - 01I1s000000A256	|Account Pricing	|vlocity_cmt__AccountPriceAdjustment__c	|true|
+[2021-07-09T16:48:31.218] [INFO] npm test - 01I1s000000A257	|Account Product Rollup	|vlocity_cmt__AccountProductRollup__c	|true|
+[2021-07-09T16:48:31.218] [INFO] npm test - ContactPointConsent	|Contact Point Consent	|ContactPointConsent	|false|
+[2021-07-09T16:48:31.218] [INFO] npm test - 01I1s000000A250	|Account Balance	|vlocity_cmt__AccountBalance__c	|true|
+[2021-07-09T16:48:31.218] [INFO] npm test - 01I1s000000A251	|Account Discount Item	|vlocity_cmt__AccountDiscountItem__c	|true|
+[2021-07-09T16:48:31.218] [INFO] npm test - Quote	|Quote	|Quote	|false|
+[2021-07-09T16:48:31.218] [INFO] npm test - Location	|Location	|Location	|false|
+[2021-07-09T16:48:31.218] [INFO] npm test - 01I1s000000A28w	|Pricing Element	|vlocity_cmt__PricingElement__c	|true|
+[2021-07-09T16:48:31.219] [INFO] npm test - Account	|Account	|Account	|false|
+[2021-07-09T16:48:31.219] [INFO] npm test - 01I1s000000A28x	|Pricing Plan Step	|vlocity_cmt__PricingPlanStep__c	|true|
+[2021-07-09T16:48:31.219] [INFO] npm test - 01I1s000000A29Y	|Relationship Graph Node Type	|vlocity_cmt__RelationshipGraphNodeType__c	|true|
+[2021-07-09T16:48:31.219] [INFO] npm test - 01I1s000000A28u	|Pricing Component Relationship	|vlocity_cmt__PricingComponentRelationship__c	|true|
+[2021-07-09T16:48:31.219] [INFO] npm test - 01I1s000000A29V	|Quote Product Rollup	|vlocity_cmt__QuoteProductRollup__c	|true|
+[2021-07-09T16:48:31.219] [INFO] npm test - 01I1s000000A28v	|Pricing Component	|vlocity_cmt__PricingComponent__c	|true|
+[2021-07-09T16:48:31.219] [INFO] npm test - 01I1s000000A28y	|Pricing Plan	|vlocity_cmt__PricingPlan__c	|true|
+[2021-07-09T16:48:31.219] [INFO] npm test - 01I1s000000A29Z	|Relationship Graph Traversal	|vlocity_cmt__RelationshipGraphTraversal__c	|true|
+[2021-07-09T16:48:31.219] [INFO] npm test - 01I1s000000A28z	|Pricing Variable Binding	|vlocity_cmt__PricingVariableBinding__c	|true|
+[2021-07-09T16:48:31.219] [INFO] npm test - 01I1s000000A28o	|Vlocity Picklist Value	|vlocity_cmt__PicklistValue__c	|true|
+[2021-07-09T16:48:31.219] [INFO] npm test - 01I1s000000A29P	|Quote Discount	|vlocity_cmt__QuoteDiscount__c	|true|
+[2021-07-09T16:48:31.219] [INFO] npm test - 01I1s000000A28p	|Vlocity Picklist	|vlocity_cmt__Picklist__c	|true|
+[2021-07-09T16:48:31.219] [INFO] npm test - 01I1s000000A29Q	|Quote Group	|vlocity_cmt__QuoteGroup__c	|true|
+[2021-07-09T16:48:31.219] [INFO] npm test - 01I1s000000A29N	|Quote Discount Item	|vlocity_cmt__QuoteDiscountItem__c	|true|
+[2021-07-09T16:48:31.219] [INFO] npm test - 01I1s000000A28n	|Picklist Selection Entry	|vlocity_cmt__PicklistSelectionEntry__c	|true|
+[2021-07-09T16:48:31.219] [INFO] npm test - 01I1s000000A29O	|Quote Discount Pricing	|vlocity_cmt__QuoteDiscountPricing__c	|true|
+[2021-07-09T16:48:31.219] [INFO] npm test - 01I1s000000A28s	|Price List Entry	|vlocity_cmt__PriceListEntry__c	|true|
+[2021-07-09T16:48:31.219] [INFO] npm test - 01I1s000000A29T	|Quote Member	|vlocity_cmt__QuoteMember__c	|true|
+[2021-07-09T16:48:31.219] [INFO] npm test - 01I1s000000A28t	|Price List	|vlocity_cmt__PriceList__c	|true|
+[2021-07-09T16:48:31.219] [INFO] npm test - 01I1s000000A29U	|Quote Pricing	|vlocity_cmt__QuotePricingAdjustment__c	|true|
+[2021-07-09T16:48:31.219] [INFO] npm test - 01I1s000000A28q	|PremisesPartyRelationship	|vlocity_cmt__PremisesPartyRelationship__c	|true|
+[2021-07-09T16:48:31.219] [INFO] npm test - 01I1s000000A29R	|Quote Line Item Pricing Adjustment	|vlocity_cmt__QuoteLineItemPricingAdjustment__c	|true|
+[2021-07-09T16:48:31.220] [INFO] npm test - 01I1s000000A28r	|Premises	|vlocity_cmt__Premises__c	|true|
+[2021-07-09T16:48:31.220] [INFO] npm test - 01I1s000000A29S	|Quote Product Relationship	|vlocity_cmt__QuoteLineItemRelationship__c	|true|
+[2021-07-09T16:48:31.220] [INFO] npm test - 01I1s000000A28g	|Party Relationship	|vlocity_cmt__PartyRelationship__c	|true|
+[2021-07-09T16:48:31.220] [INFO] npm test - 01I1s000000A29H	|Promotion Item	|vlocity_cmt__PromotionItem__c	|true|
+[2021-07-09T16:48:31.220] [INFO] npm test - 01I1s000000A28h	|Party Association	|vlocity_cmt__Party_Association__c	|true|
+[2021-07-09T16:48:31.220] [INFO] npm test - 01I1s000000A29I	|Promotion Pricing Alteration	|vlocity_cmt__PromotionPricingAlteration__c	|true|
+[2021-07-09T16:48:31.220] [INFO] npm test - 01I1s000000A28e	|Party Merge Request	|vlocity_cmt__PartyMergeRequest__c	|true|
+[2021-07-09T16:48:31.220] [INFO] npm test - 01I1s000000A29F	|Promotion Applicable Product	|vlocity_cmt__PromotionApplicableProduct__c	|true|
+[2021-07-09T16:48:31.220] [INFO] npm test - 01I1s000000A28f	|Vlocity Party Relationship Type	|vlocity_cmt__PartyRelationshipType__c	|true|
+[2021-07-09T16:48:31.220] [INFO] npm test - 01I1s000000A29G	|Promotion Included Product	|vlocity_cmt__PromotionIncludedProduct__c	|true|
+[2021-07-09T16:48:31.220] [INFO] npm test - 01I1s000000A28k	|Payment Method	|vlocity_cmt__PaymentMethod__c	|true|
+[2021-07-09T16:48:31.221] [INFO] npm test - 01I1s000000A29L	|Quote Applied Promotion	|vlocity_cmt__QuoteAppliedPromotion__c	|true|
+[2021-07-09T16:48:31.221] [INFO] npm test - 01I1s000000A28l	|Payment Plan	|vlocity_cmt__PaymentPlan__c	|true|
+[2021-07-09T16:48:31.221] [INFO] npm test - 01I1s000000A28i	|Party	|vlocity_cmt__Party__c	|true|
+[2021-07-09T16:48:31.221] [INFO] npm test - 01I1s000000A29J	|Promotion	|vlocity_cmt__Promotion__c	|true|
+[2021-07-09T16:48:31.221] [INFO] npm test - 01I1s000000A28j	|Payment Adjustment	|vlocity_cmt__PaymentAdjustment__c	|true|
+[2021-07-09T16:48:31.222] [INFO] npm test - 01I1s000000A29K	|Quote Applied Promotion Affected Item	|vlocity_cmt__QuoteAppliedPromotionItem__c	|true|
+[2021-07-09T16:48:31.222] [INFO] npm test - 01I1s000000A29A	|Product Template Assignment	|vlocity_cmt__ProfileCategoryAssignment__c	|true|
+[2021-07-09T16:48:31.222] [INFO] npm test - ContactPointTypeConsent	|Contact Point Type Consent	|ContactPointTypeConsent	|false|
+[2021-07-09T16:48:31.222] [INFO] npm test - 01I1s000000A29D	|Project Item	|vlocity_cmt__ProjectItem__c	|true|
+[2021-07-09T16:48:31.222] [INFO] npm test - 01I1s000000A29E	|Project	|vlocity_cmt__Project__c	|true|
+[2021-07-09T16:48:31.222] [INFO] npm test - 01I1s000000A29B	|Profiling Segment Category	|vlocity_cmt__ProfilingSegmentCategory__c	|true|
+[2021-07-09T16:48:31.222] [INFO] npm test - 01I1s000000A29C	|Profiling Segment	|vlocity_cmt__ProfilingSegment__c	|true|
+[2021-07-09T16:48:31.222] [INFO] npm test - 01I1s000000A29x	|Subscription	|vlocity_cmt__Subscription__c	|true|
+[2021-07-09T16:48:31.222] [INFO] npm test - 01I1s000000A29v	|Vlocity String Translation	|vlocity_cmt__StringTranslation__c	|true|
+[2021-07-09T16:48:31.222] [INFO] npm test - 01I1s000000A29w	|Vlocity String	|vlocity_cmt__String__c	|true|
+[2021-07-09T16:48:31.222] [INFO] npm test - 01I1s000000A29z	|Sync Delta Object	|vlocity_cmt__SyncDeltaObject__c	|true|
+[2021-07-09T16:48:31.223] [INFO] npm test - 01I1s000000A29p	|Vlocity DataRaptor Staged Data	|vlocity_cmt__Stage__c	|true|
+[2021-07-09T16:48:31.223] [INFO] npm test - 01I1s000000A29q	|State Transition	|vlocity_cmt__StateTransition__c	|true|
+[2021-07-09T16:48:31.223] [INFO] npm test - 01I1s000000A29n	|Spec Template Attribute Mapping	|vlocity_cmt__SpecTemplateAttributeMapping__c	|true|
+[2021-07-09T16:48:31.223] [INFO] npm test - 01I1s000000A29o	|Spec Template Mapping	|vlocity_cmt__SpecTemplateMapping__c	|true|
+[2021-07-09T16:48:31.223] [INFO] npm test - 01I1s000000A29r	|Statement Line Item	|vlocity_cmt__StatementLineItem__c	|true|
+[2021-07-09T16:48:31.223] [INFO] npm test - 01I1s000000A29s	|Statement	|vlocity_cmt__Statement__c	|true|
+[2021-07-09T16:48:31.223] [INFO] npm test - 01I1s000000A29h	|Vlocity Rule	|vlocity_cmt__Rule__c	|true|
+[2021-07-09T16:48:31.223] [INFO] npm test - 01I1s000000A29f	|Screening Rule Property	|vlocity_cmt__RuleProperty__c	|true|
+[2021-07-09T16:48:31.223] [INFO] npm test - 01I1s000000A29g	|Vlocity Rule Variable	|vlocity_cmt__RuleVariable__c	|true|
+[2021-07-09T16:48:31.223] [INFO] npm test - 01I1s000000A29l	|Security Deposit	|vlocity_cmt__SecurityDeposit__c	|true|
+[2021-07-09T16:48:31.223] [INFO] npm test - Idea	|Idea	|Idea	|false|
+[2021-07-09T16:48:31.223] [INFO] npm test - 01I1s000000A29m	|Service Point	|vlocity_cmt__ServicePoint__c	|true|
+[2021-07-09T16:48:31.223] [INFO] npm test - 01I1s000000A29j	|Screening Rule Group	|vlocity_cmt__ScreeningRuleGroup__c	|true|
+[2021-07-09T16:48:31.224] [INFO] npm test - 01I1s000000A29k	|Screening Rule	|vlocity_cmt__ScreeningRule__c	|true|
+[2021-07-09T16:48:31.224] [INFO] npm test - 01I1s000000A29a	|Relationship Graph	|vlocity_cmt__RelationshipGraph__c	|true|
+[2021-07-09T16:48:31.224] [INFO] npm test - 01I1s000000A29d	|Vlocity Rule Assignment	|vlocity_cmt__RuleAssignment__c	|true|
+[2021-07-09T16:48:31.224] [INFO] npm test - Contract	|Contract	|Contract	|false|
+[2021-07-09T16:48:31.224] [INFO] npm test - 01I1s000000A29e	|Vlocity Rule Filter	|vlocity_cmt__RuleFilter__c	|true|
+[2021-07-09T16:48:31.224] [INFO] npm test - 01I1s000000A29c	|Vlocity Rule Action	|vlocity_cmt__RuleAction__c	|true|
+[2021-07-09T16:48:31.224] [INFO] npm test - 01I1s000000A26u	|Vlocity Entity Filter Condition	|vlocity_cmt__EntityFilterCondition__c	|true|
+[2021-07-09T16:48:31.224] [INFO] npm test - 01I1s000000A27V	|Product Attribute Interface	|vlocity_cmt__Interface_ProductAttribute__c	|true|
+[2021-07-09T16:48:31.224] [INFO] npm test - 01I1s000000A287	|Orchestration Dependency	|vlocity_cmt__OrchestrationDependency__c	|true|
+[2021-07-09T16:48:31.224] [INFO] npm test - 01I1s000000A26v	|Vlocity Entity Filter Member	|vlocity_cmt__EntityFilterMember__c	|true|
+[2021-07-09T16:48:31.224] [INFO] npm test - 01I1s000000A27W	|Inventory Item DecompositionRelationship	|vlocity_cmt__InventoryItemDecompositionRelationship__c	|true|
+[2021-07-09T16:48:31.224] [INFO] npm test - 01I1s000000A26s	|Vlocity OmniScript Element	|vlocity_cmt__Element__c	|true|
+[2021-07-09T16:48:31.224] [INFO] npm test - 01I1s000000A27T	|Interface_BillingInfo	|vlocity_cmt__Interface_BillingInfo__c	|true|
+[2021-07-09T16:48:31.224] [INFO] npm test - 01I1s000000A285	|Opportunity Pricing	|vlocity_cmt__OpportunityPriceAdjustment__c	|true|
+[2021-07-09T16:48:31.224] [INFO] npm test - 01I1s000000A26t	|Vlocity Entity Filter Condition Argument	|vlocity_cmt__EntityFilterConditionArgument__c	|true|
+[2021-07-09T16:48:31.224] [INFO] npm test - 01I1s000000A27U	|Vlocity DataRaptor Object Interface	|vlocity_cmt__Interface_DRGeneric__c	|true|
+[2021-07-09T16:48:31.225] [INFO] npm test - 01I1s000000A286	|Orchestration Dependency Definition	|vlocity_cmt__OrchestrationDependencyDefinition__c	|true|
+[2021-07-09T16:48:31.225] [INFO] npm test - 01I1s000000A26y	|Error Code	|vlocity_cmt__ErrorCode__c	|true|
+[2021-07-09T16:48:31.225] [INFO] npm test - 01I1s000000A27Z	|Jurisdiction	|vlocity_cmt__Jurisdiction__c	|true|
+[2021-07-09T16:48:31.225] [INFO] npm test - 01I1s000000A26z	|Error Code Namespace	|vlocity_cmt__Error_Code_Namespace__c	|true|
+[2021-07-09T16:48:31.225] [INFO] npm test - 01I1s000000A26w	|Vlocity Entity Filter	|vlocity_cmt__EntityFilter__c	|true|
+[2021-07-09T16:48:31.225] [INFO] npm test - 01I1s000000A27X	|Inventory Item	|vlocity_cmt__InventoryItem__c	|true|
+[2021-07-09T16:48:31.225] [INFO] npm test - 01I1s000000A289	|Orchestration Item Definition	|vlocity_cmt__OrchestrationItemDefinition__c	|true|
+[2021-07-09T16:48:31.225] [INFO] npm test - 01I1s000000A26x	|Error Code Namespace	|vlocity_cmt__ErrorCodeNamespace__c	|true|
+[2021-07-09T16:48:31.225] [INFO] npm test - 01I1s000000A27Y	|Item Implementation	|vlocity_cmt__ItemImplementation__c	|true|
+[2021-07-09T16:48:31.225] [INFO] npm test - 01I1s000000A26m	|Document Template Section Condition	|vlocity_cmt__DocumentTemplateSectionCondition__c	|true|
+[2021-07-09T16:48:31.225] [INFO] npm test - 01I1s000000A27N	|Household	|vlocity_cmt__Household__c	|true|
+[2021-07-09T16:48:31.225] [INFO] npm test - 01I1s000000A26n	|Document Template Section	|vlocity_cmt__DocumentTemplateSection__c	|true|
+[2021-07-09T16:48:31.225] [INFO] npm test - 01I1s000000A27O	|Inbound REST Interface	|vlocity_cmt__InboundRESTInterface__c	|true|
+[2021-07-09T16:48:31.225] [INFO] npm test - 01I1s000000A280	|Opportunity Discount Pricing	|vlocity_cmt__OpportunityDiscountPricing__c	|true|
+[2021-07-09T16:48:31.225] [INFO] npm test - ReportAnomalyEventStore	|Report Anomaly Event Store	|ReportAnomalyEventStore	|false|
+[2021-07-09T16:48:31.226] [INFO] npm test - 01I1s000000A26k	|Document Section	|vlocity_cmt__DocumentSection__c	|true|
+[2021-07-09T16:48:31.226] [INFO] npm test - 01I1s000000A27L	|Graph Clone	|vlocity_cmt__GraphClone__c	|true|
+[2021-07-09T16:48:31.226] [INFO] npm test - 01I1s000000A26l	|Document Template Element	|vlocity_cmt__DocumentTemplateElement__c	|true|
+[2021-07-09T16:48:31.226] [INFO] npm test - 01I1s000000A26q	|Document	|vlocity_cmt__Document__c	|true|
+[2021-07-09T16:48:31.226] [INFO] npm test - 01I1s000000A27R	|Interface Implementation Detail	|vlocity_cmt__InterfaceImplementationDetail__c	|true|
+[2021-07-09T16:48:31.226] [INFO] npm test - 01I1s000000A283	|Opportunity Product Relationship	|vlocity_cmt__OpportunityLineItemRelationship__c	|true|
+[2021-07-09T16:48:31.226] [INFO] npm test - 01I1s000000A26r	|Collections Activity	|vlocity_cmt__Dunning__c	|true|
+[2021-07-09T16:48:31.226] [INFO] npm test - 01I1s000000A27S	|Interface Implementation	|vlocity_cmt__InterfaceImplementation__c	|true|
+[2021-07-09T16:48:31.226] [INFO] npm test - 01I1s000000A284	|Opportunity Member	|vlocity_cmt__OpportunityMember__c	|true|
+[2021-07-09T16:48:31.226] [INFO] npm test - 01I1s000000A26o	|Document Template	|vlocity_cmt__DocumentTemplate__c	|true|
+[2021-07-09T16:48:31.226] [INFO] npm test - 01I1s000000A27P	|Integration Retry Policy	|vlocity_cmt__IntegrationRetryPolicy__c	|true|
+[2021-07-09T16:48:31.226] [INFO] npm test - 01I1s000000A281	|Opportunity Discount	|vlocity_cmt__OpportunityDiscount__c	|true|
+[2021-07-09T16:48:31.226] [INFO] npm test - Case	|Case	|Case	|false|
+[2021-07-09T16:48:31.226] [INFO] npm test - 01I1s000000A26p	|Document Token	|vlocity_cmt__DocumentToken__c	|true|
+[2021-07-09T16:48:31.226] [INFO] npm test - 01I1s000000A282	|Opportunity Group	|vlocity_cmt__OpportunityGroup__c	|true|
+[2021-07-09T16:48:31.227] [INFO] npm test - 01I1s000000A27G	|Generic DocuSign Document	|vlocity_cmt__GenericDocument__c	|true|
+[2021-07-09T16:48:31.227] [INFO] npm test - 01I1s000000A26c	|Vlocity Data Store	|vlocity_cmt__Datastore__c	|true|
+[2021-07-09T16:48:31.227] [INFO] npm test - 01I1s000000A27D	|Fulfilment Request	|vlocity_cmt__FulfilmentRequest__c	|true|
+[2021-07-09T16:48:31.227] [INFO] npm test - 01I1s000000A26d	|Decomposition Relationship	|vlocity_cmt__DecompositionRelationship__c	|true|
+[2021-07-09T16:48:31.227] [INFO] npm test - 01I1s000000A26j	|Document Clause	|vlocity_cmt__DocumentClause__c	|true|
+[2021-07-09T16:48:31.230] [INFO] npm test - 01I1s000000A27H	|Generic DocuSign Envelope	|vlocity_cmt__GenericEnvelope__c	|true|
+[2021-07-09T16:48:31.230] [INFO] npm test - 01I1s000000A27I	|Generic DocuSign Recipient	|vlocity_cmt__GenericRecipient__c	|true|
+[2021-07-09T16:48:31.230] [INFO] npm test - Lead	|Lead	|Lead	|false|
+[2021-07-09T16:48:31.230] [INFO] npm test - DuplicateRecordSet	|Duplicate Record Set	|DuplicateRecordSet	|false|
+[2021-07-09T16:48:31.230] [INFO] npm test - 01I1s000000A25z	|Context Action	|vlocity_cmt__ContextAction__c	|true|
+[2021-07-09T16:48:31.230] [INFO] npm test - 01I1s000000A27B	|FRL Source Bundle Relationship	|vlocity_cmt__FulfilmentRequestLineSourceRootOrderItem__c	|true|
+[2021-07-09T16:48:31.230] [INFO] npm test - 01I1s000000A27C	|Fulfilment Request Line	|vlocity_cmt__FulfilmentRequestLine__c	|true|
+[2021-07-09T16:48:31.231] [INFO] npm test - 01I1s000000A27A	|FulfilmentRequestLineRelationship	|vlocity_cmt__FulfilmentRequestLineRelationship__c	|true|
+[2021-07-09T16:48:31.231] [INFO] npm test - 01I1s000000A27v	|Operating Hours and Exceptions	|vlocity_cmt__OperatingHoursEntry__c	|true|
+[2021-07-09T16:48:31.231] [INFO] npm test - 01I1s000000A298	|Product Relationship	|vlocity_cmt__ProductRelationship__c	|true|
+[2021-07-09T16:48:31.231] [INFO] npm test - 01I1s000000A27w	|Operating Hours	|vlocity_cmt__OperatingHours__c	|true|
+[2021-07-09T16:48:31.231] [INFO] npm test - 01I1s000000A28X	|Vlocity Outbound Configuration	|vlocity_cmt__OutboundConfiguration__c	|true|
+[2021-07-09T16:48:31.231] [INFO] npm test - 01I1s000000A299	|Product Template	|vlocity_cmt__ProductTemplate__c	|true|
+[2021-07-09T16:48:31.231] [INFO] npm test - 01I1s000000A27t	|Vlocity OmniScript	|vlocity_cmt__OmniScript__c	|true|
+[2021-07-09T16:48:31.231] [INFO] npm test - 01I1s000000A28U	|Order Product Rollup	|vlocity_cmt__OrderProductRollup__c	|true|
+[2021-07-09T16:48:31.231] [INFO] npm test - 01I1s000000A27u	|Omni User Session	|vlocity_cmt__OmniUserSession__c	|true|
+[2021-07-09T16:48:31.231] [INFO] npm test - 01I1s000000A28V	|Order Relationship	|vlocity_cmt__OrderRelationship__c	|true|
+[2021-07-09T16:48:31.231] [INFO] npm test - 01I1s000000A297	|Product Relationship Type	|vlocity_cmt__ProductRelationshipType__c	|true|
+[2021-07-09T16:48:31.231] [INFO] npm test - 01I1s000000A27z	|Opportunity Discount Item	|vlocity_cmt__OpportunityDiscountItem__c	|true|
+[2021-07-09T16:48:31.231] [INFO] npm test - 01I1s000000A27x	|Opportunity Applied Promotion Item	|vlocity_cmt__OpportunityAppliedPromotionItem__c	|true|
+[2021-07-09T16:48:31.231] [INFO] npm test - 01I1s000000A28Y	|Product Override Definition	|vlocity_cmt__OverrideDefinition__c	|true|
+[2021-07-09T16:48:31.231] [INFO] npm test - 01I1s000000A27y	|Opportunity Applied Promotion	|vlocity_cmt__OpportunityAppliedPromotion__c	|true|
+[2021-07-09T16:48:31.232] [INFO] npm test - 01I1s000000A27n	|Offer Migration Component Mapping	|vlocity_cmt__OfferMigrationComponentMapping__c	|true|
+[2021-07-09T16:48:31.232] [INFO] npm test - 01I1s000000A290	|Pricing Variable	|vlocity_cmt__PricingVariable__c	|true|
+[2021-07-09T16:48:31.232] [INFO] npm test - 01I1s000000A27o	|Offer Migration Plan	|vlocity_cmt__OfferMigrationPlan__c	|true|
+[2021-07-09T16:48:31.232] [INFO] npm test - 01I1s000000A28P	|Order Group	|vlocity_cmt__OrderGroup__c	|true|
+[2021-07-09T16:48:31.232] [INFO] npm test - 01I1s000000A291	|ProductAttribXN	|vlocity_cmt__ProductAttribXN__c	|true|
+[2021-07-09T16:48:31.232] [INFO] npm test - 01I1s000000A27l	|Vlocity Object Rule Assignment	|vlocity_cmt__ObjectRuleAssignment__c	|true|
+[2021-07-09T16:48:31.232] [INFO] npm test - 01I1s000000A28M	|Order Discount Pricing	|vlocity_cmt__OrderDiscountPricing__c	|true|
+[2021-07-09T16:48:31.232] [INFO] npm test - 01I1s000000A27m	|Vlocity Object Section	|vlocity_cmt__ObjectSection__c	|true|
+[2021-07-09T16:48:31.232] [INFO] npm test - 01I1s000000A28N	|Order Discount	|vlocity_cmt__OrderDiscount__c	|true|
+[2021-07-09T16:48:31.232] [INFO] npm test - 01I1s000000A27r	|Vlocity OmniScript Compiled Definition	|vlocity_cmt__OmniScriptDefinition__c	|true|
+[2021-07-09T16:48:31.232] [INFO] npm test - 01I1s000000A28S	|Order Member	|vlocity_cmt__OrderMember__c	|true|
+[2021-07-09T16:48:31.232] [INFO] npm test - 01I1s000000A294	|Product Configuration Procedure	|vlocity_cmt__ProductConfigurationProcedure__c	|true|
+[2021-07-09T16:48:31.232] [INFO] npm test - 01I1s000000A27s	|Saved OmniScript	|vlocity_cmt__OmniScriptInstance__c	|true|
+[2021-07-09T16:48:31.232] [INFO] npm test - 01I1s000000A28T	|Order Pricing	|vlocity_cmt__OrderPriceAdjustment__c	|true|
+[2021-07-09T16:48:31.232] [INFO] npm test - 01I1s000000A295	|Product Not Eligible	|vlocity_cmt__ProductEligibility__c	|true|
+[2021-07-09T16:48:31.233] [INFO] npm test - 01I1s000000A27p	|Offer Pricing Component	|vlocity_cmt__OfferPricingComponent__c	|true|
+[2021-07-09T16:48:31.233] [INFO] npm test - 01I1s000000A28Q	|Order Item Pricing Adjustment	|vlocity_cmt__OrderItemPriceAdjustment__c	|true|
+[2021-07-09T16:48:31.233] [INFO] npm test - 01I1s000000A292	|Product Not Available	|vlocity_cmt__ProductAvailability__c	|true|
+[2021-07-09T16:48:31.233] [INFO] npm test - 01I1s000000A27q	|Vlocity Offering Procedure	|vlocity_cmt__OfferingProcedure__c	|true|
+[2021-07-09T16:48:31.233] [INFO] npm test - 01I1s000000A28R	|Order Product Relationship	|vlocity_cmt__OrderItemRelationship__c	|true|
+[2021-07-09T16:48:31.233] [INFO] npm test - 01I1s000000A293	|Product Child Item	|vlocity_cmt__ProductChildItem__c	|true|
+[2021-07-09T16:48:31.233] [INFO] npm test - 01I1s000000A27f	|Object Applied Result	|vlocity_cmt__ObjectAppliedResult__c	|true|
+[2021-07-09T16:48:31.233] [INFO] npm test - 01I1s000000A28G	|Orchestration Scenario	|vlocity_cmt__OrchestrationScenario__c	|true|
+[2021-07-09T16:48:31.233] [INFO] npm test - 01I1s000000A27g	|Vlocity Object or Object Type	|vlocity_cmt__ObjectClass__c	|true|
+[2021-07-09T16:48:31.233] [INFO] npm test - 01I1s000000A28H	|Orchestration Scheduler Implementation	|vlocity_cmt__OrchestrationSchedulerImplementation__c	|true|
+[2021-07-09T16:48:31.233] [INFO] npm test - ProcessException	|Process Exception	|ProcessException	|false|
+[2021-07-09T16:48:31.233] [INFO] npm test - 01I1s000000A27d	|Manual Queue	|vlocity_cmt__ManualQueue__c	|true|
+[2021-07-09T16:48:31.233] [INFO] npm test - 01I1s000000A28E	|Orchestration Queue Assignment Rule	|vlocity_cmt__OrchestrationQueueAssignmentRule__c	|true|
+[2021-07-09T16:48:31.233] [INFO] npm test - 01I1s000000A28F	|Orchestration Queue	|vlocity_cmt__OrchestrationQueue__c	|true|
+[2021-07-09T16:48:31.233] [INFO] npm test - 01I1s000000A27j	|Vlocity Object Field Attribute	|vlocity_cmt__ObjectFieldAttribute__c	|true|
+[2021-07-09T16:48:31.233] [INFO] npm test - 01I1s000000A27k	|Vlocity Object Layout	|vlocity_cmt__ObjectLayout__c	|true|
+[2021-07-09T16:48:31.234] [INFO] npm test - 01I1s000000A28L	|Order Discount Item	|vlocity_cmt__OrderDiscountItem__c	|true|
+[2021-07-09T16:48:31.234] [INFO] npm test - CommSubscriptionChannelType	|Communication Subscription Channel Type	|CommSubscriptionChannelType	|false|
+[2021-07-09T16:48:31.234] [INFO] npm test - 01I1s000000A27h	|Vlocity Object Section Element	|vlocity_cmt__ObjectElement__c	|true|
+[2021-07-09T16:48:31.234] [INFO] npm test - 01I1s000000A28I	|Order Applied Promotion Affected Item	|vlocity_cmt__OrderAppliedPromotionItem__c	|true|
+[2021-07-09T16:48:31.234] [INFO] npm test - OrderItem	|Order Product	|OrderItem	|false|
+[2021-07-09T16:48:31.234] [INFO] npm test - 01I1s000000A27i	|Vlocity Object Facet	|vlocity_cmt__ObjectFacet__c	|true|
+[2021-07-09T16:48:31.234] [INFO] npm test - 01I1s000000A28J	|Order Applied Promotion	|vlocity_cmt__OrderAppliedPromotion__c	|true|
+[2021-07-09T16:48:31.234] [INFO] npm test - 01I1s000000A27b	|Line of Business	|vlocity_cmt__LineOfBusiness__c	|true|
+[2021-07-09T16:48:31.234] [INFO] npm test - 01I1s000000A28C	|Orchestration Plan Definition	|vlocity_cmt__OrchestrationPlanDefinition__c	|true|
+[2021-07-09T16:48:31.234] [INFO] npm test - 01I1s000000A27c	|Manual Queue Member	|vlocity_cmt__ManualQueueMember__c	|true|
+[2021-07-09T16:48:31.234] [INFO] npm test - 01I1s000000A28D	|Orchestration Plan	|vlocity_cmt__OrchestrationPlan__c	|true|
+[2021-07-09T16:48:31.234] [INFO] npm test - 01I1s000000A28A	|Orchestration Item Source	|vlocity_cmt__OrchestrationItemSource__c	|true|
+[2021-07-09T16:48:31.234] [INFO] npm test - 01I1s000000A27a	|Large Data Store	|vlocity_cmt__LargeDataStore__c	|true|
+[2021-07-09T16:48:31.234] [INFO] npm test - 01I1s000000A28B	|Orchestration Item	|vlocity_cmt__OrchestrationItem__c	|true|
+[2021-07-09T16:48:31.234] [INFO] npm test - VideoCall	|Video Call	|VideoCall	|false|
+[2021-07-09T16:48:31.234] [INFO] npm test - SocialPersona	|Social Persona	|SocialPersona	|false|
+[2021-07-09T16:48:31.235] [INFO] npm test - Order	|Order	|Order	|false|
+[2021-07-09T16:48:31.235] [INFO] npm test - EmailMessage	|Email Message	|EmailMessage	|false|
+[2021-07-09T16:48:31.235] [INFO] npm test - AuthorizationForm	|Authorization Form	|AuthorizationForm	|false|
+[2021-07-09T16:48:31.235] [INFO] npm test - LocationTrustMeasure	|Location Trust Measure	|LocationTrustMeasure	|false|
+[2021-07-09T16:48:31.235] [INFO] npm test - DataUsePurpose	|Data Use Purpose	|DataUsePurpose	|false|
+[2021-07-09T16:48:31.235] [INFO] npm test - User	|User	|User	|false|
+[2021-07-09T16:48:31.235] [INFO] npm test - Macro	|Macro	|Macro	|false|
+[2021-07-09T16:48:31.235] [INFO] npm test - CommSubscriptionConsent	|Communication Subscription Consent	|CommSubscriptionConsent	|false|
+[2021-07-09T16:48:31.235] [INFO] npm test - OpportunityContactRole	|Opportunity Contact Role	|OpportunityContactRole	|false|
+[2021-07-09T16:48:31.235] [INFO] npm test - Contact	|Contact	|Contact	|false|
+[2021-07-09T16:49:20.010] [INFO] npm test - this no error
+[2021-07-09T16:49:20.165] [INFO] npm test - ID	|Label	|Table Name	|Cust|
+[2021-07-09T16:49:20.166] [INFO] npm test - 01I1s000000A2BA	|Vlocity State Transition	|vlocity_cmt__VlocityStateTransition__c	|true|
+[2021-07-09T16:49:20.166] [INFO] npm test - 01I1s000000A2BB	|Vlocity State	|vlocity_cmt__VlocityState__c	|true|
+[2021-07-09T16:49:20.166] [INFO] npm test - 01I1s000000A2BE	|Vlocity Tracking Entry	|vlocity_cmt__VlocityTrackingEntry__c	|true|
+[2021-07-09T16:49:20.166] [INFO] npm test - 01I1s000000A2BC	|Vlocity System Log	|vlocity_cmt__VlocitySystemLog__c	|true|
+[2021-07-09T16:49:20.167] [INFO] npm test - 01I1s000000A2BD	|Vlocity Tracking Component	|vlocity_cmt__VlocityTrackingComponent__c	|true|
+[2021-07-09T16:49:20.167] [INFO] npm test - 01I1s000000A2B9	|Vlocity State Transition Rule	|vlocity_cmt__VlocityStateTransitionRule__c	|true|
+[2021-07-09T16:49:20.167] [INFO] npm test - 01I1s000000A2B7	|Vlocity State Model Version	|vlocity_cmt__VlocityStateModelVersion__c	|true|
+[2021-07-09T16:49:20.167] [INFO] npm test - 01I1s000000A2B8	|Vlocity State Model	|vlocity_cmt__VlocityStateModel__c	|true|
+[2021-07-09T16:49:20.167] [INFO] npm test - 01I1s000000A2AP	|Vlocity UI Facet	|vlocity_cmt__UIFacet__c	|true|
+[2021-07-09T16:49:20.167] [INFO] npm test - 01I1s000000A2AQ	|Vlocity UI Section	|vlocity_cmt__UISection__c	|true|
+[2021-07-09T16:49:20.167] [INFO] npm test - 01I1s000000A2B5	|Vlocity Interaction Launcher Action	|vlocity_cmt__VlocitySearchWidgetActionsSetup__c	|true|
+[2021-07-09T16:49:20.167] [INFO] npm test - 01I1s000000A2B6	|Vlocity Interaction Launcher	|vlocity_cmt__VlocitySearchWidgetSetup__c	|true|
+[2021-07-09T16:49:20.167] [INFO] npm test - 01I1s000000A2AS	|User Calendar	|vlocity_cmt__UserCalendar__c	|true|
+[2021-07-09T16:49:20.167] [INFO] npm test - 01I1s000000A2B4	|Vlocity Scheduled Job	|vlocity_cmt__VlocityScheduledJob__c	|true|
+[2021-07-09T16:49:20.167] [INFO] npm test - 01I1s000000A2Ay	|Vlocity Function Argument	|vlocity_cmt__VlocityFunctionArgument__c	|true|
+[2021-07-09T16:49:20.167] [INFO] npm test - 01I1s000000A2Av	|Vlocity DocuSign Template	|vlocity_cmt__VlocityDocuSignTemplate__c	|true|
+[2021-07-09T16:49:20.167] [INFO] npm test - 01I1s000000A2Aw	|Vlocity Error Log Entry	|vlocity_cmt__VlocityErrorLogEntry__c	|true|
+[2021-07-09T16:49:20.167] [INFO] npm test - PricebookEntry	|Price Book Entry	|PricebookEntry	|false|
+[2021-07-09T16:49:20.167] [INFO] npm test - 01I1s000000A2Az	|Vlocity Function	|vlocity_cmt__VlocityFunction__c	|true|
+[2021-07-09T16:49:20.167] [INFO] npm test - 01I1s000000A2At	|Vlocity DataPack Object	|vlocity_cmt__VlocityDataPack__c	|true|
+[2021-07-09T16:49:20.167] [INFO] npm test - 01I1s000000A2Au	|Vlocity DocuSign Branding	|vlocity_cmt__VlocityDocuSignBranding__c	|true|
+[2021-07-09T16:49:20.167] [INFO] npm test - 01I1s000000A2Ah	|Vlocity API Metadata	|vlocity_cmt__VlocityAPIMetadata__c	|true|
+[2021-07-09T16:49:20.167] [INFO] npm test - 01I1s000000A2BI	|Vlocity UI Template	|vlocity_cmt__VlocityUITemplate__c	|true|
+[2021-07-09T16:49:20.167] [INFO] npm test - ContactPointPhone	|Contact Point Phone	|ContactPointPhone	|false|
+[2021-07-09T16:49:20.167] [INFO] npm test - SessionHijackingEventStore	|Session Hijacking Event Store	|SessionHijackingEventStore	|false|
+[2021-07-09T16:49:20.167] [INFO] npm test - 01I1s000000A2Ai	|Vlocity Action	|vlocity_cmt__VlocityAction__c	|true|
+[2021-07-09T16:49:20.167] [INFO] npm test - 01I1s000000A2BJ	|Vlocity Web Tracking Configuration	|vlocity_cmt__VlocityWebTrackingConfiguration__c	|true|
+[2021-07-09T16:49:20.167] [INFO] npm test - 01I1s000000A2BG	|Vlocity Tracking Group	|vlocity_cmt__VlocityTrackingGroup__c	|true|
+[2021-07-09T16:49:20.167] [INFO] npm test - 01I1s000000A2BH	|Vlocity UI Layout	|vlocity_cmt__VlocityUILayout__c	|true|
+[2021-07-09T16:49:20.167] [INFO] npm test - 01I1s000000A2Al	|Vlocity Contract Service Log	|vlocity_cmt__VlocityContractServiceLog__c	|true|
+[2021-07-09T16:49:20.167] [INFO] npm test - 01I1s000000A2BM	|Vlocity Intelligence Machine	|vlocity_cmt__VqMachine__c	|true|
+[2021-07-09T16:49:20.167] [INFO] npm test - 01I1s000000A2BN	|Vlocity Intelligence Resource	|vlocity_cmt__VqResource__c	|true|
+[2021-07-09T16:49:20.167] [INFO] npm test - 01I1s000000A2Aj	|Vlocity Attachment	|vlocity_cmt__VlocityAttachment__c	|true|
+[2021-07-09T16:49:20.167] [INFO] npm test - 01I1s000000A2BK	|Vlocity Web Tracking Event Type	|vlocity_cmt__VlocityWebTrackingEventType__c	|true|
+[2021-07-09T16:49:20.167] [INFO] npm test - 01I1s000000A2Ak	|Vlocity Card	|vlocity_cmt__VlocityCard__c	|true|
+[2021-07-09T16:49:20.168] [INFO] npm test - 01I1s000000A2BL	|Vlocity Intelligence Machine Resource	|vlocity_cmt__VqMachineResource__c	|true|
+[2021-07-09T16:49:20.168] [INFO] npm test - ProfileSkill	|Skill	|ProfileSkill	|false|
+[2021-07-09T16:49:20.168] [INFO] npm test - ServiceResource	|Service Resource	|ServiceResource	|false|
+[2021-07-09T16:49:20.168] [INFO] npm test - QuickText	|Quick Text	|QuickText	|false|
+[2021-07-09T16:49:20.168] [INFO] npm test - 01I1s000000A2AA	|Thor Orchestration Queue	|vlocity_cmt__ThorOrchestrationQueue__c	|true|
+[2021-07-09T16:49:20.168] [INFO] npm test - DataUseLegalBasis	|Data Use Legal Basis	|DataUseLegalBasis	|false|
+[2021-07-09T16:49:20.168] [INFO] npm test - 01I1s000000A2AB	|Time Plan	|vlocity_cmt__TimePlan__c	|true|
+[2021-07-09T16:49:20.168] [INFO] npm test - 01I1s000000A2AC	|Time Policy	|vlocity_cmt__TimePolicy__c	|true|
+[2021-07-09T16:49:20.168] [INFO] npm test - 01I1s000000A2A9	|Test Result	|vlocity_cmt__TestResult__c	|true|
+[2021-07-09T16:49:20.168] [INFO] npm test - 01I1s000000A2A0	|Sync Delta Snapshot	|vlocity_cmt__SyncDeltaSnapshot__c	|true|
+[2021-07-09T16:49:20.168] [INFO] npm test - 01I1s000000A2A1	|System Interface	|vlocity_cmt__SystemInterface__c	|true|
+[2021-07-09T16:49:20.168] [INFO] npm test - CommSubscriptionTiming	|Communication Subscription Timing	|CommSubscriptionTiming	|false|
+[2021-07-09T16:49:20.168] [INFO] npm test - 01I1s000000A2A2	|System	|vlocity_cmt__System__c	|true|
+[2021-07-09T16:49:20.168] [INFO] npm test - WorkOrderLineItem	|Work Order Line Item	|WorkOrderLineItem	|false|
+[2021-07-09T16:49:20.168] [INFO] npm test - LiveAgentSession	|Chat Session	|LiveAgentSession	|false|
+[2021-07-09T16:49:20.168] [INFO] npm test - ContactRequest	|Contact Request	|ContactRequest	|false|
+[2021-07-09T16:49:20.168] [INFO] npm test - CommSubscription	|Communication Subscription	|CommSubscription	|false|
+[2021-07-09T16:49:20.168] [INFO] npm test - Opportunity	|Opportunity	|Opportunity	|false|
+[2021-07-09T16:49:20.168] [INFO] npm test - LiveChatTranscript	|Chat Transcript	|LiveChatTranscript	|false|
+[2021-07-09T16:49:20.168] [INFO] npm test - OpportunityLineItemSchedule	|Line Item Schedule	|OpportunityLineItemSchedule	|false|
+[2021-07-09T16:49:20.168] [INFO] npm test - EngagementChannelType	|Engagement Channel Type	|EngagementChannelType	|false|
+[2021-07-09T16:49:20.168] [INFO] npm test - Image	|Image	|Image	|false|
+[2021-07-09T16:49:20.168] [INFO] npm test - SkillRequirement	|Skill Requirement	|SkillRequirement	|false|
+[2021-07-09T16:49:20.168] [INFO] npm test - WorkOrder	|Work Order	|WorkOrder	|false|
+[2021-07-09T16:49:20.168] [INFO] npm test - Asset	|Asset	|Asset	|false|
+[2021-07-09T16:49:20.168] [INFO] npm test - CampaignMember	|Campaign Member	|CampaignMember	|false|
+[2021-07-09T16:49:20.168] [INFO] npm test - Pricebook2	|Price Book	|Pricebook2	|false|
+[2021-07-09T16:49:20.168] [INFO] npm test - ContactPointAddress	|Contact Point Address	|ContactPointAddress	|false|
+[2021-07-09T16:49:20.168] [INFO] npm test - Recommendation	|Recommendation	|Recommendation	|false|
+[2021-07-09T16:49:20.168] [INFO] npm test - ServiceResourceSkill	|Service Resource Skill	|ServiceResourceSkill	|false|
+[2021-07-09T16:49:20.168] [INFO] npm test - ContactPointEmail	|Contact Point Email	|ContactPointEmail	|false|
+[2021-07-09T16:49:20.168] [INFO] npm test - Product2	|Product	|Product2	|false|
+[2021-07-09T16:49:20.168] [INFO] npm test - PartyConsent	|Party Consent	|PartyConsent	|false|
+[2021-07-09T16:49:20.168] [INFO] npm test - ProfileSkillEndorsement	|Endorsement	|ProfileSkillEndorsement	|false|
+[2021-07-09T16:49:20.168] [INFO] npm test - AuthorizationFormText	|Authorization Form Text	|AuthorizationFormText	|false|
+[2021-07-09T16:49:20.168] [INFO] npm test - Solution	|Solution	|Solution	|false|
+[2021-07-09T16:49:20.168] [INFO] npm test - AuthorizationFormDataUse	|Authorization Form Data Use	|AuthorizationFormDataUse	|false|
+[2021-07-09T16:49:20.168] [INFO] npm test - 01I1s000000A540	|Gateway	|rsplus__GateWay__c	|true|
+[2021-07-09T16:49:20.168] [INFO] npm test - Task	|Task	|Task	|false|
+[2021-07-09T16:49:20.169] [INFO] npm test - 01I1s000000A544	|SMS Inbox (legacy)	|rsplus__Inbound_SMS__c	|true|
+[2021-07-09T16:49:20.169] [INFO] npm test - 01I1s000000A542	|Gateway Status	|rsplus__Gateway_Status__c	|true|
+[2021-07-09T16:49:20.169] [INFO] npm test - 01I2w000000OFlU	|Badge	|trailheadapp__Badge__c	|true|
+[2021-07-09T16:49:20.169] [INFO] npm test - 01I2w000000OFlW	|Debug Log	|trailheadapp__Debug_Log__c	|true|
+[2021-07-09T16:49:20.169] [INFO] npm test - 01I1s000000ABmk	|LiveChatSession	|rsplus__LiveChatSession__c	|true|
+[2021-07-09T16:49:20.169] [INFO] npm test - 01I2w000000OFlY	|Trail	|trailheadapp__Trail__c	|true|
+[2021-07-09T16:49:20.169] [INFO] npm test - 01I2w000000OFlZ	|Trailhead User Data	|trailheadapp__Trailhead_User_Data__c	|true|
+[2021-07-09T16:49:20.169] [INFO] npm test - 01I2w000000OFld	|User Trailmix	|trailheadapp__User_Trailmix__c	|true|
+[2021-07-09T16:49:20.169] [INFO] npm test - 01I2w000000OFla	|Trailmix Assignment	|trailheadapp__Trailmix_Assignment__c	|true|
+[2021-07-09T16:49:20.169] [INFO] npm test - 01I2w000000OFlc	|User Badge	|trailheadapp__User_Badge__c	|true|
+[2021-07-09T16:49:20.169] [INFO] npm test - 01I2w000000OFlb	|Trailmix	|trailheadapp__Trailmix__c	|true|
+[2021-07-09T16:49:20.169] [INFO] npm test - 01I1s000000A54Q	|Chat Dashboard	|rsplus__ValueText_Helper__c	|true|
+[2021-07-09T16:49:20.169] [INFO] npm test - 01I1s000000A53m	|Bot Form	|rsplus__Bot_Form__c	|true|
+[2021-07-09T16:49:20.169] [INFO] npm test - 01I1s000000A53n	|Bot	|rsplus__Bot__c	|true|
+[2021-07-09T16:49:20.169] [INFO] npm test - 01I1s000000A54O	|SMS VTexception	|rsplus__VTexception__c	|true|
+[2021-07-09T16:49:20.169] [INFO] npm test - 01I1s000000A53s	|Call Legs	|rsplus__Call_Legs__c	|true|
+[2021-07-09T16:49:20.169] [INFO] npm test - 01I1s000000A53q	|Call Center User	|rsplus__Call_Center_User__c	|true|
+[2021-07-09T16:49:20.169] [INFO] npm test - 01I1s000000A54R	|VtDefaultOptions	|rsplus__VtDefaultOptions__c	|true|
+[2021-07-09T16:49:20.169] [INFO] npm test - 01I1s000000A53r	|Call History	|rsplus__Call_History__c	|true|
+[2021-07-09T16:49:20.169] [INFO] npm test - 01I1s000000A54H	|Text Schedules & Follow Up	|rsplus__SMS_Scheduler__c	|true|
+[2021-07-09T16:49:20.169] [INFO] npm test - UserProvisioningRequest	|User Provisioning Request	|UserProvisioningRequest	|false|
+[2021-07-09T16:49:20.170] [INFO] npm test - 01I1s000000A54I	|Workflow Schedules & Follow Ups	|rsplus__SMS_Workflow_schedule__c	|true|
+[2021-07-09T16:49:20.170] [INFO] npm test - 01I1s000000A54F	|SMS Inbox Actions (legacy)	|rsplus__SMS_Inbox_Actions__c	|true|
+[2021-07-09T16:49:20.170] [INFO] npm test - 01I1s000000A54G	|ValueText Notification	|rsplus__SMS_Notification__c	|true|
+[2021-07-09T16:49:20.170] [INFO] npm test - 01I1s000000A53k	|Bot Element Dynamic Options	|rsplus__Bot_Element_Dynamic_Options__c	|true|
+[2021-07-09T16:49:20.170] [INFO] npm test - ApiAnomalyEventStore	|API Anomaly Event Store	|ApiAnomalyEventStore	|false|
+[2021-07-09T16:49:20.170] [INFO] npm test - 01I1s000000A53l	|Bot Element	|rsplus__Bot_Element__c	|true|
+[2021-07-09T16:49:20.170] [INFO] npm test - 01I1s000000A54M	|MMS	|rsplus__VT_MMS__c	|true|
+[2021-07-09T16:49:20.170] [INFO] npm test - AssociatedLocation	|Associated Location	|AssociatedLocation	|false|
+[2021-07-09T16:49:20.170] [INFO] npm test - 01I1s000000A54J	|Sender ID	|rsplus__Sender_Id_Registration__c	|true|
+[2021-07-09T16:49:20.170] [INFO] npm test - 01I1s000000A53j	|Access Level	|rsplus__Access_Level__c	|true|
+[2021-07-09T16:49:20.170] [INFO] npm test - 01I1s000000A54K	|Short Link	|rsplus__Short_Link__c	|true|
+[2021-07-09T16:49:20.170] [INFO] npm test - 01I1s000000A54A	|Phone Numbers	|rsplus__Phone_Numbers__c	|true|
+[2021-07-09T16:49:20.170] [INFO] npm test - 01I1s000000A54D	|Text Campaign Member	|rsplus__SMS_Campaign_Member__c	|true|
+[2021-07-09T16:49:20.170] [INFO] npm test - 01I1s000000A54E	|Text Campaign	|rsplus__SMS_Campaign__c	|true|
+[2021-07-09T16:49:20.170] [INFO] npm test - 01I1s000000A54B	|Dynamic Templates	|rsplus__RSP_Templates__c	|true|
+[2021-07-09T16:49:20.170] [INFO] npm test - 01I1s000000A54C	|Message Bucket	|rsplus__SMS_Bucket__c	|true|
+[2021-07-09T16:49:20.170] [INFO] npm test - 01I1s000000A549	|Custom Phone Fields	|rsplus__Phone_Field_Settings__c	|true|
+[2021-07-09T16:49:20.170] [INFO] npm test - 01I1s000000A547	|OTP	|rsplus__OTP__c	|true|
+[2021-07-09T16:49:20.170] [INFO] npm test - CredentialStuffingEventStore	|Credential Stuffing Event Store	|CredentialStuffingEventStore	|false|
+[2021-07-09T16:49:20.170] [INFO] npm test - 01I1s000000A2L7	|Upgrade Step	|UpgradeStep__c	|true|
+[2021-07-09T16:49:20.170] [INFO] npm test - 01I1s000000A2L6	|Upgrade Plan	|UpgradePlan__c	|true|
+[2021-07-09T16:49:20.170] [INFO] npm test - LiveChatVisitor	|Chat Visitor	|LiveChatVisitor	|false|
+[2021-07-09T16:49:20.170] [INFO] npm test - Activity	|Activity	|Activity	|false|
+[2021-07-09T16:49:20.171] [INFO] npm test - ProfileSkillUser	|Skill User	|ProfileSkillUser	|false|
+[2021-07-09T16:49:20.171] [INFO] npm test - LinkedArticle	|Linked Article	|LinkedArticle	|false|
+[2021-07-09T16:49:20.171] [INFO] npm test - SocialPost	|Social Post	|SocialPost	|false|
+[2021-07-09T16:49:20.171] [INFO] npm test - 01I1s000000A53w	|Channel Open Id	|rsplus__Channel_Open_Ids__c	|true|
+[2021-07-09T16:49:20.171] [INFO] npm test - 01I1s000000A54Y	|Legacy Object	|rsplus__plate__c	|true|
+[2021-07-09T16:49:20.171] [INFO] npm test - 01I1s000000A53u	|Channel Group Member	|rsplus__Channel_Group_Member__c	|true|
+[2021-07-09T16:49:20.171] [INFO] npm test - 01I1s000000A53v	|Channel Group	|rsplus__Channel_Group__c	|true|
+[2021-07-09T16:49:20.171] [INFO] npm test - 01I1s000000A54W	|Opted Numbers	|rsplus__Vt_Opted_Numbers__c	|true|
+[2021-07-09T16:49:20.171] [INFO] npm test - 01I1s000000A53z	|Donation	|rsplus__Donation__c	|true|
+[2021-07-09T16:49:20.171] [INFO] npm test - AssetRelationship	|Asset Relationship	|AssetRelationship	|false|
+[2021-07-09T16:49:20.171] [INFO] npm test - QuoteLineItem	|Quote Line Item	|QuoteLineItem	|false|
+[2021-07-09T16:49:20.171] [INFO] npm test - Event	|Event	|Event	|false|
+[2021-07-09T16:49:20.171] [INFO] npm test - 01I1s000000A25T	|CachedAPIChange	|vlocity_cmt__CachedAPIChange__c	|true|
+[2021-07-09T16:49:20.171] [INFO] npm test - 01I1s000000A265	|Context Scope	|vlocity_cmt__ContextScope__c	|true|
+[2021-07-09T16:49:20.171] [INFO] npm test - 01I1s000000A25U	|CachedAPIMigrate	|vlocity_cmt__CachedAPIMigrate__c	|true|
+[2021-07-09T16:49:20.171] [INFO] npm test - 01I1s000000A25R	|Store Location	|vlocity_cmt__BusinessSite__c	|true|
+[2021-07-09T16:49:20.171] [INFO] npm test - 01I1s000000A263	|Vlocity Context Rule	|vlocity_cmt__ContextRule__c	|true|
+[2021-07-09T16:49:20.171] [INFO] npm test - 01I1s000000A25S	|CachedAPIChangeEntry	|vlocity_cmt__CachedAPIChangeEntry__c	|true|
+[2021-07-09T16:49:20.171] [INFO] npm test - 01I1s000000A264	|Vlocity Context Ruleset	|vlocity_cmt__ContextRuleset__c	|true|
+[2021-07-09T16:49:20.171] [INFO] npm test - AuthorizationFormConsent	|Authorization Form Consent	|AuthorizationFormConsent	|false|
+[2021-07-09T16:49:20.171] [INFO] npm test - 01I1s000000A25X	|Cached Data Set	|vlocity_cmt__CachedDataSet__c	|true|
+[2021-07-09T16:49:20.171] [INFO] npm test - 01I1s000000A269	|Contract Group	|vlocity_cmt__ContractGroup__c	|true|
+[2021-07-09T16:49:20.172] [INFO] npm test - OpportunityLineItem	|Opportunity Product	|OpportunityLineItem	|false|
+[2021-07-09T16:49:20.172] [INFO] npm test - 01I1s000000A25Y	|Cached Filterable Attribute	|vlocity_cmt__CachedFilterableAttribute__c	|true|
+[2021-07-09T16:49:20.172] [INFO] npm test - 01I1s000000A25V	|CachedAPIResponseOffers	|vlocity_cmt__CachedAPIResponseOffers__c	|true|
+[2021-07-09T16:49:20.172] [INFO] npm test - 01I1s000000A267	|Contract Document Element	|vlocity_cmt__ContractDocumentCollection__c	|true|
+[2021-07-09T16:49:20.172] [INFO] npm test - 01I1s000000A25W	|CachedAPIResponse	|vlocity_cmt__CachedAPIResponse__c	|true|
+[2021-07-09T16:49:20.172] [INFO] npm test - 01I1s000000A268	|Contract Document Envelope	|vlocity_cmt__ContractEnvelope__c	|true|
+[2021-07-09T16:49:20.172] [INFO] npm test - 01I1s000000A25L	|Attribute Assignment	|vlocity_cmt__AttributeAssignment__c	|true|
+[2021-07-09T16:49:20.172] [INFO] npm test - 01I1s000000A25M	|Vlocity Attribute Binding	|vlocity_cmt__AttributeBinding__c	|true|
+[2021-07-09T16:49:20.172] [INFO] npm test - 01I1s000000A25J	|Attribute Assignment Export	|vlocity_cmt__AttributeAssignmentExport__c	|true|
+[2021-07-09T16:49:20.172] [INFO] npm test - 01I1s000000A25K	|Vlocity Attribute Assignment Rule	|vlocity_cmt__AttributeAssignmentRule__c	|true|
+[2021-07-09T16:49:20.172] [INFO] npm test - 01I1s000000A261	|Vlocity Context Mapping Argument	|vlocity_cmt__ContextMappingArgument__c	|true|
+[2021-07-09T16:49:20.172] [INFO] npm test - 01I1s000000A25Q	|Store Offering	|vlocity_cmt__BusinessSiteOffering__c	|true|
+[2021-07-09T16:49:20.172] [INFO] npm test - 01I1s000000A262	|Vlocity Context Mapping	|vlocity_cmt__ContextMapping__c	|true|
+[2021-07-09T16:49:20.172] [INFO] npm test - 01I1s000000A25N	|Vlocity Attribute Category	|vlocity_cmt__AttributeCategory__c	|true|
+[2021-07-09T16:49:20.172] [INFO] npm test - 01I1s000000A25O	|Vlocity Attribute	|vlocity_cmt__Attribute__c	|true|
+[2021-07-09T16:49:20.172] [INFO] npm test - 01I1s000000A260	|Vlocity Context Dimension	|vlocity_cmt__ContextDimension__c	|true|
+[2021-07-09T16:49:20.172] [INFO] npm test - 01I1s000000A25D	|Application	|vlocity_cmt__Application__c	|true|
+[2021-07-09T16:49:20.172] [INFO] npm test - 01I1s000000A25E	|Assessment Answer	|vlocity_cmt__AssessmentAnswer__c	|true|
+[2021-07-09T16:49:20.172] [INFO] npm test - 01I1s000000A25B	|Application Party Relationship	|vlocity_cmt__ApplicationPartyRelationship__c	|true|
+[2021-07-09T16:49:20.172] [INFO] npm test - 01I1s000000A25C	|Application Template	|vlocity_cmt__ApplicationTemplate__c	|true|
+[2021-07-09T16:49:20.172] [INFO] npm test - 01I1s000000A25H	|Asset Pricing Adjustment	|vlocity_cmt__AssetPricingAdjustment__c	|true|
+[2021-07-09T16:49:20.172] [INFO] npm test - 01I1s000000A25I	|Manual Queue Assignment Rule	|vlocity_cmt__AssignmentRule__c	|true|
+[2021-07-09T16:49:20.172] [INFO] npm test - 01I1s000000A25F	|Assessment Question	|vlocity_cmt__AssessmentQuestion__c	|true|
+[2021-07-09T16:49:20.172] [INFO] npm test - 01I1s000000A25G	|Assessment	|vlocity_cmt__Assessment__c	|true|
+[2021-07-09T16:49:20.172] [INFO] npm test - 01I1s000000A25A	|Admin Tab Layout	|vlocity_cmt__AdminTabLayout__c	|true|
+[2021-07-09T16:49:20.172] [INFO] npm test - 01I1s000000A25t	|Catalog Product Relationship	|vlocity_cmt__CatalogProductRelationship__c	|true|
+[2021-07-09T16:49:20.172] [INFO] npm test - 01I1s000000A26U	|Customer Interaction	|vlocity_cmt__CustomerInteraction__c	|true|
+[2021-07-09T16:49:20.172] [INFO] npm test - 01I1s000000A25u	|Catalog Relationship	|vlocity_cmt__CatalogRelationship__c	|true|
+[2021-07-09T16:49:20.172] [INFO] npm test - 01I1s000000A26V	|Vlocity DataRaptor Batch Queue	|vlocity_cmt__DRBatchQueue__c	|true|
+[2021-07-09T16:49:20.172] [INFO] npm test - 01I1s000000A25r	|Cart Item	|vlocity_cmt__CartItem__c	|true|
+[2021-07-09T16:49:20.172] [INFO] npm test - 01I1s000000A25s	|Cart	|vlocity_cmt__Cart__c	|true|
+[2021-07-09T16:49:20.172] [INFO] npm test - 01I1s000000A26T	|Customer Interaction Topic	|vlocity_cmt__CustomerInteractionTopic__c	|true|
+[2021-07-09T16:49:20.172] [INFO] npm test - 01I1s000000A25x	|Compiled Attribute Override	|vlocity_cmt__CompiledAttributeOverride__c	|true|
+[2021-07-09T16:49:20.172] [INFO] npm test - 01I1s000000A25y	|Console Action Log	|vlocity_cmt__ConsoleActionLog__c	|true|
+[2021-07-09T16:49:20.172] [INFO] npm test - 01I1s000000A26Z	|Vlocity DataRaptor Map Item	|vlocity_cmt__DRMapItem__c	|true|
+[2021-07-09T16:49:20.172] [INFO] npm test - 01I1s000000A25v	|Catalog	|vlocity_cmt__Catalog__c	|true|
+[2021-07-09T16:49:20.173] [INFO] npm test - 01I1s000000A26W	|DataRaptor Bulk Data	|vlocity_cmt__DRBulkData__c	|true|
+[2021-07-09T16:49:20.173] [INFO] npm test - 01I1s000000A278	|Fulfilment Request Decomposition Rel	|vlocity_cmt__FulfilmentRequestDecompRelationship__c	|true|
+[2021-07-09T16:49:20.173] [INFO] npm test - 01I1s000000A25w	|Charge Measurement	|vlocity_cmt__ChargeMeasurement__c	|true|
+[2021-07-09T16:49:20.173] [INFO] npm test - 01I1s000000A26X	|Vlocity DataRaptor Bundle	|vlocity_cmt__DRBundle__c	|true|
+[2021-07-09T16:49:20.173] [INFO] npm test - 01I1s000000A279	|FulfilmentRequestLineDecompRelationship	|vlocity_cmt__FulfilmentRequestLineDecompRelationship__c	|true|
+[2021-07-09T16:49:20.173] [INFO] npm test - 01I1s000000A25l	|Vlocity Calculation Procedure	|vlocity_cmt__CalculationProcedure__c	|true|
+[2021-07-09T16:49:20.173] [INFO] npm test - 01I1s000000A25m	|CallbackURI	|vlocity_cmt__CallbackURI__c	|true|
+[2021-07-09T16:49:20.173] [INFO] npm test - 01I1s000000A25j	|Vlocity Calculation Procedure Variable	|vlocity_cmt__CalculationProcedureVariable__c	|true|
+[2021-07-09T16:49:20.173] [INFO] npm test - 01I1s000000A26K	|Contract Document Discount	|vlocity_cmt__ContractVersionDiscount__c	|true|
+[2021-07-09T16:49:20.173] [INFO] npm test - 01I1s000000A25k	|Vlocity Calculation Procedure Version	|vlocity_cmt__CalculationProcedureVersion__c	|true|
+[2021-07-09T16:49:20.173] [INFO] npm test - 01I1s000000A26L	|Contract Document	|vlocity_cmt__ContractVersion__c	|true|
+[2021-07-09T16:49:20.173] [INFO] npm test - 01I1s000000A25p	|Campaign Member Action Log	|vlocity_cmt__CampaignMemberActionLog__c	|true|
+[2021-07-09T16:49:20.173] [INFO] npm test - 01I1s000000A272	|Vlocity Event Message	|vlocity_cmt__EventMessage__c	|true|
+[2021-07-09T16:49:20.173] [INFO] npm test - 01I1s000000A273	|Expanded Interaction Log	|vlocity_cmt__ExpandedInteractionLog__c	|true|
+[2021-07-09T16:49:20.173] [INFO] npm test - 01I1s000000A270	|Error Code	|vlocity_cmt__Error_Code__c	|true|
+[2021-07-09T16:49:20.173] [INFO] npm test - 01I1s000000A25o	|Campaign Content Document	|vlocity_cmt__CampaignContentDocument__c	|true|
+[2021-07-09T16:49:20.173] [INFO] npm test - 01I1s000000A271	|Event During Interaction	|vlocity_cmt__EventDuringInteraction__c	|true|
+[2021-07-09T16:49:20.173] [INFO] npm test - 01I1s000000A25d	|Vlocity Calculation Matrix Column	|vlocity_cmt__CalculationMatrixColumn__c	|true|
+[2021-07-09T16:49:20.173] [INFO] npm test - 01I1s000000A26E	|Contract Term	|vlocity_cmt__ContractTerm__c	|true|
+[2021-07-09T16:49:20.173] [INFO] npm test - 01I1s000000A25e	|Vlocity Calculation Matrix Dimension	|vlocity_cmt__CalculationMatrixDimension__c	|true|
+[2021-07-09T16:49:20.173] [INFO] npm test - 01I1s000000A26F	|Contract Type Setting	|vlocity_cmt__ContractTypeSetting__c	|true|
+[2021-07-09T16:49:20.173] [INFO] npm test - 01I1s000000A25b	|Cached Product Translation	|vlocity_cmt__CachedProduct2Translation__c	|true|
+[2021-07-09T16:49:20.173] [INFO] npm test - 01I1s000000A26C	|Contract Recipient	|vlocity_cmt__ContractRecipient__c	|true|
+[2021-07-09T16:49:20.173] [INFO] npm test - Campaign	|Campaign	|Campaign	|false|
+[2021-07-09T16:49:20.173] [INFO] npm test - 01I1s000000A25c	|Cached Promotion Translation	|vlocity_cmt__CachedPromotionTranslation__c	|true|
+[2021-07-09T16:49:20.173] [INFO] npm test - 01I1s000000A26D	|Contract Document Section	|vlocity_cmt__ContractSection__c	|true|
+[2021-07-09T16:49:20.173] [INFO] npm test - 01I1s000000A25h	|Vlocity Calculation Matrix	|vlocity_cmt__CalculationMatrix__c	|true|
+[2021-07-09T16:49:20.173] [INFO] npm test - 01I1s000000A26I	|Contract Document Discount Item	|vlocity_cmt__ContractVersionDiscountItem__c	|true|
+[2021-07-09T16:49:20.173] [INFO] npm test - 01I1s000000A25i	|Vlocity Calculation Procedure Step	|vlocity_cmt__CalculationProcedureStep__c	|true|
+[2021-07-09T16:49:20.173] [INFO] npm test - 01I1s000000A26J	|Contract Document Discount Pricing	|vlocity_cmt__ContractVersionDiscountPricing__c	|true|
+[2021-07-09T16:49:20.173] [INFO] npm test - Individual	|Individual	|Individual	|false|
+[2021-07-09T16:49:20.173] [INFO] npm test - 01I1s000000A25f	|Vlocity Calculation Matrix Row	|vlocity_cmt__CalculationMatrixRow__c	|true|
+[2021-07-09T16:49:20.173] [INFO] npm test - 01I1s000000A26G	|Contract Type Term	|vlocity_cmt__ContractTypeTerm__c	|true|
+[2021-07-09T16:49:20.173] [INFO] npm test - 01I1s000000A25g	|Vlocity Calculation Matrix Version	|vlocity_cmt__CalculationMatrixVersion__c	|true|
+[2021-07-09T16:49:20.173] [INFO] npm test - 01I1s000000A26H	|Contract Type	|vlocity_cmt__ContractType__c	|true|
+[2021-07-09T16:49:20.173] [INFO] npm test - 01I1s000000A24y	|Applied Promotion Affected Asset	|vlocity_cmt__AccountAppliedPromotionItem__c	|true|
+[2021-07-09T16:49:20.173] [INFO] npm test - 01I1s000000A25Z	|CachedKeyMapping	|vlocity_cmt__CachedKeyMapping__c	|true|
+[2021-07-09T16:49:20.173] [INFO] npm test - 01I1s000000A24z	|Applied Promotion	|vlocity_cmt__AccountAppliedPromotion__c	|true|
+[2021-07-09T16:49:20.174] [INFO] npm test - 01I1s000000A26A	|Contract Line	|vlocity_cmt__ContractLineItem__c	|true|
+[2021-07-09T16:49:20.174] [INFO] npm test - 01I1s000000A25a	|Cached PriceBookEntry Attribute Value	|vlocity_cmt__CachedPriceBookEntryAttributeValue__c	|true|
+[2021-07-09T16:49:20.174] [INFO] npm test - DuplicateRecordItem	|Duplicate Record Item	|DuplicateRecordItem	|false|
+[2021-07-09T16:49:20.174] [INFO] npm test - 01I1s000000A254	|Account Hold	|vlocity_cmt__AccountHold__c	|true|
+[2021-07-09T16:49:20.174] [INFO] npm test - 01I1s000000A255	|Account Offer	|vlocity_cmt__AccountOffer__c	|true|
+[2021-07-09T16:49:20.174] [INFO] npm test - 01I1s000000A252	|Account Discount Pricing	|vlocity_cmt__AccountDiscountPricing__c	|true|
+[2021-07-09T16:49:20.174] [INFO] npm test - 01I1s000000A253	|Account Discount	|vlocity_cmt__AccountDiscount__c	|true|
+[2021-07-09T16:49:20.174] [INFO] npm test - 01I1s000000A258	|Activity Content Document	|vlocity_cmt__ActivityContentDocument__c	|true|
+[2021-07-09T16:49:20.174] [INFO] npm test - 01I1s000000A259	|Activity Template	|vlocity_cmt__ActivityTemplate__c	|true|
+[2021-07-09T16:49:20.174] [INFO] npm test - 01I1s000000A256	|Account Pricing	|vlocity_cmt__AccountPriceAdjustment__c	|true|
+[2021-07-09T16:49:20.174] [INFO] npm test - 01I1s000000A257	|Account Product Rollup	|vlocity_cmt__AccountProductRollup__c	|true|
+[2021-07-09T16:49:20.174] [INFO] npm test - ContactPointConsent	|Contact Point Consent	|ContactPointConsent	|false|
+[2021-07-09T16:49:20.174] [INFO] npm test - 01I1s000000A250	|Account Balance	|vlocity_cmt__AccountBalance__c	|true|
+[2021-07-09T16:49:20.174] [INFO] npm test - 01I1s000000A251	|Account Discount Item	|vlocity_cmt__AccountDiscountItem__c	|true|
+[2021-07-09T16:49:20.174] [INFO] npm test - Quote	|Quote	|Quote	|false|
+[2021-07-09T16:49:20.174] [INFO] npm test - Location	|Location	|Location	|false|
+[2021-07-09T16:49:20.174] [INFO] npm test - 01I1s000000A28w	|Pricing Element	|vlocity_cmt__PricingElement__c	|true|
+[2021-07-09T16:49:20.174] [INFO] npm test - Account	|Account	|Account	|false|
+[2021-07-09T16:49:20.174] [INFO] npm test - 01I1s000000A28x	|Pricing Plan Step	|vlocity_cmt__PricingPlanStep__c	|true|
+[2021-07-09T16:49:20.174] [INFO] npm test - 01I1s000000A29Y	|Relationship Graph Node Type	|vlocity_cmt__RelationshipGraphNodeType__c	|true|
+[2021-07-09T16:49:20.174] [INFO] npm test - 01I1s000000A28u	|Pricing Component Relationship	|vlocity_cmt__PricingComponentRelationship__c	|true|
+[2021-07-09T16:49:20.174] [INFO] npm test - 01I1s000000A29V	|Quote Product Rollup	|vlocity_cmt__QuoteProductRollup__c	|true|
+[2021-07-09T16:49:20.174] [INFO] npm test - 01I1s000000A28v	|Pricing Component	|vlocity_cmt__PricingComponent__c	|true|
+[2021-07-09T16:49:20.174] [INFO] npm test - 01I1s000000A28y	|Pricing Plan	|vlocity_cmt__PricingPlan__c	|true|
+[2021-07-09T16:49:20.174] [INFO] npm test - 01I1s000000A29Z	|Relationship Graph Traversal	|vlocity_cmt__RelationshipGraphTraversal__c	|true|
+[2021-07-09T16:49:20.174] [INFO] npm test - 01I1s000000A28z	|Pricing Variable Binding	|vlocity_cmt__PricingVariableBinding__c	|true|
+[2021-07-09T16:49:20.174] [INFO] npm test - 01I1s000000A28o	|Vlocity Picklist Value	|vlocity_cmt__PicklistValue__c	|true|
+[2021-07-09T16:49:20.174] [INFO] npm test - 01I1s000000A29P	|Quote Discount	|vlocity_cmt__QuoteDiscount__c	|true|
+[2021-07-09T16:49:20.174] [INFO] npm test - 01I1s000000A28p	|Vlocity Picklist	|vlocity_cmt__Picklist__c	|true|
+[2021-07-09T16:49:20.174] [INFO] npm test - 01I1s000000A29Q	|Quote Group	|vlocity_cmt__QuoteGroup__c	|true|
+[2021-07-09T16:49:20.174] [INFO] npm test - 01I1s000000A29N	|Quote Discount Item	|vlocity_cmt__QuoteDiscountItem__c	|true|
+[2021-07-09T16:49:20.174] [INFO] npm test - 01I1s000000A28n	|Picklist Selection Entry	|vlocity_cmt__PicklistSelectionEntry__c	|true|
+[2021-07-09T16:49:20.174] [INFO] npm test - 01I1s000000A29O	|Quote Discount Pricing	|vlocity_cmt__QuoteDiscountPricing__c	|true|
+[2021-07-09T16:49:20.174] [INFO] npm test - 01I1s000000A28s	|Price List Entry	|vlocity_cmt__PriceListEntry__c	|true|
+[2021-07-09T16:49:20.174] [INFO] npm test - 01I1s000000A29T	|Quote Member	|vlocity_cmt__QuoteMember__c	|true|
+[2021-07-09T16:49:20.174] [INFO] npm test - 01I1s000000A28t	|Price List	|vlocity_cmt__PriceList__c	|true|
+[2021-07-09T16:49:20.174] [INFO] npm test - 01I1s000000A29U	|Quote Pricing	|vlocity_cmt__QuotePricingAdjustment__c	|true|
+[2021-07-09T16:49:20.174] [INFO] npm test - 01I1s000000A28q	|PremisesPartyRelationship	|vlocity_cmt__PremisesPartyRelationship__c	|true|
+[2021-07-09T16:49:20.175] [INFO] npm test - 01I1s000000A29R	|Quote Line Item Pricing Adjustment	|vlocity_cmt__QuoteLineItemPricingAdjustment__c	|true|
+[2021-07-09T16:49:20.175] [INFO] npm test - 01I1s000000A28r	|Premises	|vlocity_cmt__Premises__c	|true|
+[2021-07-09T16:49:20.175] [INFO] npm test - 01I1s000000A29S	|Quote Product Relationship	|vlocity_cmt__QuoteLineItemRelationship__c	|true|
+[2021-07-09T16:49:20.175] [INFO] npm test - 01I1s000000A28g	|Party Relationship	|vlocity_cmt__PartyRelationship__c	|true|
+[2021-07-09T16:49:20.175] [INFO] npm test - 01I1s000000A29H	|Promotion Item	|vlocity_cmt__PromotionItem__c	|true|
+[2021-07-09T16:49:20.175] [INFO] npm test - 01I1s000000A28h	|Party Association	|vlocity_cmt__Party_Association__c	|true|
+[2021-07-09T16:49:20.175] [INFO] npm test - 01I1s000000A29I	|Promotion Pricing Alteration	|vlocity_cmt__PromotionPricingAlteration__c	|true|
+[2021-07-09T16:49:20.175] [INFO] npm test - 01I1s000000A28e	|Party Merge Request	|vlocity_cmt__PartyMergeRequest__c	|true|
+[2021-07-09T16:49:20.175] [INFO] npm test - 01I1s000000A29F	|Promotion Applicable Product	|vlocity_cmt__PromotionApplicableProduct__c	|true|
+[2021-07-09T16:49:20.175] [INFO] npm test - 01I1s000000A28f	|Vlocity Party Relationship Type	|vlocity_cmt__PartyRelationshipType__c	|true|
+[2021-07-09T16:49:20.175] [INFO] npm test - 01I1s000000A29G	|Promotion Included Product	|vlocity_cmt__PromotionIncludedProduct__c	|true|
+[2021-07-09T16:49:20.175] [INFO] npm test - 01I1s000000A28k	|Payment Method	|vlocity_cmt__PaymentMethod__c	|true|
+[2021-07-09T16:49:20.175] [INFO] npm test - 01I1s000000A29L	|Quote Applied Promotion	|vlocity_cmt__QuoteAppliedPromotion__c	|true|
+[2021-07-09T16:49:20.175] [INFO] npm test - 01I1s000000A28l	|Payment Plan	|vlocity_cmt__PaymentPlan__c	|true|
+[2021-07-09T16:49:20.175] [INFO] npm test - 01I1s000000A28i	|Party	|vlocity_cmt__Party__c	|true|
+[2021-07-09T16:49:20.175] [INFO] npm test - 01I1s000000A29J	|Promotion	|vlocity_cmt__Promotion__c	|true|
+[2021-07-09T16:49:20.175] [INFO] npm test - 01I1s000000A28j	|Payment Adjustment	|vlocity_cmt__PaymentAdjustment__c	|true|
+[2021-07-09T16:49:20.175] [INFO] npm test - 01I1s000000A29K	|Quote Applied Promotion Affected Item	|vlocity_cmt__QuoteAppliedPromotionItem__c	|true|
+[2021-07-09T16:49:20.175] [INFO] npm test - 01I1s000000A29A	|Product Template Assignment	|vlocity_cmt__ProfileCategoryAssignment__c	|true|
+[2021-07-09T16:49:20.175] [INFO] npm test - ContactPointTypeConsent	|Contact Point Type Consent	|ContactPointTypeConsent	|false|
+[2021-07-09T16:49:20.175] [INFO] npm test - 01I1s000000A29D	|Project Item	|vlocity_cmt__ProjectItem__c	|true|
+[2021-07-09T16:49:20.175] [INFO] npm test - 01I1s000000A29E	|Project	|vlocity_cmt__Project__c	|true|
+[2021-07-09T16:49:20.175] [INFO] npm test - 01I1s000000A29B	|Profiling Segment Category	|vlocity_cmt__ProfilingSegmentCategory__c	|true|
+[2021-07-09T16:49:20.175] [INFO] npm test - 01I1s000000A29C	|Profiling Segment	|vlocity_cmt__ProfilingSegment__c	|true|
+[2021-07-09T16:49:20.175] [INFO] npm test - 01I1s000000A29x	|Subscription	|vlocity_cmt__Subscription__c	|true|
+[2021-07-09T16:49:20.175] [INFO] npm test - 01I1s000000A29v	|Vlocity String Translation	|vlocity_cmt__StringTranslation__c	|true|
+[2021-07-09T16:49:20.175] [INFO] npm test - 01I1s000000A29w	|Vlocity String	|vlocity_cmt__String__c	|true|
+[2021-07-09T16:49:20.175] [INFO] npm test - 01I1s000000A29z	|Sync Delta Object	|vlocity_cmt__SyncDeltaObject__c	|true|
+[2021-07-09T16:49:20.175] [INFO] npm test - 01I1s000000A29p	|Vlocity DataRaptor Staged Data	|vlocity_cmt__Stage__c	|true|
+[2021-07-09T16:49:20.175] [INFO] npm test - 01I1s000000A29q	|State Transition	|vlocity_cmt__StateTransition__c	|true|
+[2021-07-09T16:49:20.175] [INFO] npm test - 01I1s000000A29n	|Spec Template Attribute Mapping	|vlocity_cmt__SpecTemplateAttributeMapping__c	|true|
+[2021-07-09T16:49:20.175] [INFO] npm test - 01I1s000000A29o	|Spec Template Mapping	|vlocity_cmt__SpecTemplateMapping__c	|true|
+[2021-07-09T16:49:20.175] [INFO] npm test - 01I1s000000A29r	|Statement Line Item	|vlocity_cmt__StatementLineItem__c	|true|
+[2021-07-09T16:49:20.175] [INFO] npm test - 01I1s000000A29s	|Statement	|vlocity_cmt__Statement__c	|true|
+[2021-07-09T16:49:20.175] [INFO] npm test - 01I1s000000A29h	|Vlocity Rule	|vlocity_cmt__Rule__c	|true|
+[2021-07-09T16:49:20.175] [INFO] npm test - 01I1s000000A29f	|Screening Rule Property	|vlocity_cmt__RuleProperty__c	|true|
+[2021-07-09T16:49:20.175] [INFO] npm test - 01I1s000000A29g	|Vlocity Rule Variable	|vlocity_cmt__RuleVariable__c	|true|
+[2021-07-09T16:49:20.175] [INFO] npm test - 01I1s000000A29l	|Security Deposit	|vlocity_cmt__SecurityDeposit__c	|true|
+[2021-07-09T16:49:20.175] [INFO] npm test - Idea	|Idea	|Idea	|false|
+[2021-07-09T16:49:20.176] [INFO] npm test - 01I1s000000A29m	|Service Point	|vlocity_cmt__ServicePoint__c	|true|
+[2021-07-09T16:49:20.176] [INFO] npm test - 01I1s000000A29j	|Screening Rule Group	|vlocity_cmt__ScreeningRuleGroup__c	|true|
+[2021-07-09T16:49:20.176] [INFO] npm test - 01I1s000000A29k	|Screening Rule	|vlocity_cmt__ScreeningRule__c	|true|
+[2021-07-09T16:49:20.176] [INFO] npm test - 01I1s000000A29a	|Relationship Graph	|vlocity_cmt__RelationshipGraph__c	|true|
+[2021-07-09T16:49:20.176] [INFO] npm test - 01I1s000000A29d	|Vlocity Rule Assignment	|vlocity_cmt__RuleAssignment__c	|true|
+[2021-07-09T16:49:20.176] [INFO] npm test - Contract	|Contract	|Contract	|false|
+[2021-07-09T16:49:20.176] [INFO] npm test - 01I1s000000A29e	|Vlocity Rule Filter	|vlocity_cmt__RuleFilter__c	|true|
+[2021-07-09T16:49:20.176] [INFO] npm test - 01I1s000000A29c	|Vlocity Rule Action	|vlocity_cmt__RuleAction__c	|true|
+[2021-07-09T16:49:20.176] [INFO] npm test - 01I1s000000A26u	|Vlocity Entity Filter Condition	|vlocity_cmt__EntityFilterCondition__c	|true|
+[2021-07-09T16:49:20.176] [INFO] npm test - 01I1s000000A27V	|Product Attribute Interface	|vlocity_cmt__Interface_ProductAttribute__c	|true|
+[2021-07-09T16:49:20.176] [INFO] npm test - 01I1s000000A287	|Orchestration Dependency	|vlocity_cmt__OrchestrationDependency__c	|true|
+[2021-07-09T16:49:20.176] [INFO] npm test - 01I1s000000A26v	|Vlocity Entity Filter Member	|vlocity_cmt__EntityFilterMember__c	|true|
+[2021-07-09T16:49:20.176] [INFO] npm test - 01I1s000000A27W	|Inventory Item DecompositionRelationship	|vlocity_cmt__InventoryItemDecompositionRelationship__c	|true|
+[2021-07-09T16:49:20.176] [INFO] npm test - 01I1s000000A26s	|Vlocity OmniScript Element	|vlocity_cmt__Element__c	|true|
+[2021-07-09T16:49:20.176] [INFO] npm test - 01I1s000000A27T	|Interface_BillingInfo	|vlocity_cmt__Interface_BillingInfo__c	|true|
+[2021-07-09T16:49:20.176] [INFO] npm test - 01I1s000000A285	|Opportunity Pricing	|vlocity_cmt__OpportunityPriceAdjustment__c	|true|
+[2021-07-09T16:49:20.176] [INFO] npm test - 01I1s000000A26t	|Vlocity Entity Filter Condition Argument	|vlocity_cmt__EntityFilterConditionArgument__c	|true|
+[2021-07-09T16:49:20.176] [INFO] npm test - 01I1s000000A27U	|Vlocity DataRaptor Object Interface	|vlocity_cmt__Interface_DRGeneric__c	|true|
+[2021-07-09T16:49:20.176] [INFO] npm test - 01I1s000000A286	|Orchestration Dependency Definition	|vlocity_cmt__OrchestrationDependencyDefinition__c	|true|
+[2021-07-09T16:49:20.176] [INFO] npm test - 01I1s000000A26y	|Error Code	|vlocity_cmt__ErrorCode__c	|true|
+[2021-07-09T16:49:20.176] [INFO] npm test - 01I1s000000A27Z	|Jurisdiction	|vlocity_cmt__Jurisdiction__c	|true|
+[2021-07-09T16:49:20.176] [INFO] npm test - 01I1s000000A26z	|Error Code Namespace	|vlocity_cmt__Error_Code_Namespace__c	|true|
+[2021-07-09T16:49:20.176] [INFO] npm test - 01I1s000000A26w	|Vlocity Entity Filter	|vlocity_cmt__EntityFilter__c	|true|
+[2021-07-09T16:49:20.176] [INFO] npm test - 01I1s000000A27X	|Inventory Item	|vlocity_cmt__InventoryItem__c	|true|
+[2021-07-09T16:49:20.176] [INFO] npm test - 01I1s000000A289	|Orchestration Item Definition	|vlocity_cmt__OrchestrationItemDefinition__c	|true|
+[2021-07-09T16:49:20.176] [INFO] npm test - 01I1s000000A26x	|Error Code Namespace	|vlocity_cmt__ErrorCodeNamespace__c	|true|
+[2021-07-09T16:49:20.176] [INFO] npm test - 01I1s000000A27Y	|Item Implementation	|vlocity_cmt__ItemImplementation__c	|true|
+[2021-07-09T16:49:20.176] [INFO] npm test - 01I1s000000A26m	|Document Template Section Condition	|vlocity_cmt__DocumentTemplateSectionCondition__c	|true|
+[2021-07-09T16:49:20.176] [INFO] npm test - 01I1s000000A27N	|Household	|vlocity_cmt__Household__c	|true|
+[2021-07-09T16:49:20.176] [INFO] npm test - 01I1s000000A26n	|Document Template Section	|vlocity_cmt__DocumentTemplateSection__c	|true|
+[2021-07-09T16:49:20.176] [INFO] npm test - 01I1s000000A27O	|Inbound REST Interface	|vlocity_cmt__InboundRESTInterface__c	|true|
+[2021-07-09T16:49:20.176] [INFO] npm test - 01I1s000000A280	|Opportunity Discount Pricing	|vlocity_cmt__OpportunityDiscountPricing__c	|true|
+[2021-07-09T16:49:20.176] [INFO] npm test - ReportAnomalyEventStore	|Report Anomaly Event Store	|ReportAnomalyEventStore	|false|
+[2021-07-09T16:49:20.176] [INFO] npm test - 01I1s000000A26k	|Document Section	|vlocity_cmt__DocumentSection__c	|true|
+[2021-07-09T16:49:20.176] [INFO] npm test - 01I1s000000A27L	|Graph Clone	|vlocity_cmt__GraphClone__c	|true|
+[2021-07-09T16:49:20.176] [INFO] npm test - 01I1s000000A26l	|Document Template Element	|vlocity_cmt__DocumentTemplateElement__c	|true|
+[2021-07-09T16:49:20.177] [INFO] npm test - 01I1s000000A26q	|Document	|vlocity_cmt__Document__c	|true|
+[2021-07-09T16:49:20.177] [INFO] npm test - 01I1s000000A27R	|Interface Implementation Detail	|vlocity_cmt__InterfaceImplementationDetail__c	|true|
+[2021-07-09T16:49:20.177] [INFO] npm test - 01I1s000000A283	|Opportunity Product Relationship	|vlocity_cmt__OpportunityLineItemRelationship__c	|true|
+[2021-07-09T16:49:20.177] [INFO] npm test - 01I1s000000A26r	|Collections Activity	|vlocity_cmt__Dunning__c	|true|
+[2021-07-09T16:49:20.177] [INFO] npm test - 01I1s000000A27S	|Interface Implementation	|vlocity_cmt__InterfaceImplementation__c	|true|
+[2021-07-09T16:49:20.177] [INFO] npm test - 01I1s000000A284	|Opportunity Member	|vlocity_cmt__OpportunityMember__c	|true|
+[2021-07-09T16:49:20.177] [INFO] npm test - 01I1s000000A26o	|Document Template	|vlocity_cmt__DocumentTemplate__c	|true|
+[2021-07-09T16:49:20.177] [INFO] npm test - 01I1s000000A27P	|Integration Retry Policy	|vlocity_cmt__IntegrationRetryPolicy__c	|true|
+[2021-07-09T16:49:20.177] [INFO] npm test - 01I1s000000A281	|Opportunity Discount	|vlocity_cmt__OpportunityDiscount__c	|true|
+[2021-07-09T16:49:20.177] [INFO] npm test - Case	|Case	|Case	|false|
+[2021-07-09T16:49:20.177] [INFO] npm test - 01I1s000000A26p	|Document Token	|vlocity_cmt__DocumentToken__c	|true|
+[2021-07-09T16:49:20.177] [INFO] npm test - 01I1s000000A282	|Opportunity Group	|vlocity_cmt__OpportunityGroup__c	|true|
+[2021-07-09T16:49:20.177] [INFO] npm test - 01I1s000000A27G	|Generic DocuSign Document	|vlocity_cmt__GenericDocument__c	|true|
+[2021-07-09T16:49:20.177] [INFO] npm test - 01I1s000000A26c	|Vlocity Data Store	|vlocity_cmt__Datastore__c	|true|
+[2021-07-09T16:49:20.177] [INFO] npm test - 01I1s000000A27D	|Fulfilment Request	|vlocity_cmt__FulfilmentRequest__c	|true|
+[2021-07-09T16:49:20.177] [INFO] npm test - 01I1s000000A26d	|Decomposition Relationship	|vlocity_cmt__DecompositionRelationship__c	|true|
+[2021-07-09T16:49:20.177] [INFO] npm test - 01I1s000000A26j	|Document Clause	|vlocity_cmt__DocumentClause__c	|true|
+[2021-07-09T16:49:20.179] [INFO] npm test - 01I1s000000A27H	|Generic DocuSign Envelope	|vlocity_cmt__GenericEnvelope__c	|true|
+[2021-07-09T16:49:20.180] [INFO] npm test - 01I1s000000A27I	|Generic DocuSign Recipient	|vlocity_cmt__GenericRecipient__c	|true|
+[2021-07-09T16:49:20.180] [INFO] npm test - Lead	|Lead	|Lead	|false|
+[2021-07-09T16:49:20.180] [INFO] npm test - DuplicateRecordSet	|Duplicate Record Set	|DuplicateRecordSet	|false|
+[2021-07-09T16:49:20.180] [INFO] npm test - 01I1s000000A25z	|Context Action	|vlocity_cmt__ContextAction__c	|true|
+[2021-07-09T16:49:20.180] [INFO] npm test - 01I1s000000A27B	|FRL Source Bundle Relationship	|vlocity_cmt__FulfilmentRequestLineSourceRootOrderItem__c	|true|
+[2021-07-09T16:49:20.180] [INFO] npm test - 01I1s000000A27C	|Fulfilment Request Line	|vlocity_cmt__FulfilmentRequestLine__c	|true|
+[2021-07-09T16:49:20.180] [INFO] npm test - 01I1s000000A27A	|FulfilmentRequestLineRelationship	|vlocity_cmt__FulfilmentRequestLineRelationship__c	|true|
+[2021-07-09T16:49:20.180] [INFO] npm test - 01I1s000000A27v	|Operating Hours and Exceptions	|vlocity_cmt__OperatingHoursEntry__c	|true|
+[2021-07-09T16:49:20.180] [INFO] npm test - 01I1s000000A298	|Product Relationship	|vlocity_cmt__ProductRelationship__c	|true|
+[2021-07-09T16:49:20.180] [INFO] npm test - 01I1s000000A27w	|Operating Hours	|vlocity_cmt__OperatingHours__c	|true|
+[2021-07-09T16:49:20.180] [INFO] npm test - 01I1s000000A28X	|Vlocity Outbound Configuration	|vlocity_cmt__OutboundConfiguration__c	|true|
+[2021-07-09T16:49:20.180] [INFO] npm test - 01I1s000000A299	|Product Template	|vlocity_cmt__ProductTemplate__c	|true|
+[2021-07-09T16:49:20.180] [INFO] npm test - 01I1s000000A27t	|Vlocity OmniScript	|vlocity_cmt__OmniScript__c	|true|
+[2021-07-09T16:49:20.180] [INFO] npm test - 01I1s000000A28U	|Order Product Rollup	|vlocity_cmt__OrderProductRollup__c	|true|
+[2021-07-09T16:49:20.180] [INFO] npm test - 01I1s000000A27u	|Omni User Session	|vlocity_cmt__OmniUserSession__c	|true|
+[2021-07-09T16:49:20.180] [INFO] npm test - 01I1s000000A28V	|Order Relationship	|vlocity_cmt__OrderRelationship__c	|true|
+[2021-07-09T16:49:20.181] [INFO] npm test - 01I1s000000A297	|Product Relationship Type	|vlocity_cmt__ProductRelationshipType__c	|true|
+[2021-07-09T16:49:20.181] [INFO] npm test - 01I1s000000A27z	|Opportunity Discount Item	|vlocity_cmt__OpportunityDiscountItem__c	|true|
+[2021-07-09T16:49:20.181] [INFO] npm test - 01I1s000000A27x	|Opportunity Applied Promotion Item	|vlocity_cmt__OpportunityAppliedPromotionItem__c	|true|
+[2021-07-09T16:49:20.181] [INFO] npm test - 01I1s000000A28Y	|Product Override Definition	|vlocity_cmt__OverrideDefinition__c	|true|
+[2021-07-09T16:49:20.181] [INFO] npm test - 01I1s000000A27y	|Opportunity Applied Promotion	|vlocity_cmt__OpportunityAppliedPromotion__c	|true|
+[2021-07-09T16:49:20.181] [INFO] npm test - 01I1s000000A27n	|Offer Migration Component Mapping	|vlocity_cmt__OfferMigrationComponentMapping__c	|true|
+[2021-07-09T16:49:20.181] [INFO] npm test - 01I1s000000A290	|Pricing Variable	|vlocity_cmt__PricingVariable__c	|true|
+[2021-07-09T16:49:20.181] [INFO] npm test - 01I1s000000A27o	|Offer Migration Plan	|vlocity_cmt__OfferMigrationPlan__c	|true|
+[2021-07-09T16:49:20.181] [INFO] npm test - 01I1s000000A28P	|Order Group	|vlocity_cmt__OrderGroup__c	|true|
+[2021-07-09T16:49:20.181] [INFO] npm test - 01I1s000000A291	|ProductAttribXN	|vlocity_cmt__ProductAttribXN__c	|true|
+[2021-07-09T16:49:20.181] [INFO] npm test - 01I1s000000A27l	|Vlocity Object Rule Assignment	|vlocity_cmt__ObjectRuleAssignment__c	|true|
+[2021-07-09T16:49:20.181] [INFO] npm test - 01I1s000000A28M	|Order Discount Pricing	|vlocity_cmt__OrderDiscountPricing__c	|true|
+[2021-07-09T16:49:20.181] [INFO] npm test - 01I1s000000A27m	|Vlocity Object Section	|vlocity_cmt__ObjectSection__c	|true|
+[2021-07-09T16:49:20.181] [INFO] npm test - 01I1s000000A28N	|Order Discount	|vlocity_cmt__OrderDiscount__c	|true|
+[2021-07-09T16:49:20.181] [INFO] npm test - 01I1s000000A27r	|Vlocity OmniScript Compiled Definition	|vlocity_cmt__OmniScriptDefinition__c	|true|
+[2021-07-09T16:49:20.181] [INFO] npm test - 01I1s000000A28S	|Order Member	|vlocity_cmt__OrderMember__c	|true|
+[2021-07-09T16:49:20.181] [INFO] npm test - 01I1s000000A294	|Product Configuration Procedure	|vlocity_cmt__ProductConfigurationProcedure__c	|true|
+[2021-07-09T16:49:20.181] [INFO] npm test - 01I1s000000A27s	|Saved OmniScript	|vlocity_cmt__OmniScriptInstance__c	|true|
+[2021-07-09T16:49:20.181] [INFO] npm test - 01I1s000000A28T	|Order Pricing	|vlocity_cmt__OrderPriceAdjustment__c	|true|
+[2021-07-09T16:49:20.181] [INFO] npm test - 01I1s000000A295	|Product Not Eligible	|vlocity_cmt__ProductEligibility__c	|true|
+[2021-07-09T16:49:20.181] [INFO] npm test - 01I1s000000A27p	|Offer Pricing Component	|vlocity_cmt__OfferPricingComponent__c	|true|
+[2021-07-09T16:49:20.182] [INFO] npm test - 01I1s000000A28Q	|Order Item Pricing Adjustment	|vlocity_cmt__OrderItemPriceAdjustment__c	|true|
+[2021-07-09T16:49:20.182] [INFO] npm test - 01I1s000000A292	|Product Not Available	|vlocity_cmt__ProductAvailability__c	|true|
+[2021-07-09T16:49:20.182] [INFO] npm test - 01I1s000000A27q	|Vlocity Offering Procedure	|vlocity_cmt__OfferingProcedure__c	|true|
+[2021-07-09T16:49:20.182] [INFO] npm test - 01I1s000000A28R	|Order Product Relationship	|vlocity_cmt__OrderItemRelationship__c	|true|
+[2021-07-09T16:49:20.182] [INFO] npm test - 01I1s000000A293	|Product Child Item	|vlocity_cmt__ProductChildItem__c	|true|
+[2021-07-09T16:49:20.182] [INFO] npm test - 01I1s000000A27f	|Object Applied Result	|vlocity_cmt__ObjectAppliedResult__c	|true|
+[2021-07-09T16:49:20.182] [INFO] npm test - 01I1s000000A28G	|Orchestration Scenario	|vlocity_cmt__OrchestrationScenario__c	|true|
+[2021-07-09T16:49:20.182] [INFO] npm test - 01I1s000000A27g	|Vlocity Object or Object Type	|vlocity_cmt__ObjectClass__c	|true|
+[2021-07-09T16:49:20.182] [INFO] npm test - 01I1s000000A28H	|Orchestration Scheduler Implementation	|vlocity_cmt__OrchestrationSchedulerImplementation__c	|true|
+[2021-07-09T16:49:20.182] [INFO] npm test - ProcessException	|Process Exception	|ProcessException	|false|
+[2021-07-09T16:49:20.182] [INFO] npm test - 01I1s000000A27d	|Manual Queue	|vlocity_cmt__ManualQueue__c	|true|
+[2021-07-09T16:49:20.182] [INFO] npm test - 01I1s000000A28E	|Orchestration Queue Assignment Rule	|vlocity_cmt__OrchestrationQueueAssignmentRule__c	|true|
+[2021-07-09T16:49:20.182] [INFO] npm test - 01I1s000000A28F	|Orchestration Queue	|vlocity_cmt__OrchestrationQueue__c	|true|
+[2021-07-09T16:49:20.183] [INFO] npm test - 01I1s000000A27j	|Vlocity Object Field Attribute	|vlocity_cmt__ObjectFieldAttribute__c	|true|
+[2021-07-09T16:49:20.183] [INFO] npm test - 01I1s000000A27k	|Vlocity Object Layout	|vlocity_cmt__ObjectLayout__c	|true|
+[2021-07-09T16:49:20.183] [INFO] npm test - 01I1s000000A28L	|Order Discount Item	|vlocity_cmt__OrderDiscountItem__c	|true|
+[2021-07-09T16:49:20.183] [INFO] npm test - CommSubscriptionChannelType	|Communication Subscription Channel Type	|CommSubscriptionChannelType	|false|
+[2021-07-09T16:49:20.183] [INFO] npm test - 01I1s000000A27h	|Vlocity Object Section Element	|vlocity_cmt__ObjectElement__c	|true|
+[2021-07-09T16:49:20.183] [INFO] npm test - 01I1s000000A28I	|Order Applied Promotion Affected Item	|vlocity_cmt__OrderAppliedPromotionItem__c	|true|
+[2021-07-09T16:49:20.183] [INFO] npm test - OrderItem	|Order Product	|OrderItem	|false|
+[2021-07-09T16:49:20.183] [INFO] npm test - 01I1s000000A27i	|Vlocity Object Facet	|vlocity_cmt__ObjectFacet__c	|true|
+[2021-07-09T16:49:20.183] [INFO] npm test - 01I1s000000A28J	|Order Applied Promotion	|vlocity_cmt__OrderAppliedPromotion__c	|true|
+[2021-07-09T16:49:20.183] [INFO] npm test - 01I1s000000A27b	|Line of Business	|vlocity_cmt__LineOfBusiness__c	|true|
+[2021-07-09T16:49:20.183] [INFO] npm test - 01I1s000000A28C	|Orchestration Plan Definition	|vlocity_cmt__OrchestrationPlanDefinition__c	|true|
+[2021-07-09T16:49:20.183] [INFO] npm test - 01I1s000000A27c	|Manual Queue Member	|vlocity_cmt__ManualQueueMember__c	|true|
+[2021-07-09T16:49:20.183] [INFO] npm test - 01I1s000000A28D	|Orchestration Plan	|vlocity_cmt__OrchestrationPlan__c	|true|
+[2021-07-09T16:49:20.183] [INFO] npm test - 01I1s000000A28A	|Orchestration Item Source	|vlocity_cmt__OrchestrationItemSource__c	|true|
+[2021-07-09T16:49:20.183] [INFO] npm test - 01I1s000000A27a	|Large Data Store	|vlocity_cmt__LargeDataStore__c	|true|
+[2021-07-09T16:49:20.184] [INFO] npm test - 01I1s000000A28B	|Orchestration Item	|vlocity_cmt__OrchestrationItem__c	|true|
+[2021-07-09T16:49:20.184] [INFO] npm test - VideoCall	|Video Call	|VideoCall	|false|
+[2021-07-09T16:49:20.184] [INFO] npm test - SocialPersona	|Social Persona	|SocialPersona	|false|
+[2021-07-09T16:49:20.184] [INFO] npm test - Order	|Order	|Order	|false|
+[2021-07-09T16:49:20.184] [INFO] npm test - EmailMessage	|Email Message	|EmailMessage	|false|
+[2021-07-09T16:49:20.184] [INFO] npm test - AuthorizationForm	|Authorization Form	|AuthorizationForm	|false|
+[2021-07-09T16:49:20.184] [INFO] npm test - LocationTrustMeasure	|Location Trust Measure	|LocationTrustMeasure	|false|
+[2021-07-09T16:49:20.184] [INFO] npm test - DataUsePurpose	|Data Use Purpose	|DataUsePurpose	|false|
+[2021-07-09T16:49:20.184] [INFO] npm test - User	|User	|User	|false|
+[2021-07-09T16:49:20.184] [INFO] npm test - Macro	|Macro	|Macro	|false|
+[2021-07-09T16:49:20.184] [INFO] npm test - CommSubscriptionConsent	|Communication Subscription Consent	|CommSubscriptionConsent	|false|
+[2021-07-09T16:49:20.184] [INFO] npm test - OpportunityContactRole	|Opportunity Contact Role	|OpportunityContactRole	|false|
+[2021-07-09T16:49:20.184] [INFO] npm test - Contact	|Contact	|Contact	|false|

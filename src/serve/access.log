@@ -1,0 +1,5 @@
+::1 - - [19/Nov/2021:08:14:22 +0000] "GET /sop1/1 HTTP/1.1" 200 129 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36"
+::1 - - [19/Nov/2021:08:14:35 +0000] "GET /sop/1 HTTP/1.1" 304 - "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36"
+::1 - - [19/Nov/2021:08:15:03 +0000] "GET /sop/customer HTTP/1.1" 200 21 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36"
+::1 - - [19/Nov/2021:08:44:55 +0000] "GET /sop/customer HTTP/1.1" 304 - "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36"
+::1 - - [19/Nov/2021:09:36:36 +0000] "GET /sop/customer HTTP/1.1" 200 73 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36"
