@@ -1,0 +1,368 @@
+<html>
+<head>
+	<link href="happy.png" rel="shortcut icon" type="image/x-icon">
+	<link href="test.css"  rel="stylesheet">
+	<script type="text/javascript" src="jquery.min.js"></script>
+	<script type="text/javascript" src="qrcode.js"></script>
+	
+	
+	<script type="text/javascript" src="reedsolomon.js"></script>
+	<script type="text/javascript" src="decodeData.js"></script>
+	<script type="text/javascript" src="version.js"></script>
+	<script type="text/javascript" src="binarizer.js"></script>
+	<script type="text/javascript" src="locator.js"></script>
+	<script type="text/javascript" src="extractor.js"></script>
+	
+	<script type="text/javascript" src="jsQR.js"></script>
+	<script type="text/javascript" src="deqrcode.js"></script>
+	<script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>自我学习</title>
+	<script type="text/javascript">
+        function readAsDataURL()
+        {
+            if(typeof FileReader=='undifined')          //鍒ゆ柇娴忚鍣ㄦ槸鍚︽敮鎸乫ilereader
+            {
+                result.innerHTML="<p>鎶辨瓑锛屼綘鐨勬祻瑙堝櫒涓嶆敮鎸?FileReader</p>";
+                return false;
+            }
+            var file=document.getElementById("imagefile").files[0];
+            if(!/image\/\w+/.test(file.type))           //鍒ゆ柇鑾峰彇鐨勬槸鍚︿负鍥剧墖鏂囦欢
+            {
+                alert("请确保文件为图像文件");
+                return false;
+            }
+            var reader=new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload=function(e)
+            {
+			console.log(this.result);
+                var result=document.getElementById("result");
+                result.innerHTML='<img src="'+this.result+'" alt=""/>'
+            }
+
+        }
+    </script>
+</head>
+
+<body>
+<div  ng-app="">
+	<div>
+		<div id="navfirst">
+			<ul id="menu">
+				<li id="h"><a select="true" title="二维码" ctrl="qrcode">二维码</a></li>
+				<li id="b"><a title="身份证" ctrl="idcart">身份证</a></li>
+				<li id="s"><a title="国家列表" ctrl="country">国家列表</a></li>
+				<li id="p"><a title="编程教程">编程教程</a></li>
+				<li id="x"><a title="XML 系列教程">XML 系列教程</a></li>
+				<li id="w"><a title="建站手册">建站手册</a></li>
+				<li id="r"><a title="参考手册">参考手册</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="idcart" active="false">
+		<section>
+			<h2>根据地址生成身份证</h2>
+			<div>
+				<p><span>国家</span><input id="countrytext" type="select" value="中国" style="width:30%" required="required"/></p>
+				<p><span>省</span><input id="provtext" type="select" value="广东" items="addRessData" style="width:30%" required="required"/></p>
+				<p><span>城市</span><input id="citytext" type="select" value="广州" style="width:30%" items="getCities" required="required"/></p>
+				<p><span>县</span><input id="districttext" type="select" value="广州" style="width:30%" items="getDistrict" required="required"/></p>
+				<p><span>生日</span><input type="date" type="color" value="2014-06-01" style="width:30%" required="required"/></p>
+				<p><span>性别</span>
+					<input type="select" items="getSex" value="男" name="correctLevel" style="width:30%" id="correctLeveltext"></input>
+				<p><span>typeNumber</span><input id="typeNumbertext" type="number" value="4" min="0" max="5" style="width:30%" required="required"/></p>
+			</div>
+			<input id="idCartRefresh" type="button" value="生成"/><br />
+		</section>
+	</div>
+	<div class="qrcode" active="true">
+		<section>
+			<h2>读取文件显示二维码</h2>
+			<p>
+				<label>请选择一个文件</label>
+				<input type="file" id="imagefile" />
+				<input type="button" value="读取图像" onClick="readAsDataURL();" />
+			</p>
+			<div name="result" id="result">
+				<!-- 杩欓噷鐢ㄦ潵鏄剧ず鍥剧墖缁撴灉-->
+			</div>
+		</section>
+
+		<script type="text/javascript">
+			function getBase64Image(img) {
+				var canvas = document.createElement("canvas");
+				canvas.width = img.width;
+				canvas.height = img.height;
+				var ctx = canvas.getContext("2d");
+				ctx.drawImage(img, 0, 0, img.width, img.height);
+				var dataURL = canvas.toDataURL("image/png");
+				return dataURL
+			}
+
+
+			function main() {
+				var img = new Image();
+				img.src = './generate.jpg';  //姝ゅ鑷繁鏇挎崲鏈湴鍥剧墖鐨勫湴鍧€
+				img.onload =function() {
+					//var data = getBase64Image(img);
+					var img1 = document.createElement('img');
+					//img1.src = data;
+					//document.body.appendChild(img1);
+					//console.log(data);
+				}
+			}
+			main()
+
+		</script>
+		<style>
+			p>span{
+				margin: 0 20px;
+				min-width:100px;
+				display: inline-block;
+			}
+		</style>
+
+		<section>
+			<h2>根据内容生成二维码</h2>
+			<div>
+				<p><span>width</span><input id="widthtext" type="text" value="100" style="width:30%" required="required"/></p>
+				<p><span>height</span><input id="heighttext" type="text" value="100" style="width:30%" required="required"/></p>
+				<p><span>colorDark</span><input id="colorDarktext" type="color" value="#42b983" style="width:30%" required="required"/></p>
+				<p><span>colorLight</span><input id="colorLighttext" type="color" value="#ffffff" style="width:30%" required="required"/></p>
+				<p><span>correctLevel</span>
+					<select name="correctLevel" style="width:30%" id="correctLeveltext">
+						<option value="1">L</option>
+						<option value="0">M</option>
+						<option value="3">Q</option>
+						<option value="2" selected="selected">H</option>
+					</select>
+				<p><span>typeNumber</span><input id="typeNumbertext" type="number" value="4" min="0" max="5" style="width:30%" required="required"/></p>
+			</div>
+			<input id="text" type="text" value="https://brave-koala-qs2mxe-dev-ed.lightning.force.com/lightning/n/Demo_App_Page" style="width:80%" /><br />
+			<input id="Refresh" type="button" value="Refresh"/><br />
+			<div id="qrcode" style="width:100px;  margin:15px;"></div>
+		</section>
+
+		<div>
+			<input id="genURL" type="button" value="生成URL"/>
+			<input id="genimg" type="button" value="生成图像"/>
+			<textarea id="qrcodeurl" type="textarea" style="width:80%"></textarea>
+		</div>
+		<div>
+			<img alt="Scan me!" id="testqrcode2" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==" style="display: block;">
+		</div>
+
+
+		<section>
+			<h2>识别二维码</h2>
+			<input id="scanqr" type="button" value="Scan"/><br />
+			<div id="scanqrdev" style="width:100px;  margin:15px;"></div>
+			<div id="qrcodecontainer" style="width:100px;  margin:15px;"></div>
+			<textarea id="scanqrtext" type="textarea" style="width:80%"></textarea>
+		</section>
+		<table>
+				<caption>
+					属性及其兼容性</caption>
+				<tbody>
+					<tr>
+						<th>
+							属性</th>
+						<th>
+							说明</th>
+						<th>
+							兼容性</th>
+					</tr>
+					<tr>
+						<td>
+							clientX</td>
+						<td>
+							以浏览器窗口左上顶角为原点，定位 x 轴坐标</td>
+						<td>
+							所有浏览器，不兼容 Safari</td>
+					</tr>
+					<tr>
+						<td>
+							clientY</td>
+						<td>
+							以浏览器窗口左上顶角为原点，定位 y 轴坐标</td>
+						<td>
+							所有浏览器，不兼容 Safari</td>
+					</tr>
+					<tr>
+						<td>
+							offsetX</td>
+						<td>
+							以当前事件的目标对象左上顶角为原点，定位 x 轴坐标</td>
+						<td>
+							所有浏览器，不兼容 Mozilla</td>
+					</tr>
+					<tr>
+						<td>
+							offsetY</td>
+						<td>
+							以当前事件的目标对象左上顶角为原点，定位 y 轴坐标</td>
+						<td>
+							所有浏览器，不兼容 Mozilla</td>
+					</tr>
+					<tr>
+						<td>
+							pageX</td>
+						<td>
+							以 document 对象（即文档窗口）左上顶角为原点，定位 x 轴坐标</td>
+						<td>
+							所有浏览器，不兼容 IE</td>
+					</tr>
+					<tr>
+						<td>
+							pageY</td>
+						<td>
+							以 document 对象（即文档窗口）左上顶角为原点，定位 y 轴坐标</td>
+						<td>
+							所有浏览器，不兼容 IE</td>
+					</tr>
+					<tr>
+						<td>
+							screenX</td>
+						<td>
+							计算机屏幕左上顶角为原点，定位 x 轴坐标</td>
+						<td>
+							所有浏览器</td>
+					</tr>
+					<tr>
+						<td>
+							screenY</td>
+						<td>
+							计算机屏幕左上顶角为原点，定位 y 轴坐标</td>
+						<td>
+							所有浏览器</td>
+					</tr>
+					<tr>
+						<td>
+							layerX</td>
+						<td>
+							最近的绝对定位的父元素（如果没有，则为 document 对象）左上顶角为元素，定位 x 轴坐标</td>
+						<td>
+							Mozilla 和 Safari</td>
+					</tr>
+					<tr>
+						<td>
+							layerY</td>
+						<td>
+							最近的绝对定位的父元素（如果没有，则为 document 对象）左上顶角为元素，定位 y 轴坐标</td>
+						<td>
+							Mozilla 和 Safari</td>
+					</tr>
+				</tbody>
+			</table>
+		<script type="text/javascript">
+		var qrcode = new QRCode(document.getElementById("qrcode"), {
+			width : 100,
+			height : 100,
+			text: "https://brave-koala-qs2mxe-dev-ed.lightning.force.com/lightning/n/Demo_App_Page",
+			colorDark : "#42b983",
+			colorLight : "#ffffff",
+			correctLevel : QRCode.CorrectLevel.L,
+			typeNumber:4
+		});
+
+		function makeCode () {		
+			var elText = document.getElementById("text");
+			
+			if (!elText.value) {
+				alert("Input a text");
+				elText.focus();
+				return;
+			}
+			
+			qrcode.makeCode(elText.value);
+		}
+
+		function erorrHandler(e){
+			e.target.src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg=="
+		}
+
+		makeCode();
+
+		$("#text").
+			on("blur", function () {
+				makeCode();
+			}).
+			on("keydown", function (e) {
+				if (e.keyCode == 13) {
+					makeCode();
+					
+				}
+			});
+			
+		$("#correctLeveltext").
+			on("change", function (e) {
+				console.log(event.target.value);
+				event.target.selected="selected";
+				console.log('correctLeveltext='+$("#correctLeveltext").val());
+			});
+		$("#Refresh").
+			on("click", function (e) {
+				var width = document.getElementById("widthtext").value;
+				var height = document.getElementById("heighttext").value;
+				var text = document.getElementById("widthtext").value;
+				var colorDark = document.getElementById("colorDarktext").value;
+				var colorLight = document.getElementById("colorLighttext").value;
+				var correctLevel = $("#correctLeveltext").val();
+				var typeNumber = document.getElementById("typeNumbertext").value;
+				
+				qrcode.overwritesOptions({
+					width : width,
+					height : height,
+					text: text,
+					colorDark : colorDark,
+					colorLight : colorLight,
+					correctLevel : Number(correctLevel),
+					typeNumber:typeNumber
+				})
+				makeCode();
+			});
+		$("#genURL").on("click", function(e){
+			var data = getBase64Image(document.getElementById("testqrcode"));
+			console.log('img url = ' +　data);
+			var elText = document.getElementById("qrcodeurl");
+			elText.value=data;
+			
+			var data2 = document.getElementById("testqrcode2");
+			data2.src=data;
+		});
+		$("#genimg").on("click", function(e){
+			var imgTextData = document.getElementById("qrcodeurl").value;
+			console.log('img url = ' +　imgTextData);
+			var aMat = imgTextData.match(/data:image.*/i);
+
+			if (aMat) {
+				var data2 = document.getElementById("testqrcode2");
+				data2.src=imgTextData;
+			}
+			
+		});
+		$("#testqrcode2").on("error", function(e){
+			erorrHandler(e);
+			
+		});
+		$("#scanqr").on("click", function(e){
+			process('testqrcode', 'scanqrtext');
+		})
+		</script>
+	</div>
+	
+	
+	<div class="country" active="false">
+	<input class="cfc-select-input" id="countrytext" type="select" value="中国" style="width:30%" required="required" items="countryList"/>
+	
+	</div>
+	</div>
+	
+	<div _ngcontent-xfg-c325="" aria-label="选项" hide="" role="listbox" tabindex="-1" class="ace-select-body cfc-select-body ng-star-inserted" id="cfc-select-0-listbox" ></div>
+	<script type="text/javascript" src="address.js"></script>
+	<script type="text/javascript" src="menu.js"></script>
+	<script type="text/javascript" src="combobox.js"></script>
+</body>
+</html>

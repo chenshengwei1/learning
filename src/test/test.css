@@ -1,0 +1,94 @@
+div#navfirst ul#menu li a {
+	text-decoration: none;
+}
+ul#menu li, ul#menu a {
+	display: block;
+	height: 48px;
+	border-bottom: 0;
+}
+a:link, a:visited {
+	text-decoration: none;
+	color: #900b09;
+	background: transparent;
+	border-bottom: 1px solid #900b09;
+}
+div#navfirst ul#menu li {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	top: 0;
+	display: inline-block;
+	background-color: antiquewhite;
+}
+ul#menu li, ul#menu a {
+	display: block;
+	height: 48px;
+	border-bottom: 0;
+}
+ul#menu li:hover, ul#menu a:hover {
+	background-color: red;
+}
+ul#menu li[select='true'], ul#menu a[select='true'] {
+	background-color: red;
+}
+div#navfirst ul#menu {
+	height: 48px;
+	width: 1210px;
+	margin: 0;
+	padding: 0;
+	position: relative;
+}
+[active="false"]{
+	display:none;
+}
+
+input{
+	line-height: 24px;
+}
+
+.ace-select-body .mat-option{
+	display: flex;
+    flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ace-select-body {
+    max-height: 256px;
+    max-height: min(256px, 100vh - 160px);
+    overflow: auto;
+    padding-bottom: 8px;
+    padding-top: 8px;
+	background: #ecf8fa;
+	position: absolute;
+}
+
+.mat-option {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    line-height: 48px;
+    height: 48px;
+    padding: 0 16px;
+    text-align: left;
+    text-decoration: none;
+    max-width: 100%;
+    position: relative;
+    cursor: pointer;
+    outline: none;
+    display: flex;
+    flex-direction: row;
+    max-width: 100%;
+    box-sizing: border-box;
+    align-items: center;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.mat-option:hover{
+	background: rgba(0,0,0,.04);
+}
+
+.hide{
+	display: none;
+}
