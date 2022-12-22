@@ -1,45 +1,63 @@
 <html>
+
 <head>
-	<link href="happy.png" rel="shortcut icon" type="image/x-icon">
-	<link href="test.css"  rel="stylesheet">
-	<script type="text/javascript" src="jquery.min.js"></script>
-	<script type="text/javascript" src="qrcode.js"></script>
+    <script>
+        var fetch1 = window.fetch;
+
+        let fetch2 = function () {
+            console.log(' fetch argments ', arguments);
+            return fetch1(arguments);
+        }
+        window.fetch = fetch2;
+    </script>
+    <link href="happy.png" rel="shortcut icon" type="image/x-icon">
+    <link href="test.css" rel="stylesheet">
+    <link href="iconfont.css" rel="stylesheet">
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="qrcode.js"></script>
+
+
+    <script type="text/javascript" src="reedsolomon.js"></script>
+    <script type="text/javascript" src="decodeData.js"></script>
+    <script type="text/javascript" src="version.js"></script>
+    <script type="text/javascript" src="binarizer.js"></script>
+    <script type="text/javascript" src="locator.js"></script>
+    <script type="text/javascript" src="extractor.js"></script>
+
+    <script type="text/javascript" src="jsQR.js"></script>
+	<script type="text/javascript" src="schema.js"></script>
+    <script type="text/javascript" src="deqrcode.js"></script>
+    <script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>
+    <script src="elementExtendedDetail.js"></script>
+    <script src="core.js"></script>
+	
+	<script src="https://www.chartjs.org/dist/master/chart.js"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly"></script>
 	
 	
-	<script type="text/javascript" src="reedsolomon.js"></script>
-	<script type="text/javascript" src="decodeData.js"></script>
-	<script type="text/javascript" src="version.js"></script>
-	<script type="text/javascript" src="binarizer.js"></script>
-	<script type="text/javascript" src="locator.js"></script>
-	<script type="text/javascript" src="extractor.js"></script>
-	
-	<script type="text/javascript" src="jsQR.js"></script>
-	<script type="text/javascript" src="deqrcode.js"></script>
-	<script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>自我学习</title>
-	<script type="text/javascript">
-        function readAsDataURL()
-        {
-            if(typeof FileReader=='undifined')          //鍒ゆ柇娴忚鍣ㄦ槸鍚︽敮鎸乫ilereader
+    <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+    <title>自我学习</title>
+    <script type="text/javascript">
+        function readAsDataURL() {
+            if (typeof FileReader == 'undifined')          //鍒ゆ柇娴忚鍣ㄦ槸鍚︽敮鎸乫ilereader
             {
-                result.innerHTML="<p>鎶辨瓑锛屼綘鐨勬祻瑙堝櫒涓嶆敮鎸?FileReader</p>";
+                result.innerHTML = "<p>鎶辨瓑锛屼綘鐨勬祻瑙堝櫒涓嶆敮鎸?FileReader</p>";
                 return false;
             }
-            var file=document.getElementById("imagefile").files[0];
-            if(!/image\/\w+/.test(file.type))           //鍒ゆ柇鑾峰彇鐨勬槸鍚︿负鍥剧墖鏂囦欢
+            var file = document.getElementById("imagefile").files[0];
+            if (!/image\/\w+/.test(file.type))           //鍒ゆ柇鑾峰彇鐨勬槸鍚︿负鍥剧墖鏂囦欢
             {
                 alert("请确保文件为图像文件");
                 return false;
             }
-            var reader=new FileReader();
+            var reader = new FileReader();
             reader.readAsDataURL(file);
-            reader.onload=function(e)
-            {
-			console.log(this.result);
-                var result=document.getElementById("result");
-                result.innerHTML='<img src="'+this.result+'" alt=""/>'
+            reader.onload = function (e) {
+                console.log(this.result);
+                var result = document.getElementById("result");
+                result.innerHTML = '<img src="' + this.result + '" alt=""/>'
             }
 
         }
@@ -47,322 +65,1895 @@
 </head>
 
 <body>
-<div  ng-app="">
-	<div>
-		<div id="navfirst">
-			<ul id="menu">
-				<li id="h"><a select="true" title="二维码" ctrl="qrcode">二维码</a></li>
-				<li id="b"><a title="身份证" ctrl="idcart">身份证</a></li>
-				<li id="s"><a title="国家列表" ctrl="country">国家列表</a></li>
-				<li id="p"><a title="编程教程">编程教程</a></li>
-				<li id="x"><a title="XML 系列教程">XML 系列教程</a></li>
-				<li id="w"><a title="建站手册">建站手册</a></li>
-				<li id="r"><a title="参考手册">参考手册</a></li>
-			</ul>
-		</div>
-	</div>
-	<div class="idcart" active="false">
-		<section>
-			<h2>根据地址生成身份证</h2>
-			<div>
-				<p><span>国家</span><input id="countrytext" type="select" value="中国" style="width:30%" required="required"/></p>
-				<p><span>省</span><input id="provtext" type="select" value="广东" items="addRessData" style="width:30%" required="required"/></p>
-				<p><span>城市</span><input id="citytext" type="select" value="广州" style="width:30%" items="getCities" required="required"/></p>
-				<p><span>县</span><input id="districttext" type="select" value="广州" style="width:30%" items="getDistrict" required="required"/></p>
-				<p><span>生日</span><input type="date" type="color" value="2014-06-01" style="width:30%" required="required"/></p>
-				<p><span>性别</span>
-					<input type="select" items="getSex" value="男" name="correctLevel" style="width:30%" id="correctLeveltext"></input>
-				<p><span>typeNumber</span><input id="typeNumbertext" type="number" value="4" min="0" max="5" style="width:30%" required="required"/></p>
-			</div>
-			<input id="idCartRefresh" type="button" value="生成"/><br />
-		</section>
-	</div>
-	<div class="qrcode" active="true">
-		<section>
-			<h2>读取文件显示二维码</h2>
-			<p>
-				<label>请选择一个文件</label>
-				<input type="file" id="imagefile" />
-				<input type="button" value="读取图像" onClick="readAsDataURL();" />
-			</p>
-			<div name="result" id="result">
-				<!-- 杩欓噷鐢ㄦ潵鏄剧ず鍥剧墖缁撴灉-->
-			</div>
-		</section>
+    <div ng-app="">
+        <div class="header" style="transform: translateY(0px);">
+            <div class="l-content">
+                <a href="https://www.baozimh.com/comic/yirenzhixia-dongmantang" class="btns back csw-accessed"></a>
+                <span class="cut"></span>
+                <a href="https://www.baozimh.com/" class="btns home"></a>
+                <div class="text">
+                    <span class="title">304 你不是我的默默抠！</span>
+                </div>
+                <a href="https://www.baozimh.com/comic/yirenzhixia-dongmantang" class="btns goto csw-accessed"
+                    style="width: 40px;">
+                    目录
+                </a>
+            </div>
 
-		<script type="text/javascript">
-			function getBase64Image(img) {
-				var canvas = document.createElement("canvas");
-				canvas.width = img.width;
-				canvas.height = img.height;
-				var ctx = canvas.getContext("2d");
-				ctx.drawImage(img, 0, 0, img.width, img.height);
-				var dataURL = canvas.toDataURL("image/png");
-				return dataURL
-			}
+        </div>
+        <div class="csw-head">
+            <div id="navfirst">
+                <ul id="menu">
+                    <li id="h"><a select="true" title="二维码" ctrl="qrcode">二维码</a></li>
+                    <li id="b"><a title="身份证" ctrl="idcart">身份证</a></li>
+                    <li id="s"><a title="国家列表" ctrl="country">国家列表</a></li>
+                    <li id="p"><a title="html2doc" ctrl="html2doc">html2doc</a></li>
+                    <li id="x"><a title="Chrome插件" ctrl="chrome-plugin">Chrome插件</a></li>
+                    <li id="w"><a title="字体" ctrl="font">字体</a></li>
+                    <li id="r"><a title="SVG Canvas" ctrl="svgcanvas">SVG Canvas</a></li>
+                    <li id="r1"><a title="sort" ctrl="sort">sort</a></li>
+                    <li id="r2"><a title="chart" ctrl="chart">chart</a></li>
+                    <li id="r3"><a title="words" ctrl="words">words</a></li>
+                    <li id="r4"><a title="clock" ctrl="clock">clock</a></li>
+                    <li id="r5"><a title="location" ctrl="location">location</a></li>
+                    <li id="r6"><a title="schema" ctrl="schema">schema</a></li>
+                    <li id="r7"><a title="参考手册" ctrl="tabitem8">未现8</a></li>
+                    <li id="r8"><a title="参考手册" ctrl="tabitem9">未实现9</a></li>
+                    <li id="r9"><a title="参考手册" ctrl="tabitem10">未实现10</a></li>
+                    <li id="r10"><a title="参考手册" ctrl="tabitem11">未实现11</a></li>
+                    <li id="r11"><a title="参考手册" ctrl="tabitem12">未实现12</a></li>
+                    <li id="submenu"><a ctrl="submenu" style="font-size: x-large;letter-spacing: -4px;">≡≡</a></li>
+                </ul>
+                <ul id="submenuul" style="display:none">
+                    <li id="sh"><a select="true" title="二维码" ctrl="qrcode">未实现13</a></li>
+                    <li id="sb"><a title="身份证" ctrl="idcart">未实现14</a></li>
+                    <li id="ss"><a title="国家列表" ctrl="country">未实现15</a></li>
+                    <li id="sp"><a title="html2doc" ctrl="html2doc">未实现16</a></li>
+                    <li id="sx"><a title="Chrome插件" ctrl="chrome-plugin">未实现17</a></li>
+                    <li id="sw"><a title="字体" ctrl="font">未实现18</a></li>
+                    <li id="sr"><a title="SVG Canvas" ctrl="svgcanvas">未实现19</a></li>
+                    <li id="sr1"><a title="参考手册" ctrl="tabitem2">未实现20</a></li>
+                    <li id="sr2"><a title="参考手册" ctrl="tabitem3">未实现23</a></li>
+                    <li id="sr3"><a title="参考手册" ctrl="tabitem4">未实现24</a></li>
+                    <li id="sr4"><a title="参考手册" ctrl="tabitem5">未实现25</a></li>
+                    <li id="sr5"><a title="参考手册" ctrl="tabitem6">未实现26</a></li>
+                    <li id="sr6"><a title="参考手册" ctrl="tabitem7">未实现27</a></li>
+                    <li id="sr7"><a title="参考手册" ctrl="tabitem8">未现28</a></li>
+                    <li id="sr8"><a title="参考手册" ctrl="tabitem9">未实现29</a></li>
+                    <li id="sr9"><a title="参考手册" ctrl="tabitem10">未实现30</a></li>
+                    <li id="sr10"><a title="参考手册" ctrl="tabitem11">未实现31</a></li>
+                    <li id="sr11"><a title="参考手册" ctrl="tabitem12">未实现32</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="csw-tab-body">
+            <div class="idcart" active="false">
+                <section>
+                    <h2>根据地址生成身份证</h2>
+                    <div>
+                        <p>
+                            <span>国家</span>
+                            <input id="countrytext" type="select" value="中国" style="width:30%" required="required" />
+                        </p>
+                        <p>
+                            <span>省</span>
+                            <csw-select id="provtext" type="select" value="广东" items="addRessData" style="width:30%"
+                                required="required" />
+                        </p>
+                        <p>
+                            <span>城市</span>
+                            <csw-select id="citytext" type="select" value="广州" style="width:30%" items="getCities"
+                                required="required" />
+                        </p>
+                        <p>
+                            <span>县</span>
+                            <csw-select id="districttext" type="select" value="广州" style="width:30%" items="getDistrict"
+                                required="required" />
+                        </p>
+                        <p>
+                            <span>生日</span>
+                            <input type="date" type="color" value="2014-06-01" style="width:30%" required="required" />
+                        </p>
+                        <p>
+                            <span>性别</span>
+                            <csw-select type="select" items="getSex" value="男" name="correctLevel" style="width:30%"
+                                id="correctLeveltext">
+                            </csw-select>
+                        </p>
+                        <p>
+                            <span>typeNumber</span>
+                            <input id="typeNumbertext" type="number" value="4" min="0" max="5" style="width:30%"
+                                required="required" />
+                        </p>
+                    </div>
+                    <input id="idCartRefresh" type="button" value="生成" /><br />
+                </section>
+            </div>
+            <div class="qrcode" active="true">
+                <section>
+                    <h2>读取文件显示二维码</h2>
+                    <p>
+                        <label>请选择一个文件</label>
+                        <input type="file" id="imagefile" />
+                        <input type="button" value="读取图像" onClick="readAsDataURL();" />
+                    </p>
+                    <div name="result" id="result">
+                        <!-- 杩欓噷鐢ㄦ潵鏄剧ず鍥剧墖缁撴灉-->
+                    </div>
+                </section>
+
+                <script type="text/javascript">
+                    function getBase64Image(img) {
+                        var canvas = document.createElement("canvas");
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        var ctx = canvas.getContext("2d");
+                        ctx.drawImage(img, 0, 0, img.width, img.height);
+                        var dataURL = canvas.toDataURL("image/png");
+                        return dataURL
+                    }
 
 
-			function main() {
-				var img = new Image();
-				img.src = './generate.jpg';  //姝ゅ鑷繁鏇挎崲鏈湴鍥剧墖鐨勫湴鍧€
-				img.onload =function() {
-					//var data = getBase64Image(img);
-					var img1 = document.createElement('img');
-					//img1.src = data;
-					//document.body.appendChild(img1);
-					//console.log(data);
-				}
-			}
-			main()
+                    function main() {
+                        var img = new Image();
+                        img.src = './generate.jpg';  //姝ゅ鑷繁鏇挎崲鏈湴鍥剧墖鐨勫湴鍧€
+                        img.onload = function () {
+                            //var data = getBase64Image(img);
+                            var img1 = document.createElement('img');
+                            //img1.src = data;
+                            //document.body.appendChild(img1);
+                            //console.log(data);
+                        }
+                    }
+                    main()
 
-		</script>
-		<style>
-			p>span{
-				margin: 0 20px;
-				min-width:100px;
-				display: inline-block;
-			}
-		</style>
+                </script>
+                <style>
+                    p>span {
+                        margin: 0 20px;
+                        min-width: 100px;
+                        display: inline-block;
+                    }
+                </style>
 
-		<section>
-			<h2>根据内容生成二维码</h2>
-			<div>
-				<p><span>width</span><input id="widthtext" type="text" value="100" style="width:30%" required="required"/></p>
-				<p><span>height</span><input id="heighttext" type="text" value="100" style="width:30%" required="required"/></p>
-				<p><span>colorDark</span><input id="colorDarktext" type="color" value="#42b983" style="width:30%" required="required"/></p>
-				<p><span>colorLight</span><input id="colorLighttext" type="color" value="#ffffff" style="width:30%" required="required"/></p>
-				<p><span>correctLevel</span>
-					<select name="correctLevel" style="width:30%" id="correctLeveltext">
-						<option value="1">L</option>
-						<option value="0">M</option>
-						<option value="3">Q</option>
-						<option value="2" selected="selected">H</option>
-					</select>
-				<p><span>typeNumber</span><input id="typeNumbertext" type="number" value="4" min="0" max="5" style="width:30%" required="required"/></p>
-			</div>
-			<input id="text" type="text" value="https://brave-koala-qs2mxe-dev-ed.lightning.force.com/lightning/n/Demo_App_Page" style="width:80%" /><br />
-			<input id="Refresh" type="button" value="Refresh"/><br />
-			<div id="qrcode" style="width:100px;  margin:15px;"></div>
-		</section>
+                <section>
+                    <h2>根据内容生成二维码</h2>
+                    <div>
+                        <p>
+                            <span>width</span>
+                            <input id="widthtext" type="text" value="100" style="width:30%" required="required" />
+                        </p>
+                        <p>
+                            <span>height</span>
+                            <input id="heighttext" type="text" value="100" style="width:30%" required="required" />
+                        </p>
+                        <p><span>colorDark</span>
+                            <input id="colorDarktext" type="color" value="#42b983" style="width:30%"
+                                required="required" />
+                        </p>
+                        <p>
+                            <span>colorLight</span>
+                            <input id="colorLighttext" type="color" value="#ffffff" style="width:30%"
+                                required="required" />
+                        </p>
+                        <p>
+                            <span>correctLevel</span>
+                            <select name="correctLevel" style="width:30%" id="correctLeveltext">
+                                <option value="1">L</option>
+                                <option value="0">M</option>
+                                <option value="3">Q</option>
+                                <option value="2" selected="selected">H</option>
+                            </select>
+                        <p>
+                            <span>typeNumber</span>
+                            <input id="typeNumbertext" type="number" value="4" min="0" max="5" style="width:30%"
+                                required="required" />
+                        </p>
+                    </div>
+                    <input id="text" type="text"
+                        value="https://brave-koala-qs2mxe-dev-ed.lightning.force.com/lightning/n/Demo_App_Page"
+                        style="width:80%" />
+                    <br />
+                    <input id="Refresh" type="button" value="Refresh" />
+                    <br />
+                    <div id="qrcode" style="width:100px;  margin:15px;"></div>
+                </section>
 
-		<div>
-			<input id="genURL" type="button" value="生成URL"/>
-			<input id="genimg" type="button" value="生成图像"/>
-			<textarea id="qrcodeurl" type="textarea" style="width:80%"></textarea>
-		</div>
-		<div>
-			<img alt="Scan me!" id="testqrcode2" src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==" style="display: block;">
-		</div>
+                <div>
+                    <input id="genURL" type="button" value="生成URL" />
+                    <input id="genimg" type="button" value="生成图像" />
+                    <textarea id="qrcodeurl" type="textarea" style="width:80%"></textarea>
+                </div>
+                <div>
+                    <img alt="Scan me!" id="testqrcode2"
+                        src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg=="
+                        style="display: block;" />
+                </div>
 
 
-		<section>
-			<h2>识别二维码</h2>
-			<input id="scanqr" type="button" value="Scan"/><br />
-			<div id="scanqrdev" style="width:100px;  margin:15px;"></div>
-			<div id="qrcodecontainer" style="width:100px;  margin:15px;"></div>
-			<textarea id="scanqrtext" type="textarea" style="width:80%"></textarea>
-		</section>
-		<table>
-				<caption>
-					属性及其兼容性</caption>
-				<tbody>
-					<tr>
-						<th>
-							属性</th>
-						<th>
-							说明</th>
-						<th>
-							兼容性</th>
-					</tr>
-					<tr>
-						<td>
-							clientX</td>
-						<td>
-							以浏览器窗口左上顶角为原点，定位 x 轴坐标</td>
-						<td>
-							所有浏览器，不兼容 Safari</td>
-					</tr>
-					<tr>
-						<td>
-							clientY</td>
-						<td>
-							以浏览器窗口左上顶角为原点，定位 y 轴坐标</td>
-						<td>
-							所有浏览器，不兼容 Safari</td>
-					</tr>
-					<tr>
-						<td>
-							offsetX</td>
-						<td>
-							以当前事件的目标对象左上顶角为原点，定位 x 轴坐标</td>
-						<td>
-							所有浏览器，不兼容 Mozilla</td>
-					</tr>
-					<tr>
-						<td>
-							offsetY</td>
-						<td>
-							以当前事件的目标对象左上顶角为原点，定位 y 轴坐标</td>
-						<td>
-							所有浏览器，不兼容 Mozilla</td>
-					</tr>
-					<tr>
-						<td>
-							pageX</td>
-						<td>
-							以 document 对象（即文档窗口）左上顶角为原点，定位 x 轴坐标</td>
-						<td>
-							所有浏览器，不兼容 IE</td>
-					</tr>
-					<tr>
-						<td>
-							pageY</td>
-						<td>
-							以 document 对象（即文档窗口）左上顶角为原点，定位 y 轴坐标</td>
-						<td>
-							所有浏览器，不兼容 IE</td>
-					</tr>
-					<tr>
-						<td>
-							screenX</td>
-						<td>
-							计算机屏幕左上顶角为原点，定位 x 轴坐标</td>
-						<td>
-							所有浏览器</td>
-					</tr>
-					<tr>
-						<td>
-							screenY</td>
-						<td>
-							计算机屏幕左上顶角为原点，定位 y 轴坐标</td>
-						<td>
-							所有浏览器</td>
-					</tr>
-					<tr>
-						<td>
-							layerX</td>
-						<td>
-							最近的绝对定位的父元素（如果没有，则为 document 对象）左上顶角为元素，定位 x 轴坐标</td>
-						<td>
-							Mozilla 和 Safari</td>
-					</tr>
-					<tr>
-						<td>
-							layerY</td>
-						<td>
-							最近的绝对定位的父元素（如果没有，则为 document 对象）左上顶角为元素，定位 y 轴坐标</td>
-						<td>
-							Mozilla 和 Safari</td>
-					</tr>
-				</tbody>
-			</table>
-		<script type="text/javascript">
-		var qrcode = new QRCode(document.getElementById("qrcode"), {
-			width : 100,
-			height : 100,
-			text: "https://brave-koala-qs2mxe-dev-ed.lightning.force.com/lightning/n/Demo_App_Page",
-			colorDark : "#42b983",
-			colorLight : "#ffffff",
-			correctLevel : QRCode.CorrectLevel.L,
-			typeNumber:4
-		});
+                <section>
+                    <h2>识别二维码</h2>
+                    <input id="scanqr" type="button" value="Scan" /><br />
+                    <div id="scanqrdev" style="width:100px;  margin:15px;"></div>
+                    <div id="qrcodecontainer" style="width:100px;  margin:15px;"></div>
+                    <textarea id="scanqrtext" type="textarea" style="width:80%"></textarea>
+                </section>
+                <table>
+                    <caption>
+                        属性及其兼容性</caption>
+                    <tbody>
+                        <tr>
+                            <th>
+                                属性</th>
+                            <th>
+                                说明</th>
+                            <th>
+                                兼容性</th>
+                        </tr>
+                        <tr>
+                            <td>
+                                clientX</td>
+                            <td>
+                                以浏览器窗口左上顶角为原点，定位 x 轴坐标</td>
+                            <td>
+                                所有浏览器，不兼容 Safari</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                clientY</td>
+                            <td>
+                                以浏览器窗口左上顶角为原点，定位 y 轴坐标</td>
+                            <td>
+                                所有浏览器，不兼容 Safari</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                offsetX</td>
+                            <td>
+                                以当前事件的目标对象左上顶角为原点，定位 x 轴坐标</td>
+                            <td>
+                                所有浏览器，不兼容 Mozilla</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                offsetY</td>
+                            <td>
+                                以当前事件的目标对象左上顶角为原点，定位 y 轴坐标</td>
+                            <td>
+                                所有浏览器，不兼容 Mozilla</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                pageX</td>
+                            <td>
+                                以 document 对象（即文档窗口）左上顶角为原点，定位 x 轴坐标</td>
+                            <td>
+                                所有浏览器，不兼容 IE</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                pageY</td>
+                            <td>
+                                以 document 对象（即文档窗口）左上顶角为原点，定位 y 轴坐标</td>
+                            <td>
+                                所有浏览器，不兼容 IE</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                screenX</td>
+                            <td>
+                                计算机屏幕左上顶角为原点，定位 x 轴坐标</td>
+                            <td>
+                                所有浏览器</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                screenY</td>
+                            <td>
+                                计算机屏幕左上顶角为原点，定位 y 轴坐标</td>
+                            <td>
+                                所有浏览器</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                layerX</td>
+                            <td>
+                                最近的绝对定位的父元素（如果没有，则为 document 对象）左上顶角为元素，定位 x 轴坐标</td>
+                            <td>
+                                Mozilla 和 Safari</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                layerY</td>
+                            <td>
+                                最近的绝对定位的父元素（如果没有，则为 document 对象）左上顶角为元素，定位 y 轴坐标</td>
+                            <td>
+                                Mozilla 和 Safari</td>
+                        </tr>
+                    </tbody>
+                </table>
 
-		function makeCode () {		
-			var elText = document.getElementById("text");
-			
-			if (!elText.value) {
-				alert("Input a text");
-				elText.focus();
-				return;
-			}
-			
-			qrcode.makeCode(elText.value);
-		}
+                <table>
+                    <caption>
+                        页面元素的位置</caption>
+                    <tbody>
+                        <tr>
+                            <th>
+                                属性</th>
+                            <th>
+                                说明</th>
+                            <th>
+                                兼容性</th>
+                        </tr>
+                        <tr>
+                            <td>
+                                clientHeight</td>
+                            <td>网页上的每个元素，都有clientHeight和clientWidth属性。这两个属性指元素的内容部分再加上padding的所占据的视觉面积，不包括border和滚动条占用的空间。
+                            </td>
+                            <td>
+                                所有浏览器，不兼容 Safari</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                clientWidth</td>
+                            <td>网页上的每个元素，都有clientHeight和clientWidth属性。这两个属性指元素的内容部分再加上padding的所占据的视觉面积，不包括border和滚动条占用的空间。
+                            </td>
+                            <td>
+                                所有浏览器，不兼容 Safari</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                scrollHeight</td>
+                            <td>
+                                网页上的每个元素还有scrollHeight和scrollWidth属性，指包含滚动条在内的该元素的视觉面积。</td>
+                            <td>
+                                所有浏览器，不兼容 Mozilla</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                scrollWidth</td>
+                            <td>
+                                网页上的每个元素还有scrollHeight和scrollWidth属性，指包含滚动条在内的该元素的视觉面积。</td>
+                            <td>
+                                所有浏览器，不兼容 Mozilla</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                offsetTop</td>
+                            <td>
+                                每个元素都有offsetTop和offsetLeft属性，表示该元素的左上角与父容器（offsetParent对象）左上角的距离</td>
+                            <td>
+                                所有浏览器，不兼容 IE</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                offsetLeft</td>
+                            <td>
+                                每个元素都有offsetTop和offsetLeft属性，表示该元素的左上角与父容器（offsetParent对象）左上角的距离</td>
+                            <td>
+                                所有浏览器，不兼容 IE</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                scrollTop</td>
+                            <td>
+                                滚动条滚动的垂直距离，是document对象的scrollTop属性</td>
+                            <td>
+                                所有浏览器</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                scrollLeft</td>
+                            <td>
+                                滚动条滚动的水平距离是document对象的scrollLeft属性</td>
+                            <td>
+                                所有浏览器</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                left</td>
+                            <td>相对位置就是 var X= this.getBoundingClientRect().left;</td>
+                            <td>
+                                Mozilla 和 Safari</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                top</td>
+                            <td>
+                                var Y =this.getBoundingClientRect().top;绝对位置
 
-		function erorrHandler(e){
-			e.target.src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg=="
-		}
+                                　　var X= this.getBoundingClientRect().left+document.documentElement.scrollLeft;
 
-		makeCode();
+                                　　var Y =this.getBoundingClientRect().top+document.documentElement.scrollTop;</td>
+                            <td>
+                                Mozilla 和 Safari</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <script type="text/javascript">
+                    var qrcode = new QRCode(document.getElementById("qrcode"), {
+                        width: 100,
+                        height: 100,
+                        text: "https://brave-koala-qs2mxe-dev-ed.lightning.force.com/lightning/n/Demo_App_Page",
+                        colorDark: "#42b983",
+                        colorLight: "#ffffff",
+                        correctLevel: QRCode.CorrectLevel.L,
+                        typeNumber: 4
+                    });
 
-		$("#text").
-			on("blur", function () {
-				makeCode();
-			}).
-			on("keydown", function (e) {
-				if (e.keyCode == 13) {
-					makeCode();
-					
-				}
-			});
-			
-		$("#correctLeveltext").
-			on("change", function (e) {
-				console.log(event.target.value);
-				event.target.selected="selected";
-				console.log('correctLeveltext='+$("#correctLeveltext").val());
-			});
-		$("#Refresh").
-			on("click", function (e) {
-				var width = document.getElementById("widthtext").value;
-				var height = document.getElementById("heighttext").value;
-				var text = document.getElementById("widthtext").value;
-				var colorDark = document.getElementById("colorDarktext").value;
-				var colorLight = document.getElementById("colorLighttext").value;
-				var correctLevel = $("#correctLeveltext").val();
-				var typeNumber = document.getElementById("typeNumbertext").value;
+                    function makeCode() {
+                        var elText = document.getElementById("text");
+
+                        if (!elText.value) {
+                            alert("Input a text");
+                            elText.focus();
+                            return;
+                        }
+
+                        qrcode.makeCode(elText.value);
+                    }
+
+                    function erorrHandler(e) {
+                        e.target.src = "data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg=="
+                    }
+
+                    makeCode();
+
+                    $("#text").
+                        on("blur", function () {
+                            makeCode();
+                        }).
+                        on("keydown", function (e) {
+                            if (e.keyCode == 13) {
+                                makeCode();
+
+                            }
+                        });
+
+                    $("#correctLeveltext").
+                        on("change", function (e) {
+                            console.log(event.target.value);
+                            event.target.selected = "selected";
+                            console.log('correctLeveltext=' + $("#correctLeveltext").val());
+                        });
+                    $("#Refresh").
+                        on("click", function (e) {
+                            var width = document.getElementById("widthtext").value;
+                            var height = document.getElementById("heighttext").value;
+                            var text = document.getElementById("widthtext").value;
+                            var colorDark = document.getElementById("colorDarktext").value;
+                            var colorLight = document.getElementById("colorLighttext").value;
+                            var correctLevel = $("#correctLeveltext").val();
+                            var typeNumber = document.getElementById("typeNumbertext").value;
+
+                            qrcode.overwritesOptions({
+                                width: width,
+                                height: height,
+                                text: text,
+                                colorDark: colorDark,
+                                colorLight: colorLight,
+                                correctLevel: Number(correctLevel),
+                                typeNumber: typeNumber
+                            })
+                            makeCode();
+                        });
+                    $("#genURL").on("click", function (e) {
+                        var data = getBase64Image(document.getElementById("testqrcode"));
+                        console.log('img url = ' + data);
+                        var elText = document.getElementById("qrcodeurl");
+                        elText.value = data;
+
+                        var data2 = document.getElementById("testqrcode2");
+                        data2.src = data;
+                    });
+                    $("#genimg").on("click", function (e) {
+                        var imgTextData = document.getElementById("qrcodeurl").value;
+                        console.log('img url = ' + imgTextData);
+                        var aMat = imgTextData.match(/data:image.*/i);
+
+                        if (aMat) {
+                            var data2 = document.getElementById("testqrcode2");
+                            data2.src = imgTextData;
+                        }
+
+                    });
+                    $("#testqrcode2").on("error", function (e) {
+                        erorrHandler(e);
+
+                    });
+                    $("#scanqr").on("click", function (e) {
+                        process('testqrcode', 'scanqrtext');
+                    })
+                </script>
+            </div>
+
+
+            <div class="country" active="false">
+                <input class="cfc-select-input" id="countrytext" type="select" value="中国" style="width:30%"
+                    required="required" items="countryList" />
+
+
+            </div>
+            <div class="html2doc" active="false">
+                <div>
+                    <p>Enter/paste your document here:</p>
+                    <textarea id="content" cols="60" rows="10" style="width:30%">
+                    <p>We all live in a yellow submarine, yellow submarine, yellow submarine, yellow submarine</p>
+                    <p>Images can also be exported if you source them as base64 DATA URI.</p>
+                    <div>
+                      <img src="cat.jpg">
+                    </div>
+                  </textarea>
+                    <div class="page-orientation">
+                        <span>Page orientation:</span>
+                        <label><input type="radio" name="orientation" value="portrait" checked>Portrait</label>
+                        <label><input type="radio" name="orientation" value="landscape">Landscape</label>
+                    </div>
+                    <div class="page-orientation">
+                        <span>Document Name:</span>
+                        <input id="document-name" type="input" value="portrait" style="width:30%" required="required" />
+                    </div>
+                    <button id="convert">Convert</button>
+                    <div id="download-area"></div>
+                </div>
+            </div>
+
+
+            <div class="chrome-plugin" active="false">
+                <div id="content_views" class="htmledit_views">
+                    <div id="cnblogs_post_body" class="blogpost-body ">
+                        <ol class="exp-conent-orderlist">
+                            <li class="exp-content-list list-item-1">
+                                <div class="content-list-text">
+                                    <p>content.js 与 background.js和popup.js 通信和&nbsp;background.js与popup.js &nbsp;这些通信都用
+                                        chrome.runtime.<a
+                                            href="https://so.csdn.net/so/search?q=sendMessage&amp;spm=1001.2101.3001.7020"
+                                            target="_blank" class="hl hl-1"
+                                            data-report-click="{&quot;spm&quot;:&quot;1001.2101.3001.7020&quot;,&quot;dest&quot;:&quot;https://so.csdn.net/so/search?q=sendMessage&amp;spm=1001.2101.3001.7020&quot;}"
+                                            data-tit="sendMessage" data-pretit="sendmessage">sendMessage</a> 这个方法&nbsp;
+                                    </p>
+                                    <p>&nbsp;background.js和popup.js 与 content.js通信 都用&nbsp;chrome.tabs.sendMessage 方法
+                                    </p>
+                                </div>
+                            </li>
+                            <li class="exp-content-list list-item-2">
+                                <div class="list-icon">
+                                    比如
+                                </div>
+                                <div class="content-list-text">
+                                    <p>C-&gt;P 或者 C-&gt;B 或者 b-&gt;p</p>
+                                    <div class="cnblogs_code">
+                                        <pre>chrome.runtime.sendMessage({name:value},function(){
+
+                })</pre>
+                                    </div>
+                                    <p>&nbsp;</p>
+                                    <p>P-&gt;C &nbsp;B-&gt;C</p>
+                                    <div class="cnblogs_code">
+                                        <div class="cnblogs_code_toolbar">
+                                            <span class="cnblogs_code_copy"><a title="复制代码"><img
+                                                        src="http://imgconvert.csdnimg.cn/aHR0cHM6Ly9jb21tb24uY25ibG9ncy5jb20vaW1hZ2VzL2NvcHljb2RlLmdpZg"
+                                                        alt="复制代码"></a></span>
+                                        </div>
+                                        <pre>chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
+
+                           chrome.tabs.sendMessage(tabs[0].id, {name:value}, function(response) {
+
+
+                           });
+                 })</pre>
+                                        <div class="cnblogs_code_toolbar">
+                                            <span class="cnblogs_code_copy"><a title="复制代码"><img
+                                                        src="http://imgconvert.csdnimg.cn/aHR0cHM6Ly9jb21tb24uY25ibG9ncy5jb20vaW1hZ2VzL2NvcHljb2RlLmdpZg"
+                                                        alt="复制代码"></a></span>
+                                        </div>
+                                    </div>
+                                    <p>3.接收消息都是&nbsp;</p>
+                                    <div class="cnblogs_code">
+                                        <pre>chrome.runtime.onMessage.addListener(function(message, sender, sendResponse){
+
+                　　alert(JSON.stringify(message)) //这里获取消息
+
+                })</pre>
+                                    </div>
+                                    <p>&nbsp;</p>
+                                </div>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            <div class="font" active="false" style="margin-left:1rem">
+                <section>
+                    <h2>查看所有fa类图片</h2>
+                    <ul class="control fa">
+                        <li class="fa-caret-down" onclick="expandUp('fa')"></li>
+                        <li class="fa-caret-up" onclick="expandDown('fa')"></li>
+                    </ul>
+                    <ul class="example fa">
+                        <li class="fa-home"></li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>查看所有ICON类图片</h2>
+                    <ul class="control icon">
+                        <li class="icon-unfold" onclick="expandUp('icon')"></li>
+                        <li class="icon-fold" onclick="expandDown('icon')"></li>
+                    </ul>
+                    <ul class="example icon">
+                        <li class="icon-huiyuan"></li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>查看所有comic类图片</h2>
+                    <ul class="control motaiconfont">
+                        <li class="icon-xiayibu" onclick="expandUp('motaiconfont')"></li>
+                        <li class="icon-shangyibu" onclick="expandDown('motaiconfont')"></li>
+                    </ul>
+                    <ul class="example motaiconfont">
+                        <li class="icon-home"></li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>查看所有Element Extended类图片</h2>
+                    <h3>参考</h3><a
+                        href="https://www.iconfont.cn/collections/detail?spm=a313x.7781069.1998910419.d9df05512&cid=599">click
+                        me</a>
+                    <ul class="control officerich svgicon">
+                        <li class="svg-arrow-down" onclick="expandSvgUp('officerich')"></li>
+                        <li class="svg-arrow-up" onclick="expandSvgDown('officerich')"></li>
+                    </ul>
+                    <ul class="example officerich svgicon">
+                        <li class="svg-home"></li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>Example</h2>
+                    <div class="code-example">
+                        <ul class="icon">
+                            <span>Example Code</span>
+                            <li class="icon-close"></li>
+                        </ul>
+                        <pre class="notranslate" style="padding: 16px;
+        overflow: auto;
+        font-size: 85%;
+        line-height: 1.45;
+        background-color: #f6f8fa;
+        border-radius: 6px;"><code style="font-size: 100%;">
+                    </code>
+                    </pre>
+                    </div>
+                </section>
+
+
+                <script type="text/javascript">
+
+                    let keyWord = '';
+                    let faIcons = 'fa-home;fa-globe;fa-search;fa-thumbs-o-up;fa-save;fa-envelope;fa-facebook-square;fa-discord;fa-twitter-square;fa-caret-down;fa-caret-up;fa-adjust;fa-copy;fa-rotate;fa-close;fa-user;fa-check;fa-js;fa-python;fa-php;fa-bootstrap;fa-java;fa-logo;fa-logow3;fa-certified;fa-menu;fa-code;fa-html5;fa-css3;fa-instagram;fa-graduation-cap;fa-trash;fa-linkedin-square;fa-smiley-1;fa-smiley-2;fa-smiley-3;fa-smiley-4;fa-smiley-5;fa-smiley-6;fa-smiley-7;fa-smiley-8;fa-smiley-9;fa-smiley-10';
+
+                    let icons = 'icon-huiyuan;icon-cycx;icon-qiehuan;icon-chevron-left;icon-chevron-down;icon-chevron-top;icon-chevron-right;icon-caret-right;icon-caret-left;icon-caret-down;icon-caret-top;icon-plus;icon-minus;icon-close;icon-success-line;icon-info;icon-info-fill;icon-plaint;icon-plaint-fill;icon-left;icon-right;icon-top;icon-down;icon-wangfan;icon-huancheng;icon-dingcan;icon-erweima;icon-zhanche;icon-search;icon-phone;icon-shixin02;icon-shixin01;icon-place;icon-code;icon-tel;icon-more;icon-gotop;icon-date;icon-dancheng;icon-huochepiao;icon-shijian;icon-yueche;icon-gongxiangqiche;icon-tianqi;icon-qishou;icon-jianpiaokou;icon-chepiao;icon-train;icon-ticket;icon-yanpiao;icon-weather;icon-jianpiao;icon-shidu;icon-fengxiang;icon-jingbao;icon-kefu;icon-time;icon-selltime;icon-user;icon-scan;icon-safe;icon-quick;icon-pwd;icon-clear;icon-fuwu;icon-dingdanchaxun;icon-wenda;icon-shanglv;icon-yupiao;icon-xiangdao;icon-subway;icon-bus;icon-walk;icon-round;icon-car;icon-mail;icon-reminder;icon-trip;icon-spot;icon-plan;icon-zhankai;icon-shouqi;icon-fold;icon-unfold;icon-print;icon-baoxian;icon-to;icon-success;icon-notice;icon-doubt;icon-error;icon-working;icon-lipin;icon-tongzhi;icon-youxiang;icon-mima;icon-shouji;icon-ok;icon-zhifubao;icon-weixin;icon-add-fill;icon-del;icon-edit;icon-arw-down;icon-arw-top;icon-voice;icon-voice-disabled;icon-cart-fill;icon-bianji;icon-tips';
+
+                    let motaicons = 'icon-huiyuanqia;icon-dingyue;icon-lishi;icon-shoucang;icon-ziliao;icon-home;icon-search1;icon-xiangxia;icon-touxiang;icon-jinggao;icon-loading;icon-xiayibu;icon-shangyibu';
+
+                    let officerichIcons = window.elementExtendedDetail.data.icons.map((e) => {
+                        return e.name.replaceAll(' ', '-');
+                    }).join(';');
+
+                    let exampleIcons = {
+                        fa: {
+                            icons: faIcons,
+                            home: 'fa-home',
+                            up: 'fa-caret-up',
+                            down: 'fa-caret-down'
+                        },
+                        icon: {
+                            icons: icons,
+                            home: 'icon-huiyuan',
+                            up: 'icon-fold',
+                            down: 'icon-unfold'
+                        },
+                        motaiconfont: {
+                            icons: motaicons,
+                            home: 'icon-home',
+                            up: 'icon-shangyibu',
+                            down: 'icon-xiayibu'
+                        },
+                        officerich: {
+                            icons: officerichIcons,
+                            home: 'svg-home',
+                            up: 'svg-arrow-up',
+                            down: 'svg-arrow-down'
+                        }
+                    };
+                    function iconFilter(key) {
+                        return !key || key.indexOf(keyWord) != -1;
+                    }
+                    function expandDown(type) {
+                        let icons = exampleIcons[type].icons;
+                        let down = exampleIcons[type].down;
+                        let up = exampleIcons[type].up;
+                        let iconFonts = icons.split(';').filter(iconFilter).sort();
+                        let newContent = iconFonts.map(e => `<li class="${e}">${e}</li>`).join(' ')
+                        $(`ul.${type}.example`).html(newContent);
+
+                        $('ul.control .' + down).show();
+                        $('ul.control .' + up).hide();
+                    };
+                    function expandUp(type) {
+                        let icons = exampleIcons[type].home;
+                        let down = exampleIcons[type].down;
+                        let up = exampleIcons[type].up;
+                        let iconFonts = icons.split(';');
+                        let newContent = iconFonts.map(e => `<li class="${e}">${e}</li>`).join(' ')
+                        $(`ul.${type}.example`).html(newContent);
+
+                        $('ul.control .' + down).hide();
+                        $('ul.control .' + up).show();
+                    };
+                    function expandSvgDown(type) {
+                        let icons = exampleIcons[type].icons;
+                        let down = exampleIcons[type].down;
+                        let up = exampleIcons[type].up;
+                        let iconFonts = icons.split(';').filter(iconFilter).sort();
+                        let newContent = iconFonts.map(e => `<li class="${e}">
+                        <svg class="svgiconitem" aria-hidden="true">
+                          <use href="#${e}"></use>
+                        </svg>${e}
+                    </li>`).join(' ')
+                        $(`ul.${type}.example`).html(newContent);
+
+                        $('ul.control .' + down).show();
+                        $('ul.control .' + up).hide();
+                    };
+                    function expandSvgUp(type) {
+                        let icons = exampleIcons[type].home;
+                        let down = exampleIcons[type].down;
+                        let up = exampleIcons[type].up;
+                        let iconFonts = icons.split(';');
+                        let newContent = iconFonts.map(e => `<li class="${e}">
+                        <svg class="svgiconitem" aria-hidden="true">
+                          <use href="#${e}"></use>
+                        </svg>${e}
+                    </li>`).join(' ')
+                        $(`ul.${type}.example`).html(newContent);
+
+                        $('ul.control .' + down).hide();
+                        $('ul.control .' + up).show();
+                    };
+                    expandDown('fa');
+                    expandDown('icon');
+                    expandDown('motaiconfont');
+                    expandSvgDown('officerich');
+
+                    $('.example li').live('click', (event) => {
+                        let ele = event.currentTarget;
+                        let type = $(ele).attr('class');
+                        let ptype = $(ele).closest('ul.example').attr('class');
+                        let isSVG = $(ele).closest('ul.example').is('.svgicon');
+                        ptype = ptype.replace('example', '').trim();
+                        let text =
+                            `<ul class="${ptype}">
+    <li class="${type}">
+${isSVG ? `   		<svg class="icon" aria-hidden="true">
+            <use href="#${type}"></use>
+        </svg>`: ''}
+    </li>
+</ul>`;
+                        $('.code-example code').text(text);
+                        $('.code-example').addClass('show-code');
+                        console.log(text);
+                    });
+                    $('.code-example .icon-close').on('click', () => {
+                        $('.code-example').removeClass('show-code');
+                    });
+
+                    $('.svgicon li').each((i, e) => {
+                        if (!$(e).html()) {
+                            let id = $(e).attr('class');
+                            $(e).html(`<svg class="icon" aria-hidden="true">
+                          <use href="#${id}"></use>
+                        </svg>`)
+                        }
+
+                    })
+
+                    function iconSearch() {
+                        keyWord = $('#icons-seach input').val();
+                        applySearch(keyWord);
+                    }
+                    function iconClearSearch() {
+                        $('#icons-seach input').val('');
+                        iconSearch();
+                    }
+                    function applySearch(keyWord) {
+                        expandDown('fa');
+                        expandDown('icon');
+                        expandDown('motaiconfont');
+                        expandSvgDown('officerich');
+                    }
+
+                    $('#menu').on('click', () => {
+                        $('#icons-seach').css({ 'display': $('div.tabitem5').attr('active') == 'true' ? 'block' : 'none' });
+
+                    })
+
+
+                </script>
+            </div>
+            <div class="svgcanvas" active="false">
+                <style>
+                    .svg-btn-menu {
+                        list-style: none;
+                    }
+
+                    .svg-btn-menu li {
+                        cursor: pointer;
+                    }
+
+                    .ctrl-svn-path span {
+                        min-width: 100px;
+                    }
+
+                    .icon {
+                        font-size: 28px;
+                        font-stretch: 100%;
+                        font-style: normal;
+                        font-weight: 400;
+                        font-variant-caps: normal;
+                        color: rgb(153, 153, 153);
+                        cursor: pointer;
+                    }
+
+                    .icon i {
+                        font-style: normal !important;
+                    }
+                </style>
+                <div class="tabitem6-container">
+                    <div id="mousemoveto"></div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="50%" height="675" stroke="null"
+                        id="drawing-container">
+                        <g stroke="null" id="main-group">
+                            <ellipse fill="none" cx="406" cy="337.5" id="svg_5" rx="149" ry="148" stroke="#000" />
+                            <ellipse fill="none" cx="406" cy="337.5" id="svg_7" rx="72" ry="72" stroke="#000" />
+                            <ellipse fill="none" cx="406" cy="337.5" id="svg_9" rx="15" ry="13" stroke="#000" />
+                            <path xmlns="http://www.w3.org/2000/svg" stroke="#000" fill="none" opacity="NaN"
+                                d="m74.99998,606.36001l254.65941,-154.79019l267.5753,-3.47599l91.21885,-289.66586l75.00217,-3.47599l-30.40629,327.90175l-599.0038,12.7453l-16.21668,-347.59903l33.44692,1.738l-76.27588,456.62202l0,-0.00001z"
+                                id="svg_16" />
+                            <path fill="none" d="M74,206 h35 A 15 15 0 0 0 500 400" stroke="#F00" />
+                            <path
+                                d="M917.333333 552.53333367l-87.466666-87.466667c34.133333-32 66.133333-68.266667 91.733333-108.8 8.533333-14.933333 4.266667-34.133333-10.666667-44.8-14.933333-8.533333-34.133333-4.266667-44.8 10.666667-76.8 125.866667-209.066667 200.533333-356.266666 200.533333-145.066667 0-279.466667-74.666667-354.133334-198.4-8.533333-14.933333-29.866667-19.2-44.8-10.666667-14.933333 8.533333-19.2 29.866667-10.666666 44.8 25.6 40.533333 55.466667 76.8 91.733333 108.8l-85.333333 85.333334c-12.8 12.8-12.8 32 0 44.8 6.4 6.4 14.933333 8.533333 23.466666 8.533333s17.066667-2.133333 23.466667-8.533333l91.733333-91.733334c38.4 25.6 81.066667 46.933333 125.866667 59.733334l-34.133333 130.133333c-4.266667 17.066667 6.4 34.133333 23.466666 38.4 2.133333 0 6.4 2.133333 8.533334 2.133333 14.933333 0 27.733333-8.533333 29.866666-23.466666l36.266667-132.266667c25.6 4.266667 51.2 6.4 78.933333 6.4 27.733333 0 55.466667-2.133333 83.2-6.4l36.266667 132.266667c4.266667 14.933333 17.066667 23.466667 29.866667 23.466666 2.133333 0 6.4 0 8.533333-2.133333 17.066667-4.266667 27.733333-21.333333 23.466667-38.4L661.333333 563.19999967c44.8-12.8 85.333333-34.133333 123.733334-59.733333l91.733333 91.733333c6.4 6.4 14.933333 8.533333 23.466667 8.533334s17.066667-2.133333 23.466666-8.533334c6.4-10.666667 6.4-29.866667-6.4-42.666666z"
+                                p-id="6404" data-spm-anchor-id="a313x.7781069.0.i0"></path>
+                            <path fill="none"
+                                d="M450 134 l0 0 l-1 0 l82 45 l-93 -25 c4.266667 14.933333 17.066667 23.466667 29.866667 23.466666 2.133333 0 6.4 0 8.533333-2.133333 17.066667-4.266667 27.733333-21.333333 23.466667-38.4L661.333333 563.19999967z"
+                                id="svg_174692" stroke="#000" style="stroke: red;"></path>
+                            <!--<path d="M10 315
+                           L 110 215
+                           A 30 50 0 0 1 162.55 162.45
+                           L 172.55 152.45
+                           A 30 50 -45 0 1 215.1 109.9
+                           L 315 10" stroke="black" fill="green" stroke-width="2" fill-opacity="0.5"/>-->
+                        </g>
+                        <g stroke="#FF0000" id="assist"></g>
+                    </svg>
+                    <div class="svg-ctrl-panel" id="svg-ctrl-panel" width="50%">
+                        <ul class="svg-btn-menu">
+                            <a class="icon">
+                                <i class="icon-round" onclick="createSvgEllipse()"></i>
+                                <i class="icon-zhankai" onclick="createSvgPath()"></i>
+                                <i class="icon-huancheng" onclick="drawpath(event)"></i>
+                            </a>
+                        </ul>
+                        <section>
+                            <h2>Path 1
+                                <a class="icon">
+                                    <i class="icon-del"></i>
+                                </a>
+                            </h2>
+
+                            <ul class="ctrl-svn-path">
+                                <div><span>Moveto</span><input name="Moveto" type="select" value=""
+                                        required="required" /></div>
+                                <div><span>Lineto</span><input name="Lineto" type="select" value=""
+                                        required="required" />
+                                    <a class="icon">
+                                        <i class="icon-del"></i>
+                                        <i class="icon-plus"></i>
+                                    </a>
+                                </div>
+                                <div><span>Curveto</span><input name="Curveto" type="select" value=""
+                                        required="required" />
+                                    <a class="icon">
+                                        <i class="icon-del"></i>
+                                        <i class="icon-plus"></i>
+                                    </a>
+                                </div>
+                                <div><span>Arcto</span><input name="Arcto" type="select" value="" required="required" />
+                                    <a class="icon">
+                                        <i class="icon-del"></i>
+                                        <i class="icon-plus"></i>
+                                    </a>
+                                </div>
+                                <div><span>ClosePath</span><input name="ClosePath" type="checkbox" value=""
+                                        required="required" /></div>
+                            </ul>
+                        </section>
+                    </div>
+                </div>
+
+                <div id="pointer-location" class="pointer-location"></div>
+                <div id="fill-stroke" class="fill-stroke" style="display:none">
+                    <div class="setting">
+                        <div property="fill"><span>Fill:</span><input name="Fill" type="color" value="red"
+                                required="required" class="content" /><input name="Fill-checkbox" type="checkbox"
+                                value="Fill" /></div>
+                        <div property="stroke"><span>Stroke:</span><input name="Stroke" type="color" value="blue"
+                                required="required" class="content" /><input name="Stroke-checkbox" type="checkbox"
+                                value="Stroke" /></div>
+                        <div property="opacity"><span>Opacity:</span><input name="Opacity" type="range" value="1"
+                                min="0" max="1000" class="content" /> <input name="Opacity-checkbox" type="checkbox"
+                                value="Opacity" /></div>
+                        <div property="type"><span>Change Type</span>
+                            <csw-select name="type" type="select" value="Line" items="getCmdTypes" />
+                        </div>
+                    </div>
+
+                </div>
+                <script src="svg.js">
+
+                </script>
+            </div>
+			<div class="sort" active="false">
+				<style>
+                    .num-item {
+						padding-right: 2px;
+						background-color: antiquewhite;
+						margin-left: 3px;
+                    }
+					.itemlist{
+						display: flex;
+						flex-wrap: wrap;
+					}
+					.cost-time{
+						color:red;
+					}
+					.num-list-display .num-item{
+						width:100%;
+                    }
+				</style>
 				
-				qrcode.overwritesOptions({
-					width : width,
-					height : height,
-					text: text,
-					colorDark : colorDark,
-					colorLight : colorLight,
-					correctLevel : Number(correctLevel),
-					typeNumber:typeNumber
-				})
-				makeCode();
-			});
-		$("#genURL").on("click", function(e){
-			var data = getBase64Image(document.getElementById("testqrcode"));
-			console.log('img url = ' +　data);
-			var elText = document.getElementById("qrcodeurl");
-			elText.value=data;
+				<input id="numberLength" type="number" value="8" min="1" max="10" />
+				<button onclick="radomUtil.start(1000)">click 1000</button>
+				<button onclick="radomUtil.start(10000)">click 10000</button>
+				<button onclick="radomUtil.start(100000)">click 100000</button>
+				<button onclick="radomUtil.start(1000000)">click 1000000</button>
+				<button onclick="radomUtil.start(10000000)">click 10000000</button>
+				<span >cost time: <span class="cost-time">0</span></span>
+				<button class="showlistnumber" onclick="radomUtil.showlistnumber()">show list</button>
+				<button class="sort" onclick="radomUtil.callSort('sort1')">sort1</button>
+				<div class="itemlist" style="display:flex;">
+				</div>
+				 <script type="text/javascript">
+					class RadomUtil{
+						numberLength = 8;
+						allNumbers = [];
+						sortMap = {};
+						numberCount = 1000;
+						
+						constructor(n){
+							this.numberCount = n;
+							this.sortMap.sort1 = this.sort1;
+						}
+						
+						start(n){
+							this.numberCount = n;
+							this.numberLength = $('#numberLength').val();
+							this.numberLength = Number(this.numberLength);
+							$('.cost-time').html('loading...');
+							setTimeout(()=>{
+								let timeStart = Date.now();
+								this.allNumbers = this.generateRadomNumber(this.numberCount);
+								this.show(this.allNumbers);
+								$('.cost-time').html(Date.now()- timeStart);
+							})
+						}
+						
+						showlistnumber(){
+							if($('.itemlist').is('.num-list-display')){
+								$('.itemlist').removeClass('num-list-display');
+								$('.showlistnumber').html('Show List');
+							}else{
+								$('.itemlist').addClass('num-list-display');
+								$('.showlistnumber').html('Show Warp');
+							}
+						}
+						
+						generateRadomNumber(n,m){
+							let numberList = [];
+							for(let i=0;i<(n||10);i++){
+								numberList.push(this.getRandom(m||this.numberLength));
+							}
+							return numberList;
+						}
+						
+						getRandom(i){
+							return Math.floor(Math.random()*Math.pow(10,i));
+						}
+						
+						show(items){
+							let conent = '<span class="num-item">' + items.join('</span><span class="num-item">')+'</span>';
+							$('.sort .itemlist').html(conent)
+						}
+						
+						
+						
+						callSort(name){
+							let s = this.sortMap[name];
+							$('.cost-time').html('loading...');
+							setTimeout(()=>{
+								let timeStart = Date.now();
+								let items = s && s(this.allNumbers);
+								let timeMiddle = Date.now();
+								this.show(items);
+								$('.cost-time').html((timeMiddle- timeStart) + ' - ' + (Date.now()- timeMiddle));
+							})
+							
+						}
+						
+						sort1(p){
+							let items = p.concat([]);
+							for(let i=0;i<items.length;i++){
+								for(let j=i+1;j<items.length;j++){
+									if(items[i]>items[j]){
+										let t = items[j];
+										items[j] = items[i];
+										items[i] = t;
+									}
+								}
+							}
+							return items;
+						}
+						
+					}
+					
+					const radomUtil = new RadomUtil(100);
+					
+					
+				 </script>
+			</div>
 			
-			var data2 = document.getElementById("testqrcode2");
-			data2.src=data;
-		});
-		$("#genimg").on("click", function(e){
-			var imgTextData = document.getElementById("qrcodeurl").value;
-			console.log('img url = ' +　imgTextData);
-			var aMat = imgTextData.match(/data:image.*/i);
+			<div class="chart" active="false">
+				<button class="rechart" onclick="reloadChart()">Refresh</button>
+				 <canvas id="myChart"></canvas>
+				 <script>
+				  const labels = [
+					'January',
+					'February',
+					'March',
+					'April',
+					'May',
+					'June',
+				  ];
+				  const labelX = [
+					'0',
+					'1',
+					'2',
+					'3',
+					'4',
+					'5',
+					'6',
+					'7',
+				  ];
+				  const vertical = [0,1,2,3,4,5,6,7,8];
+				  
+				  
+				  
+				  const getPoints = function(){
+					  let allNumbers = radomUtil.generateRadomNumber(1000,2);
+					  //labelY.push(...allNumbers);
+					  let point = [];
+					  let m = {};
+					  for(let it of allNumbers){
+						m[it] = (m[it]||0)+1;
+					  }
+					  for(let key in m){
+						point.push({x:key,y:m[key]});
+					  }
+					  return point;
+				  }
+				  
+					//console.log('dataset=',point);
+					let horizontal = [];
+					let myData = {x:horizontal,y:vertical};
 
-			if (aMat) {
-				var data2 = document.getElementById("testqrcode2");
-				data2.src=imgTextData;
-			}
+				  const data = {
+					//labels: myData.x,
+					datasets: [
+					{
+					  label: 'My First dataset',
+					  backgroundColor: 'rgb(255, 99, 132)',
+					  borderColor: 'rgb(255, 99, 132)',
+					  data: getPoints(),
+					},
+					{
+					  label: 'My XY',
+					  backgroundColor: 'rgb(255, 199, 132)',
+					  borderColor: 'rgb(255, 199, 132)',
+					  data: getPoints(),
+					},
+					{
+					  label: 'My XY',
+					  backgroundColor: 'rgb(255, 199, 132)',
+					  borderColor: 'rgb(155, 199, 132)',
+					  data: getPoints(),
+					}]
+				  };
+
+				  const config = {
+					type: 'line',
+					data: data,
+					options: {}
+				  };
+				</script>
+				<script>
+				  if (typeof Chart == 'undefined'){
+					class Chart{}
+				  }
+				  
+				  var reloadChart = function(){
+					config.data.datasets[0].data=getPoints();
+					
+					const myChart = typeof Chart !== 'undefined' && new Chart(
+						document.getElementById('myChart'),
+						config
+					  );
+				  }
+				  reloadChart();
+				</script>
+			</div>
 			
-		});
-		$("#testqrcode2").on("error", function(e){
-			erorrHandler(e);
+			<div class="words" active="false">
+				<style>
+					.words{
+						width:100%;
+						heigth:100%;
+					}
+					.words-container{
+						width:100%;
+						min-height: 90%;
+						cursor: text;
+					}
+					[contenteditable]{
+						border:1px solid black;
+					}
+					.word-view{
+						font-size: 24px;
+						line-height: 32px;
+					}
+				</style>
+				
+				<div class="word-edit" style="display:none">
+					<button class="words-btn" onclick="wordSave()">Save</button>
+					<div class="words-container" contenteditable=true></div>
+				</div>
+				<div class="word-view" >
+					<button  class="words-btn"  onclick="wordEdit()">Edit</button>
+					<div class="words-container"></div>
+				</div>
+				<script>
+					var wordSave = function(){
+						$('.word-edit').hide();
+						$('.word-view').show();
+						let val = $('.word-edit .words-container').html();
+						localStorage.setItem('words',val);
+						$('.word-view .words-container').html(val);
+					}
+					var wordEdit = function(){
+						$('.word-edit').show();
+						$('.word-view').hide();
+					}
+					var val = localStorage.getItem('words');
+					$('.word-view .words-container').html(val);
+					$('.word-edit .words-container').html(val);
+				</script>
+			</div>
 			
-		});
-		$("#scanqr").on("click", function(e){
-			process('testqrcode', 'scanqrtext');
-		})
-		</script>
-	</div>
-	
-	
-	<div class="country" active="false">
-	<input class="cfc-select-input" id="countrytext" type="select" value="中国" style="width:30%" required="required" items="countryList"/>
-	
-	</div>
-	</div>
-	
-	<div _ngcontent-xfg-c325="" aria-label="选项" hide="" role="listbox" tabindex="-1" class="ace-select-body cfc-select-body ng-star-inserted" id="cfc-select-0-listbox" ></div>
-	<script type="text/javascript" src="address.js"></script>
-	<script type="text/javascript" src="menu.js"></script>
-	<script type="text/javascript" src="combobox.js"></script>
+			<div class="clock" active="false">
+				<style>
+					:root {
+						  --clock-width: 200px; 
+					}
+					@keyframes clock {
+						0%   {transform: rotate(-90deg);}
+						25%  {transform: rotate(0deg);}
+						50%  {transform: rotate(90deg);}
+						70%  {transform: rotate(180deg);}
+						100% {transform: rotate(270deg);}
+					}
+					
+					@keyframes rotateX {
+						0%   {transform: rotateX(-90deg);}
+						25%  {transform: rotateX(0deg);}
+						50%  {transform: rotateX(90deg);}
+						70%  {transform: rotateX(180deg);}
+						100% {transform: rotateX(270deg);}
+					}
+					@keyframes rotateY {
+						0%   {transform: rotateY(-90deg);}
+						25%  {transform: rotateY(0deg);}
+						50%  {transform: rotateY(90deg);}
+						70%  {transform: rotateY(180deg);}
+						100% {transform: rotateY(270deg);}
+					}
+					@keyframes rotateZ {
+						0%   {transform: rotateZ(-90deg);}
+						25%  {transform: rotateZ(0deg);}
+						50%  {transform: rotateZ(90deg);}
+						70%  {transform: rotateZ(180deg);}
+						100% {transform: rotateZ(270deg);}
+					}
+					
+					@keyframes translateX {
+						0%   {transform: translateX(0);}
+						25%  {transform: translateX(50px);}
+						50%  {transform: translateX(100px);}
+						70%  {transform: translateX(50px);}
+						100% {transform: translateX(0px);}
+					}
+					@keyframes translateY {
+						0%   {transform: translateY(0);}
+						25%  {transform: translateY(50px);}
+						50%  {transform: translateY(100px);}
+						70%  {transform: translateY(50px);}
+						100% {transform: translateY(0px);}
+					}
+					@keyframes scaleX {
+						0%   {transform: scaleX(0.5);}
+						25%  {transform: scaleX(1);}
+						50%  {transform: scaleX(1.5);}
+						70%  {transform: scaleX(1);}
+						100% {transform: scaleX(0.5);}
+					}
+					@keyframes scaleY {
+						0%   {transform: scaleY(0.5);}
+						25%  {transform: scaleY(1);}
+						50%  {transform: scaleY(1.5);}
+						70%  {transform: scaleY(1);}
+						100% {transform: scaleY(0.5);}
+					}
+					@keyframes rotate {
+						0%   {transform: rotateZ(-90deg);}
+						25%  {transform: rotateZ(0deg);}
+						50%  {transform: rotateZ(90deg);}
+						70%  {transform: rotateZ(180deg);}
+						100% {transform: rotateZ(270deg);}
+					}
+					@keyframes skewX {
+						0%   {transform: skewX(-90deg);}
+						25%  {transform: skewX(0deg);}
+						50%  {transform: skewX(90deg);}
+						70%  {transform: skewX(180deg);}
+						100% {transform: skewX(270deg);}
+					}
+					@keyframes skewY {
+						0%   {transform: skewY(-90deg);}
+						25%  {transform: skewY(0deg);}
+						50%  {transform: skewY(90deg);}
+						70%  {transform: skewY(180deg);}
+						100% {transform: skewY(270deg);}
+					}
+					
+					.test .s{
+						animation-name: clock;
+						animation-duration: 60s;
+						animation-iteration-count: infinite;
+						animation-timing-function: linear;
+					}
+					
+					.test .m{
+						animation-name: clock;
+						animation-duration: 3600s;
+						animation-iteration-count: infinite;
+						animation-timing-function: linear;
+					}
+					
+					.test .h{
+						animation-name: clock;
+						animation-duration: 43200s;
+						animation-iteration-count: infinite;
+						animation-timing-function: linear;
+					}
+					
+					.clock{
+						width: var(--clock-width);
+						height: var(--clock-width); 
+					}
+					
+					.clock-container{
+						
+						display: flex;
+						flex-wrap: wrap;
+					}
+					
+					.clock-container li{
+						display: inline-block;
+						border: 1px red;
+						text-align: end;
+						position: absolute;
+						color:red;
+						width:inherit;
+					}
+					.cricle{
+						display: inline-block;
+						border: 1px black;
+						border-style: solid;
+						width: inherit;
+						height: inherit;
+						margin-top: -90px;
+						border-radius: 50%;
+					}
+					.clock-container li.second{
+						display: flex;
+						border: 1px black;
+						color:black;
+						width: inherit;
+						letter-spacing: -3;
+						transform-origin: left center;
+					}
+					.clock-container li.second .suffix{
+						display: inline-block;
+						width: calc(var(--clock-width) * 85%);
+
+					}
+					.clock-container li.minute{
+						display: flex;
+						border: 1px black;
+						width: inherit;
+						letter-spacing: -3;
+						color:rgb(172 100 155);
+						transform-origin: left center;
+					}
+					.clock-container li.hour{
+						display: flex;
+						border: 1px black;
+						width: inherit;
+						letter-spacing: -3;
+						color:rgb(189 164 164);
+						transform-origin: left center;
+					}
+					.clock-container li.hour .suffix{
+						display: inline-block;
+						width: calc(var(--clock-width) * 85%);
+					}
+					.clock-container ul{
+						margin: 100px 100px;
+					}
+					
+					.test{
+						position:absolute;
+					}
+					.test li{
+						display: inline-block;
+						border-style: solid;
+						border: 1px red;
+						text-align: end;
+						position: absolute;
+					}
+					
+					.demo-transform{
+						width: 80px;
+						height: 70px;
+						color: white;
+						position: relative;
+						font-weight: bold;
+						font-size: 15px;
+						padding: 10px;
+						float: left;
+						margin-right: 50px;
+						border-radius: 5px;
+						border: 1px solid #000000;
+						background: red;
+						margin: 10px;
+						box-sizing: border-box;
+					}
+					
+					#rotateXD{
+						animation-name: rotateX;
+						animation-duration: 4s;
+						animation-iteration-count: infinite;
+						animation-timing-function: linear;
+					}
+					#rotateYD{
+						animation-name: rotateY;
+						animation-duration: 4s;
+						animation-iteration-count: infinite;
+						animation-timing-function: linear;
+					}
+					#rotateZD{
+						animation-name: rotateZ;
+						animation-duration: 4s;
+						animation-iteration-count: infinite;
+						animation-timing-function: linear;
+					}
+					
+					#translateX{
+						animation-name: translateX;
+						animation-duration: 4s;
+						animation-iteration-count: infinite;
+						animation-timing-function: linear;
+					}
+					#translateY{
+						animation-name: translateY;
+						animation-duration: 4s;
+						animation-iteration-count: infinite;
+						animation-timing-function: linear;
+					}
+					#scaleX{
+						animation-name: scaleX;
+						animation-duration: 4s;
+						animation-iteration-count: infinite;
+						animation-timing-function: linear;
+					}
+					#scaleY{
+						animation-name: scaleY;
+						animation-duration: 4s;
+						animation-iteration-count: infinite;
+						animation-timing-function: linear;
+					}
+					#rotate{
+						animation-name: rotate;
+						animation-duration: 4s;
+						animation-iteration-count: infinite;
+						animation-timing-function: linear;
+					}
+					#skewX{
+						animation-name: skewX;
+						animation-duration: 4s;
+						animation-iteration-count: infinite;
+						animation-timing-function: linear;
+					}
+					#skewY{
+						animation-name: skewY;
+						animation-duration: 4s;
+						animation-iteration-count: infinite;
+						animation-timing-function: linear;
+					}
+					
+					.demo-trangle{
+						width:0;
+						heigth:0;
+						border-bottom:100px;
+					}
+				</style>
+				<div class="clock-container">
+					<ul  class="clock">
+						<li class="item1"><span>1-</span></li>
+						<li class="item2"><span>2-</span></li>
+						<li class="item3"><span>3-</span></li>
+						<li class="item4"><span>4-</span></li>
+						<li class="item5"><span>5-</span></li>
+						<li class="item6"><span>6-</span></li>
+						<li class="item7"><span>7-</span></li>
+						<li class="item8"><span>8-</span></li>
+						<li class="item9"><span>9-</span></li>
+						<li class="item10"><span>10-</span></li>
+						<li class="item11"><span>11-</span></li>
+						<li class="item12"><span>12-</span></li>
+						<li class="second"><span class="pre"></span><span class="suffix">―――――――――――――――▶</span></li>
+						<li class="minute"><span class="pre"></span><span class="suffix">――――――――――――▶       </span></li>
+						<li class="hour">  <span class="pre"></span><span class="suffix">――――――――――▶          </span></li>
+						<div class="cricle">
+							
+						</div>
+						
+					</ul>
+					<div class="cuurent-time"></div>
+					<ul class="test">
+					</ul>
+					<div style="position: relative;top: 200px;overflow:hidden;">
+						<div id="rotateXD" class="demo-transform">XD rotateX</div>
+					
+						<div  id="rotateYD" class="demo-transform">YD rotateY</div>
+						
+						<div  id="rotateZD" class="demo-transform">ZD rotateZ</div>
+						
+						<div  id="translateX" class="demo-transform">2D translateX</div>
+						<div  id="translateY" class="demo-transform">2D translateY</div>
+						<div  id="scaleX" class="demo-transform">2D scaleX</div>
+						<div  id="scaleY" class="demo-transform">2D scaleY</div>
+						<div  id="rotate" class="demo-transform">2D rotate</div>
+						<div  id="skewX" class="demo-transform">2D skewX</div>
+						<div  id="skewY" class="demo-transform">2D skewY</div>
+						
+						<div id="trangle" class="demo-trangle"></div>
+					</div>
+					
+				</div>
+				<script>
+					$('.clock-container .clock li').each((i, e)=>{
+						let t = 360/12 * (i +1) - 90;
+						$(e).css({'transform':'rotate('+t+'deg)'})
+						//$(e).find('span').css({'transform':'rotate(-'+t+'deg)'})
+					});
+					for(let i=1;i<=60;i++){
+						$('.clock-container .test').append(`<li class="item1"><span>${i%5==0?i/5+'-':''}-</span></li>`);
+					}
+					$('.clock-container .test').append(`<li class="h"><span>--->-</span></li>`);
+					$('.clock-container .test').append(`<li class="m"><span>---->>-</span></li>`);
+					$('.clock-container .test').append(`<li class="s"><span>----->>>-</span></li>`);
+					
+					
+					$('.clock-container .test li').each((i, e)=>{
+						let t = 360/60 * (i +1) - 90;
+						if ($(e).is('.s')){t=-90};
+						if ($(e).is('.m')){t=-90};
+						if ($(e).is('.h')){t=-90};
+						$(e).css({'transform':'rotate('+t+'deg)','color':'red','width':'200px'});
+						
+						$(e).find('span').css({'width':'200px'})
+					});
+					
+					let t = new Date();
+					$('.s').css({'color':'blue','animation-delay':'-'+(t.getSeconds())+'s'});
+					console.log('delay - -- - ', t.getSeconds() + 60*t.getMinutes());
+					$('.m').css({'color':'black', 'animation-delay':'-'+(t.getSeconds() + 60*t.getMinutes())+'s'});
+					$('.h').css({'animation-delay':'-'+(t.getSeconds() + 60*t.getMinutes()+ 60*60*(t.getHours()%12))+'s'});
+					
+					let currentSecond = 1;
+					let currentMinute = 1;
+					let currentHour = 1;
+					setInterval(()=>{
+						let t = new Date();
+						currentSecond = currentSecond % 60;
+						let sr = 360/60 * (t.getSeconds()) - 90;
+						let mr = 360/60 * (t.getMinutes()) - 90;
+						let hr = 360/12 * (t.getHours()) - 90;
+						currentSecond++;
+						$('.second').css({'transform':'rotate('+sr+'deg)'});
+						$('.minute').css({'transform':'rotate('+mr+'deg)'});
+						$('.hour').css({'transform':'rotate('+hr+'deg)'});
+						$('.cuurent-time').html(`${t.getHours()} : ${t.getMinutes()} : ${t.getSeconds()}`)
+					}, 1000)
+				</script>
+			</div>
+			
+			<div class="schema" active="false">
+				<style>
+					.searchresult{
+						display:flex;
+					}
+					.objsearchresult,.detailearchresult{
+						width:50%;
+					}
+				</style>
+				<csw-select id="provtext" type="select" value="广东" items="myschemas" style="width:30%"
+                                required="required" ></csw-select>
+				
+				<p>
+					Object Search: <input id="objectsearch" type="input" value="" ></input>
+					Exclude Object Search: <input id="exobjectsearch" type="input" value="" ></input>
+				</p>
+				<p>
+					Fields Search: <input id="fieldssearch" type="input" value="" ></input>
+				</p>
+				<div class="searchresult" ="">
+					<div class="objsearchresult"></div>
+					<div class="detailearchresult"></div>
+				</div>
+				
+				<script>
+					function myschemas(){
+						let s = [];
+						for (let r in schemas){
+							s.push({label:r, value:r});
+						}
+						return s;
+					}
+					
+					function myfields(o){
+						let s = [];
+						for (let r of schemas[o] || []){
+							s.push(r);
+						}
+						return s;
+					}
+					
+					function search(){
+						let s = [];
+						let val = $('#fieldssearch').val().trim().toLocaleLowerCase();
+						let objval = $('#objectsearch').val().trim().toLocaleLowerCase();
+						if (val=='' && objval==''){
+							$('.objsearchresult').html('');
+							return;
+						}
+						
+						let keys = Object.keys(schemas).sort();
+						for (let r of keys){
+							if (r.toLocaleLowerCase().indexOf(objval)>=0 || objval==''){
+								if (val==''){
+									s.push({t:r.trim(), l:'', v:''});
+								}else{
+									for (let f of schemas[r].fields){
+										let l = f.label.trim();
+										if (l.toLocaleLowerCase().indexOf(val)>=0 || val==''){
+											s.push({tn:schemas[r].label, t:r.trim(), l:f.label.trim(), v:f.name.trim(), type:f.type});
+										}
+									}
+								}
+								
+							}
+						}
+						let result = s.map(t => `<li va="${t.t}"><span>${t.l}</span> <span>(${t.v})</span> <span>-  ${t.t}</span> </li>`).join('');
+						
+						$('.objsearchresult').html(result);
+						
+						$('.objsearchresult li').on('click', (e)=>{
+							let target = e.currentTarget;
+							let s = [];
+							$('.detailearchresult').html('');
+							let tabName = $(target).attr('va');
+							let keys = schemas[tabName] || {};
+							for (let f of schemas[tabName].fields){
+								s.push({tl:schemas[tabName].label,t:tabName, l:f.label.trim(), v:f.name.trim(),type:f.type});
+							}
+							let result = s.map(t => `<li value="${t.l}"><span>${t.l}</span> <span>(${t.v})(${t.type})</span> <span>-  ${t.t}(${t.tl})</span></li>`).join('');
+							
+							$('.detailearchresult').html(result);
+						})
+					}
+					
+					$('#objectsearch').on('change', ()=>{
+						search()
+					})
+					
+					
+					
+					$('#fieldssearch').on('change', ()=>{
+						search()
+					})
+				</script>
+			</div>
+			
+			<div class="location" active="false">
+				<style>
+					#mapholder{
+						width:100%;
+						heigth:100%;
+					}
+					.map-tools{
+						display:flex;
+						flex-wrap:wrap;
+					}
+					.result li{
+						cursor: pointer;
+					}
+					.input-item-result li:hover{
+						color: #337ab7;
+					}
+					#gaode-map-container {width:1300px; height: 1200px; }  
+				</style>
+				<p class="location-1">您的坐标：</p>
+				<p class="demo-location"></p>
+				<div id="mapholder" ></div>
+				<script>
+				window.showPositionFn = {isLoaded:false, listeners:[]};
+				function initMap() {
+				}
+				window.initMap =initMap;
+				function getLocation()
+				{
+					if (navigator.geolocation)
+					{
+						navigator.geolocation.getCurrentPosition(showPosition);
+					}
+					else{
+						x.innerHTML="Geolocation is not supported by this browser.";
+					}
+				}
+				
+				function showPosition(position)
+				{
+					window.showPositionFn.isLoaded = true;
+					window.showPositionFn.position = position;
+					for(let fn of window.showPositionFn.listeners){
+						fn(position);
+					}
+					let coords = position.coords;
+					$('.demo-location').append(`<li>coords.latitude ${coords.latitude}	十进制数的纬度</li>`);
+					$('.demo-location').append(`<li>coords.longitude ${coords.longitude}	十进制数的经度</li>`);
+					$('.demo-location').append(`<li>coords.accuracy ${coords.accuracy || '未知'}	位置精度</li>`);
+					$('.demo-location').append(`<li>coords.altitude ${coords.altitude || '未知'}	海拔，海平面以上以米计</li>`);
+					$('.demo-location').append(`<li>coords.altitudeAccuracy ${coords.altitudeAccuracy || '未知'}	位置的海拔精度</li>`);
+					$('.demo-location').append(`<li>coords.heading ${coords.heading || '未知'}	方向，从正北开始以度计</li>`);
+					$('.demo-location').append(`<li>coords.speed ${coords.speed || '未知'}	速度，以米/每秒计</li>`);
+					$('.demo-location').append(`<li>timestamp ${new Date(position.timestamp)}	响应的日期/时间</li>`);
+					$('.demo-location').append(`<li>以上</li>`);
+					
+					let lat=position.coords.latitude;
+					let lon=position.coords.longitude;
+					let latlon=new google.maps.LatLng(lat, lon)
+					let mapholder=document.getElementById('mapholder')
+					mapholder.style.height='250px';
+					mapholder.style.width='500px';
+
+					var myOptions={
+						center:latlon,
+						zoom:14,
+						mapTypeId:google.maps.MapTypeId.ROADMAP,
+						mapTypeControl:false,
+						navigationControlOptions:{style:google.maps.NavigationControlStyle.SMALL},
+						panControl:true,
+						zoomControl:true,
+						mapTypeControl:true,
+						mapTypeControlOptions: {
+							style:google.maps.MapTypeControlStyle.DROPDOWN_MENU
+						},
+						scaleControl:true,
+						streetViewControl:true,
+						overviewMapControl:true,
+						rotateControl:true
+					};
+					var map=new google.maps.Map(document.getElementById("mapholder"),myOptions);
+					var marker=new google.maps.Marker({
+						position:latlon,
+						map:map,
+						animation:google.maps.Animation.BOUNCE,
+						title:"You are here!"
+					});
+				}
+				
+				//getLocation();
+				</script>
+				<div class="gaode">
+					<link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
+					<div id="gaode-map-container" style="display: inline-block;"></div>
+					<div class="map-tools" style="width:19rem;display: inline-block;position: absolute;margin-left:20px">
+						<div class="feature-input-card" >
+							<h4>设置地图显示要素（Features）</h4>
+							<div id="map-features">
+							  <div class="input-item">
+								<input type='checkbox' name='mapStyle' value='bg' checked>
+								<span class="input-text">区域面（bg）</span>
+							  </div>
+							  <div class="input-item">
+								<input type='checkbox' name='mapStyle' value='road' checked>
+								<span class="input-text">道路（road）</span>
+							  </div>
+							  <div class="input-item">
+								<input type='checkbox' name='mapStyle' value='building' checked>
+								<span class="input-text">建筑物（building）</span>
+							  </div>
+							  <div class="input-item">
+								<input type='checkbox' name='mapStyle' value='point' checked>
+								<span class="input-text">标注（point）</span>
+							  </div>
+							</div>
+						  </div>
+						  
+						  <div class="item-input-card" >
+							<label style='color:grey'>行政区边界查询</label>
+							<div class="input-item">
+								<div class="input-item-prepend">
+									<span class="input-item-text" >行政级别</span>
+								</div>
+								<select class="level">
+									<option value="country">国家</option>
+									<option value="province">省/直辖市</option>
+									<option value="city" selected="selected">市</option>
+									<option value="district">区/县</option>
+									<option value="biz_area">商圈</option>
+								</select>
+									
+							</div>
+							<div class="input-item">
+								<div class="input-item-prepend">
+									<span class="input-item-text" >名称/adcode</span>
+								</div>
+								<input class='district' type="text" value='广州'>
+							</div>
+							<input type="button" class="btn draw" value="查询" />
+							<div class="result">
+							</div>
+						</div>
+						<div class="subdistrict-input-card">
+							<h4>下属行政区查询</h4>
+							<div class="input-item">
+								<div class="input-item-prepend"><span class="input-item-text" >省市区</span></div>
+								<select class='province' style="width:100px"></select>
+							</div>
+							<div class="input-item">
+								<div class="input-item-prepend"><span class="input-item-text" >地级市</span></div>
+								<select class='city' style="width:100px"></select>
+							</div>
+							<div class="input-item">
+								<div class="input-item-prepend"><span class="input-item-text" >区县</span></div>
+								<select class='district' style="width:100px"></select>
+							</div>
+							<div class="input-item">
+								<div class="input-item-prepend"><span class="input-item-text" >街道</span></div>
+								<select class='street' style="width:100px"></select>
+							</div>
+						</div>
+					</div>
+					  <script type="text/javascript">
+							window._AMapSecurityConfig = {
+								securityJsCode:'a1920bdcf5891541e1c7535e89f6f5f9',
+							}
+					</script>
+					<script src="https://cache.amap.com/lbs/static/es5.min.js"></script>
+					<script src="https://webapi.amap.com/maps?v=1.4.15&key=9fdcc8ad88f884a55d4b8ab328c50254&plugin=AMap.DistrictSearch"></script>
+					 <script  type="text/javascript" src="amap.js"></script>
+				</div>
+			</div>
+        </div>
+        <div class="bottom-bar motaiconfont" style="transform: translateY(0px);">
+            <div class="bottom-bar-tool">
+                <div class="l-content">
+                    <a id="prev-chapter" href="javascript:void" class="csw-accessed">
+                        <i class="iconfont icon-shangyibu"></i>
+                        <span>上一话</span>
+                    </a>
+                    <a href="javascript:void" class="csw-accessed">
+                        <i class="iconfont icontushu"></i>
+                        <span>目录</span>
+                    </a>
+                    <div onclick="toggleViewMode()" class="view-mode scroll" style="display: none;">
+                        <i class="iconfont iconshangxia"></i>
+                        <span id="change_to_swipe_mode" data-url="javascript:void" style="display:block;">
+                            左右翻页
+                        </span>
+                        <span id="change_to_scroll_mode" data-url="javascript:void" style="display:none;">
+                            上下滚动
+                        </span>
+                    </div>
+                    <a href="javascript:void">
+                        <i class="iconfont icon-shoucang"></i>
+                        <span>收藏</span>
+                    </a>
+                    <a id="next-chapter" href="javascript:void" class="csw-accessed">
+                        <i class="iconfont icon-xiayibu"></i>
+                        <span>下一话</span>
+                    </a>
+                    <div id="icons-seach" href="javascript:void" class="csw-accessed" style="display:none;">
+                        <input type="text"></input>
+                        <a href="javascript:void" class="icon">
+                            <i class="iconfont icon-search" onclick="iconSearch()"></i>
+                            <i class="iconfont icon-clear" onclick="iconClearSearch()"></i>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="times">
+            <div class="monthlist">
+                <span class="month" items="months"></span>
+            </div>
+            <div class="weeklist">
+                <span class="week" items="weeks"></span>
+            </div>
+            <div class="seasonlist">
+                <span class="season" items="seasons"></span>
+            </div>
+            <div class="date">
+                <span class="date"></span>
+                <span class="time"></span>
+            </div>
+            <div class="newordlist">
+                <span class="newword" items="newwords"></span>
+            </div>
+
+        </div>
+        <div _ngcontent-xfg-c325="" aria-label="选项" hide="" role="listbox" tabindex="-1"
+            class="ace-select-body cfc-select-body ng-star-inserted" id="cfc-select-0-listbox"></div>
+        <script type="text/javascript" src="address.js"></script>
+        <script type="text/javascript" src="menu.js"></script>
+        <script type="text/javascript" src="combobox.js"></script>
+        <script src="FileSaver.js"></script>
+        <script src="html-docx.js"></script>
+        <script src="tinymce.min.js"></script>
+        <script src="https://at.alicdn.com/t/font_3424886_dl0xk7waq2f.js"></script>
 </body>
+
 </html>
