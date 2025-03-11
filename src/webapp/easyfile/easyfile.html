@@ -1,0 +1,96 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+    <META HTTP-EQUIV="Pragma-directive" CONTENT="no-cache">
+    <META HTTP-EQUIV="Cache-Directive" CONTENT="no-cache">
+    <META HTTP-EQUIV="Expires" CONTENT="-1">
+    <title>Cityray HRMS</title>
+    <link rel="stylesheet" href="./easyfile.css"/>
+    <script src="./jquery.min.js"></script>
+    <script src="./easyfile.js"></script>
+    <script src="./test-systemfile.js"></script>
+    <script type="text/javascript">
+		class TestPartHanlder {
+			getBody() {
+				return '';
+			}
+			create() {
+				$('#part-' + (this.id || TestPartHanlder.name)).html(this.getBody());
+				this.addLisenter();
+			}
+			addLisenter() { }
+
+			get dom(){
+				return $('#'+this.id)[0];
+			}
+		}
+	</script>
+</head>
+
+<body>
+    <div>
+        <div class="report-body">
+                
+            <div class="left-panel display-flex" id="object-field-tree">
+                <button class="tablinks" name="load-tree">Open</button>
+                <button class="tablinks" name="load-show-name">Show Name</button>
+                <button class="tablinks" name="load-show-label">Show Label</button>
+                <button class="tablinks" name="load-show-save">Save</button>
+                <button class="tablinks" name="load-show-saveas">Save As</button>
+                <button class="tablinks" name="load-show-recoreds">Records</button>
+                <button class="tablinks" name="load-show-groupby">Group By</button>
+                <button class="tablinks" name="load-show-next">Next</button>
+                <button class="tablinks" name="load-show-reset">Reset</button>
+                <div>
+                    <input class="search feedback-input hide"  type="input" value="" autocomplete="off" ></input>
+                    <div class="search-box">
+                        <input type="search" placeholder="Search here..." id="report-fieldearch"/>
+                        <button type="submit" class="search-btn"><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+                <div id="object-field-tree-content"></div>
+                <div id="object-field-tree-groupby"></div>
+            </div>
+            <div class="sibar" style="cursor: col-resize;"></div>
+            <div class="right-panel">
+                <div class="objsearchresult tabitem Reports"></div>
+                <div class="report-view-soql tabitem SOQL">
+                    <button class="tablinks" id="report-btn-reset">Reset</button>
+                    <button class="tablinks" id="report-btn-format">Format</button><br/>
+                    <textarea contenteditable="true" name="" id="report-soql" style="height: 428px;font-size: large;"></textarea>
+                </div>
+                <div class="report-view-xml tabitem XML">
+                    <h2 id="report-xml-filename"></h2>
+                    <div id="report-xml"></div>
+                </div>
+                <div class="report-view-result tabitem Result">
+                    <div id="report-showallsobjectdatatable"></div>
+                </div>
+            </div>
+        </div>
+        <div id="menu"></div>
+        <div class="csw-tab-body"></div>
+    </div>
+    <script type="text/javascript">
+        $('.report-body').hide();
+        let components = [ TestFileSystemHandler];
+        for (let comp of components) {
+            let newpart = new comp();
+
+            $('#menu').append(`<li id="r11"><a title="${newpart.title || newpart.id}" ctrl="${newpart.id}">${newpart.name || newpart.id}</a></li>`);
+            $('.csw-tab-body').append(`<div class="${newpart.id}" id="part-${newpart.id}" active="false"/>`);
+            try {
+                newpart.create();
+            } catch (e) { console.error(e) }
+        }
+        $('#menu').append(`<li id="submenu"><a ctrl="submenu" style="font-size: x-large;letter-spacing: -4px;">≡≡</a></li>`);
+
+    </script>
+</body>
+
+</html>
