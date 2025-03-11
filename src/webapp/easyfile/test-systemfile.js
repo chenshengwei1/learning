@@ -1,4 +1,7 @@
 
+const MSG_INFO = 'info';
+const MSG_ERROR = 'error';
+const MSG_WARN = 'warn';
 class TestFileSystemHandler{
     constructor(){
         this.id='filesystem';
@@ -9,7 +12,7 @@ class TestFileSystemHandler{
         this.maxLine = 10000;
         this.closeFolder = [];
         this.fileService = new LPSFileService();
-        this.isTest = false;
+        this.enabledLog = true;
         this.base = 'C:/doc/work/pentaho_cvp7';
     }
 
@@ -39,6 +42,8 @@ class TestFileSystemHandler{
                     <div class="filehandler-menu-item" name="preview">Preview</div>
                     <div class="filehandler-menu-item" name="download">Download</div>
                     <div class="filehandler-menu-item" name="upload">Upload</div>
+                    <div class="filehandler-menu-item" name="clear">Clear</div>
+                    <div class="filehandler-menu-item" name="log">Enable Log</div>
                 </div>
                 <div class="filehandler-content-containers" style="white-space: pre;">
                     <div class="filehandler-content-title"></div>
@@ -172,17 +177,18 @@ class TestFileSystemHandler{
         });
     }
 
-    showError(message, type, clean){
+    showError(message, type, clear){
+        message = this.formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss') +'\t'+ message;
         console.log(message);
-        if (!this.isTest){
+        if (!this.enabledLog){
             return;
         }
-        let html = clean?'':$('.filehandler-content-preview').html() + '\n';
-        if (type == 'error'){
+        let html = clear?'':$('.filehandler-content-preview').html() + '\n';
+        if (type == MSG_ERROR){
             html += `<span style="color:red">${message}</span>`;
-        }else if (type == 'info'){
+        }else if (type == MSG_INFO){
             html += `<span style="color:green">${message}</span>`;
-        }else if (type == 'warn'){
+        }else if (type == MSG_WARN){
             html += `<span style="color:yellow">${message}</span>`;
         }
         else{
@@ -295,6 +301,11 @@ class TestFileSystemHandler{
             }
         })
 
+        $('.filehandler-rootfd').on('change', (e)=>{
+            this.isStop = false;
+            this.getFile();
+        })
+
         $('body').on('click', (e)=>{
             //console.log(e.target.closest('.filehandler-menu-item'));
             if (this.isMobile){
@@ -314,6 +325,11 @@ class TestFileSystemHandler{
                 this.download(mouseClickHandler.mouseTarget.getAttribute('path'), mouseClickHandler.mouseTarget.getAttribute('name'));
             }else if (name == 'upload'){
                 this.upload();
+            }else if (name == 'clear'){
+                this.showError('', MSG_INFO, true);
+            }else if (name == 'log'){
+                this.enabledLog = !this.enabledLog;
+                e.currentTarget.innerHTML = this.enabledLog ? 'Disable Log' : 'Enable Log';
             }
             if (!this.isMobile){
                 this.hideMenu();
@@ -399,10 +415,12 @@ class TestFileSystemHandler{
             formData.append('files', file);  // 字段名改为复数
         });
 
+        this.showError('start upload size='+files.length, 'info');
         await fetch('/upload', { method: 'POST', body: formData }).then(response => {
+            this.showError('upload sucecss', 'info');
             return response.json();
         }).then(data => {
-            this.showError('upload sucecss' + e, 'info');
+            this.showError('upload sucecss - '+data.length+' ' + JSON.stringify(data), 'info');
             console.log(data);
         }).catch(e=>{
             e.stack && this.showError('current /file error ' + e.stack);
@@ -419,6 +437,7 @@ class TestFileSystemHandler{
             return;
         }
 
+        this.showError('start download file'+ this.joinPaths(path, name), 'info');
         this.find(path, name).handle.download().then(file => {
             const url = URL.createObjectURL(file);
             const a = document.createElement('a');
@@ -487,15 +506,14 @@ class TestFileSystemHandler{
     // 存放对文件句柄的引用
     async  getFile() {
         let showDirectoryPicker = window.showDirectoryPicker;
-        let isTest = true;
-        if (showDirectoryPicker === undefined || isTest){
-            this.showError('Not support showDirectoryPicker');
+        this.showError('start get file', MSG_INFO);
+        if (showDirectoryPicker === undefined){
+            this.showError('Not support showDirectoryPicker', MSG_WARN);
             let rootFolder = $('.filehandler-rootfd').val() || 'C:/doc/work/pentaho_cvp7';
             let rootPath = rootFolder.split('/');
             let rootName = rootPath.pop();
             let rootDir = rootPath.join('/');
-            showDirectoryPicker = 
-            async ()=>{
+            showDirectoryPicker =  async ()=>{
                 let handler = new MyFileSystemDirectoryHandle();
                 handler.path = this.joinPaths(rootDir);
                 handler.name = rootName;
@@ -516,6 +534,7 @@ class TestFileSystemHandler{
                 this.listDir(fileHandle);
             }
             this.createFileListPart();
+            this.showError('end get file', 'info');
         }).catch(e=>{
 
             this.showError('getFile error', 'error');
