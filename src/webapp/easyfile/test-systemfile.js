@@ -1,7 +1,16 @@
-
 const MSG_INFO = 'info';
 const MSG_ERROR = 'error';
 const MSG_WARN = 'warn';
+
+// 防抖处理（300ms）
+const debounce = (func, delay) => {
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => func(...args), delay);
+    };
+  };
+
 class TestFileSystemHandler{
     constructor(){
         this.id='filesystem';
@@ -14,6 +23,8 @@ class TestFileSystemHandler{
         this.fileService = new LPSFileService();
         this.enabledLog = true;
         this.base = 'C:/doc/work/pentaho_cvp7';
+        this.data = ["apple", "banana", "cherry", "date", "elderberry", "fig", "grape"];
+        this.dirHandleMap = new Map();
     }
 
     get isMobile(){
@@ -31,10 +42,18 @@ class TestFileSystemHandler{
                 <input type="file" id="folder-input" webkitdirectory directory multiple>
                 <div id="file-list"></div>
             </div>
+            <div class="autocomplete">
+                <input type="text" id="searchInput" placeholder="enter search key..." autocomplete="off">
+                <!-- 新增搜索图标 -->
+                <svg class="search-icon" viewBox="0 0 24 24" onclick="performSearch()">
+                    <path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                </svg>
+                <div id="suggestions"></div>
+            </div>
             Root Folder:<input class="filehandler-rootfd" type="text" value="${this.base}"></input><br/>
             search:<input class="filehandler-key-input" type="text"></input><br/>
             include:<input class="filehandler-include-input" type="text"></input><br/>
-            exclude:<input class="filehandler-exclude-input" type="text"></input><br/>
+            exclude:<input class="filehandler-exclude-input" type="text" value=".git"></input><br/>
             <div class="filehandler-containers fa">
                 <span class="file-total">${this.page.filteredTotal||0}</span>
                 <ul class="filehanlder-root display-flex"></ul>
@@ -189,7 +208,7 @@ class TestFileSystemHandler{
         }else if (type == MSG_INFO){
             html += `<span style="color:green">${message}</span>`;
         }else if (type == MSG_WARN){
-            html += `<span style="color:yellow">${message}</span>`;
+            html += `<span style="background-color:yellow">${message}</span>`;
         }
         else{
             html += `<span>${message}</span>`;
@@ -238,8 +257,8 @@ class TestFileSystemHandler{
             let name = $(e.currentTarget).attr('name');
             let path = $(e.currentTarget).attr('path');
             let kind = $(e.currentTarget).attr('kind');
-            this.showError('click name ' + name, 'info', true);
-            this.showError('click path ' + path);
+            this.showError('click name ' + name, MSG_INFO);
+            this.showError('click path ' + path, MSG_INFO);
             if (kind == 'directory'){
                 let file = this.files.find(e=>e.path == path && e.name == name);
                 if (!file.loaded){
@@ -401,6 +420,184 @@ class TestFileSystemHandler{
             renderTree(fileTree, rootList);
             fileList.appendChild(rootList);
         })
+
+        this.addSuggrestionListener();
+    }
+
+    addSuggrestionListener(){
+        // $('#searchInput').on('input', async (e)=> {
+        //     const input = $(e.target).val().toLowerCase();
+        //     const filtered = (await this.getSearchInputSuggestions()).filter(item => 
+        //       item.toLowerCase().includes(input)
+        //     );
+            
+        //     const suggestions = $('#suggestions');
+        //     suggestions.empty();
+            
+        //     if (input.length > 0 && filtered.length > 0) {
+        //       filtered.forEach(item => {
+        //         $('<div>').addClass('suggestion-item')
+        //           .text(item)
+        //           .click(() => {
+        //             $('#searchInput').val(item);
+        //             suggestions.hide();
+        //           })
+        //           .appendTo(suggestions);
+        //       });
+        //       suggestions.show();
+        //     } else {
+        //       suggestions.hide();
+        //     }
+        //   });
+
+          // 输入处理（带异步支持）
+            $('#searchInput').on('input', debounce(async (e)=> {
+                const input = $(e.target).val().trim();
+                $('#suggestions').html('<div class="loading">加载中...</div>').addClass('show');
+                
+                try {
+                    let suggestionsData = await this.getSearchInputSuggestions();
+                    $('#suggestions').empty();
+                    
+                    if (input && suggestionsData.length) {
+                        suggestionsData.forEach(item => {
+                        $('<div>').addClass('suggestion-item')
+                            .html(this.highlightText(item, input))
+                            .click(() => {
+                                $('#searchInput').val(item.value);
+                                $('#suggestions').removeClass('show');
+                            })
+                            .appendTo('#suggestions');
+                        });
+                        $('#suggestions').addClass('show');
+                    } else {
+                        $('#suggestions').removeClass('show');
+                    }
+                } catch(e) {
+                    this.showError(e.stack, MSG_ERROR);
+                    $('#suggestions').html('<div class="error">加载失败</div>');
+                }
+            }, 300));
+          
+          // 点击页面其他区域关闭提示
+          $(document).on('click', e => {
+            if (!$(e.target).closest('.autocomplete').length) {
+              //$('#suggestions').hide();
+            }
+          });
+
+
+          // 键盘导航
+        let currentIndex = -1;
+        $('#searchInput').on('keydown', e => {
+            const items = $('#suggestions .suggestion-item');
+            if (e.key === 'ArrowDown') {
+                currentIndex = (currentIndex + 1) % items.length;
+            } else if (e.key === 'ArrowUp') {
+                currentIndex = (currentIndex - 1 + items.length) % items.length;
+            } else if (e.key === 'Enter') {
+                if (currentIndex > -1) {
+                    $('#searchInput').val(suggestionsData[currentIndex]);
+                    $('#suggestions').removeClass('show');
+                }
+                return;
+            } else return;
+        
+            items.removeClass('active');
+            items.eq(currentIndex).addClass('active').get(0)?.scrollIntoView({ block: 'nearest' });
+        });
+
+
+        // 新增搜索函数
+        function performSearch() {
+            const keyword = $('#searchInput').val().trim();
+            if (keyword) {
+            // 执行搜索逻辑，示例用alert展示
+            alert('执行搜索: ' + keyword);
+            // 实际应调用搜索接口或执行过滤
+            }
+        }
+        
+        // 绑定回车键事件
+        $('#searchInput').on('keypress', e => {
+            if (e.which === 13) this.performSearch();
+        });
+    }
+
+    performSearch() {
+        const keyword = $('#searchInput').val().trim();
+        if (keyword) {
+            // 执行搜索逻辑，示例用alert展示
+            //alert('执行搜索: ' + keyword);
+            $('.filehandler-rootfd').val(keyword);
+            this.getFile();
+            // 实际应调用搜索接口或执行过滤
+        }
+    }
+
+    // 高亮匹配文字
+    highlightText(item, input){
+        const regex = new RegExp(`(${input})`, 'gi');
+        return this.kindText(item, item.value.replace(regex, '<span class="highlight">$1</span>'));
+    }
+
+    // 增加类型标识
+    kindText(item, input){
+        if (item.kind == 'directory'){
+            return '<span class="dir-icon"></span>' + input;
+        }else{
+            return '<span class="file-icon"></span>' + input;
+        }
+    }
+
+    async getSearchInputSuggestions(){
+        const input = $('#searchInput').val().toLowerCase();
+        if (input.match(/\/$/)){
+
+            let currentPath = input;
+            let file = this.files.find(e=>this.joinPaths(e.path, e.name).toLowerCase() == input);
+            if (!file){
+                if (this.dirHandleMap.has(currentPath)){
+                    file = this.dirHandleMap.get(currentPath);
+                }else{
+                    file = {handle:this.createSystemDirectoryHandle(currentPath)};
+                    this.dirHandleMap.set(currentPath, file);
+                }
+            }
+            let suggestions = [];
+            let entries = await file.handle.entries();
+            for(const [key, value] of entries) {
+                console.log({ key, value });
+                suggestions.push({kind: value.kind, value: this.joinPaths(currentPath, key), label: key});
+            }
+            return suggestions;
+
+        }else{
+            // get parent path
+            let currentPath = input.split('/');
+            let fileName = currentPath.pop();
+            currentPath = currentPath.join('/');
+            let file = this.files.find(e=>this.joinPaths(e.path, e.name).toLowerCase() == currentPath);
+            if (!file){
+                if (this.dirHandleMap.has(currentPath)){
+                    file = this.dirHandleMap.get(currentPath);
+                }else{
+                    file = {handle:this.createSystemDirectoryHandle(currentPath)};
+                    this.dirHandleMap.set(currentPath, file);
+                }
+            }
+            
+            let suggestions = [];
+            let entries = await file.handle.entries();
+            entries = entries || new Map();
+            for(const [key, value] of entries) {
+                console.log({ key, value });
+                if (key.toLowerCase().indexOf(fileName) == 0){
+                    suggestions.push({kind: value.kind, value: this.joinPaths(currentPath, key), label: key});
+                }
+            }
+            return suggestions;
+        }
     }
 
     async upload(){
@@ -503,6 +700,17 @@ class TestFileSystemHandler{
         return JSON.stringify(this.files||[]);
     }
 
+    createSystemDirectoryHandle(rootFolder){
+        let rootPath = rootFolder.split(/\/|\\/).filter(e=>e);
+        let rootName = rootPath.pop();
+        let rootDir = rootPath.join('/');
+        let handler = new MyFileSystemDirectoryHandle();
+        handler.path = rootDir;
+        handler.name = rootName;
+        handler.kind = 'directory';
+        return handler;
+    }
+
     // 存放对文件句柄的引用
     async  getFile() {
         let showDirectoryPicker = window.showDirectoryPicker;
@@ -510,7 +718,7 @@ class TestFileSystemHandler{
         if (showDirectoryPicker === undefined){
             this.showError('Not support showDirectoryPicker', MSG_WARN);
             let rootFolder = $('.filehandler-rootfd').val() || 'C:/doc/work/pentaho_cvp7';
-            let rootPath = rootFolder.split('/');
+            let rootPath = rootFolder.split(/\/|\\/).filter(e=>e);
             let rootName = rootPath.pop();
             let rootDir = rootPath.join('/');
             showDirectoryPicker =  async ()=>{
@@ -567,12 +775,8 @@ class TestFileSystemHandler{
                 "load",
                 () => {
                     // 然后这将显示一个文本文件
-                    console.timeLog('import','start load');
                     this.files = JSON.parse(reader.result);
-                    console.timeLog('import','end JSON');
                     this.createFileListPart();
-                    console.timeLog('import','end part');
-                    console.timeEnd('import');
                 },
                 false,
             );
@@ -679,7 +883,6 @@ class TestFileSystemHandler{
     }
 
     count(){
-        console.timeLog('import','start count');
         this.page.filteredTotal = this._filteredResult.length;
         return this;
     }
@@ -718,7 +921,6 @@ class TestFileSystemHandler{
     }
 
     filteredByCloseFolder(){
-        console.timeLog('import','start filteredByCloseFolder');
         if (!this.closeFolder.length){
             return this;
         }
@@ -739,7 +941,6 @@ class TestFileSystemHandler{
     }
 
     filteredExclude(){
-        console.timeLog('import','start filteredExclude');
         let incldue = $('.filehandler-exclude-input').val();
         if (!incldue){
             return this;
@@ -747,7 +948,7 @@ class TestFileSystemHandler{
         let words = incldue.toLocaleLowerCase().split(';');
         this._filteredResult = this._filteredResult.filter(item=>{
             for (let word of words){
-                if (item.path.toLocaleLowerCase().indexOf(word) != -1){
+                if (item.path.toLocaleLowerCase().indexOf(word) != -1 || item.name.toLocaleLowerCase().indexOf(word) != -1){
                     return false;
                 }
             }
@@ -757,7 +958,6 @@ class TestFileSystemHandler{
     }
 
     filteredInclude(){
-        console.timeLog('import','start filteredInclude');
         let incldue = $('.filehandler-include-input').val();
         if (!incldue){
             return this;
@@ -775,7 +975,6 @@ class TestFileSystemHandler{
     }
 
     filteredSeachkey(){
-        console.timeLog('import','start filteredSeachkey');
         let incldue = $('.filehandler-key-input').val().toLocaleLowerCase();
         if (!incldue){
             return this;
@@ -788,7 +987,7 @@ class TestFileSystemHandler{
 
     getFileItem(f){
         !f.lastModifiedDate && this.getLastmodifiedDate(f);
-        this.showError(JSON.stringify(f));
+        //this.showError(JSON.stringify(f));
         return `<li class="flex-item-full filehanlder-file-item ${this.isCatetDown(f)}" name="${f.name}" kind="${f.kind}" path="${f.path}" level="${f.level}">${f.name || f.path}<span class="time-label">${f.lastModifiedDate&&this.formatDate(f.lastModifiedDate, 'yyyy-MM-dd hh:mm:ss')||''}</span> <span class="size-label">${this.sizeLabel(f)}</span></li>`;
     }
 
@@ -845,7 +1044,6 @@ class TestFileSystemHandler{
             return this.getFileItem(f);
         })
         $('.filehandler-containers file-total').html(`${this.page.filteredTotal||0}`);
-        console.timeLog('import','start html');
         $('.filehanlder-root').html(content.join(''));
     }
 
@@ -1310,6 +1508,7 @@ class MyFileSystemDirectoryHandle {
         this.custom= true;
         this._entry = null;
         this.files = [];
+        this.__loading = true;
     }
     joinPaths(...c){
         return c.filter(e => e).join('/').replace(/\/+/g,'/').replace(/\\+/g,'/').replace(/\/$/,'');
@@ -1327,10 +1526,14 @@ class MyFileSystemDirectoryHandle {
     }
     
     entries(){
+        if (!this.__loading){
+            return Promise.resolve(this._entries);
+        }
         return fetch('/file?path=' + this.joinPaths(this.path, this.name)).then(response => {
             return response.json();
         }).then(data => {
             console.log(data);
+            this.__loading = false;
             let resultJONS = JSON.parse(data);
             if (resultJONS.error){
                 return [];
@@ -1348,8 +1551,6 @@ class MyFileSystemDirectoryHandle {
                 inentries.set(e.file, childHanlder);
             });
             this._entries = inentries;
-
-
             return this._entries;
         }).catch(e=>{
             console.log('entries error', e);

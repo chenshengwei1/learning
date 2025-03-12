@@ -185,7 +185,8 @@ filehanlder-root .size-label{
 .fa-caret-down[kind="directory"]::before{
     color: rgb(153, 206, 152);
     content: '-';
-    padding-right: 26px;
+    width: 24px;
+    padding-right: 10px;
     cursor: pointer;
 
 }
@@ -193,6 +194,7 @@ filehanlder-root .size-label{
 .fa-caret-up[kind="directory"]::before{
     color: rgb(153, 206, 152);
     content: '+';
+    width: 24px;
     padding-right: 10px;
     cursor: pointer;
     
@@ -209,6 +211,21 @@ filehanlder-root .size-label{
 
 .size-label{
     color: #355f83;
+    margin-right: 10px;
+    margin-left: auto;
+}
+
+.filehandler-header input{
+    border: 1px solid rgb(150, 148, 146);
+    border-radius: 4px;
+    background-color: rgb(255, 255, 255);
+    font-family: SFS, Arial, sans-serif;
+    box-sizing: border-box;
+    appearance: none;
+    font-size: 1rem;
+    transition: 0.1s;
+    line-height: 32px;
+    padding: 10px;
 }
 
 .filehandler-header.mobile input{
@@ -228,3 +245,82 @@ filehanlder-root .size-label{
     outline-style: none;
     outline-color: invert;
 }
+
+
+
+
+
+.autocomplete {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center; 
+  }
+  
+  #suggestions {
+    position: absolute;
+    border: 1px solid #ccc;
+    max-height: 450px;
+    overflow-y: auto;
+    width: 100%;
+    
+  }
+  
+  .suggestion-item {
+    padding: 8px;
+    cursor: pointer;
+    background: white;
+  }
+  
+  .suggestion-item:hover {
+    background-color: #f0f0f0;
+  }
+
+
+  /* 添加过渡动画 */
+#suggestions {
+    transition: opacity 0.2s, transform 0.2s;
+    transform-origin: top;
+    opacity: 0;
+    transform: scaleY(0);
+  }
+  
+  #suggestions.show {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+  
+  /* 高亮样式 */
+  .highlight {
+    color: #2196F3;
+    font-weight: bold;
+  }
+
+  .search-icon {
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    fill: #666;
+    transition: 0.3s;
+  }
+  
+  .search-icon:hover {
+    fill: #2196F3;
+  }
+  
+  #searchInput {
+    padding-right: 35px; /* 给图标留出空间 */
+    width: calc(100% - 35px);
+  }
+
+  .dir-icon::after{
+    content: '>>';
+
+  }
+
+  .file-icon::after{
+    content: '**';
+    
+  }
