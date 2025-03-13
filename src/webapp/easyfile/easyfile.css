@@ -49,8 +49,8 @@
 }
 
 
-.select{
-    background-color: red;
+.select {
+    background-color: rgb(130, 135, 206) !important;
 }
 
 .display-flex{
@@ -247,18 +247,23 @@ filehanlder-root .size-label{
 }
 
 
-
-
-
 .autocomplete {
     position: relative;
     width: 100%;
     display: flex;
+    flex-wrap: wrap;
     align-items: center; 
+    border: 1px solid rgb(150, 148, 146);
+    border-radius: 4px;
+  }
+
+  .search-results{
+    position: relative;
+    width: 100%;
+    height: 1px;
   }
   
   #suggestions {
-    position: absolute;
     border: 1px solid #ccc;
     max-height: 450px;
     overflow-y: auto;
@@ -272,7 +277,7 @@ filehanlder-root .size-label{
     background: white;
   }
   
-  .suggestion-item:hover {
+  .suggestion-item:hover, .suggestion-item:active,.suggestion-item.active {
     background-color: #f0f0f0;
   }
 
@@ -283,6 +288,7 @@ filehanlder-root .size-label{
     transform-origin: top;
     opacity: 0;
     transform: scaleY(0);
+    position: absolute;
   }
   
   #suggestions.show {
@@ -313,6 +319,35 @@ filehanlder-root .size-label{
   #searchInput {
     padding-right: 35px; /* 给图标留出空间 */
     width: calc(100% - 35px);
+    border-style: none;
+    outline-style: none;
+  }
+
+  /* 新增加载动画 */
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  
+  .loading .search-icon {
+    animation: rotate 1s linear infinite;
+    fill: #2196F3;
+  }
+  
+  /* 错误提示样式 */
+  .error-tip {
+    color: #ff4444;
+    background: #ffeaea;
+    padding: 5px 10px;
+    margin-top: 5px;
+    border-radius: 4px;
+    display: inline-block;
+    animation: fadeIn 0.3s;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
   .dir-icon::after{
@@ -324,3 +359,38 @@ filehanlder-root .size-label{
     content: '**';
     
   }
+
+
+  /* 通用图标基类 */
+.icon {
+    position: relative;
+    padding-left: 28px; /* 图标占位 */
+    min-height: 24px;
+  }
+  
+  .icon::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    background-size: contain;
+  }
+  
+  .icon-red { color: #ff4444; }
+
+  /* 文件图标 */
+  .icon-file::before {
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor'><path d='M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z'/></svg>");
+  }
+  
+  /* 目录图标 */
+  .icon-folder::before {
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor'><path d='M10 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z'/></svg>");
+  }
+
+  .svg-background {
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100'><circle cx='50' cy='50' r='40' stroke='green' stroke-width='3' fill='yellow' /></svg>");
+}

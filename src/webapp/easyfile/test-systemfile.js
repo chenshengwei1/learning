@@ -25,6 +25,7 @@ class TestFileSystemHandler{
         this.base = 'C:/doc/work/pentaho_cvp7';
         this.data = ["apple", "banana", "cherry", "date", "elderberry", "fig", "grape"];
         this.dirHandleMap = new Map();
+        this.suggestionsData = [];
     }
 
     get isMobile(){
@@ -45,10 +46,12 @@ class TestFileSystemHandler{
             <div class="autocomplete">
                 <input type="text" id="searchInput" placeholder="enter search key..." autocomplete="off">
                 <!-- 新增搜索图标 -->
-                <svg class="search-icon" viewBox="0 0 24 24" onclick="performSearch()">
+                <svg class="search-icon" viewBox="0 0 24 24">
                     <path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
                 </svg>
-                <div id="suggestions"></div>
+                <div class="search-results">
+                    <div id="suggestions"></div>
+                </div>
             </div>
             Root Folder:<input class="filehandler-rootfd" type="text" value="${this.base}"></input><br/>
             search:<input class="filehandler-key-input" type="text"></input><br/>
@@ -252,6 +255,7 @@ class TestFileSystemHandler{
         }
 
         $('.filehandler-containers').on('click', '.filehanlder-file-item', (e)=>{
+            this.showError('start click ', MSG_INFO);
             $('li.filehanlder-file-item').removeClass('select');
             $(e.currentTarget).addClass('select');
             let name = $(e.currentTarget).attr('name');
@@ -295,6 +299,7 @@ class TestFileSystemHandler{
                     this.hideMenu();
                 }
             }
+            this.showError('end click ', MSG_INFO);
         })
 
 
@@ -456,11 +461,11 @@ class TestFileSystemHandler{
                 $('#suggestions').html('<div class="loading">加载中...</div>').addClass('show');
                 
                 try {
-                    let suggestionsData = await this.getSearchInputSuggestions();
+                    this.suggestionsData = await this.getSearchInputSuggestions();
                     $('#suggestions').empty();
                     
-                    if (input && suggestionsData.length) {
-                        suggestionsData.forEach(item => {
+                    if (input && this.suggestionsData.length) {
+                        this.suggestionsData.forEach(item => {
                         $('<div>').addClass('suggestion-item')
                             .html(this.highlightText(item, input))
                             .click(() => {
@@ -483,6 +488,7 @@ class TestFileSystemHandler{
           $(document).on('click', e => {
             if (!$(e.target).closest('.autocomplete').length) {
               //$('#suggestions').hide();
+              $('#suggestions').removeClass('show');
             }
           });
 
@@ -497,7 +503,7 @@ class TestFileSystemHandler{
                 currentIndex = (currentIndex - 1 + items.length) % items.length;
             } else if (e.key === 'Enter') {
                 if (currentIndex > -1) {
-                    $('#searchInput').val(suggestionsData[currentIndex]);
+                    $('#searchInput').val(this.suggestionsData[currentIndex].value);
                     $('#suggestions').removeClass('show');
                 }
                 return;
@@ -507,32 +513,45 @@ class TestFileSystemHandler{
             items.eq(currentIndex).addClass('active').get(0)?.scrollIntoView({ block: 'nearest' });
         });
 
-
-        // 新增搜索函数
-        function performSearch() {
-            const keyword = $('#searchInput').val().trim();
-            if (keyword) {
-            // 执行搜索逻辑，示例用alert展示
-            alert('执行搜索: ' + keyword);
-            // 实际应调用搜索接口或执行过滤
-            }
-        }
-        
         // 绑定回车键事件
         $('#searchInput').on('keypress', e => {
             if (e.which === 13) this.performSearch();
         });
+
+        $('.autocomplete').on('click', '.search-icon', e => {
+            this.performSearch();
+        });
     }
 
-    performSearch() {
-        const keyword = $('#searchInput').val().trim();
-        if (keyword) {
+    async performSearch() {
+
+        const $input = $('#searchInput');
+        const $icon = $('.search-icon');
+        const keyword = $input.val().trim();
+
+        // 输入验证
+        if (!keyword) {
+            showErrorTip('请输入搜索内容');
+            return;
+        }
+
+        try {
+            $icon.addClass('loading');
             // 执行搜索逻辑，示例用alert展示
             //alert('执行搜索: ' + keyword);
             $('.filehandler-rootfd').val(keyword);
-            this.getFile();
+            await this.getFile();
             // 实际应调用搜索接口或执行过滤
+        } finally {
+            $icon.removeClass('loading');
         }
+    }
+
+    // 显示错误提示
+    showErrorTip(msg) {
+        $('<div>').addClass('error-tip').text(msg)
+        .insertAfter('#searchInput')
+        .delay(2000).fadeOut(() => $(this).remove());
     }
 
     // 高亮匹配文字
@@ -544,9 +563,9 @@ class TestFileSystemHandler{
     // 增加类型标识
     kindText(item, input){
         if (item.kind == 'directory'){
-            return '<span class="dir-icon"></span>' + input;
+            return '<span class="icon icon-folder icon-red"></span>' + input;
         }else{
-            return '<span class="file-icon"></span>' + input;
+            return '<span class="icon icon-file"></span>' + input;
         }
     }
 
