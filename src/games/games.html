@@ -1,0 +1,330 @@
+<html>
+<head>
+	<link href="happy.png" rel="shortcut icon" type="image/x-icon">
+	<link href="test.css"  rel="stylesheet">
+	<script type="text/javascript" src="jquery.min.js"></script>
+
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Snake Game</title>
+</head>
+
+<body>
+    <style>
+        li{
+            list-style: none;
+            border: 1px solid rgb(1, 7, 19);
+            width: 18px;
+            height: 18px;
+        }
+
+        .online, .food{
+            background-color: red;
+        }
+        .container{
+            margin: 20px 450px;
+        }
+        .container ul{
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+        .dialog{
+            position: fixed;
+            background-color: antiquewhite;
+            line-height: 150px;
+            width: 500px;
+            text-align: center;
+            left: 40%;
+            top: 40%;
+            color: black;
+        }
+        .dialog .button{
+            position: absolute;
+            right: 0;
+            top: 0;
+            line-height: 20px;
+            font-size: 30;
+            cursor: pointer;
+            color: red;
+        }
+    </style>
+    <div class="dialog">   
+        <span class="button">X</span>
+        Game Over
+	</div>
+    <div class="container">   
+	</div>
+    <script>
+        let MaxRow = 50;
+        let MaxCol = 50;
+        var getUls = (n,m)=>{
+            let allUls = '';
+            for(let i=0;i<n;i++){
+                let ulString = `<ul class="" id="ul-${i}" r="${i}">`;
+                    for(let j=0;j<m;j++){
+                        ulString = ulString+`<li r="${i}" c="${j}"></li>`
+                    }
+                ulString = ulString + '</ul>';
+                allUls = allUls + ulString;
+            }
+            return allUls;
+        }
+        
+        $('.container').html(getUls(MaxRow,MaxCol));
+
+
+        class Control{
+            start=false;
+            currentArrow;
+            snake = [[22,22],[22,23],[22,24],[22,25]];
+            constructor(){
+
+            }
+            startGame(){
+                if(this.start){
+                    return;
+                }
+                console.info('start');
+                
+                this.currentArrow = 'ArrowRight';
+                this.createFood();
+                this.showSnake();
+                this.start = true;
+            }
+            pause(){
+                this.start = !this.start;
+            }
+            end(){
+                this.start = false;
+                this.food = null;
+                this.clearSnake();
+                this.reset();
+                this.currentArrow = '';
+                this.showSnake();
+            }
+            quit(){
+                this.end();
+            }
+            
+            isInSnake(p){
+                for(let k of this.snake){
+                    if(k[0]==p[0] && k[1] ==p[1]){
+                        return true;
+                    }
+                }
+                return false;
+            }
+            reset(){
+                this.snake = [[22,22],[22,23],[22,24],[22,25]];
+            }
+
+            showSnake(){
+                for(let k of this.snake){
+                    this.getPoint(k[0],k[1]).addClass('online');
+                }
+            }
+            clearSnake(){
+                for(let k of this.snake){
+                    this.getPoint(k[0],k[1]).removeClass('online');
+                }
+            }
+
+            getPoint (r, c){
+                return $(`li[r="${r}"][c="${c}"]`);
+            }
+            
+            snakeHead (){
+                let snakeLength = this.snake.length;
+                let head = this.snake[snakeLength-1];
+                return head;
+            }
+            
+    
+            createFood(){
+                if (this.food != null){
+                    return;
+                }
+                $('.food').removeClass('food');
+                let all = [];
+                for(let i=0;i<MaxRow;i++){
+                    for(let j=0;j<MaxCol;j++){
+                        let p = [i,j];
+                        if (this.isInSnake(p)){
+                            continue;
+                        }
+                        all.push(p);
+                    }
+                }
+                let r = Math.floor((Math.random() * all.length));
+                this.food = all[r];
+                this.getPoint(all[r][0],all[r][1]).addClass('food');
+                return false;
+            }
+    
+            
+            isFood(p){
+                return this.getPoint(p[0],p[1]).is('.food');
+            }
+    
+             moveTo(snake, p){
+                
+                snake.push(p);
+                if(!this.isFood(p)){
+                    snake.shift();
+                }else{
+                    this.getPoint(p[0],p[1]).removeClass('food');
+                    this.food = null;
+                    this.createFood();
+                }
+                
+            }
+    
+            moveLeft(snake){
+                let snakeLength = snake.length;
+                let head = snake[snakeLength-1];
+                let newHead = [head[0], head[1]-1];
+                if (this.isInSnake(newHead)){
+                    return false;
+                }
+                if (newHead[1] >= 0){
+                    this.moveTo(snake, newHead);
+                    console.log('moveLeft = ');
+                    return true;
+                }
+                return false;
+            }
+            moveRight(snake){
+                let snakeLength = snake.length;
+                let head = snake[snakeLength-1];
+                let newHead = [head[0], head[1]+1];
+                if (this.isInSnake(newHead)){
+                    return false;
+                }
+                if (newHead[1] <= MaxRow){
+                    this.moveTo(snake, newHead);
+                    console.log('moveRight = ');
+                    return true;
+                }
+                return false;
+            }
+            moveUp(snake){
+                let snakeLength = snake.length;
+                let head = snake[snakeLength-1];
+                let newHead = [head[0]-1, head[1]];
+                if (this.isInSnake(newHead)){
+                    return false;
+                }
+                if (newHead[0] >= 0){
+                    this.moveTo(snake, newHead);
+                    console.log('moveUp = ');
+                    return true;
+                }
+                return false;
+            }
+            moveDown(snake){
+                
+                let snakeLength = snake.length;
+                let head = snake[snakeLength-1];
+                let newHead = [head[0]+1, head[1]];
+                if (this.isInSnake(newHead)){
+                    return false;
+                }
+                if (newHead[0] <=MaxCol ){
+                    this.moveTo(snake, newHead);
+                    console.log('moveDown = ');
+                    return true;
+                }
+                return false;
+            }
+    
+            
+    
+            goto(arrow){
+                if (!this.start){
+                    return;
+                }
+                let snake = this.snake;
+                arrow = arrow || this.currentArrow;
+                this.clearSnake(snake);
+                let success = false;
+                if('ArrowUp' == arrow){
+                    success =this.moveUp(snake);
+                }
+                if('ArrowDown' == arrow){
+                    success = this.moveDown(snake);
+                }
+    
+                if('ArrowLeft' == arrow){
+                    success = this.moveLeft(snake);
+                }
+    
+                if('ArrowRight' == arrow){
+                    success = this.moveRight(snake);
+                }
+                if (!success && null != arrow){
+                    $('.dialog').show();
+                    this.quit()
+                }
+    
+                this.showSnake(snake);
+                
+            }
+        }
+
+        let ctrl = new Control();
+        //ctrl.startGame();
+        
+        setInterval(()=>{
+            ctrl.goto();
+        }, 500)
+
+        
+        $('.dialog').hide();
+
+        $('body').on('keyup',(events)=>{
+            console.log('press key = ' + events.key);
+            if(events.key == 'p'){
+                ctrl.pause();
+                return;
+            }
+            if(events.key == 'q'){
+                ctrl.quit();
+                return;
+            }
+            if(events.key == 'm'){
+                ctrl.startGame();
+                return;
+            }
+            
+            let avaibleBtn = ['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','w','a','s','d','A','W','S','D']
+            if(avaibleBtn.indexOf(events.key) == -1){
+                return;
+            }
+            let currentArrow = events.key;
+            if (currentArrow == 'w' || currentArrow == 'W'){
+                currentArrow = 'ArrowUp';
+            }
+            if (currentArrow == 's' || currentArrow == 'S'){
+                currentArrow = 'ArrowDown';
+            }
+            if (currentArrow == 'A' || currentArrow == 'a'){
+                currentArrow = 'ArrowLeft';
+            }
+            if (currentArrow == 'D' || currentArrow == 'd'){
+                currentArrow = 'ArrowRight';
+            }
+            ctrl.currentArrow = currentArrow;
+            ctrl.goto();
+
+        })
+        $('.dialog .button').on('click',(events)=>{
+            $('.dialog').hide();
+
+        })
+        
+        
+    </script>
+</body>
+<script type="text/javascript" src="games.js"></script>
+</html>

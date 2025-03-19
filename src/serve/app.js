@@ -17,8 +17,9 @@ const filemgr = require('./files/fileMgr.js');
 const cacheMgr = require('./cache/cacheMgr.js');
 const easyfilerouter = require('./sop/easyfilerouter.js');
 const chatwithdeepseek = require('./deepseek/deepseekService.js');
-
-
+const markdownrouter = require('./sop/markdownrouter.js');
+var multer = require('multer');
+const filemgr = require('./files/filemgr.js');
 
 app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
@@ -27,6 +28,9 @@ app.use(express.urlencoded({ extended: true })) // for parsing application/x-www
 morgan.token('id', function getId (req) {
     return req.id
   });
+
+app.use( bodyParser.urlencoded({extended: true}) );
+app.use(bodyParser.json())
 
 app.use((req, res, next)=> {
     req.id = uuid.v4();
@@ -44,7 +48,7 @@ var loggerEveryFile = ()=>{
 }
  
 // setup the logger
-app.use(loggerEveryFile());
+//app.use(loggerEveryFile());
 
 
 //app.use(morgan(':method :host :status :param[id] :res[content-length] - :response-time ms'));
@@ -83,7 +87,10 @@ app.all('/', (req, res, next) => {
     http://localhost:3000/js/app.js
     http://localhost:3000/about.html
  */
+app.use('/easyfile', easyfilerouter);
+app.use('/markdown', markdownrouter);
 app.use(express.static('public'));
+app.use(express.static("src/test"));
 
 app.use('/sop', sop);
 app.use('/easyfile', easyfilerouter);

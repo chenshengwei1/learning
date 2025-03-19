@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown Viewer</title>
+    
+    <!-- 引入必要的库 -->
+    <!--<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+    <script src="jquery.min.js"></script>
+    <!--<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>-->
+    <script src="marked.min.js"></script>
+    
+    <!-- 代码高亮支持 -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/github.min.css">-->
+    <link rel="stylesheet" href="github.min.css">
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>-->
+    <script src="highlight.min.js"></script>
+
+    <!-- MathJax 如果需要支持 LaTeX 公式，可以额外引入 MathJax： -->
+    <script src="https://polyfill.io/v3/polyfill.min.js"></script>
+    <script src="polyfill.min.js"></script>
+    <!--<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>-->
+    <script id="MathJax-script" async src="tex-mml-chtml.js"></script>
+
+    <!-- GitHub Markdown 样式 -->
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.1.0/github-markdown.min.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.1.0/github-markdown.min.css">
+
+
+    <style>
+        body {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        #markdown-content {
+            border: 1px solid #e1e4e8;
+            border-radius: 6px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        /* Markdown 内容样式 */
+        #markdown-content h1, #markdown-content h2 {
+            border-bottom: 1px solid #eaecef;
+            padding-bottom: 0.3em;
+        }
+
+        #markdown-content code {
+            background-color: #f6f8fa;
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+        }
+
+        #markdown-content pre {
+            background-color: #f6f8fa;
+            padding: 16px;
+            border-radius: 6px;
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Markdown Viewer</h1>
+
+    <!-- https://blog.csdn.net/qq_15557073/article/details/137631716 -->
+     <!--https://github.com/mathjax/MathJax-demos-web?tab=readme-ov-file-->
+    <h2>MathJax</h2>
+    <div>$$\int_a^b f(x) dx$$</div>
+    <div>$$\int_a^b \left( -\frac{1}{x^2} \right) dx = \frac{1}{x}|_a^b = \frac{1}{b} - \frac{1}{a}$$</div>
+    <span>$$x = {-b \pm \sqrt{b^2-4ac} \over 2a}$$</span>
+    <span>When $a \ne 0$, there are two solutions to \(ax^2 + bx + c = 0\) and they are $$x = {-b \pm \sqrt{b^2-4ac} \over 2a}.$$</span>
+    <span>\[ \mathbf{V}_1 \times \mathbf{V}_2 = \begin{vmatrix} \mathbf{i} & \mathbf{j} & \mathbf{k} \\ \frac{\partial X}{\partial u} & \frac{\partial Y}{\partial u} & 0 \\ \frac{\partial X}{\partial v} & \frac{\partial Y}{\partial v} & 0 \\ \end{vmatrix} \]    </span>
+    <h2>Markdown</h2>
+    <div id="markdown-content">Loading...</div>
+
+    <script>
+        $(document).ready(function() {
+            // 配置 marked
+            marked.setOptions({
+                highlight: (code, lang) =>{
+                    return hljs.highlightAuto(code).value;
+                },
+                breaks: true
+            });
+
+            // 从后端获取 markdown 内容
+            fetch('/markdown-api-endpoint').then((response)=>{
+                return response.text();
+            }).then((mdContent) =>{
+                // 转换 Markdown 为 HTML
+                const htmlContent = marked.parse(mdContent);
+                $('#markdown-content').html(htmlContent);
+                
+                // 初始化代码高亮
+                hljs.highlightAll();
+                return 'success'
+            }).then(input=>{
+                console.log(input)
+            }).catch(function(error) {
+                $('#markdown-content').html('Failed to load content');
+                console.error('Error:', error);
+            });
+        });
+
+        window.MathJax = {  
+        tex: {    
+            packages: ['base'],        // extensions to use    
+            inlineMath: [              // start/end delimiter pairs for in-line math      
+                ['\\\\(', '\\\\)']    
+                ],    
+            displayMath: [             // start/end delimiter pairs for display math      
+                ['$$', '$$'],      
+                ['\\\\[', '\\\\]']    
+            ],    
+            processEscapes: true,      // use \\$ to produce a literal dollar sign    
+            processEnvironments: true, // process \\begin{xxx}...\\end{xxx} outside math mode    
+            processRefs: true,         // process \\ref{...} outside of math mode    
+            digits: /^(?:[0-9]+(?:\\{,\\}[0-9]{3})*(?:\\.[0-9]*)?|\\.[0-9]+)/,                               
+                                                            // pattern for recognizing numbers   
+            tags: 'none',              // or 'ams' or 'all'    
+            tagSide: 'right',          // side for \\tag macros    
+            tagIndent: '0.8em',        // amount to indent tags    
+            useLabelIds: true,         // use label name rather than tag for ids    
+            maxMacros: 10000,          // maximum number of macro substitutions per expression    
+            maxBuffer: 5 * 1024,       // maximum size for the internal TeX string (5K)    
+            baseURL:                   // URL for use with links to tags (when there is a <base> tag in effect)       
+                (document.getElementsByTagName('base').length === 0) ?        
+                '' : String(document.location).replace(/#.*$/, ''),    
+            formatError:               // function called when TeX syntax errors occur        
+                (jax, err) => jax.formatError(err)  
+            },  
+            options: {    
+                skipHtmlTags: [            //  HTML tags that won't be searched for math        
+                'script', 'noscript', 'style', 'textarea', 'pre',        
+                'code', 'annotation', 'annotation-xml'    
+            ],    
+            includeHtmlTags: {         //  HTML tags that can appear within math        
+                br: '\\n', wbr: '', '#comment': ''    
+            },    
+            ignoreHtmlClass: 'tex2jax_ignore',    //  class that marks tags not to search    
+            processHtmlClass: 'tex2jax_process',  //  class that marks tags that should be searched    
+            compileError: function (doc, math, err) {doc.compileError(math, err)},    
+            typesetError: function (doc, math, err) {doc.typesetError(math, err)},    
+            renderActions: {}  
+        },  
+        startup: {    
+            elements: null,          // The elements to typeset (default is document body)    
+            typeset: true,           // Perform initial typeset?    
+            ready: () => {
+                MathJax.startup.defaultReady();
+                MathJax.startup.promise.then(() => {
+                  console.log('MathJax initial typesetting complete');
+                });
+                //Startup.defaultReady.bind(Startup)
+              },          
+              // Called when components are loaded    
+            pageReady: ()=>{
+                return MathJax.startup.defaultPageReady().then(() => {
+                    console.log('MathJax initial typesetting complete');
+                  });
+                //Startup.defaultPageReady.bind(Startup)
+            },  // Called when MathJax and page are ready    
+            document: document,      // The document (or fragment or string) to work in    
+            invalidOption: 'warn',   // Are invalid options fatal or produce an error?    
+            optionError: OPTIONS.optionError,  // Function used to report invalid options    
+            input: [],               // The names of the input jax to use from among those loaded    
+            output: null,            // The name for the output jax to use from among those loaded    
+            handler: null,           // The name of the handler to register from among those loaded    
+            adaptor: null            // The name for the DOM adaptor to use from among those loaded  
+        }, 
+        svg: {    
+            scale: 1,                      // global scaling factor for all expressions    
+            minScale: .5,                  // smallest scaling factor to use    
+            mtextInheritFont: false,       // true to make mtext elements use surrounding font    
+            merrorInheritFont: true,       // true to make merror text use surrounding font    
+            mathmlSpacing: false,          // true for MathML spacing rules, false for TeX rules    
+            skipAttributes: {},            // RFDa and other attributes NOT to copy to the output    
+            exFactor: .5,                  // default size of ex in em units    
+            displayAlign: 'center',        // default for indentalign when set to 'auto'    
+            displayIndent: '0',            // default for indentshift when set to 'auto'    
+            fontCache: 'local',            // or 'global' or 'none'    
+            localID: null,                 // ID to use for local font cache (for single equation processing)    
+            internalSpeechTitles: true,    // insert <title> tags with speech content    
+            titleID: 0                     // initial id number to use for aria-labeledby titles  
+        }
+    };
+    </script>
+</body>
+</html>
+
