@@ -16,6 +16,7 @@ const root = require('./root.js');
 const filemgr = require('./files/fileMgr.js');
 const cacheMgr = require('./cache/cacheMgr.js');
 const easyfilerouter = require('./sop/easyfilerouter.js');
+const chatwithdeepseek = require('./deepseek/deepseekService.js');
 
 
 
@@ -162,6 +163,18 @@ app.use('/test', (req, res) => {
 
 app.use('/api', api);
 
+app.post('/chatwithdeepseek', (req, res) => {
+  const userMessage = req.body.message;
+
+  // 这里你可以调用DeepSeek的API或其他逻辑来处理用户的消息
+  // 假设我们简单地返回一个固定的响应
+  chatwithdeepseek.chatWith(userMessage).then(e=>{
+    res.json({ response: e });
+
+  }).catch(e=>{
+    res.json({ response: '服务器繁忙' });
+  })
+});
 
 app.use('/file', (req, res) => {
     var pathname = url.parse(req.url).pathname;
