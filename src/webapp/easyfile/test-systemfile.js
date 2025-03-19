@@ -1,3 +1,4 @@
+
 const MSG_INFO = 'info';
 const MSG_ERROR = 'error';
 const MSG_WARN = 'warn';

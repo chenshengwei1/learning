@@ -15,6 +15,7 @@
     <script src="./jquery.min.js"></script>
     <script src="./easyfile.js"></script>
     <script src="./test-systemfile.js"></script>
+    <script src="./chat-ai.js"></script>
     <script type="text/javascript">
 		class TestPartHanlder {
 			getBody() {
@@ -79,17 +80,31 @@
     </div>
     <script type="text/javascript">
         $('.report-body').hide();
-        let components = [ TestFileSystemHandler];
+        let components = [ TestFileSystemHandler, ChatWithAI];
+        let firstPanel = null;
         for (let comp of components) {
             let newpart = new comp();
+            if (!firstPanel){
+                firstPanel = newpart;
+            
+            }
 
             $('#menu').append(`<li id="r11"><a title="${newpart.title || newpart.id}" ctrl="${newpart.id}">${newpart.name || newpart.id}</a></li>`);
-            $('.csw-tab-body').append(`<div class="${newpart.id}" id="part-${newpart.id}" active="false"/>`);
+            $('.csw-tab-body').append(`<div class="${newpart.id} menu-panel" id="part-${newpart.id}" active="false"/>`);
             try {
                 newpart.create();
             } catch (e) { console.error(e) }
         }
         $('#menu').append(`<li id="submenu"><a ctrl="submenu" style="font-size: x-large;letter-spacing: -4px;">≡≡</a></li>`);
+
+        $('#menu').on('click', 'li', (e)=>{
+            let controlName = $(e.target).attr('ctrl');
+            $('.csw-tab-body .menu-panel').hide();
+            $(`#part-${controlName}`).show();
+        })
+
+        $('.csw-tab-body .menu-panel').hide();
+        $(`#part-${firstPanel.id}`).show();
 
     </script>
 </body>

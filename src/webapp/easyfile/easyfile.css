@@ -394,3 +394,29 @@ filehanlder-root .size-label{
   .svg-background {
     background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100'><circle cx='50' cy='50' r='40' stroke='green' stroke-width='3' fill='yellow' /></svg>");
 }
+
+
+#user-input{
+    border-radius: 4px;
+    background-color: rgb(255, 255, 255);
+    font-family: SFS, Arial, sans-serif;
+    box-sizing: border-box;
+    appearance: none;
+    font-size: 1rem;
+    transition: 0.1s;
+    line-height: 32px;
+    padding: 10px;
+    accent-color: #355f83;
+    background-color: white;
+    border-color: rgb(135, 43, 255);
+    border-style: solid;
+    border-width: 1px;
+    font-weight: 400;
+    font-stretch: 100%;
+    height: 88px;
+    line-height: 58px;
+    overflow: clip;
+    outline-width: 0;
+    outline-style: none;
+    outline-color: invert;
+}

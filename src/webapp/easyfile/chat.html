@@ -1,0 +1,58 @@
+<!-- templates/chat.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .chat-container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: linear-gradient(145deg, #f0f4ff, #ffffff);
+            border-radius: 15px;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+            padding: 25px;
+        }
+        .message-bubble {
+            background: white;
+            border-radius: 18px;
+            padding: 15px 20px;
+            margin: 12px 0;
+            max-width: 70%;
+            animation: fadeIn 0.3s ease;
+        }
+        .user-message { 
+            margin-left: auto;
+            background: #6366f1;
+            color: white;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div id="messages"></div>
+        <input id="msgInput" placeholder="输入消息..." />
+        <button onclick="sendMessage()">发送</button>
+    </div>
+
+    <script>
+        const socket = io();
+        socket.on('message', (msg) => {
+            const bubble = document.createElement('div');
+            bubble.className = `message-bubble ${msg.user === 'me' ? 'user-message' : ''}`;
+            bubble.innerHTML = `<div class="meta">${msg.user} · ${msg.timestamp}</div>${msg.content}`;
+            document.getElementById('messages').appendChild(bubble);
+        });
+
+        function sendMessage() {
+            const input = document.getElementById('msgInput');
+            socket.emit('message', { 
+                content: input.value,
+                user: 'me'
+            });
+            input.value = '';
+        }
+    </script>
+</body>
+</html>
