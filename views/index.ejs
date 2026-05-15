@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leaning - 学习知识库</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <h1 class="site-title">📚 Leaning 学习知识库</h1>
+      <p class="site-desc">记录学习点滴，积累知识财富</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="toolbar">
+      <a href="/create" class="btn btn-primary">+ 创建新页面</a>
+    </div>
+
+    <% if (pages.length === 0) { %>
+      <div class="empty-state">
+        <p>还没有任何学习页面，快来创建第一个吧！</p>
+      </div>
+    <% } else { %>
+      <div class="page-grid">
+        <% pages.forEach(function(page) { %>
+          <div class="page-card">
+            <div class="card-category"><%= page.category %></div>
+            <h2 class="card-title">
+              <a href="/page/<%= page.id %>"><%= page.title %></a>
+            </h2>
+            <div class="card-meta">
+              <span>📅 <%= new Date(page.createdAt).toLocaleDateString('zh-CN') %></span>
+            </div>
+            <div class="card-actions">
+              <a href="/page/<%= page.id %>" class="btn btn-sm">查看</a>
+              <form action="/page/<%= page.id %>/delete" method="POST" style="display:inline" onsubmit="return confirm('确定删除此页面？')">
+                <button type="submit" class="btn btn-sm btn-danger">删除</button>
+              </form>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    <% } %>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>Leaning 学习知识库 &copy; 2026</p>
+    </div>
+  </footer>
+</body>
+</html>

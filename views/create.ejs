@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>创建新页面 - Leaning</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a href="/" class="back-link">← 返回首页</a>
+      <h1 class="site-title">📚 创建新学习页面</h1>
+    </div>
+  </header>
+
+  <main class="container">
+    <form action="/create" method="POST" class="create-form">
+      <div class="form-group">
+        <label for="title">标题</label>
+        <input type="text" id="title" name="title" required placeholder="输入学习页面的标题">
+      </div>
+
+      <div class="form-group">
+        <label for="category">分类</label>
+        <input type="text" id="category" name="category" placeholder="如：JavaScript、Python、前端...">
+      </div>
+
+      <div class="form-group">
+        <label for="content">内容（支持 HTML）</label>
+        <textarea id="content" name="content" rows="15" required placeholder="在这里写下你的学习笔记..."></textarea>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">创建页面</button>
+        <a href="/" class="btn">取消</a>
+      </div>
+    </form>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>Leaning 学习知识库 &copy; 2026</p>
+    </div>
+  </footer>
+</body>
+</html>

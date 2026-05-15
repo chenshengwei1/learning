@@ -1,0 +1,11 @@
+{
+  "project_name": "Leaning",
+  "last_updated": "2026-01-15 10:30",
+  "pages": ["nodejs-学习笔记.html", "nodejs-进阶实战.html"],
+  "recent_tasks": ["创建了 Node.js 学习页面", "创建了 Node.js 进阶与实战页面"],
+  "next_tasks": [],
+  "dependencies": {
+    "ejs": "^5.0.2",
+    "express": "^5.2.1"
+  }
+}

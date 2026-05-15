@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Node.js 进阶与实战</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="page-container">
+    <h1>⚡ Node.js 进阶与实战</h1>
+    <div class="page-meta">
+      <span class="category">Node.js</span>
+      <span class="date">2026-01-15</span>
+    </div>
+    <div class="page-content">
+
+      <div class="notice" style="background: #e8f5e9; border-left: 4px solid #4caf50; padding: 15px; margin: 20px 0; border-radius: 4px;">
+        <strong>📖 前置知识：</strong> 建议先掌握 Node.js 基础（模块、异步、文件操作等），再学习本篇进阶内容。
+      </div>
+
+      <h2>📌 目录</h2>
+      <ul>
+        <li><a href="#express">1. Express 框架深入</a></li>
+        <li><a href="#middleware">2. 中间件机制</a></li>
+        <li><a href="#router">3. 路由设计</a></li>
+        <li><a href="#error">4. 错误处理</a></li>
+        <li><a href="#database">5. 数据库连接（MongoDB + MySQL）</a></li>
+        <li><a href="#auth">6. 用户认证与 JWT</a></li>
+        <li><a href="#structure">7. 项目结构最佳实践</a></li>
+        <li><a href="#deploy">8. 部署与运维</a></li>
+      </ul>
+
+      <!-- ============ 1. Express 框架深入 ============ -->
+      <h2 id="express">1️⃣ Express 框架深入</h2>
+
+      <h3>1.1 创建 Express 应用</h3>
+      <pre><code>const express = require('express');
+const app = express();
+
+// 中间件
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// 路由
+app.get('/', (req, res) => {
+  res.json({ message: 'Hello World' });
+});
+
+// 启动
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});</code></pre>
+
+      <h3>1.2 请求对象（req）常用属性</h3>
+      <table style="width:100%; border-collapse: collapse; margin: 15px 0;">
+        <thead>
+          <tr style="background: #667eea; color: white;">
+            <th style="padding: 10px; border: 1px solid #ddd;">属性</th>
+            <th style="padding: 10px; border: 1px solid #ddd;">说明</th>
+            <th style="padding: 10px; border: 1px solid #ddd;">示例</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 10px; border: 1px solid #ddd;"><code>req.params</code></td>
+            <td style="padding: 10px; border: 1px solid #ddd;">路由参数</td>
+            <td style="padding: 10px; border: 1px solid #ddd;"><code>/user/:id → req.params.id</code></td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; border: 1px solid #ddd;"><code>req.query</code></td>
+            <td style="padding: 10px; border: 1px solid #ddd;">查询字符串</td>
+            <td style="padding: 10px; border: 1px solid #ddd;"><code>?page=1 → req.query.page</code></td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; border: 1px solid #ddd;"><code>req.body</code></td>
+            <td style="padding: 10px; border: 1px solid #ddd;">请求体（需中间件解析）</td>
+            <td style="padding: 10px; border: 1px solid #ddd;"><code>req.body.name</code></td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; border: 1px solid #ddd;"><code>req.headers</code></td>
+            <td style="padding: 10px; border: 1px solid #ddd;">请求头</td>
+            <td style="padding: 10px; border: 1px solid #ddd;"><code>req.headers['authorization']</code></td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; border: 1px solid #ddd;"><code>req.cookies</code></td>
+            <td style="padding: 10px; border: 1px solid #ddd;">Cookie（需 cookie-parser）</td>
+            <td style="padding: 10px; border: 1px solid #ddd;"><code>req.cookies.token</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>1.3 响应对象（res）常用方法</h3>
+      <pre><code>res.json({ user: 'Alice' });        // JSON 响应
+res.status(201).json(data);         // 自定义状态码
+res.redirect('/login');             // 重定向
+res.render('index', { title });     // 渲染模板
+res.send('Hello');                  // 发送文本
+res.sendFile('/path/to/file.pdf');  // 发送文件
+res.download('/path/to/file.pdf');  // 下载文件</code></pre>
+
+      <!-- ============ 2. 中间件机制 ============ -->
+      <h2 id="middleware">2️⃣ 中间件机制</h2>
+
+      <p>中间件是 Express 的核心。它是一个函数，可以访问请求对象、响应对象和下一个中间件函数。</p>
+
+      <h3>2.1 中间件分类</h3>
+      <table style="width:100%; border-collapse: collapse; margin: 15px 0;">
+        <thead>
+          <tr style="background: #667eea; color: white;">
+            <th style="padding: 10px; border: 1px solid #ddd;">类型</th>
+            <th style="padding: 10px; border: 1px solid #ddd;">说明</th>
+            <th style="padding: 10px; border: 1px solid #ddd;">示例</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 10px; border: 1px solid #ddd;">应用级</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">绑定到 app 实例</td>
+            <td style="padding: 10px; border: 1px solid #ddd;"><code>app.use(logger)</code></td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; border: 1px solid #ddd;">路由级</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">绑定到 Router 实例</td>
+            <td style="padding: 10px; border: 1px solid #ddd;"><code>router.use(auth)</code></td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; border: 1px solid #ddd;">错误处理</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">4 个参数 (err, req, res, next)</td>
+            <td style="padding: 10px; border: 1px solid #ddd;"><code>app.use((err, req, res, next) => {})</code></td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; border: 1px solid #ddd;">内置</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">Express 自带</td>
+            <td style="padding: 10px; border: 1px solid #ddd;"><code>express.json()</code></td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; border: 1px solid #ddd;">第三方</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">通过 npm 安装</td>
+            <td style="padding: 10px; border: 1px solid #ddd;"><code>cors()</code>, <code>morgan()</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>2.2 自定义中间件示例</h3>
+      <pre><code>// 请求日志中间件
+const requestLogger = (req, res, next) => {
+  const start = Date.now();
+  const { method, url } = req;
+
+  res.on('finish', () => {
+    const duration = Date.now() - start;
+    console.log(`[${new Date().toISOString()}] ${method} ${url} ${res.statusCode} - ${duration}ms`);
+  });
+
+  next();
+};
+
+// 使用
+app.use(requestLogger);</code></pre>
+
+      <pre><code>// 权限验证中间件
+const requireAuth = (req, res, next) => {
+  const token = req.headers['authorization'];
+  if (!token) {
+    return res.status(401).json({ error: '未提供认证令牌' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded;
+    next();
+  } catch (err) {
+    return res.status(403).json({ error: '令牌无效或已过期' });
+  }
+};
+
+// 使用（保护特定路由）
+app.get('/api/profile', requireAuth, (req, res) => {
+  res.json({ user: req.user });
+});</code></pre>
+
+      <h3>2.3 常用第三方中间件</h3>
+      <pre><code>const cors = require('cors');        // 跨域
+const morgan = require('morgan');     // 日志
+const helmet = require('helmet');     // 安全头
+const compression = require('compression'); // 压缩
+const cookieParser = require('cookie-parser'); // Cookie 解析
+const rateLimit = require('express-rate-limit'); // 限流
+
+app.use(cors());
+app.use(morgan('combined'));
+app.use(helmet());
+app.use(compression());
+app.use(cookieParser());
+
+// 限流示例：每个 IP 15 分钟内最多 100 次请求
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  message: { error: '请求过于频繁，请稍后再试' }
+});
+app.use('/api', limiter);</code></pre>
+
+      <!-- ============ 3. 路由设计 ============ -->
+      <h2 id="router">3️⃣ 路由设计</h2>
+
+      <h3>3.1 使用 Router 拆分路由</h3>
+      <pre><code>// routes/users.js
+const express = require('express');
+const router = express.Router();
+
+// GET /api/users
+router.get('/', async (req, res) => {
+  const users = await User.find();
+  res.json(users);
+});
+
+// GET /api/users/:id
+router.get('/:id', async (req, res) => {
+  const user = await User.findById(req.params.id);
+  if (!user) return res.status(404).json({ error: '用户不存在' });
+  res.json(user);
+});
+
+// POST /api/users
+router.post('/', async (req, res) => {
+  const user = new User(req.body);
+  await user.save();
+  res.status(201).json(user);
+});
+
+// PUT /api/users/:id
+router.put('/:id', async (req, res) => {
+  const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
+  res.json(user);
+});
+
+// DELETE /api/users/:id
+router.delete('/:id', async (req, res) => {
+  await User.findByIdAndDelete(req.params.id);
+  res.status(204).send();
+});
+
+module.exports = router;</code></pre>
+
+      <pre><code>// app.js — 注册路由
+const userRoutes = require('./routes/users');
+const productRoutes = require('./routes/products');
+
+app.use('/api/users', userRoutes);
+app.use('/api/products', productRoutes);</code></pre>
+
+      <h3>3.2 RESTful API 设计规范</h3>
+      <table style="width:100%; border-collapse: collapse; margin: 15px 0;">
+        <thead>
+          <tr style="background: #667eea; color: white;">
+            <th style="padding: 10px; border: 1px solid #ddd;">方法</th>
+            <th style="padding: 10px; border: 1px solid #ddd;">路径</th>
+            <th style="padding: 10px; border: 1px solid #ddd;">功能</th>
+            <th style="padding: 10px; border: 1px solid #ddd;">状态码</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 10px; border: 1px solid #ddd;"><code>GET</code></td>
+            <td style="padding: 10px; border: 1px solid #ddd;"><code>/api/users</code></td>
+            <td style="padding: 10px; border: 1px solid #ddd;">获取用户列表</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">200</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; border: 1px solid #ddd;"><code>GET</code></td>
+            <td style="padding: 10px; border: 1px solid #ddd;"><code>/api/users/:id</code></td>
+            <td style="padding: 10px; border: 1px solid #ddd;">获取单个用户</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">200 / 404</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; border: 1px solid #ddd;"><code>POST</code></td>
+            <td style="padding: 10px; border: 1px solid #ddd;"><code>/api/users</code></td>
+            <td style="padding: 10px; border: 1px solid #ddd;">创建用户</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">201</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; border: 1px solid #ddd;"><code>PUT</code></td>
+            <td style="padding: 10px; border: 1px solid #ddd;"><code>/api/users/:id</code></td>
+            <td style="padding: 10px; border: 1px solid #ddd;">更新用户（全量）</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">200</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; border: 1px solid #ddd;"><code>PATCH</code></td>
+            <td style="padding: 10px; border: 1px solid #ddd;"><code>/api/users/:id</code></td>
+            <td style="padding: 10px; border: 1px solid #ddd;">更新用户（部分）</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">200</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; border: 1px solid #ddd;"><code>DELETE</code></td>
+            <td style="padding: 10px; border: 1px solid #ddd;"><code>/api/users/:id</code></td>
+            <td style="padding: 10px; border: 1px solid #ddd;">删除用户</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">204</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- ============ 4. 错误处理 ============ -->
+      <h2 id="error">4️⃣ 错误处理</h2>
+
+      <h3>4.1 统一错误处理中间件</h3>
+      <pre><code>// 自定义错误类
+class AppError extends Error {
+  constructor(message, statusCode) {
+    super(message);
+    this.statusCode = statusCode;
+    this.isOperational = true;
+    Error.captureStackTrace(this, this.constructor);
+  }
+}
+
+// 404 处理
+app.use((req, res, next) => {
+  next(new AppError('请求的资源不存在', 404));
+});
+
+// 全局错误处理中间件（必须 4 个参数）
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 500;
+  const message = err.isOperational ? err.message : '服务器内部错误';
+
+  // 记录错误日志
+  console.error(`[ERROR] ${err.message}`, err.stack);
+
+  res.status(statusCode).json({
+    status: 'error',
+    statusCode,
+    message,
+    ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
+  });
+});</code></pre>
+
+      <h3>4.2 异步错误捕获</h3>
+      <pre><code>// 包装函数，自动捕获 async 错误
+const catchAsync = (fn) => {
+  return (req, res, next) => {
+    fn(req, res, next).catch(next);
+  };
+};
+
+// 使用
+app.get('/api/users/:id', catchAsync(async (req, res) => {
+  const user = await User.findById(req.params.id);
+  if (!user) throw new AppError('用户不存在', 404);
+  res.json(user);
+}));</code></pre>
+
+      <!-- ============ 5. 数据库连接 ============ -->
+      <h2 id="database">5️⃣ 数据库连接</h2>
+
+      <h3>5.1 MongoDB + Mongoose</h3>
+      <pre><code>// 安装: npm install mongoose
+
+const mongoose = require('mongoose');
+
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => console.log('✅ MongoDB 连接成功'))
+  .catch(err => console.error('❌ MongoDB 连接失败:', err));
+
+// 定义模型
+const userSchema = new mongoose.Schema({
+  name: { type: String, required: true, trim: true },
+  email: { type: String, required: true, unique: true, lowercase: true },
+  age: { type: Number, min: 0, max: 150 },
+  createdAt: { type: Date, default: Date.now }
+});
+
+const User = mongoose.model('User', userSchema);
+module.exports = User;</code></pre>
+
+      <h3>5.2 MySQL + Sequelize</h3>
+      <pre><code>// 安装: npm install sequelize mysql2
+
+const { Sequelize, DataTypes } = require('sequelize');
+
+const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
+  host: process.env.DB_HOST,
+  dialect: 'mysql',
+  logging: false,
+  pool: {
+    max: 10,
+    min: 0,
+    acquire: 30000,
+    idle: 10000
+  }
+});
+
+// 定义模型
+const User = sequelize.define('User', {
+  name: { type: DataTypes.STRING, allowNull: false },
+  email: { type: DataTypes.STRING, allowNull: false, unique: true },
+  age: { type: DataTypes.INTEGER }
+});
+
+// 同步数据库
+sequelize.sync()
+  .then(() => console.log('✅ MySQL 同步成功'))
+  .catch(err => console.error('❌ MySQL 同步失败:', err));
+
+module.exports = { sequelize, User };</code></pre>
+
+      <!-- ============ 6. 用户认证与 JWT ============ -->
+      <h2 id="auth">6️⃣ 用户认证与 JWT</h2>
+
+      <pre><code>// 安装: npm install jsonwebtoken bcryptjs
+
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+
+// 注册
+app.post('/api/auth/register', catchAsync(async (req, res) => {
+  const { name, email, password } = req.body;
+
+  // 检查用户是否已存在
+  const existingUser = await User.findOne({ email });
+  if (existingUser) throw new AppError('该邮箱已被注册', 400);
+
+  // 加密密码
+  const hashedPassword = await bcrypt.hash(password, 12);
+
+  // 创建用户
+  const user = await User.create({ name, email, password: hashedPassword });
+
+  // 生成 JWT
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+    expiresIn: '7d'
+  });
+
+  res.status(201).json({ token, user: { id: user._id, name, email } });
+}));
+
+// 登录
+app.post('/api/auth/login', catchAsync(async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await User.findOne({ email }).select('+password');
+  if (!user) throw new AppError('邮箱或密码错误', 401);
+
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) throw new AppError('邮箱或密码错误', 401);
+
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+    expiresIn: '7d'
+  });
+
+  res.json({ token, user: { id: user._id, name: user.name, email: user.email } });
+}));</code></pre>
+
+      <!-- ============ 7. 项目结构最佳实践 ============ -->
+      <h2 id="structure">7️⃣ 项目结构最佳实践</h2>
+
+      <h3>7.1 推荐的项目目录结构</h3>
+      <pre><code>my-project/
+├── src/                    # 源代码
+│   ├── config/             # 配置文件
+│   │   ├── database.js     # 数据库配置
+│   │   └── index.js        # 配置聚合
+│   ├── controllers/        # 控制器（处理请求逻辑）
+│   │   ├── authController.js
+│   │   └── userController.js
+│   ├── models/             # 数据模型
+│   │   ├── User.js
+│   │   └── Product.js
+│   ├── routes/             # 路由定义
+│   │   ├── authRoutes.js
+│   │   └── userRoutes.js
+│   ├── middleware/         # 中间件
+│   │   ├── auth.js
+│   │   ├── errorHandler.js
+│   │   └── validate.js
+│   ├── utils/              # 工具函数
+│   │   ├── AppError.js
+│   │   └── catchAsync.js
+│   ├── validators/         # 请求验证
+│   │   └── userValidator.js
+│   └── app.js              # Express 应用配置
+├── tests/                  # 测试文件
+├── .env                    # 环境变量
+├── .gitignore
+├── package.json
+└── server.js               # 入口文件（启动服务器）
+</code></pre>
+
+      <h3>7.2 环境变量管理</h3>
+      <pre><code># .env 文件
+NODE_ENV=development
+PORT=3000
+MONGODB_URI=mongodb://localhost:27017/myapp
+JWT_SECRET=your-super-secret-key-change-this
+JWT_EXPIRES_IN=7d
+
+# 加载 .env
+// config/index.js
+require('dotenv').config();
+
+module.exports = {
+  port: process.env.PORT || 3000,
+  mongoUri: process.env.MONGODB_URI,
+  jwtSecret: process.env.JWT_SECRET,
+  jwtExpiresIn: process.env.JWT_EXPIRES_IN || '7d',
+  nodeEnv: process.env.NODE_ENV || 'development'
+};</code></pre>
+
+      <h3>7.3 请求验证（使用 Joi）</h3>
+      <pre><code>// 安装: npm install joi
+
+const Joi = require('joi');
+
+// validators/userValidator.js
+const createUserSchema = Joi.object({
+  name: Joi.string().min(2).max(50).required(),
+  email: Joi.string().email().required(),
+  password: Joi.string().min(6).max(128).required(),
+  age: Joi.number().integer().min(0).max(150)
+});
+
+// middleware/validate.js
+const validate = (schema) => {
+  return (req, res, next) => {
+    const { error } = schema.validate(req.body, { abortEarly: false });
+    if (error) {
+      const messages = error.details.map(d => d.message).join(', ');
+      return res.status(400).json({ error: messages });
+    }
+    next();
+  };
+};
+
+// 使用
+app.post('/api/users', validate(createUserSchema), userController.createUser);</code></pre>
+
+      <!-- ============ 8. 部署与运维 ============ -->
+      <h2 id="deploy">8️⃣ 部署与运维</h2>
+
+      <h3>8.1 使用 PM2 管理进程</h3>
+      <pre><code># 安装 PM2
+npm install -g pm2
+
+# 启动应用
+pm2 start server.js --name my-app
+
+# 常用命令
+pm2 list                    # 查看所有进程
+pm2 logs                    # 查看日志
+pm2 monit                   # 监控资源
+pm2 restart my-app          # 重启
+pm2 stop my-app             # 停止
+pm2 delete my-app           # 删除进程
+
+# 开机自启
+pm2 startup
+pm2 save
+
+# 配置文件 ecosystem.config.js
+module.exports = {
+  apps: [{
+    name: 'my-app',
+    script: 'server.js',
+    instances: 'max',          // 利用多核 CPU
+    exec_mode: 'cluster',      // 集群模式
+    env: {
+      NODE_ENV: 'production',
+    },
+    env_file: '.env',
+    log_date_format: 'YYYY-MM-DD HH:mm:ss',
+    error_file: './logs/err.log',
+    out_file: './logs/out.log',
+    merge_logs: true,
+    max_memory_restart: '500M' // 内存超过 500M 自动重启
+  }]
+};</code></pre>
+
+      <h3>8.2 健康检查端点</h3>
+      <pre><code>app.get('/health', (req, res) => {
+  res.json({
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    memory: process.memoryUsage(),
+    cpu: process.cpuUsage()
+  });
+});</code></pre>
+
+      <h3>8.3 安全最佳实践</h3>
+      <ul>
+        <li><strong>使用 Helmet</strong> — 设置安全相关的 HTTP 头</li>
+        <li><strong>防止 SQL/NoSQL 注入</strong> — 使用参数化查询或 ORM</li>
+        <li><strong>防止 XSS</strong> — 对用户输入进行转义</li>
+        <li><strong>限流</strong> — 使用 <code>express-rate-limit</code> 防止暴力攻击</li>
+        <li><strong>CORS 配置</strong> — 只允许受信任的域名</li>
+        <li><strong>HTTPS</strong> — 生产环境强制使用 HTTPS</li>
+        <li><strong>密钥管理</strong> — 敏感信息放在环境变量中，不要硬编码</li>
+        <li><strong>依赖更新</strong> — 定期 <code>npm audit</code> 检查漏洞</li>
+      </ul>
+
+      <h3>8.4 日志管理</h3>
+      <pre><code>// 使用 Winston 替代 console.log
+// 安装: npm install winston
+
+const winston = require('winston');
+
+const logger = winston.createLogger({
+  level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
+  format: winston.format.combine(
+    winston.format.timestamp(),
+    winston.format.json()
+  ),
+  transports: [
+    new winston.transports.File({ filename: 'logs/error.log', level: 'error' }),
+    new winston.transports.File({ filename: 'logs/combined.log' }),
+  ],
+});
+
+// 开发环境同时输出到控制台
+if (process.env.NODE_ENV !== 'production') {
+  logger.add(new winston.transports.Console({
+    format: winston.format.simple()
+  }));
+}
+
+module.exports = logger;
+
+// 使用
+// const logger = require('./utils/logger');
+// logger.info('服务器启动成功', { port: 3000 });
+// logger.error('数据库连接失败', { error: err.message });</code></pre>
+
+      <hr style="margin: 40px 0;">
+
+      <h2>📚 推荐资源</h2>
+      <ul>
+        <li><a href="https://expressjs.com/" target="_blank">Express 官方文档</a></li>
+        <li><a href="https://mongoosejs.com/" target="_blank">Mongoose 文档</a></li>
+        <li><a href="https://sequelize.org/" target="_blank">Sequelize 文档</a></li>
+        <li><a href="https://jwt.io/" target="_blank">JWT 官网</a></li>
+        <li><a href="https://pm2.keymetrics.io/" target="_blank">PM2 文档</a></li>
+        <li><a href="https://github.com/goldbergyoni/nodebestpractices" target="_blank">Node.js 最佳实践（GitHub）</a></li>
+      </ul>
+
+      <div class="notice" style="background: #fff3e0; border-left: 4px solid #ff9800; padding: 15px; margin: 20px 0; border-radius: 4px;">
+        <strong>💡 提示：</strong> 本页面内容较多，建议按章节逐步学习。每个章节都可以独立作为一个实战项目的参考。
+      </div>
+
+    </div>
+    <a href="/" class="back-link">← 返回首页</a>
+  </div>
+</body>
+</html>

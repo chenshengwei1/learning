@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Node.js 学习笔记</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="page-container">
+    <h1>🚀 Node.js 学习笔记</h1>
+    <div class="page-meta">
+      <span class="category">JavaScript</span>
+      <span class="date">2026-01-15</span>
+    </div>
+    <div class="page-content">
+
+      <h2>📌 什么是 Node.js？</h2>
+      <p>Node.js 是一个基于 <strong>Chrome V8 引擎</strong> 的 JavaScript 运行时环境。它让 JavaScript 可以脱离浏览器，在服务器端运行，从而构建高性能的网络应用。</p>
+
+      <blockquote>
+        Node.js 的核心特点：<strong>非阻塞 I/O</strong>、<strong>事件驱动</strong>、<strong>轻量高效</strong>
+      </blockquote>
+
+      <h2>📦 模块系统（CommonJS）</h2>
+      <p>Node.js 采用 CommonJS 模块规范，每个文件都是一个独立的模块。</p>
+
+      <h3>导出模块</h3>
+      <pre><code>// math.js
+function add(a, b) {
+  return a + b;
+}
+
+function subtract(a, b) {
+  return a - b;
+}
+
+// 方式一：导出单个
+module.exports = add;
+
+// 方式二：导出多个
+module.exports = { add, subtract };
+
+// 方式三：挂载到 exports 对象
+exports.add = add;
+exports.subtract = subtract;</code></pre>
+
+      <h3>导入模块</h3>
+      <pre><code>// app.js
+const math = require('./math.js');
+console.log(math.add(2, 3)); // 5</code></pre>
+
+      <h3>核心模块（无需安装）</h3>
+      <ul>
+        <li><code>fs</code> — 文件系统操作</li>
+        <li><code>path</code> — 路径处理</li>
+        <li><code>http</code> / <code>https</code> — HTTP 服务器</li>
+        <li><code>os</code> — 操作系统信息</li>
+        <li><code>events</code> — 事件触发器</li>
+        <li><code>stream</code> — 流式数据处理</li>
+      </ul>
+
+      <h2>⚡ 异步编程</h2>
+      <p>Node.js 的异步编程有三种主要方式：</p>
+
+      <h3>1️⃣ 回调函数（Callback）</h3>
+      <pre><code>const fs = require('fs');
+
+fs.readFile('file.txt', 'utf-8', (err, data) => {
+  if (err) {
+    console.error('读取失败:', err);
+    return;
+  }
+  console.log('文件内容:', data);
+});</code></pre>
+
+      <h3>2️⃣ Promise</h3>
+      <pre><code>const fs = require('fs/promises');
+
+fs.readFile('file.txt', 'utf-8')
+  .then(data => console.log('文件内容:', data))
+  .catch(err => console.error('读取失败:', err));</code></pre>
+
+      <h3>3️⃣ async/await（推荐）</h3>
+      <pre><code>const fs = require('fs/promises');
+
+async function readFile() {
+  try {
+    const data = await fs.readFile('file.txt', 'utf-8');
+    console.log('文件内容:', data);
+  } catch (err) {
+    console.error('读取失败:', err);
+  }
+}
+
+readFile();</code></pre>
+
+      <h2>🌐 创建 HTTP 服务器</h2>
+      <pre><code>const http = require('http');
+
+const server = http.createServer((req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.end('Hello, Node.js!');
+});
+
+server.listen(3000, () => {
+  console.log('服务器已启动: http://localhost:3000');
+});</code></pre>
+
+      <h2>📁 文件系统操作</h2>
+
+      <h3>读取文件</h3>
+      <pre><code>const fs = require('fs');
+
+// 同步读取（不推荐用于生产）
+const data = fs.readFileSync('file.txt', 'utf-8');
+
+// 异步读取（推荐）
+fs.readFile('file.txt', 'utf-8', (err, data) => {
+  if (err) throw err;
+  console.log(data);
+});</code></pre>
+
+      <h3>写入文件</h3>
+      <pre><code>const fs = require('fs');
+
+const content = '这是要写入的内容';
+fs.writeFile('output.txt', content, 'utf-8', (err) => {
+  if (err) throw err;
+  console.log('文件已保存');
+});</code></pre>
+
+      <h3>目录操作</h3>
+      <pre><code>const fs = require('fs');
+
+// 创建目录
+fs.mkdir('my-folder', { recursive: true }, (err) => {
+  if (err) throw err;
+  console.log('目录已创建');
+});
+
+// 读取目录
+fs.readdir('.', (err, files) => {
+  if (err) throw err;
+  console.log('当前目录文件:', files);
+});</code></pre>
+
+      <h2>📊 进程与全局对象</h2>
+      <table style="width:100%; border-collapse: collapse; margin: 15px 0;">
+        <thead>
+          <tr style="background: #667eea; color: white;">
+            <th style="padding: 10px; border: 1px solid #ddd;">对象</th>
+            <th style="padding: 10px; border: 1px solid #ddd;">说明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 10px; border: 1px solid #ddd;"><code>process</code></td>
+            <td style="padding: 10px; border: 1px solid #ddd;">当前进程信息（env、argv、exit 等）</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; border: 1px solid #ddd;"><code>__dirname</code></td>
+            <td style="padding: 10px; border: 1px solid #ddd;">当前模块的目录路径</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; border: 1px solid #ddd;"><code>__filename</code></td>
+            <td style="padding: 10px; border: 1px solid #ddd;">当前模块的文件路径</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; border: 1px solid #ddd;"><code>global</code></td>
+            <td style="padding: 10px; border: 1px solid #ddd;">全局对象（类似浏览器的 window）</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; border: 1px solid #ddd;"><code>Buffer</code></td>
+            <td style="padding: 10px; border: 1px solid #ddd;">处理二进制数据</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>📦 npm 包管理</h2>
+      <pre><code># 初始化项目
+npm init -y
+
+# 安装依赖
+npm install express
+
+# 安装开发依赖
+npm install --save-dev nodemon
+
+# 全局安装
+npm install -g pm2
+
+# 卸载包
+npm uninstall express
+
+# 查看已安装的包
+npm list --depth=0</code></pre>
+
+      <h3>package.json 常用字段</h3>
+      <pre><code>{
+  "name": "my-app",
+  "version": "1.0.0",
+  "description": "我的 Node.js 应用",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.0"
+  }
+}</code></pre>
+
+      <h2>🔧 常用内置 API</h2>
+
+      <h3>path — 路径处理</h3>
+      <pre><code>const path = require('path');
+
+path.join('/user', 'local', 'bin');   // /user/local/bin
+path.resolve('docs', 'readme.md');    // 绝对路径
+path.basename('/a/b/c.js');           // c.js
+path.extname('/a/b/c.js');            // .js
+path.parse('/a/b/c.js');              // { root, dir, base, ext, name }</code></pre>
+
+      <h3>os — 操作系统信息</h3>
+      <pre><code>const os = require('os');
+
+os.platform();      // 'win32' / 'darwin' / 'linux'
+os.homedir();       // 用户主目录
+os.cpus();          // CPU 信息
+os.totalmem();      // 总内存
+os.freemem();       // 空闲内存</code></pre>
+
+      <h3>events — 事件触发器</h3>
+      <pre><code>const EventEmitter = require('events');
+
+class MyEmitter extends EventEmitter {}
+
+const myEmitter = new MyEmitter();
+
+// 监听事件
+myEmitter.on('event', (data) => {
+  console.log('事件触发:', data);
+});
+
+// 触发事件
+myEmitter.emit('event', { message: 'Hello!' });</code></pre>
+
+      <h2>💡 最佳实践</h2>
+      <ol>
+        <li><strong>使用 async/await</strong> — 避免回调地狱，代码更可读</li>
+        <li><strong>错误处理</strong> — 始终捕获异步错误，使用 try/catch</li>
+        <li><strong>环境变量</strong> — 敏感信息用 <code>process.env</code> 管理</li>
+        <li><strong>模块化</strong> — 按功能拆分模块，单一职责</li>
+        <li><strong>使用 .env 文件</strong> — 配合 <code>dotenv</code> 包管理配置</li>
+        <li><strong>日志记录</strong> — 使用 <code>winston</code> 或 <code>pino</code> 替代 console.log</li>
+        <li><strong>进程管理</strong> — 生产环境用 <code>pm2</code> 管理进程</li>
+      </ol>
+
+      <h2>📚 推荐学习资源</h2>
+      <ul>
+        <li><a href="https://nodejs.org/docs/latest/api/" target="_blank">Node.js 官方文档</a></li>
+        <li><a href="https://www.npmjs.com/" target="_blank">npm 包管理</a></li>
+        <li><a href="https://expressjs.com/" target="_blank">Express 框架</a></li>
+        <li><a href="https://nodejs.org/en/learn/" target="_blank">Node.js 学习指南</a></li>
+      </ul>
+
+    </div>
+    <a href="/" class="back-link">← 返回首页</a>
+  </div>
+</body>
+</html>
