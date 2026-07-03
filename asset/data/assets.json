@@ -1,4 +1,65 @@
 {
 	"nextId": 6,
-	"assets": []
+	"assets": [
+		{
+			"id": "2bf49f21-c4ed-4bc9-b663-21bffb0c0a8b",
+			"title": "850a475b5f94491a.jpg",
+			"description": "",
+			"cover_url": "images/850a475b5f94491a.jpg",
+			"thumbnail_url": "images/850a475b5f94491a.jpg",
+			"type": "character",
+			"source_type": "upload",
+			"created_at": "2026-07-03T09:21:09.032Z",
+			"file_type": "image/jpeg",
+			"file_size": 29862,
+			"file_path": "images/850a475b5f94491a.jpg",
+			"owner_id": 1001,
+			"visibility": "public"
+		},
+		{
+			"id": "56dfb78d-e88a-444f-9f79-ca6f83b16b6b",
+			"title": "dae9a8e68eec6692.jpg.avif",
+			"description": "",
+			"cover_url": "images/dae9a8e68eec6692.jpg.avif",
+			"thumbnail_url": "images/dae9a8e68eec6692.jpg.avif",
+			"type": "character",
+			"source_type": "upload",
+			"created_at": "2026-07-03T09:21:09.034Z",
+			"file_type": "image/avif",
+			"file_size": 57498,
+			"file_path": "images/dae9a8e68eec6692.jpg.avif",
+			"owner_id": 1001,
+			"visibility": "public"
+		},
+		{
+			"id": "edbf4e72-a031-4866-a278-d690c31e9848",
+			"title": "f916fa34-f5f2-4306-92a8-0f8ffc598f73.png",
+			"description": "",
+			"cover_url": "images/f916fa34-f5f2-4306-92a8-0f8ffc598f73.png",
+			"thumbnail_url": "images/f916fa34-f5f2-4306-92a8-0f8ffc598f73.png",
+			"type": "character",
+			"source_type": "upload",
+			"created_at": "2026-07-03T09:21:09.035Z",
+			"file_type": "image/png",
+			"file_size": 628008,
+			"file_path": "images/f916fa34-f5f2-4306-92a8-0f8ffc598f73.png",
+			"owner_id": 1001,
+			"visibility": "public"
+		},
+		{
+			"id": "a5866535-a509-4d8f-bcfe-1496844b2894",
+			"title": "无法生成的图像描述.png",
+			"description": "",
+			"cover_url": "images/无法生成的图像描述.png",
+			"thumbnail_url": "images/无法生成的图像描述.png",
+			"type": "character",
+			"source_type": "upload",
+			"created_at": "2026-07-03T09:21:09.036Z",
+			"file_type": "image/png",
+			"file_size": 1405452,
+			"file_path": "images/无法生成的图像描述.png",
+			"owner_id": 1001,
+			"visibility": "public"
+		}
+	]
 }
