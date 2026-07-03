@@ -1,53 +1,5 @@
 {
 	"nextId": 5,
 	"assets": [
-		{
-			"id": 1,
-			"title": "850a475b5f94491a.jpg",
-			"description": "",
-			"cover_url": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/850a475b5f94491a.jpg",
-			"thumbnail_url": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/850a475b5f94491a.jpg",
-			"type": "character",
-			"source_type": "upload",
-			"created_at": "2026-07-03T01:06:58.945Z",
-			"file_type": "image/jpeg",
-			"file_size": 29862,
-			"file_path": "images/850a475b5f94491a.jpg",
-			"owner_id": 1001,
-			"visibility": "public",
-			"updated_at": "2026-07-03T01:59:23.121Z"
-		},
-		{
-			"id": 2,
-			"title": "dae9a8e68eec6692.jpg",
-			"description": "",
-			"cover_url": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/dae9a8e68eec6692.jpg.avif",
-			"thumbnail_url": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/dae9a8e68eec6692.jpg.avif",
-			"type": "character",
-			"source_type": "upload",
-			"created_at": "2026-07-03T01:06:58.945Z",
-			"file_type": "image/jpeg",
-			"file_size": 29862,
-			"file_path": "images/dae9a8e68eec6692.jpg.avif",
-			"owner_id": 1001,
-			"visibility": "public",
-			"updated_at": "2026-07-03T01:59:23.121Z"
-		},
-		{
-			"id": 3,
-			"title": "f916fa34-f5f2-4306-92a8-0f8ffc598f73.png",
-			"description": "",
-			"cover_url": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/f916fa34-f5f2-4306-92a8-0f8ffc598f73.png",
-			"thumbnail_url": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/f916fa34-f5f2-4306-92a8-0f8ffc598f73.png",
-			"type": "character",
-			"source_type": "upload",
-			"created_at": "2026-07-03T01:06:58.945Z",
-			"file_type": "image/jpeg",
-			"file_size": 29862,
-			"file_path": "images/f916fa34-f5f2-4306-92a8-0f8ffc598f73.png",
-			"owner_id": 1001,
-			"visibility": "public",
-			"updated_at": "2026-07-03T01:59:23.121Z"
-		}
 	]
 }
