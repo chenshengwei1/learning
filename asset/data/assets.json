@@ -60,23 +60,6 @@
 			"file_path": "asset/images/850a475b5f94491a.jpg",
 			"owner_id": 1001,
 			"visibility": "public"
-		},
-		{
-			"id": "55f131de-cce1-4de6-af3d-5cefefb529ae",
-			"title": "生成图片",
-			"description": "",
-			"cover_url": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/生成图片.png",
-			"thumbnail_url": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/生成图片.png",
-			"type": "material",
-			"source_type": "upload",
-			"tags": [],
-			"created_at": "2026-07-03T10:29:42.445Z",
-			"updated_at": "2026-07-03T10:29:42.445Z",
-			"file_type": "image/png",
-			"file_size": 3608356,
-			"file_path": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/生成图片.png",
-			"owner_id": 1001,
-			"visibility": "public"
 		}
 	]
 }
