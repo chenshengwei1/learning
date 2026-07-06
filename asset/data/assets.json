@@ -77,6 +77,23 @@
 			"file_path": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/国风女性角色人设设计稿生成.png",
 			"owner_id": 1001,
 			"visibility": "public"
+		},
+		{
+			"id": "edb825b0-086a-43de-889b-7f0dfff7fa28",
+			"title": "分镜9",
+			"description": "",
+			"cover_url": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/分镜9.png",
+			"thumbnail_url": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/分镜9.png",
+			"type": "material",
+			"source_type": "upload",
+			"tags": [],
+			"created_at": "2026-07-06T01:07:03.860Z",
+			"updated_at": "2026-07-06T01:07:03.860Z",
+			"file_type": "image/png",
+			"file_size": 6031863,
+			"file_path": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/分镜9.png",
+			"owner_id": 1001,
+			"visibility": "public"
 		}
 	]
 }
