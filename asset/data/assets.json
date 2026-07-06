@@ -349,6 +349,40 @@
 			"file_path": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/白昼荒原场景.png",
 			"owner_id": 1001,
 			"visibility": "public"
+		},
+		{
+			"id": "3363a5f5-56e2-4366-a762-08936f5d3444",
+			"title": "荒野临时停靠点场景",
+			"description": "",
+			"cover_url": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/荒野临时停靠点场景.png",
+			"thumbnail_url": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/荒野临时停靠点场景.png",
+			"type": "material",
+			"source_type": "upload",
+			"tags": [],
+			"created_at": "2026-07-06T01:08:36.560Z",
+			"updated_at": "2026-07-06T01:08:36.560Z",
+			"file_type": "image/png",
+			"file_size": 5279084,
+			"file_path": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/荒野临时停靠点场景.png",
+			"owner_id": 1001,
+			"visibility": "public"
+		},
+		{
+			"id": "d7572341-c941-4359-badc-9da913b7893a",
+			"title": "UI 光效体系",
+			"description": "",
+			"cover_url": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/UI 光效体系.png",
+			"thumbnail_url": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/UI 光效体系.png",
+			"type": "material",
+			"source_type": "upload",
+			"tags": [],
+			"created_at": "2026-07-06T01:08:42.056Z",
+			"updated_at": "2026-07-06T01:08:42.056Z",
+			"file_type": "image/png",
+			"file_size": 4569736,
+			"file_path": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/UI 光效体系.png",
+			"owner_id": 1001,
+			"visibility": "public"
 		}
 	]
 }
