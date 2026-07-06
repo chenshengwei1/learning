@@ -145,6 +145,40 @@
 			"file_path": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/分镜7.png",
 			"owner_id": 1001,
 			"visibility": "public"
+		},
+		{
+			"id": "6776863f-785d-4699-ad5b-529d8b164ef1",
+			"title": "分镜4",
+			"description": "",
+			"cover_url": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/分镜4.png",
+			"thumbnail_url": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/分镜4.png",
+			"type": "material",
+			"source_type": "upload",
+			"tags": [],
+			"created_at": "2026-07-06T01:07:26.290Z",
+			"updated_at": "2026-07-06T01:07:26.290Z",
+			"file_type": "image/png",
+			"file_size": 5943897,
+			"file_path": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/分镜4.png",
+			"owner_id": 1001,
+			"visibility": "public"
+		},
+		{
+			"id": "8737d19d-cd66-4b57-b354-a716dc855969",
+			"title": "分镜3",
+			"description": "",
+			"cover_url": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/分镜3.png",
+			"thumbnail_url": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/分镜3.png",
+			"type": "material",
+			"source_type": "upload",
+			"tags": [],
+			"created_at": "2026-07-06T01:07:31.571Z",
+			"updated_at": "2026-07-06T01:07:31.571Z",
+			"file_type": "image/png",
+			"file_size": 5447118,
+			"file_path": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/分镜3.png",
+			"owner_id": 1001,
+			"visibility": "public"
 		}
 	]
 }
