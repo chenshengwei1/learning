@@ -383,6 +383,40 @@
 			"file_path": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/UI 光效体系.png",
 			"owner_id": 1001,
 			"visibility": "public"
+		},
+		{
+			"id": "010a4d55-f1a3-4b7d-9397-e0a0e11c7a73",
+			"title": "面包车",
+			"description": "",
+			"cover_url": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/面包车.png",
+			"thumbnail_url": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/面包车.png",
+			"type": "material",
+			"source_type": "upload",
+			"tags": [],
+			"created_at": "2026-07-06T01:08:48.062Z",
+			"updated_at": "2026-07-06T01:08:48.062Z",
+			"file_type": "image/png",
+			"file_size": 5537699,
+			"file_path": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/面包车.png",
+			"owner_id": 1001,
+			"visibility": "public"
+		},
+		{
+			"id": "8e63be6b-723c-4f1d-83f5-25784e8bb424",
+			"title": "丧尸",
+			"description": "",
+			"cover_url": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/丧尸.png",
+			"thumbnail_url": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/丧尸.png",
+			"type": "material",
+			"source_type": "upload",
+			"tags": [],
+			"created_at": "2026-07-06T01:08:53.378Z",
+			"updated_at": "2026-07-06T01:08:53.378Z",
+			"file_type": "image/png",
+			"file_size": 4661358,
+			"file_path": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/丧尸.png",
+			"owner_id": 1001,
+			"visibility": "public"
 		}
 	]
 }
