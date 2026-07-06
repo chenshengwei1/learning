@@ -281,6 +281,40 @@
 			"file_path": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/破旧面包车后备箱视角.png",
 			"owner_id": 1001,
 			"visibility": "public"
+		},
+		{
+			"id": "2c8bf3a3-0b77-417b-a97a-1c8f02da4d7b",
+			"title": "破旧面包车驾驶座视角",
+			"description": "",
+			"cover_url": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/破旧面包车驾驶座视角.png",
+			"thumbnail_url": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/破旧面包车驾驶座视角.png",
+			"type": "material",
+			"source_type": "upload",
+			"tags": [],
+			"created_at": "2026-07-06T01:08:13.216Z",
+			"updated_at": "2026-07-06T01:08:13.216Z",
+			"file_type": "image/png",
+			"file_size": 5699569,
+			"file_path": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/破旧面包车驾驶座视角.png",
+			"owner_id": 1001,
+			"visibility": "public"
+		},
+		{
+			"id": "9e7aeb91-7568-4985-ade0-2b97a7b0b89e",
+			"title": "枪械、宝箱和物资道具",
+			"description": "",
+			"cover_url": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/枪械、宝箱和物资道具.png",
+			"thumbnail_url": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/枪械、宝箱和物资道具.png",
+			"type": "material",
+			"source_type": "upload",
+			"tags": [],
+			"created_at": "2026-07-06T01:08:19.242Z",
+			"updated_at": "2026-07-06T01:08:19.242Z",
+			"file_type": "image/png",
+			"file_size": 4129210,
+			"file_path": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/枪械、宝箱和物资道具.png",
+			"owner_id": 1001,
+			"visibility": "public"
 		}
 	]
 }
