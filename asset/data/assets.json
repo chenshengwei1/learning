@@ -94,6 +94,57 @@
 			"file_path": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/分镜9.png",
 			"owner_id": 1001,
 			"visibility": "public"
+		},
+		{
+			"id": "0d4ff582-2db1-40c7-a012-1120b1a35f6d",
+			"title": "分镜8",
+			"description": "",
+			"cover_url": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/分镜8.png",
+			"thumbnail_url": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/分镜8.png",
+			"type": "material",
+			"source_type": "upload",
+			"tags": [],
+			"created_at": "2026-07-06T01:07:09.882Z",
+			"updated_at": "2026-07-06T01:07:09.882Z",
+			"file_type": "image/png",
+			"file_size": 5851927,
+			"file_path": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/分镜8.png",
+			"owner_id": 1001,
+			"visibility": "public"
+		},
+		{
+			"id": "4677ee1f-9c4a-45dc-aa7b-de73d20596e3",
+			"title": "分镜6",
+			"description": "",
+			"cover_url": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/分镜6.png",
+			"thumbnail_url": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/分镜6.png",
+			"type": "material",
+			"source_type": "upload",
+			"tags": [],
+			"created_at": "2026-07-06T01:07:14.995Z",
+			"updated_at": "2026-07-06T01:07:14.995Z",
+			"file_type": "image/png",
+			"file_size": 5195243,
+			"file_path": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/分镜6.png",
+			"owner_id": 1001,
+			"visibility": "public"
+		},
+		{
+			"id": "8def4e13-eb31-4813-b09a-7cbc3e4b07cf",
+			"title": "分镜7",
+			"description": "",
+			"cover_url": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/分镜7.png",
+			"thumbnail_url": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/分镜7.png",
+			"type": "material",
+			"source_type": "upload",
+			"tags": [],
+			"created_at": "2026-07-06T01:07:20.338Z",
+			"updated_at": "2026-07-06T01:07:20.338Z",
+			"file_type": "image/png",
+			"file_size": 5449101,
+			"file_path": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/分镜7.png",
+			"owner_id": 1001,
+			"visibility": "public"
 		}
 	]
 }
