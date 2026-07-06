@@ -213,6 +213,40 @@
 			"file_path": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/废弃破车残骸区.png",
 			"owner_id": 1001,
 			"visibility": "public"
+		},
+		{
+			"id": "97062639-5561-48e8-a321-ebf457b1eb2f",
+			"title": "荒野临时营地",
+			"description": "",
+			"cover_url": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/荒野临时营地.png",
+			"thumbnail_url": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/荒野临时营地.png",
+			"type": "material",
+			"source_type": "upload",
+			"tags": [],
+			"created_at": "2026-07-06T01:07:48.886Z",
+			"updated_at": "2026-07-06T01:07:48.886Z",
+			"file_type": "image/png",
+			"file_size": 5732591,
+			"file_path": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/荒野临时营地.png",
+			"owner_id": 1001,
+			"visibility": "public"
+		},
+		{
+			"id": "beba490a-ec08-4692-b861-8e1c43b7f4d6",
+			"title": "雨夜荒原",
+			"description": "",
+			"cover_url": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/雨夜荒原.png",
+			"thumbnail_url": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/雨夜荒原.png",
+			"type": "material",
+			"source_type": "upload",
+			"tags": [],
+			"created_at": "2026-07-06T01:07:54.298Z",
+			"updated_at": "2026-07-06T01:07:54.298Z",
+			"file_type": "image/png",
+			"file_size": 5918302,
+			"file_path": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/雨夜荒原.png",
+			"owner_id": 1001,
+			"visibility": "public"
 		}
 	]
 }
