@@ -60,6 +60,23 @@
 			"file_path": "asset/images/850a475b5f94491a.jpg",
 			"owner_id": 1001,
 			"visibility": "public"
+		},
+		{
+			"id": "70d1a951-8100-478d-b796-8060b65fcd8b",
+			"title": "国风女性角色人设设计稿生成",
+			"description": "",
+			"cover_url": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/国风女性角色人设设计稿生成.png",
+			"thumbnail_url": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/国风女性角色人设设计稿生成.png",
+			"type": "material",
+			"source_type": "upload",
+			"tags": [],
+			"created_at": "2026-07-06T01:05:35.694Z",
+			"updated_at": "2026-07-06T01:05:35.694Z",
+			"file_type": "image/png",
+			"file_size": 2959208,
+			"file_path": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/国风女性角色人设设计稿生成.png",
+			"owner_id": 1001,
+			"visibility": "public"
 		}
 	]
 }
