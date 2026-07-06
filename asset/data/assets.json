@@ -247,6 +247,40 @@
 			"file_path": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/雨夜荒原.png",
 			"owner_id": 1001,
 			"visibility": "public"
+		},
+		{
+			"id": "382dbb9c-f675-47a5-92c1-c37e6956ab6b",
+			"title": "高草丛伏击点",
+			"description": "",
+			"cover_url": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/高草丛伏击点.png",
+			"thumbnail_url": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/高草丛伏击点.png",
+			"type": "material",
+			"source_type": "upload",
+			"tags": [],
+			"created_at": "2026-07-06T01:08:00.899Z",
+			"updated_at": "2026-07-06T01:08:00.899Z",
+			"file_type": "image/png",
+			"file_size": 7342090,
+			"file_path": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/高草丛伏击点.png",
+			"owner_id": 1001,
+			"visibility": "public"
+		},
+		{
+			"id": "0e569b26-feed-446e-b8d4-6066a5745078",
+			"title": "破旧面包车后备箱视角",
+			"description": "",
+			"cover_url": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/破旧面包车后备箱视角.png",
+			"thumbnail_url": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/破旧面包车后备箱视角.png",
+			"type": "material",
+			"source_type": "upload",
+			"tags": [],
+			"created_at": "2026-07-06T01:08:07.109Z",
+			"updated_at": "2026-07-06T01:08:07.109Z",
+			"file_type": "image/png",
+			"file_size": 5971364,
+			"file_path": "https://raw.githubusercontent.com/chenshengwei1/learning/master/asset/images/破旧面包车后备箱视角.png",
+			"owner_id": 1001,
+			"visibility": "public"
 		}
 	]
 }
