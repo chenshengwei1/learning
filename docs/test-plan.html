@@ -35,6 +35,8 @@
     .meta { color: var(--muted); font-size: 0.9rem; }
     .case { margin-top: 18px; border: 1px solid var(--line); background: #fafbff; border-radius: 12px; padding: 16px 18px; }
     .case strong { color: var(--primary-dark); }
+    .case .steps, .case .expect { margin-top: 6px; }
+    .case code { background: #f3f4f6; border: 1px solid #e5e7eb; padding: 1px 6px; border-radius: 5px; font-size: 0.92em; }
     .footer-note { margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.92rem; }
   </style>
 </head>
@@ -53,166 +55,223 @@
 
   <div class="container">
     <div class="card">
-      <div class="tag">项目测试计划</div>
+      <div class="tag">项目测试计划 · v5 规则引擎</div>
       <h1>糖果消消乐项目测试计划</h1>
 
       <h2>1. 文档目的</h2>
-      <p>本文档用于对糖果消消乐项目进行功能验证、回归检查和交付验收，覆盖核心玩法、配置能力、状态系统与浏览器表现。它适用于开发阶段检测和团队评审阶段确认。</p>
+      <p>本文档用于对糖果消消乐项目（v5）进行功能验证、回归检查和交付验收，覆盖核心玩法、配置能力、状态系统、模式切换、关卡系统与浏览器表现。它适用于开发阶段检测和团队评审阶段确认。</p>
 
       <h2>2. 测试目标</h2>
       <ul>
-        <li>棋盘渲染与交互是否正常</li>
-        <li>相邻交换与消除规则是否正确</li>
-        <li>爆炸、围墙、冻结与锁定状态是否有效</li>
-        <li>配置模板切换和本地保存是否稳定</li>
-        <li>初始棋盘和时间限制逻辑是否符合预期</li>
-        <li>局部刷新、状态重置和页面稳定性是否可靠</li>
+        <li>棋盘渲染与交互是否正常（点击交换 / 拖拽交换）</li>
+        <li>直线、田字、斜线规则与最少连消数量是否正确</li>
+        <li>爆炸规则（cross / screen / blast）、炸弹、围墙、冻结、锁定、冰层是否有效</li>
+        <li>管理员模式与游戏模式切换、通关目标结算是否正确</li>
+        <li>配置模板切换、单格编辑、关卡保存与加载是否稳定</li>
+        <li>初始棋盘、时间限制、步数限制逻辑是否符合预期</li>
+        <li>棋盘自愈（无初始三连、无解自动洗牌）、局部刷新与页面稳定性</li>
       </ul>
 
       <h2>3. 测试范围</h2>
       <h3>功能验证</h3>
       <ul>
-        <li>基础消除</li>
-        <li>连锁响应</li>
-        <li>计分逻辑</li>
-        <li>步数控制</li>
-        <li>时间限制</li>
-        <li>胜负判断</li>
+        <li>基础消除 / 连锁响应 / 计分逻辑 / 步数控制 / 时间限制 / 胜负判断</li>
+        <li>双模式切换 / 提示功能 / 无解自动洗牌</li>
       </ul>
 
       <h3>配置验证</h3>
       <ul>
-        <li>模板切换</li>
-        <li>自定义布局</li>
-        <li>保存与恢复</li>
-        <li>默认配置回退</li>
-        <li>配置解析稳定性</li>
+        <li>预设模板切换 / 自定义棋子 / 初始棋盘 / 爆炸规则配置</li>
+        <li>配置保存与恢复 / 默认配置回退 / 配置解析稳定性</li>
+        <li>关卡保存与加载（本地关卡库）</li>
       </ul>
 
-      <h3>特殊状态验证</h3>
+      <h3>特殊状态与障碍验证</h3>
       <ul>
-        <li>locked</li>
-        <li>frozen</li>
-        <li>bomb</li>
-        <li>wall</li>
+        <li>locked / frozen / bomb / ice / wall / blank / empty</li>
+      </ul>
+
+      <h3>管理员编辑器验证</h3>
+      <ul>
+        <li>单格属性编辑（类型/图案/底色/图案色/移动/冰层/四边围墙）</li>
+        <li>应用管理员配置与棋盘重建</li>
       </ul>
 
       <h2>4. 测试环境</h2>
       <h3>运行环境</h3>
       <ul>
         <li>浏览器：Chrome、Edge、Firefox 的现代版本</li>
-        <li>运行方式：直接打开 index.html</li>
+        <li>运行方式：直接打开 index.html（或通过 docs/index.html 入口）</li>
         <li>依赖项：无额外安装依赖</li>
       </ul>
 
       <h3>验收方式</h3>
       <ul>
-        <li>手动交互验证</li>
+        <li>手动交互验证（管理员模式构造场景 + 游戏模式验证）</li>
         <li>浏览器控制台检查报错</li>
-        <li>localStorage 检查配置持久化状态</li>
-        <li>关键脚本运行语法检查：node --check game.js</li>
+        <li>localStorage 检查配置持久化与关卡库（candy_crush_config_v5 / candy_crush_levels_v5）</li>
+        <li>关键脚本语法检查：node --check game.js</li>
       </ul>
 
       <h2>5. 测试用例</h2>
 
       <div class="case">
         <strong>TC-01：页面正常加载</strong>
-        <p><strong>目标：</strong>验证页面可以稳定初始化，并展示游戏主体内容。</p>
-        <p><strong>步骤：</strong>打开 index.html，查看页面布局与状态区。</p>
-        <p><strong>预期：</strong>页面总体结构正常，棋盘展示稳定，计分、步数和时间等状态可见，控制台无明显脚本错误。</p>
+        <p class="steps"><strong>目标：</strong>页面稳定初始化并展示完整 UI。</p>
+        <p><strong>步骤：</strong>打开 index.html，观察左侧规则面板、中央棋盘、右侧编辑器。</p>
+        <p><strong>预期：</strong>棋盘稳定显示（默认 10×10），分数/步数/连击/目标/时间可见，控制台无脚本错误；加载后棋盘内不存在初始三连。</p>
       </div>
 
       <div class="case">
         <strong>TC-02：有效交换与消除</strong>
-        <p><strong>目标：</strong>验证相邻棋子合法交换后，能够形成匹配并消除。</p>
-        <p><strong>预期：</strong>若形成 3 连及以上，棋子被移除，分数增加，重力补齐生效，UI 状态同步更新。</p>
+        <p><strong>目标：</strong>相邻棋子合法交换后可形成匹配并消除。</p>
+        <p><strong>预期：</strong>形成 3 连及以上后棋子被移除，分数增加，重力补齐生效，UI 同步更新。</p>
       </div>
 
       <div class="case">
         <strong>TC-03：无效交换</strong>
-        <p><strong>目标：</strong>验证不构成有效消除的交换不会造成错误结果。</p>
-        <p><strong>预期：</strong>操作被拒绝、棋子位置恢复、无错误计分、页面状态保持一致。</p>
+        <p><strong>目标：</strong>不构成有效消除的交换不产生错误结果。</p>
+        <p><strong>预期：</strong>操作被拒绝、棋子回弹复位、无错误计分、状态保持一致。</p>
       </div>
 
       <div class="case">
-        <strong>TC-04：连锁消除</strong>
-        <p><strong>目标：</strong>验证多轮连锁消除仍然可执行，并保持分数逻辑稳定。</p>
-        <p><strong>预期：</strong>连击数递增，多次消除连续执行，分数计算符合连锁规则，不出现卡死或状态异常。</p>
+        <strong>TC-04：点击交换与拖拽交换</strong>
+        <p><strong>目标：</strong>两种交互方式均可用。</p>
+        <p><strong>步骤：</strong>①先点击棋子 A 再点击相邻棋子 B 完成交换；②直接按住棋子向相邻方向拖拽超过阈值（15px）后松手。</p>
+        <p><strong>预期：</strong>两种方式均触发相同交换逻辑；拖拽越界（棋盘边缘）不报错；模式为管理员时点击应选中格子而非交换。</p>
       </div>
 
       <div class="case">
-        <strong>TC-05：炸弹机制</strong>
-        <p><strong>目标：</strong>验证 bomb 状态在消除时会触发范围爆炸。</p>
-        <p><strong>预期：</strong>周围格子被额外清除，爆炸区域明确，计分与状态更新正确。</p>
+        <strong>TC-05：连锁消除与连击</strong>
+        <p><strong>目标：</strong>多轮连锁消除可连续执行且计分稳定。</p>
+        <p><strong>预期：</strong>comboCount 递增，多次消除连续执行，分数按连击倍数计算，无卡死或状态异常。</p>
       </div>
 
       <div class="case">
-        <strong>TC-06：锁定棋子</strong>
-        <p><strong>目标：</strong>验证 locked 状态阻止交换行为。</p>
-        <p><strong>预期：</strong>交换被拒绝，游戏提示清晰，不发生错误判定。</p>
+        <strong>TC-06：爆炸规则（cross / screen / blast）</strong>
+        <p><strong>目标：</strong>按消除数量触发对应爆炸。</p>
+        <p><strong>步骤：</strong>在管理员模式设置爆炸规则：4=cross、5=screen、6=blast:2，分别构造 4/5/6 连消除。</p>
+        <p><strong>预期：</strong>4 连触发十字、5 连触发全屏、6 连触发半径 2 范围爆炸；被波及的可消除棋子被清除，围墙受损。</p>
       </div>
 
       <div class="case">
-        <strong>TC-07：冰冻棋子</strong>
-        <p><strong>目标：</strong>验证 frozen 状态不会破坏交互稳定性。</p>
-        <p><strong>预期：</strong>无法执行交换，页面逻辑保持稳定，无渲染异常。</p>
+        <strong>TC-07：炸弹棋子</strong>
+        <p><strong>目标：</strong>bomb 状态棋子参与消除时波及周围 3×3。</p>
+        <p><strong>预期：</strong>炸弹所在格及其 8 邻域受影响，计分与状态更新正确。</p>
       </div>
 
       <div class="case">
-        <strong>TC-08：围墙破坏</strong>
-        <p><strong>目标：</strong>验证围墙 hp 机制可正常减少并最终消失。</p>
-        <p><strong>预期：</strong>围墙 HP 按规则减少，HP 为 0 后围墙移除，视觉层与逻辑层一致。</p>
+        <strong>TC-08：锁定棋子 locked</strong>
+        <p><strong>目标：</strong>locked 棋子不可交换且不可被消除。</p>
+        <p><strong>预期：</strong>尝试交换被拒绝并提示；参与匹配或爆炸时该格保留。</p>
       </div>
 
       <div class="case">
-        <strong>TC-09：时间限制</strong>
-        <p><strong>目标：</strong>验证计时功能能够在到时后结束游戏。</p>
-        <p><strong>预期：</strong>时间递减持续正确，到 0 时结束游戏，结果和状态显示正常。</p>
+        <strong>TC-09：冰冻与冰层（frozen / ice）</strong>
+        <p><strong>目标：</strong>frozen 阻止交换；冰层（0-6）视觉与数值正确。</p>
+        <p><strong>预期：</strong>frozen 棋子无法交换；ice 层级数字/透明度随等级变化，逻辑稳定无渲染异常。</p>
       </div>
 
       <div class="case">
-        <strong>TC-10：步数限制</strong>
-        <p><strong>目标：</strong>验证步数机制和胜负判断一致。</p>
-        <p><strong>预期：</strong>步数逐步递减，到达上限后结束游戏，不出现步数计算偏差。</p>
+        <strong>TC-10：围墙破坏机制</strong>
+        <p><strong>目标：</strong>围墙 hp 随相邻消除/爆炸递减并最终移除。</p>
+        <p><strong>步骤：</strong>在 wall 模板或单格编辑中配置带围墙棋子，通过相邻消除或爆炸造成伤害。</p>
+        <p><strong>预期：</strong>HP 按规则减少，HP=0 后围墙消失；相邻格共享边不出现重复/错乱描边。</p>
       </div>
 
       <div class="case">
-        <strong>TC-11：模板切换</strong>
-        <p><strong>目标：</strong>验证模板配置生效，并且规则与参数同步更新。</p>
-        <p><strong>预期：</strong>棋盘大小、时间限制、步数等变化正确，相关 UI 区域同步更新。</p>
+        <strong>TC-11：时间限制</strong>
+        <p><strong>目标：</strong>计时归零后正确结算。</p>
+        <p><strong>步骤：</strong>开启时间限制并设置短倒计时，切换到游戏模式等待耗尽。</p>
+        <p><strong>预期：</strong>时间递减正确，到 0 结束并弹出结算（达成目标判胜，否则判负）。</p>
       </div>
 
       <div class="case">
-        <strong>TC-12：配置保存与恢复</strong>
-        <p><strong>目标：</strong>验证配置保存、重载和恢复功能正常。</p>
-        <p><strong>预期：</strong>保存后配置生效，刷新后仍然保留配置，页面没有异常文本残留。</p>
+        <strong>TC-12：步数限制与胜负判定</strong>
+        <p><strong>目标：</strong>步数用尽后胜负判定与目标检查一致。</p>
+        <p><strong>预期：</strong>每步递减 1；到 0 时若已达成通关目标判胜，否则判负；低步数时出现预警样式。</p>
       </div>
 
       <div class="case">
-        <strong>TC-13：初始棋盘配置</strong>
-        <p><strong>目标：</strong>验证自定义棋盘布局能够按要求重建。</p>
-        <p><strong>预期：</strong>指定格子生成正确棋子，empty 能被正确解析为空，frozen、bomb、locked 等状态按设置生效。</p>
+        <strong>TC-13：通关目标（最低分 / 消除指定棋子）</strong>
+        <p><strong>目标：</strong>两种通关条件可单独或同时生效。</p>
+        <p><strong>步骤：</strong>启用最低分 500 并设总步数 30；另启用"消除指定棋子 ×N"，分别验证。</p>
+        <p><strong>预期：</strong>达成任一启用目标即触发胜利结算；HUD 目标区显示进度（如 A×10[3/10]）。</p>
       </div>
 
       <div class="case">
-        <strong>TC-14：配置字符串稳定性</strong>
-        <p><strong>目标：</strong>验证颜色值和围墙字段不会因为字符串拆分而导致异常渲染。</p>
-        <p><strong>预期：</strong>配置字段被正确解析，棋盘上不出现无意义字符串，视觉层没有异常丢失或叠加。</p>
+        <strong>TC-14：模板切换</strong>
+        <p><strong>目标：</strong>classic/timed/challenge/wall 模板参数正确生效。</p>
+        <p><strong>预期：</strong>棋盘尺寸、步数、时间、matchLength、田字/斜线开关随模板更新；挑战与围墙模板正确加载预设 initialBoard / 带墙棋子；应用后棋盘稳定无初始三连。</p>
+      </div>
+
+      <div class="case">
+        <strong>TC-15：配置保存与恢复</strong>
+        <p><strong>目标：</strong>配置保存、刷新恢复正常。</p>
+        <p><strong>预期：</strong>保存后立即生效，刷新后仍保留（candy_crush_config_v5），无异常文本残留。</p>
+      </div>
+
+      <div class="case">
+        <strong>TC-16：初始棋盘配置</strong>
+        <p><strong>目标：</strong>自定义布局按定义重建。</p>
+        <p><strong>步骤：</strong>在初始棋盘文本域输入含 empty / apple|frozen / grape|bomb / orange|locked 的布局并应用。</p>
+        <p><strong>预期：</strong>empty 解析为空位，frozen/bomb/locked 状态按设置生效；未知类型不回退为随机棋子（保持空位）。</p>
+      </div>
+
+      <div class="case">
+        <strong>TC-17：配置字符串稳定性</strong>
+        <p><strong>目标：</strong>含 rgba 颜色、围墙、pattern 的配置不被错误拆分成棋盘文字。</p>
+        <p><strong>预期：</strong>字段被正确解析，棋盘不出现配置片段/乱码，视觉层不叠加异常。</p>
+      </div>
+
+      <div class="case">
+        <strong>TC-18：管理员模式单格编辑</strong>
+        <p><strong>目标：</strong>右侧编辑器可精确修改单格属性。</p>
+        <p><strong>步骤：</strong>管理员模式下点选一个格子，修改类型/图案/底色/图案色/可移动/冰层/四边围墙后点"应用到当前格子"。</p>
+        <p><strong>预期：</strong>格子即时更新为新属性；"清空当前格子"可将该格置空；未选中格子时编辑器为空态。</p>
+      </div>
+
+      <div class="case">
+        <strong>TC-19：模式切换</strong>
+        <p><strong>目标：</strong>管理员/游戏模式切换行为正确。</p>
+        <p><strong>预期：</strong>管理员模式可点选编辑、规则面板可见；游戏模式隐藏编辑面板、点击/拖拽只用于交换；切换游戏模式自动启动计时器（若启用）。</p>
+      </div>
+
+      <div class="case">
+        <strong>TC-20：关卡保存与加载</strong>
+        <p><strong>目标：</strong>关卡可保存入库并被重新加载。</p>
+        <p><strong>步骤：</strong>填写关卡名称 → "保存为关卡"；在"已保存关卡"列表点击"加载"。</p>
+        <p><strong>预期：</strong>关卡写入 candy_crush_levels_v5（上限 20，重名覆盖）；加载后棋盘与规则完整恢复；列表可正常刷新。</p>
+      </div>
+
+      <div class="case">
+        <strong>TC-21：提示与无解洗牌</strong>
+        <p><strong>目标：</strong>提示功能与无解自动重排正常。</p>
+        <p><strong>步骤：</strong>点"提示"按钮观察高亮；用管理员工具构造无可行步盘面后走一步。</p>
+        <p><strong>预期：</strong>提示高亮建议交换并在约 1.5s 后消失；若无可行步，游戏自动洗牌并稳定化，不卡死。</p>
+      </div>
+
+      <div class="case">
+        <strong>TC-22：语法与性能回归</strong>
+        <p><strong>目标：</strong>脚本无语法错误，消除动画流畅。</p>
+        <p><strong>预期：</strong>node --check game.js 通过；长连击消除过程仅局部刷新，无整盘闪烁；控制台无异常报错。</p>
       </div>
 
       <h2>6. 缺陷回归清单</h2>
       <ul>
-        <li>颜色配置被错误切割导致棋盘出现文字残留</li>
+        <li>颜色/围墙配置被错误切割导致棋盘出现文字残留</li>
         <li>整盘重渲染导致视觉闪烁</li>
-        <li>保存后状态异常造成棋盘失真</li>
-        <li>特殊状态与围墙同步错误</li>
-        <li>配置更新后旧棋盘状态未清理</li>
+        <li>保存/模板切换后旧棋盘状态未清理造成失真</li>
+        <li>特殊状态与围墙同步错误、相邻墙重复描边</li>
+        <li>配置更新后 requiredPieceType 等旧引用未重置</li>
+        <li>交换/消除过程中并发输入导致棋盘状态竞争</li>
+        <li>初始棋盘无法识别类型时被随机棋子顶替</li>
       </ul>
 
       <h2>7. 测试结论</h2>
-      <p>当以上测试用例全部通过时，说明项目具备稳定的交互能力、合理的规则逻辑和可持续扩展的配置设计。对于一个原型级前端游戏而言，它已经达到较成熟的演示与迭代基础。</p>
+      <p>当以上测试用例全部通过时，说明项目具备稳定的双模式交互、完整的规则与目标结算、可靠的配置/关卡持久化，以及可持续扩展的设计基础。对原型级前端游戏而言已达到较成熟的演示与迭代水平。</p>
 
-      <div class="footer-note">交付判定：建议将该版本视为可演示、可评审、可扩展的前端游戏原型。</div>
+      <div class="footer-note">交付判定：建议将该版本视为可演示、可评审、可扩展的前端游戏原型；后续扩展玩法时应优先补充自动化回归、配置校验与状态一致性测试。</div>
     </div>
   </div>
 </body>

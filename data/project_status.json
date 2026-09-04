@@ -1,6 +1,6 @@
 {
   "project_name": "dsagent2",
-  "last_updated": "2025-01-01 12:00",
+  "last_updated": "2026-09-04 17:14",
   "pages": ["index.html"],
   "recent_tasks": [
     "创建糖果消消乐游戏（HTML+CSS+JS 纯前端实现）",
@@ -9,7 +9,9 @@
     "script 标签加版本号参数强制刷新缓存",
     "棋盘升级为 10x10",
     "新增田字形（2x2 同色）消除，wouldMatch 同步拦截田字形初始消除",
-    "新增相邻棋子拖拽交换（Pointer Events，点击交换保留）"
+    "新增相邻棋子拖拽交换（Pointer Events，点击交换保留）",
+    "初始化 git 仓库并提交基线存档（cc55817）",
+    "根据游戏 v5 实际能力更新 docs 下三份 HTML 文档（design / test-plan / user-guide），对齐双模式、模板、关卡、单格编辑、爆炸规则、目标结算等能力"
   ],
   "next_tasks": [],
   "dependencies": {}
