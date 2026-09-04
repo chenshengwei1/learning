@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>糖果消消乐项目使用手册</title>
+  <style>
+    :root {
+      --bg: #f5f7ff;
+      --panel: #ffffff;
+      --soft: #eef3ff;
+      --line: #dfe8ff;
+      --primary: #4f46e5;
+      --primary-dark: #1f1b4d;
+      --text: #1f2937;
+      --muted: #667085;
+      --shadow: 0 16px 32px rgba(79,70,229,0.08);
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Segoe UI", "Microsoft YaHei", sans-serif; background: var(--bg); color: var(--text); }
+    .container { max-width: 1100px; margin: 28px auto 60px; padding: 0 20px; }
+    .topbar { position: sticky; top: 0; z-index: 10; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+    .topbar-inner { max-width: 1100px; margin: 0 auto; padding: 14px 20px; display: flex; justify-content: space-between; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .brand { font-weight: 800; color: var(--primary-dark); }
+    .nav a { color: var(--primary); text-decoration: none; margin-left: 12px; font-weight: 600; }
+    .nav a:hover { text-decoration: underline; }
+    .card { background: var(--panel); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow); padding: 28px 30px; }
+    h1 { font-size: clamp(2rem, 3vw, 2.8rem); margin-top: 0; color: var(--primary-dark); }
+    h2 { font-size: 1.35rem; margin-top: 26px; color: var(--primary-dark); }
+    h3 { font-size: 1.08rem; margin-top: 20px; color: var(--primary-dark); }
+    p, li { line-height: 1.8; color: var(--text); }
+    ul, ol { padding-left: 22px; }
+    .tag { display: inline-block; background: var(--soft); border: 1px solid var(--line); color: var(--primary); padding: 7px 12px; border-radius: 999px; font-size: 0.82rem; font-weight: 700; margin-bottom: 12px; }
+    code { background: #f3f4f6; border: 1px solid #e5e7eb; padding: 2px 7px; border-radius: 6px; font-size: 0.92em; }
+    pre { background: #0f172a; color: #e2e8f0; padding: 16px 18px; border-radius: 12px; overflow-x: auto; }
+    .footer-note { margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.92rem; }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">糖果消消乐 · 使用手册</div>
+      <div class="nav">
+        <a href="index.html">首页</a>
+        <a href="design.html">设计说明</a>
+        <a href="test-plan.html">测试计划</a>
+        <a href="user-guide.html">使用手册</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="card">
+      <div class="tag">项目使用手册</div>
+      <h1>糖果消消乐项目使用手册</h1>
+
+      <h2>1. 文档目的</h2>
+      <p>本文档面向最终用户和项目使用者，用于说明如何快速启动游戏、如何使用界面功能、如何理解特殊规则，以及如何在需要时恢复默认配置。</p>
+
+      <h2>2. 项目简介</h2>
+      <p>本项目是一款基于浏览器运行的糖果消消乐小游戏，允许用户直接打开页面开始游戏，并通过设置面板调整玩法参数、模板和初始化棋盘。</p>
+      <ul>
+        <li>经典消除体验</li>
+        <li>配置化模板切换</li>
+        <li>自定义布局初始化</li>
+        <li>时间限制与步数限制</li>
+        <li>围墙、炸弹、锁定和冻结等状态</li>
+        <li>浏览器本地配置持久化</li>
+      </ul>
+
+      <h2>3. 运行方式</h2>
+      <h3>直接运行</h3>
+      <ol>
+        <li>打开项目目录：C:\doc\work\dsagent2</li>
+        <li>找到 index.html</li>
+        <li>使用浏览器直接打开该文件</li>
+      </ol>
+
+      <h3>文档入口</h3>
+      <p>如果需要在浏览器中查看文档入口页，可直接打开：</p>
+      <p><code>docs/index.html</code></p>
+      <p>该页面为项目文档入口，可用于快速导航至设计说明、测试计划和使用手册。</p>
+
+      <h2>4. 游戏操作说明</h2>
+      <h3>交换棋子</h3>
+      <p>点击两个相邻的棋子进行交换，也可以通过拖动或点击的方式完成移动。</p>
+
+      <h3>形成消除</h3>
+      <p>仅当满足规则条件时，棋子才会被消除。系统支持横向连线、纵向连线、田字连接和斜线匹配。</p>
+
+      <h3>连锁和计分</h3>
+      <ul>
+        <li>成功消除会增加分数</li>
+        <li>连续消除将提升连击效果</li>
+        <li>某些棋子拥有特殊爆炸效果，可榨取更高收益</li>
+      </ul>
+
+      <h3>胜负条件</h3>
+      <ul>
+        <li>当达到分数目标时，可视为通关</li>
+        <li>当步数耗尽或时间结束时，游戏可能结束</li>
+      </ul>
+
+      <h2>5. 界面功能说明</h2>
+      <h3>顶部状态栏</h3>
+      <p>界面顶部通常显示当前分数、剩余步数、连击倍数、目标分数和剩余时间。</p>
+
+      <h3>页面操作区</h3>
+      <ul>
+        <li>重新开始：重置当前棋盘</li>
+        <li>提示：给出一个可消除的建议交换</li>
+        <li>设置：打开配置管理面板</li>
+        <li>文档：跳转到项目文档入口页</li>
+      </ul>
+
+      <h2>6. 设置面板说明</h2>
+      <h3>模板配置</h3>
+      <p>项目支持多种玩法模板，包括 classic、timed、challenge 和 wall。</p>
+
+      <h3>棋盘配置</h3>
+      <p>用户可配置行数、列数和格子尺寸。</p>
+
+      <h3>棋子配置</h3>
+      <p>棋子配置用于定义不同种类的元素，常见字段包括底色、图案层、主体颜色、边框颜色和围墙信息。</p>
+
+      <h3>时间限制</h3>
+      <p>在设置面板中，可以启用或关闭时间限制，并设定总计时时长。</p>
+
+      <h3>初始棋盘</h3>
+      <pre><code>apple,grape|frozen,orange
+orange,empty,apple|bomb
+grape,orange,apple</code></pre>
+      <p>说明：empty 表示空格，apple|frozen 表示苹果并带冻结状态，grape|bomb 表示葡萄并带炸弹状态。</p>
+
+      <h2>7. 特殊状态说明</h2>
+      <h3>锁定状态</h3>
+      <p>锁定状态的棋子将不能参与正常交换，常用于增加策略复杂度和难度。</p>
+
+      <h3>冰冻状态</h3>
+      <p>冰冻状态也会影响棋子的可交换性，适合设计更强制性的玩法限制。</p>
+
+      <h3>炸弹状态</h3>
+      <p>炸弹类棋子在参与消除后，会对周围格子造成范围影响，形成更大规模的清除效果。</p>
+
+      <h3>围墙机制</h3>
+      <p>围墙可以单独配置在某一边，例如 top、right、bottom、left。每面围墙都可设定是否启用、耐久值和颜色。</p>
+
+      <h2>8. 保存与恢复</h2>
+      <h3>自动保存</h3>
+      <p>当前配置会保存在浏览器本地存储中，方便用户重启页面后恢复之前的状态。</p>
+
+      <h3>恢复默认</h3>
+      <p>如果希望重置配置，可在设置面板中使用恢复默认操作，并重新应用。</p>
+
+      <h2>9. 常见问题</h2>
+      <h3>页面没有正常显示</h3>
+      <p>建议检查是否从浏览器直接打开了 index.html，以及控制台是否存在脚本报错。</p>
+
+      <h3>保存后出现异常字符或乱码</h3>
+      <p>这通常是配置解析问题，常见原因包括颜色字符串被错误拆分、特殊字段被误识别以及旧的本地缓存数据残留。</p>
+
+      <h3>没有可执行的消除步骤</h3>
+      <p>可尝试点击提示按钮、重新开始一个新棋盘，或修改模板和初始布局以制造更多可消除组合。</p>
+
+      <h2>10. 总结</h2>
+      <p>本游戏项目兼顾易用性、可配置性和扩展性，是一个适合继续迭代的前端玩法原型。它既能够快速展示核心消消乐体验，又允许团队在规则层、配置层和视觉层继续扩展更多创新玩法。</p>
+
+      <div class="footer-note">适用场景：前端游戏原型演示、规则设计教学、玩法扩展实验和团队评审材料。</div>
+    </div>
+  </div>
+</body>
+</html>

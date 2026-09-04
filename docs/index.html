@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>糖果消消乐项目文档</title>
+    <style>
+      :root {
+        --bg: #f6f7fb;
+        --panel: #ffffff;
+        --panel-alt: #f1f5ff;
+        --line: #dfe7ff;
+        --primary: #4f46e5;
+        --primary-strong: #312e81;
+        --text: #1f2937;
+        --muted: #6b7280;
+        --success: #10b981;
+        --warning: #f59e0b;
+        --shadow: 0 12px 28px rgba(79, 70, 229, 0.08);
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+        background: linear-gradient(180deg, #eef2ff 0%, var(--bg) 100%);
+        color: var(--text);
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 0 20px 60px;
+      }
+
+      .hero {
+        background: linear-gradient(135deg, #1f1b4d 0%, #4f46e5 100%);
+        color: #fff;
+        border-radius: 22px;
+        padding: 42px 38px;
+        box-shadow: var(--shadow);
+        margin-bottom: 26px;
+      }
+
+      .hero h1 {
+        margin: 0 0 12px;
+        font-size: clamp(2rem, 4vw, 3rem);
+        line-height: 1.2;
+      }
+
+      .hero p {
+        margin: 0;
+        font-size: 1.08rem;
+        color: rgba(255,255,255,0.9);
+        max-width: 760px;
+      }
+
+      .meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 22px;
+      }
+
+      .badge {
+        display: inline-block;
+        background: rgba(255,255,255,0.12);
+        border: 1px solid rgba(255,255,255,0.2);
+        color: #fff;
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-size: 0.9rem;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 22px;
+      }
+
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 22px 20px;
+        box-shadow: var(--shadow);
+      }
+
+      .card h2 {
+        margin: 0 0 16px;
+        font-size: 1.2rem;
+        color: var(--primary-strong);
+      }
+
+      .card ul {
+        margin: 0;
+        padding-left: 18px;
+        line-height: 1.9;
+        color: var(--text);
+      }
+
+      .card a {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .card a:hover {
+        text-decoration: underline;
+      }
+
+      .quick-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      .button {
+        display: inline-block;
+        background: var(--primary);
+        color: #fff;
+        text-decoration: none;
+        padding: 12px 16px;
+        border-radius: 12px;
+        font-weight: 600;
+        box-shadow: 0 9px 18px rgba(79, 70, 229, 0.2);
+      }
+
+      .button.secondary {
+        background: var(--panel-alt);
+        color: var(--primary-strong);
+        border: 1px solid var(--line);
+        box-shadow: none;
+      }
+
+      .footer {
+        text-align: center;
+        margin-top: 28px;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <section class="hero">
+        <h1>糖果消消乐项目文档中心</h1>
+        <p>
+          本页面汇总了项目设计、测试计划和使用说明，方便团队在浏览器中直接查看，适合评审、交付和后续迭代使用。
+        </p>
+        <div class="meta">
+          <span class="badge">HTML / CSS / JavaScript</span>
+          <span class="badge">浏览器可直接访问</span>
+          <span class="badge">交付说明文档</span>
+        </div>
+      </section>
+
+      <div class="quick-links">
+        <a class="button" href="../index.html">打开游戏页面</a>
+        <a class="button secondary" href="design.html">查看设计说明</a>
+      </div>
+
+      <div class="grid" style="margin-top: 26px;">
+        <article class="card">
+          <h2>设计说明</h2>
+          <ul>
+            <li><a href="design.html">设计文档</a></li>
+            <li>说明项目架构、核心模块和扩展思路</li>
+            <li>解释棋盘、规则和配置解析的设计原则</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h2>测试计划</h2>
+          <ul>
+            <li><a href="test-plan.html">测试计划</a></li>
+            <li>覆盖功能、配置、状态与回归测试</li>
+            <li>适用于项目验收和后续迭代调试</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h2>使用手册</h2>
+          <ul>
+            <li><a href="user-guide.html">使用说明</a></li>
+            <li>帮助用户快速理解游戏规则与界面操作</li>
+            <li>包含常见问题与配置恢复说明</li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="footer">
+        项目交付文档入口 · 适合团队评审、演示与后续维护
+      </div>
+    </div>
+  </body>
+</html>

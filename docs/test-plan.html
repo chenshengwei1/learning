@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>糖果消消乐项目测试计划</title>
+  <style>
+    :root {
+      --bg: #f5f7ff;
+      --panel: #ffffff;
+      --soft: #eef3ff;
+      --line: #dfe8ff;
+      --primary: #4f46e5;
+      --primary-dark: #1f1b4d;
+      --text: #1f2937;
+      --muted: #667085;
+      --shadow: 0 16px 32px rgba(79,70,229,0.08);
+      --success: #10b981;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Segoe UI", "Microsoft YaHei", sans-serif; background: var(--bg); color: var(--text); }
+    .container { max-width: 1100px; margin: 28px auto 60px; padding: 0 20px; }
+    .topbar { position: sticky; top: 0; z-index: 10; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+    .topbar-inner { max-width: 1100px; margin: 0 auto; padding: 14px 20px; display: flex; justify-content: space-between; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .brand { font-weight: 800; color: var(--primary-dark); }
+    .nav a { color: var(--primary); text-decoration: none; margin-left: 12px; font-weight: 600; }
+    .nav a:hover { text-decoration: underline; }
+    .card { background: var(--panel); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow); padding: 28px 30px; }
+    h1 { font-size: clamp(2rem, 3vw, 2.8rem); margin-top: 0; color: var(--primary-dark); }
+    h2 { font-size: 1.35rem; margin-top: 26px; color: var(--primary-dark); }
+    h3 { font-size: 1.08rem; margin-top: 20px; color: var(--primary-dark); }
+    p, li { line-height: 1.8; color: var(--text); }
+    ul, ol { padding-left: 22px; }
+    .tag { display: inline-block; background: var(--soft); border: 1px solid var(--line); color: var(--primary); padding: 7px 12px; border-radius: 999px; font-size: 0.82rem; font-weight: 700; margin-bottom: 12px; }
+    .meta { color: var(--muted); font-size: 0.9rem; }
+    .case { margin-top: 18px; border: 1px solid var(--line); background: #fafbff; border-radius: 12px; padding: 16px 18px; }
+    .case strong { color: var(--primary-dark); }
+    .footer-note { margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.92rem; }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">糖果消消乐 · 测试计划</div>
+      <div class="nav">
+        <a href="index.html">首页</a>
+        <a href="design.html">设计说明</a>
+        <a href="test-plan.html">测试计划</a>
+        <a href="user-guide.html">使用手册</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="card">
+      <div class="tag">项目测试计划</div>
+      <h1>糖果消消乐项目测试计划</h1>
+
+      <h2>1. 文档目的</h2>
+      <p>本文档用于对糖果消消乐项目进行功能验证、回归检查和交付验收，覆盖核心玩法、配置能力、状态系统与浏览器表现。它适用于开发阶段检测和团队评审阶段确认。</p>
+
+      <h2>2. 测试目标</h2>
+      <ul>
+        <li>棋盘渲染与交互是否正常</li>
+        <li>相邻交换与消除规则是否正确</li>
+        <li>爆炸、围墙、冻结与锁定状态是否有效</li>
+        <li>配置模板切换和本地保存是否稳定</li>
+        <li>初始棋盘和时间限制逻辑是否符合预期</li>
+        <li>局部刷新、状态重置和页面稳定性是否可靠</li>
+      </ul>
+
+      <h2>3. 测试范围</h2>
+      <h3>功能验证</h3>
+      <ul>
+        <li>基础消除</li>
+        <li>连锁响应</li>
+        <li>计分逻辑</li>
+        <li>步数控制</li>
+        <li>时间限制</li>
+        <li>胜负判断</li>
+      </ul>
+
+      <h3>配置验证</h3>
+      <ul>
+        <li>模板切换</li>
+        <li>自定义布局</li>
+        <li>保存与恢复</li>
+        <li>默认配置回退</li>
+        <li>配置解析稳定性</li>
+      </ul>
+
+      <h3>特殊状态验证</h3>
+      <ul>
+        <li>locked</li>
+        <li>frozen</li>
+        <li>bomb</li>
+        <li>wall</li>
+      </ul>
+
+      <h2>4. 测试环境</h2>
+      <h3>运行环境</h3>
+      <ul>
+        <li>浏览器：Chrome、Edge、Firefox 的现代版本</li>
+        <li>运行方式：直接打开 index.html</li>
+        <li>依赖项：无额外安装依赖</li>
+      </ul>
+
+      <h3>验收方式</h3>
+      <ul>
+        <li>手动交互验证</li>
+        <li>浏览器控制台检查报错</li>
+        <li>localStorage 检查配置持久化状态</li>
+        <li>关键脚本运行语法检查：node --check game.js</li>
+      </ul>
+
+      <h2>5. 测试用例</h2>
+
+      <div class="case">
+        <strong>TC-01：页面正常加载</strong>
+        <p><strong>目标：</strong>验证页面可以稳定初始化，并展示游戏主体内容。</p>
+        <p><strong>步骤：</strong>打开 index.html，查看页面布局与状态区。</p>
+        <p><strong>预期：</strong>页面总体结构正常，棋盘展示稳定，计分、步数和时间等状态可见，控制台无明显脚本错误。</p>
+      </div>
+
+      <div class="case">
+        <strong>TC-02：有效交换与消除</strong>
+        <p><strong>目标：</strong>验证相邻棋子合法交换后，能够形成匹配并消除。</p>
+        <p><strong>预期：</strong>若形成 3 连及以上，棋子被移除，分数增加，重力补齐生效，UI 状态同步更新。</p>
+      </div>
+
+      <div class="case">
+        <strong>TC-03：无效交换</strong>
+        <p><strong>目标：</strong>验证不构成有效消除的交换不会造成错误结果。</p>
+        <p><strong>预期：</strong>操作被拒绝、棋子位置恢复、无错误计分、页面状态保持一致。</p>
+      </div>
+
+      <div class="case">
+        <strong>TC-04：连锁消除</strong>
+        <p><strong>目标：</strong>验证多轮连锁消除仍然可执行，并保持分数逻辑稳定。</p>
+        <p><strong>预期：</strong>连击数递增，多次消除连续执行，分数计算符合连锁规则，不出现卡死或状态异常。</p>
+      </div>
+
+      <div class="case">
+        <strong>TC-05：炸弹机制</strong>
+        <p><strong>目标：</strong>验证 bomb 状态在消除时会触发范围爆炸。</p>
+        <p><strong>预期：</strong>周围格子被额外清除，爆炸区域明确，计分与状态更新正确。</p>
+      </div>
+
+      <div class="case">
+        <strong>TC-06：锁定棋子</strong>
+        <p><strong>目标：</strong>验证 locked 状态阻止交换行为。</p>
+        <p><strong>预期：</strong>交换被拒绝，游戏提示清晰，不发生错误判定。</p>
+      </div>
+
+      <div class="case">
+        <strong>TC-07：冰冻棋子</strong>
+        <p><strong>目标：</strong>验证 frozen 状态不会破坏交互稳定性。</p>
+        <p><strong>预期：</strong>无法执行交换，页面逻辑保持稳定，无渲染异常。</p>
+      </div>
+
+      <div class="case">
+        <strong>TC-08：围墙破坏</strong>
+        <p><strong>目标：</strong>验证围墙 hp 机制可正常减少并最终消失。</p>
+        <p><strong>预期：</strong>围墙 HP 按规则减少，HP 为 0 后围墙移除，视觉层与逻辑层一致。</p>
+      </div>
+
+      <div class="case">
+        <strong>TC-09：时间限制</strong>
+        <p><strong>目标：</strong>验证计时功能能够在到时后结束游戏。</p>
+        <p><strong>预期：</strong>时间递减持续正确，到 0 时结束游戏，结果和状态显示正常。</p>
+      </div>
+
+      <div class="case">
+        <strong>TC-10：步数限制</strong>
+        <p><strong>目标：</strong>验证步数机制和胜负判断一致。</p>
+        <p><strong>预期：</strong>步数逐步递减，到达上限后结束游戏，不出现步数计算偏差。</p>
+      </div>
+
+      <div class="case">
+        <strong>TC-11：模板切换</strong>
+        <p><strong>目标：</strong>验证模板配置生效，并且规则与参数同步更新。</p>
+        <p><strong>预期：</strong>棋盘大小、时间限制、步数等变化正确，相关 UI 区域同步更新。</p>
+      </div>
+
+      <div class="case">
+        <strong>TC-12：配置保存与恢复</strong>
+        <p><strong>目标：</strong>验证配置保存、重载和恢复功能正常。</p>
+        <p><strong>预期：</strong>保存后配置生效，刷新后仍然保留配置，页面没有异常文本残留。</p>
+      </div>
+
+      <div class="case">
+        <strong>TC-13：初始棋盘配置</strong>
+        <p><strong>目标：</strong>验证自定义棋盘布局能够按要求重建。</p>
+        <p><strong>预期：</strong>指定格子生成正确棋子，empty 能被正确解析为空，frozen、bomb、locked 等状态按设置生效。</p>
+      </div>
+
+      <div class="case">
+        <strong>TC-14：配置字符串稳定性</strong>
+        <p><strong>目标：</strong>验证颜色值和围墙字段不会因为字符串拆分而导致异常渲染。</p>
+        <p><strong>预期：</strong>配置字段被正确解析，棋盘上不出现无意义字符串，视觉层没有异常丢失或叠加。</p>
+      </div>
+
+      <h2>6. 缺陷回归清单</h2>
+      <ul>
+        <li>颜色配置被错误切割导致棋盘出现文字残留</li>
+        <li>整盘重渲染导致视觉闪烁</li>
+        <li>保存后状态异常造成棋盘失真</li>
+        <li>特殊状态与围墙同步错误</li>
+        <li>配置更新后旧棋盘状态未清理</li>
+      </ul>
+
+      <h2>7. 测试结论</h2>
+      <p>当以上测试用例全部通过时，说明项目具备稳定的交互能力、合理的规则逻辑和可持续扩展的配置设计。对于一个原型级前端游戏而言，它已经达到较成熟的演示与迭代基础。</p>
+
+      <div class="footer-note">交付判定：建议将该版本视为可演示、可评审、可扩展的前端游戏原型。</div>
+    </div>
+  </div>
+</body>
+</html>
