@@ -3,214 +3,708 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>糖果消消乐项目使用手册</title>
+  <title>糖果消消乐 · 使用手册</title>
   <style>
+    /* ===== 微软 Learn 风格基础变量 ===== */
     :root {
-      --bg: #f5f7ff;
-      --panel: #ffffff;
-      --soft: #eef3ff;
-      --line: #dfe8ff;
-      --primary: #4f46e5;
-      --primary-dark: #1f1b4d;
-      --text: #1f2937;
-      --muted: #667085;
-      --shadow: 0 16px 32px rgba(79,70,229,0.08);
+      --ms-blue: #0067b8;
+      --ms-blue-dark: #005a9e;
+      --ms-blue-hover: #1a6eb5;
+      --header-bg: #1a1a1a;
+      --text: #1f1f1f;
+      --text-secondary: #4b4b4b;
+      --muted: #747474;
+      --line: #e6e6e6;
+      --sidebar-bg: #f7f7f7;
+      --code-bg: #f5f5f5;
+      --code-border: #e1e1e1;
+      --content-max: 960px;
+      --toc-width: 320px;
     }
     * { box-sizing: border-box; }
-    body { margin: 0; font-family: "Segoe UI", "Microsoft YaHei", sans-serif; background: var(--bg); color: var(--text); }
-    .container { max-width: 1100px; margin: 28px auto 60px; padding: 0 20px; }
-    .topbar { position: sticky; top: 0; z-index: 10; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
-    .topbar-inner { max-width: 1100px; margin: 0 auto; padding: 14px 20px; display: flex; justify-content: space-between; gap: 12px; align-items: center; flex-wrap: wrap; }
-    .brand { font-weight: 800; color: var(--primary-dark); }
-    .nav a { color: var(--primary); text-decoration: none; margin-left: 12px; font-weight: 600; }
-    .nav a:hover { text-decoration: underline; }
-    .card { background: var(--panel); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow); padding: 28px 30px; }
-    h1 { font-size: clamp(2rem, 3vw, 2.8rem); margin-top: 0; color: var(--primary-dark); }
-    h2 { font-size: 1.35rem; margin-top: 26px; color: var(--primary-dark); }
-    h3 { font-size: 1.08rem; margin-top: 20px; color: var(--primary-dark); }
-    p, li { line-height: 1.8; color: var(--text); }
-    ul, ol { padding-left: 22px; }
-    .tag { display: inline-block; background: var(--soft); border: 1px solid var(--line); color: var(--primary); padding: 7px 12px; border-radius: 999px; font-size: 0.82rem; font-weight: 700; margin-bottom: 12px; }
-    code { background: #f3f4f6; border: 1px solid #e5e7eb; padding: 2px 7px; border-radius: 6px; font-size: 0.92em; }
-    pre { background: #0f172a; color: #e2e8f0; padding: 16px 18px; border-radius: 12px; overflow-x: auto; }
-    .tip { background: #fefce8; border: 1px solid #fde68a; border-radius: 10px; padding: 10px 14px; margin: 12px 0; font-size: 0.94rem; }
-    .footer-note { margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.92rem; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Microsoft YaHei", "PingFang SC", sans-serif;
+      background: #fff;
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    /* ===== 顶部文档栏（微软风格深色 header） ===== */
+    .site-header {
+      background: var(--header-bg);
+      color: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 6px rgba(0,0,0,.18);
+    }
+    .site-header-inner {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 10px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .site-header .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+    .site-header .brand .logo {
+      width: 24px; height: 24px;
+      background: var(--ms-blue);
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+    .site-header .crumb { color: #c7c7c7; font-size: .88rem; }
+    .site-header .crumb a { color: #fff; text-decoration: none; }
+    .site-header .crumb a:hover { text-decoration: underline; }
+    .site-header .head-nav a {
+      color: #dcdcdc;
+      text-decoration: none;
+      font-size: .9rem;
+      margin-left: 18px;
+      padding: 4px 0;
+      border-bottom: 2px solid transparent;
+    }
+    .site-header .head-nav a:hover,
+    .site-header .head-nav a.active {
+      color: #fff;
+      border-bottom-color: var(--ms-blue-hover);
+    }
+
+    /* ===== 整体两栏布局 ===== */
+    .layout {
+      display: flex;
+      max-width: 1440px;
+      margin: 0 auto;
+      align-items: flex-start;
+    }
+
+    /* ===== 左侧：目录向导 ===== */
+    .toc {
+      width: var(--toc-width);
+      flex: 0 0 var(--toc-width);
+      background: var(--sidebar-bg);
+      border-right: 1px solid var(--line);
+      padding: 24px 20px 48px;
+      position: sticky;
+      top: 58px;
+      height: calc(100vh - 58px);
+      overflow-y: auto;
+    }
+    .toc-title {
+      font-size: .82rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      margin: 0 0 10px 8px;
+    }
+    .toc-group { margin-bottom: 14px; }
+    .toc-group > .toc-group-label {
+      font-size: .8rem;
+      font-weight: 700;
+      color: #8a8a8a;
+      margin: 10px 8px 4px;
+    }
+    .toc ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .toc a {
+      display: block;
+      padding: 6px 10px;
+      color: var(--text);
+      text-decoration: none;
+      font-size: .9rem;
+      border-left: 2px solid transparent;
+      border-radius: 0 6px 6px 0;
+      transition: background .12s, color .12s;
+    }
+    .toc a:hover { background: #ececec; }
+    .toc a.active {
+      color: var(--ms-blue);
+      border-left-color: var(--ms-blue);
+      background: #e8f1fa;
+      font-weight: 600;
+    }
+    .toc .toc-sub a { padding-left: 26px; font-size: .86rem; color: var(--text-secondary); }
+
+    /* ===== 右侧：主内容 ===== */
+    .content {
+      flex: 1 1 auto;
+      min-width: 0;
+      padding: 36px 48px 80px;
+    }
+    .content-inner { max-width: var(--content-max); }
+
+    /* 文档标题与元信息 */
+    .doc-head { margin-bottom: 28px; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
+    .doc-head h1 {
+      font-size: 2.2rem;
+      margin: 0 0 8px;
+      font-weight: 600;
+      color: #242424;
+      letter-spacing: -.01em;
+    }
+    .doc-head .meta {
+      color: var(--muted);
+      font-size: .9rem;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .doc-head .meta .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* 章节排版 */
+    section.doc-section { margin-bottom: 44px; }
+    section.doc-section h2 {
+      font-size: 1.55rem;
+      font-weight: 600;
+      color: #242424;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--line);
+      margin: 0 0 18px;
+      scroll-margin-top: 80px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    section.doc-section h2 .step-no {
+      background: var(--ms-blue);
+      color: #fff;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .9rem;
+      flex: 0 0 auto;
+    }
+    section.doc-section h3 {
+      font-size: 1.12rem;
+      font-weight: 600;
+      margin: 22px 0 8px;
+      color: #242424;
+    }
+    p, li { color: var(--text-secondary); }
+    ul, ol { padding-left: 24px; }
+    li { margin: 4px 0; }
+    strong { color: var(--text); }
+
+    /* 代码与提示 */
+    code {
+      font-family: Consolas, "Courier New", monospace;
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: .9em;
+      color: #242424;
+    }
+    pre {
+      background: #1e1e1e;
+      color: #d4d4d4;
+      padding: 14px 18px;
+      border-radius: 6px;
+      overflow-x: auto;
+      line-height: 1.6;
+      font-size: .92rem;
+    }
+    pre code { background: transparent; border: none; padding: 0; color: inherit; }
+    .note {
+      border-left: 3px solid var(--ms-blue);
+      background: #f2f8fd;
+      padding: 12px 16px;
+      border-radius: 0 6px 6px 0;
+      margin: 14px 0;
+      font-size: .95rem;
+    }
+    .note.warn { border-left-color: #d83b01; background: #fdf3ee; }
+    .note.tip  { border-left-color: #107c10; background: #eef7ee; }
+    .note.info { border-left-color: var(--ms-blue); background: #f2f8fd; }
+
+    /* 表格 */
+    table { border-collapse: collapse; width: 100%; margin: 14px 0; font-size: .92rem; }
+    th, td { border: 1px solid var(--line); padding: 9px 12px; text-align: left; vertical-align: top; }
+    th { background: var(--sidebar-bg); font-weight: 600; color: #242424; }
+    tr:nth-child(even) td { background: #fafafa; }
+
+    /* 操作步骤卡片 */
+    .steps { counter-reset: step; margin: 14px 0; padding: 0; list-style: none; }
+    .steps > li {
+      position: relative;
+      padding: 4px 0 14px 40px;
+      border-left: 2px solid var(--line);
+      margin-left: 14px;
+      color: var(--text-secondary);
+    }
+    .steps > li:last-child { border-left-color: transparent; }
+    .steps > li::before {
+      counter-increment: step;
+      content: counter(step);
+      position: absolute;
+      left: -16px; top: 2px;
+      width: 30px; height: 30px;
+      background: #fff;
+      border: 2px solid var(--ms-blue);
+      color: var(--ms-blue);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: .85rem;
+    }
+
+    /* 文档底部 */
+    .doc-footer {
+      margin-top: 40px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: .88rem;
+    }
+    .doc-footer a { color: var(--ms-blue); text-decoration: none; }
+    .doc-footer a:hover { text-decoration: underline; }
+
+    /* 反馈条 */
+    .feedback {
+      margin-top: 20px;
+      padding: 14px 18px;
+      background: var(--sidebar-bg);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      font-size: .9rem;
+      color: var(--text-secondary);
+    }
+    .feedback .fb-btns button {
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 4px;
+      padding: 4px 12px;
+      margin-left: 6px;
+      cursor: pointer;
+      color: var(--text);
+      font-size: .85rem;
+    }
+    .feedback .fb-btns button:hover { border-color: var(--ms-blue); color: var(--ms-blue); }
+
+    /* ===== 响应式 ===== */
+    @media (max-width: 900px) {
+      .layout { flex-direction: column; }
+      .toc {
+        width: 100%;
+        flex: none;
+        position: static;
+        height: auto;
+        max-height: 320px;
+        border-right: none;
+        border-bottom: 1px solid var(--line);
+      }
+      .content { padding: 24px 20px 60px; }
+      .site-header-inner { padding: 10px 16px; }
+    }
   </style>
 </head>
 <body>
-  <div class="topbar">
-    <div class="topbar-inner">
-      <div class="brand">糖果消消乐 · 使用手册</div>
-      <div class="nav">
-        <a href="index.html">首页</a>
+
+  <!-- ===== 顶部深色文档栏 ===== -->
+  <header class="site-header">
+    <div class="site-header-inner">
+      <div class="brand">
+        <span class="logo">🍬</span>
+        <span>糖果消消乐</span>
+        <span class="crumb">/<a href="index.html">文档中心</a>/使用手册</span>
+      </div>
+      <nav class="head-nav">
+        <a href="../index.html">游戏页面</a>
         <a href="design.html">设计说明</a>
         <a href="test-plan.html">测试计划</a>
-        <a href="user-guide.html">使用手册</a>
-      </div>
+        <a href="user-guide.html" class="active">使用手册</a>
+      </nav>
     </div>
-  </div>
+  </header>
 
-  <div class="container">
-    <div class="card">
-      <div class="tag">项目使用手册 · v5 规则引擎</div>
-      <h1>糖果消消乐项目使用手册</h1>
+  <div class="layout">
+    <!-- ===== 左侧：目录向导 ===== -->
+    <aside class="toc" id="toc">
+      <p class="toc-title">📚 目录</p>
 
-      <h2>1. 文档目的</h2>
-      <p>本文档面向玩家与项目使用者，说明如何快速启动游戏、切换玩法模式、设置通关目标、使用棋盘编辑器，以及如何理解棋子状态与特殊规则。读完本文档即可完整使用 v5 的全部功能。</p>
+      <div class="toc-group">
+        <p class="toc-group-label">快速开始</p>
+        <ul>
+          <li><a href="#overview">1. 项目简介</a></li>
+          <li><a href="#run">2. 运行方式</a></li>
+          <li><a href="#ui">3. 界面总览</a></li>
+        </ul>
+      </div>
 
-      <h2>2. 项目简介</h2>
-      <p>本项目是基于浏览器运行的糖果消消乐小游戏，内置"管理员模式"与"游戏模式"：既可以作为玩家直接游玩，也可以作为关卡设计器自由配置规则并设计棋盘。</p>
-      <ul>
-        <li>两种模式一键切换（管理员 / 游戏）</li>
-        <li>预设模板：经典、限时挑战、挑战关卡、围墙模式</li>
-        <li>可配置消除规则：直线 / 田字 / 斜线、连消数量</li>
-        <li>可配置通关目标：最低分、消除指定棋子、步数、倒计时</li>
-        <li>特殊元素：炸弹、锁定、冰冻、冰层、四边围墙</li>
-        <li>关卡保存与加载、浏览器本地持久化</li>
-      </ul>
+      <div class="toc-group">
+        <p class="toc-group-label">游玩指南</p>
+        <ul>
+          <li><a href="#mode">4. 模式切换</a></li>
+          <li><a href="#play">5. 游戏操作</a></li>
+          <li><a href="#explode">6. 爆炸效果</a></li>
+          <li><a href="#hud">7. 顶部状态栏</a></li>
+        </ul>
+      </div>
 
-      <h2>3. 运行方式</h2>
-      <h3>直接运行</h3>
-      <ol>
-        <li>打开项目目录：C:\doc\work\dsagent2</li>
-        <li>用浏览器直接打开 index.html</li>
-      </ol>
-      <h3>文档入口</h3>
-      <p>如需浏览项目文档，可打开 <code>docs/index.html</code>，它汇总了设计说明、测试计划与本文档的导航。</p>
-      <div class="tip">💡 在游戏页面底部点击「📘 文档」按钮，也会跳转到 docs/index.html。</div>
+      <div class="toc-group">
+        <p class="toc-group-label">配置与设计</p>
+        <ul>
+          <li><a href="#goal">8. 通关目标设置</a></li>
+          <li><a href="#settings">9. 管理设置面板</a></li>
+          <li><a href="#editor">10. 棋子属性编辑器</a></li>
+          <li><a href="#level">11. 关卡系统</a></li>
+        </ul>
+      </div>
 
-      <h2>4. 模式切换</h2>
-      <p>页面左侧顶部提供两个模式按钮：</p>
-      <ul>
-        <li><strong>管理员模式（默认）</strong>：可配置通关条件、保存规则/关卡、点选格子并编辑属性。</li>
-        <li><strong>游戏模式</strong>：隐藏编辑类面板，进入正式游玩，开始计分、计时与目标结算。</li>
-      </ul>
-      <p>左下角"切换到游戏模式"按钮与"应用管理员配置"按钮也提供同样的入口。修改规则后请先点「保存规则」或「应用管理员配置」再进入游戏模式。</p>
+      <div class="toc-group">
+        <p class="toc-group-label">元素与规则</p>
+        <ul>
+          <li><a href="#special">12. 特殊元素说明</a></li>
+          <li><a href="#board-format">13. 初始棋盘写法</a></li>
+        </ul>
+      </div>
 
-      <h2>5. 游戏操作</h2>
-      <h3>交换棋子</h3>
-      <ul>
-        <li><strong>点击交换</strong>：先点击一个棋子选中（高亮），再点击其上下左右的相邻棋子完成交换。</li>
-        <li><strong>拖拽交换</strong>：直接按住棋子向相邻方向拖拽超过一定距离后松手即可交换（可在管理设置中关闭）。</li>
-        <li>再次点击已选中的棋子可取消选择；点击不相邻的棋子会改选后者。</li>
-        <li>锁定/冰冻状态的棋子无法参与交换。</li>
-      </ul>
+      <div class="toc-group">
+        <p class="toc-group-label">维护与支持</p>
+        <ul>
+          <li><a href="#save">14. 保存与恢复</a></li>
+          <li><a href="#faq">15. 常见问题</a></li>
+        </ul>
+      </div>
+    </aside>
 
-      <h3>消除与计分</h3>
-      <ul>
-        <li>横/纵方向连续 3 颗及以上同种棋子即可消除（连消数量可配置 3-6）；</li>
-        <li>开启田字规则时，2×2 同色方块也构成消除；开启斜线规则时，对角线连续同色亦消除；</li>
-        <li>消除后上方棋子下落补齐；若再次形成匹配则自动连锁，连击数递增、分数翻倍。</li>
-      </ul>
+    <!-- ===== 右侧：主内容 ===== -->
+    <main class="content">
+      <div class="content-inner">
 
-      <h3>爆炸效果</h3>
-      <p>单次消除数量达到阈值时触发爆炸：默认 4 连十字爆炸、5 连全屏爆炸、6 连范围爆炸（半径 2）。爆炸会清除波及范围内可消除的棋子，也会对围墙造成伤害。</p>
+        <div class="doc-head">
+          <h1>🍬 糖果消消乐使用手册（v5）</h1>
+          <div class="meta">
+            <span class="pill">📄 文档版本：v5 规则引擎</span>
+            <span class="pill">🧩 技术栈：HTML / CSS / JS</span>
+            <span class="pill">🖥️ 浏览器直接运行</span>
+          </div>
+        </div>
 
-      <h3>游戏按钮</h3>
-      <ul>
-        <li><strong>🔄 重新开始</strong>：按当前规则重置棋盘重新开局。</li>
-        <li><strong>💡 提示</strong>：高亮显示一步可形成消除的交换位置；若盘面已无可行步会自动重新洗牌。</li>
-        <li><strong>⚙️ 管理设置</strong>：打开设置面板，配置模板、棋盘、棋子、规则等。</li>
-        <li><strong>📘 文档</strong>：跳转到项目文档入口。</li>
-      </ul>
+        <!-- 1. 项目简介 -->
+        <section class="doc-section" id="overview">
+          <h2><span class="step-no">1</span>项目简介</h2>
+          <p>本项目是基于浏览器运行的糖果消消乐小游戏，内置<strong>管理员模式</strong>与<strong>游戏模式</strong>：既可以作为玩家直接游玩，也可以作为关卡设计器自由配置规则并设计棋盘。</p>
+          <h3>功能亮点</h3>
+          <ul>
+            <li>两种模式一键切换（管理员 / 游戏）</li>
+            <li>预设模板：经典、限时挑战、挑战关卡、围墙模式</li>
+            <li>可配置消除规则：直线 / 田字 / 斜线、连消数量</li>
+            <li>可配置通关目标：最低分、消除指定棋子、步数、倒计时</li>
+            <li>特殊元素：炸弹、锁定、冰冻、冰层、四边围墙</li>
+            <li>关卡保存与加载、浏览器本地持久化</li>
+          </ul>
+        </section>
 
-      <h2>6. 顶部状态栏说明</h2>
-      <ul>
-        <li>🏆 分数：当前得分</li>
-        <li>👣 剩余步数：剩余可走步数（≤5 时变红预警）</li>
-        <li>💥 连击：当前连锁次数</li>
-        <li>🎯 目标：通关目标与进度，例如 "50000 · A×10[3/10]" 表示需达成 50000 分且消除 A 类棋子 3/10；未启用目标显示 "—"</li>
-        <li>⏱️ 时间：剩余秒数（启用时间限制时显示，否则显示 ∞；≤10 秒预警）</li>
-      </ul>
+        <!-- 2. 运行方式 -->
+        <section class="doc-section" id="run">
+          <h2><span class="step-no">2</span>运行方式</h2>
+          <h3>直接运行</h3>
+          <ol class="steps">
+            <li>打开项目目录：<code>C:\doc\work\dsagent2</code></li>
+            <li>找到根目录下的 <code>index.html</code></li>
+            <li>使用浏览器直接打开该文件即可开始游戏</li>
+          </ol>
+          <div class="note info">💡 如需浏览项目文档，可打开 <code>docs/index.html</code>，它汇总了设计说明、测试计划与本文档的导航。在游戏页面底部点击「📘 文档」按钮也会跳转到该入口。</div>
+        </section>
 
-      <h2>7. 通关目标设置（左侧面板）</h2>
-      <p>在管理员模式下可配置以下通关条件，保存后进入游戏模式即生效：</p>
-      <ul>
-        <li><strong>启用最低分通关条件</strong> + 通关最低分数：达到分数即过关；</li>
-        <li><strong>启用"消除指定类型棋子"通关条件</strong> + 指定棋子类型 + 最低消除数量：消除够指定数量即过关；</li>
-        <li><strong>开启时间限定模式</strong> + 指定时长（秒）；</li>
-        <li><strong>总步数</strong>：限定总步数。</li>
-      </ul>
-      <p>结算规则：在步数用尽或倒计时归零前，达成任一已启用的通关目标即判胜；若步数/时间耗尽仍未达成，则判负。未启用任何分数/消除目标时，以步数或时间耗尽作为结束条件。</p>
+        <!-- 3. 界面总览 -->
+        <section class="doc-section" id="ui">
+          <h2><span class="step-no">3</span>界面总览</h2>
+          <p>游戏主界面分为三块区域：</p>
+          <table>
+            <tr><th style="width:140px;">区域</th><th>位置</th><th>作用</th></tr>
+            <tr><td><strong>左侧面板</strong></td><td>页面左侧</td><td>模式切换、通关条件设置、已保存关卡列表、应用配置入口</td></tr>
+            <tr><td><strong>中央棋盘区</strong></td><td>页面中间</td><td>顶部为状态栏，中部为棋盘，底部为操作按钮与消息提示</td></tr>
+            <tr><td><strong>右侧编辑器</strong></td><td>页面右侧</td><td>棋子属性编辑器（仅管理员模式可用）</td></tr>
+          </table>
+        </section>
 
-      <h2>8. 关卡系统</h2>
-      <h3>保存为关卡</h3>
-      <p>填写"关卡名称"后点击「保存为关卡」，当前规则与整盘棋子状态（含空位、状态、围墙、冰层）都会存入浏览器本地关卡库（上限 20 个，同名覆盖）。</p>
-      <h3>加载关卡</h3>
-      <p>在左侧"已保存关卡"列表中点击对应关卡的「加载」按钮，即可完整恢复该关卡的规则与棋盘布局。</p>
+        <!-- 4. 模式切换 -->
+        <section class="doc-section" id="mode">
+          <h2><span class="step-no">4</span>模式切换</h2>
+          <p>页面左侧顶部提供两个模式按钮：</p>
+          <table>
+            <tr><th style="width:140px;">模式</th><th>说明</th></tr>
+            <tr><td><strong>管理员模式</strong>（默认）</td><td>可配置通关条件、保存规则/关卡、点选格子并编辑属性</td></tr>
+            <tr><td><strong>游戏模式</strong></td><td>隐藏编辑类面板，进入正式游玩，开始计分、计时与目标结算</td></tr>
+          </table>
+          <h3>切换方法</h3>
+          <ul>
+            <li>点击左侧顶部的「管理员模式」/「游戏模式」按钮；</li>
+            <li>或使用左下角「切换到游戏模式」按钮与「应用管理员配置」按钮。</li>
+          </ul>
+          <div class="note warn">⚠️ 修改规则后请先点击「保存规则」或「应用管理员配置」，再切换到游戏模式，否则修改可能不会生效。</div>
+        </section>
 
-      <h2>9. 管理设置面板（⚙️ 管理设置）</h2>
-      <p>点击游戏区下方「管理设置」按钮弹出设置面板：</p>
-      <ul>
-        <li><strong>模板</strong>：经典 / 限时挑战 / 挑战关卡 / 围墙模式，选择后点"套用模板"。</li>
-        <li><strong>棋盘</strong>：行数 / 列数（2-20）/ 格子尺寸。</li>
-        <li><strong>棋子配置</strong>：文本格式定义棋子种类，格式：<code>名称:颜色|pattern=图案|pieceColor=主体色|wallTop=true|wallTopHp=2</code>，多个棋子用逗号分隔。</li>
-        <li><strong>消除规则</strong>：最少连消数量、总步数、田字形、斜线消除、拖拽交换开关。</li>
-        <li><strong>时间限制</strong>：是否启用及总时长。</li>
-        <li><strong>初始棋盘</strong>：自定义布局文本，每行用逗号分隔、行间用回车/分号分隔。</li>
-        <li><strong>爆炸规则</strong>：分别设置消除 4/5/6 个触发的爆炸类型：cross（十字）、screen（全屏）、blast:N（半径 N）。</li>
-        <li><strong>计分</strong>：每颗基础分、连击加倍开关。</li>
-      </ul>
-      <p>点击「保存并应用」立即生效并重开棋盘；「恢复默认」重置所有设置；按 Esc 或点击遮罩可关闭。</p>
+        <!-- 5. 游戏操作 -->
+        <section class="doc-section" id="play">
+          <h2><span class="step-no">5</span>游戏操作</h2>
 
-      <h3>初始棋盘写法示例</h3>
-      <pre><code>apple,grape|frozen,orange
+          <h3>5.1 交换棋子</h3>
+          <ul>
+            <li><strong>点击交换</strong>：先点击一个棋子选中（高亮），再点击其上下左右的相邻棋子完成交换。</li>
+            <li><strong>拖拽交换</strong>：直接按住棋子向相邻方向拖拽超过一定距离后松手即可交换（可在管理设置中关闭）。</li>
+            <li>再次点击已选中的棋子可取消选择；点击不相邻的棋子会改选后者。</li>
+            <li>锁定 / 冰冻状态的棋子无法参与交换。</li>
+          </ul>
+
+          <h3>5.2 消除与计分</h3>
+          <ul>
+            <li>横 / 纵方向连续 3 颗及以上同种棋子即可消除（连消数量可配置 3-6）；</li>
+            <li>开启田字规则时，2×2 同色方块也构成消除；开启斜线规则时，对角线连续同色亦消除；</li>
+            <li>消除后上方棋子下落补齐；若再次形成匹配则自动连锁，连击数递增、分数翻倍。</li>
+          </ul>
+
+          <h3>5.3 游戏按钮</h3>
+          <table>
+            <tr><th style="width:140px;">按钮</th><th>功能</th></tr>
+            <tr><td>🔄 重新开始</td><td>按当前规则重置棋盘重新开局</td></tr>
+            <tr><td>💡 提示</td><td>高亮显示一步可形成消除的交换位置；若盘面无可行步会自动洗牌</td></tr>
+            <tr><td>⚙️ 管理设置</td><td>打开设置面板，配置模板、棋盘、棋子、规则等</td></tr>
+            <tr><td>📘 文档</td><td>跳转到项目文档入口</td></tr>
+          </table>
+        </section>
+
+        <!-- 6. 爆炸效果 -->
+        <section class="doc-section" id="explode">
+          <h2><span class="step-no">6</span>爆炸效果</h2>
+          <p>单次消除数量达到阈值时触发爆炸，默认映射如下：</p>
+          <table>
+            <tr><th>一次消除数量</th><th>触发爆炸</th><th>效果</th></tr>
+            <tr><td>4 连</td><td><code>cross</code> 十字爆炸</td><td>以命中区域中心为原点，向上下左右延伸清除</td></tr>
+            <tr><td>5 连</td><td><code>screen</code> 全屏爆炸</td><td>清除整个棋盘可消除棋子</td></tr>
+            <tr><td>6 连</td><td><code>blast:2</code> 范围爆炸</td><td>清除以命中中心为圆心半径 2 的区域</td></tr>
+          </table>
+          <div class="note tip">💡 爆炸会清除波及范围内可消除的棋子，也会对围墙造成伤害。三种阈值与爆炸类型均可通过「管理设置 → 爆炸规则」自定义。</div>
+        </section>
+
+        <!-- 7. 顶部状态栏 -->
+        <section class="doc-section" id="hud">
+          <h2><span class="step-no">7</span>顶部状态栏说明</h2>
+          <table>
+            <tr><th style="width:130px;">字段</th><th>说明</th></tr>
+            <tr><td>🏆 分数</td><td>当前得分</td></tr>
+            <tr><td>👣 剩余步数</td><td>剩余可走步数（≤5 时变红预警）</td></tr>
+            <tr><td>💥 连击</td><td>当前连锁次数</td></tr>
+            <tr><td>🎯 目标</td><td>通关目标与进度，例如 <code>50000 · A×10[3/10]</code> 表示需达成 50000 分且消除 A 类棋子 3/10；未启用目标时显示 "—"</td></tr>
+            <tr><td>⏱️ 时间</td><td>剩余秒数（启用时间限制时显示，否则显示 ∞；≤10 秒预警）</td></tr>
+          </table>
+        </section>
+
+        <!-- 8. 通关目标设置 -->
+        <section class="doc-section" id="goal">
+          <h2><span class="step-no">8</span>通关目标设置（左侧面板）</h2>
+          <p>在管理员模式下可配置以下通关条件，保存后进入游戏模式即生效：</p>
+          <ul>
+            <li><strong>启用最低分通关条件</strong> + 通关最低分数：达到分数即过关；</li>
+            <li><strong>启用"消除指定类型棋子"通关条件</strong> + 指定棋子类型 + 最低消除数量：消除够指定数量即过关；</li>
+            <li><strong>开启时间限定模式</strong> + 指定时长（秒）；</li>
+            <li><strong>总步数</strong>：限定总步数。</li>
+          </ul>
+          <h3>结算规则</h3>
+          <p>在步数用尽或倒计时归零前，达成<strong>任一</strong>已启用的通关目标即判胜；若步数 / 时间耗尽仍未达成，则判负。未启用任何分数 / 消除目标时，以步数或时间耗尽作为结束条件。</p>
+        </section>
+
+        <!-- 9. 管理设置面板 -->
+        <section class="doc-section" id="settings">
+          <h2><span class="step-no">9</span>管理设置面板（⚙️ 管理设置）</h2>
+          <p>点击游戏区下方的「管理设置」按钮弹出设置面板，可配置：</p>
+          <table>
+            <tr><th style="width:110px;">配置项</th><th>说明</th></tr>
+            <tr><td>模板</td><td>经典 / 限时挑战 / 挑战关卡 / 围墙模式，选择后点「套用模板」</td></tr>
+            <tr><td>棋盘</td><td>行数 / 列数（2-20）/ 格子尺寸</td></tr>
+            <tr><td>棋子配置</td><td>文本格式定义棋子种类（详见下方格式）</td></tr>
+            <tr><td>消除规则</td><td>最少连消数量、总步数、田字形、斜线消除、拖拽交换开关</td></tr>
+            <tr><td>时间限制</td><td>是否启用及总时长</td></tr>
+            <tr><td>初始棋盘</td><td>自定义布局文本，每行用逗号分隔、行间用回车/分号分隔</td></tr>
+            <tr><td>爆炸规则</td><td>分别设置消除 4/5/6 个触发的爆炸类型</td></tr>
+            <tr><td>计分</td><td>每颗基础分、连击加倍开关</td></tr>
+          </table>
+          <h3>棋子配置格式</h3>
+          <pre><code>名称:颜色|pattern=图案|pieceColor=主体色|wallTop=true|wallTopHp=2</code></pre>
+          <p>多个棋子用逗号分隔。支持配置底色、图案层、主体颜色、围墙方向与每边耐久度。</p>
+          <div class="note warn">⚠️ 修改完成后点击「保存并应用」立即生效并重开棋盘；「恢复默认」重置所有设置；按 <code>Esc</code> 或点击遮罩可关闭面板。</div>
+        </section>
+
+        <!-- 10. 棋子属性编辑器 -->
+        <section class="doc-section" id="editor">
+          <h2><span class="step-no">10</span>棋子属性编辑器（右侧面板）</h2>
+          <p>仅管理员模式可用。点击棋盘任意格子后，可在右侧编辑器修改该格子：</p>
+          <ul>
+            <li><strong>棋子类型</strong>：切换为某种糖果，或选「无棋子」清空；</li>
+            <li><strong>背景图案 / 背景颜色 / 图案颜色</strong>：调整格子的视觉样式；</li>
+            <li><strong>是否可移动</strong>：取消勾选 = 给棋子加锁定状态（🔒）；</li>
+            <li><strong>冰层（0-6）</strong>：为格子添加冰层视觉与数值；</li>
+            <li><strong>四边围墙</strong>：分别设置左 / 上 / 右 / 下的围墙强度（无 / 低 / 中 / 高，对应 0/1/2/3 HP）。</li>
+          </ul>
+          <h3>操作步骤</h3>
+          <ol class="steps">
+            <li>切换到<strong>管理员模式</strong>；</li>
+            <li>点击棋盘上想要修改的格子，右侧面板会显示该格当前属性；</li>
+            <li>按需调整类型、图案、颜色、冰层、围墙等属性；</li>
+            <li>点击「应用到当前格子」生效，或点「清空当前格子」置空该格。</li>
+          </ol>
+          <div class="note tip">💡 该编辑器可作为关卡设计器使用，逐格构建自定义盘面后再「保存为关卡」。</div>
+        </section>
+
+        <!-- 11. 关卡系统 -->
+        <section class="doc-section" id="level">
+          <h2><span class="step-no">11</span>关卡系统</h2>
+          <h3>保存为关卡</h3>
+          <ol class="steps">
+            <li>在左侧面板填写「关卡名称」；</li>
+            <li>点击「保存为关卡」按钮；</li>
+            <li>当前规则与整盘棋子状态（含空位、状态、围墙、冰层）会存入浏览器本地关卡库（上限 20 个，同名覆盖）。</li>
+          </ol>
+          <h3>加载关卡</h3>
+          <ol class="steps">
+            <li>在左侧「已保存关卡」列表中浏览已保存关卡；</li>
+            <li>点击对应关卡的「加载」按钮；</li>
+            <li>该关卡的规则与棋盘布局即被完整恢复。</li>
+          </ol>
+        </section>
+
+        <!-- 12. 特殊元素说明 -->
+        <section class="doc-section" id="special">
+          <h2><span class="step-no">12</span>特殊元素说明</h2>
+          <table>
+            <tr><th style="width:160px;">元素</th><th>说明</th></tr>
+            <tr><td>🔒 锁定 locked</td><td>不能交换、不能被消除，用于制造障碍</td></tr>
+            <tr><td>❄️ 冰冻 frozen</td><td>不能交换（可被正常消除路径处理）</td></tr>
+            <tr><td>💣 炸弹 bomb</td><td>参与消除时波及自身周围 3×3</td></tr>
+            <tr><td>🧊 冰层 ice（0-6 级）</td><td>视觉与数值层，等级越高透明度越低并显示数字</td></tr>
+            <tr><td>🧱 围墙 wall</td><td>按方向独立存在（top/right/bottom/left），各有耐久 HP；被相邻消除/爆炸击中会掉耐久，HP 归零后消失。视觉上低=点线、中=虚线、高=实线</td></tr>
+          </table>
+        </section>
+
+        <!-- 13. 初始棋盘写法 -->
+        <section class="doc-section" id="board-format">
+          <h2><span class="step-no">13</span>初始棋盘写法</h2>
+          <p>在「管理设置 → 初始棋盘」中可输入自定义布局，示例：</p>
+          <pre><code>apple,grape|frozen,orange
 orange,empty,apple|bomb
 grape,orange,apple|locked</code></pre>
-      <ul>
-        <li><code>empty</code>（或 <code>-</code>/<code>_</code>/<code>.</code>）表示空格；</li>
-        <li><code>apple|frozen</code> 表示苹果并带冻结状态；</li>
-        <li><code>grape|bomb</code> 表示葡萄并带炸弹状态；</li>
-        <li><code>apple|locked</code> 表示苹果并带锁定状态。</li>
-      </ul>
+          <table>
+            <tr><th style="width:220px;">写法</th><th>含义</th></tr>
+            <tr><td><code>empty</code> / <code>-</code> / <code>_</code> / <code>.</code></td><td>空格（无棋子）</td></tr>
+            <tr><td><code>apple|frozen</code></td><td>苹果并带冻结状态</td></tr>
+            <tr><td><code>grape|bomb</code></td><td>葡萄并带炸弹状态</td></tr>
+            <tr><td><code>apple|locked</code></td><td>苹果并带锁定状态</td></tr>
+          </table>
+        </section>
 
-      <h2>10. 棋子属性编辑器（右侧面板）</h2>
-      <p>仅管理员模式可用。点击棋盘任意格子后，可在右侧编辑器修改该格子：</p>
-      <ul>
-        <li><strong>棋子类型</strong>：切换为某种糖果，或选"无棋子"清空；</li>
-        <li><strong>背景图案 / 背景颜色 / 图案颜色</strong>：调整格子的视觉样式；</li>
-        <li><strong>是否可移动</strong>：取消勾选 = 给棋子加锁定状态（🔒）；</li>
-        <li><strong>冰层（0-6）</strong>：为格子添加冰层视觉与数值；</li>
-        <li><strong>四边围墙</strong>：分别设置左/上/右/下的围墙强度（无 / 低 / 中 / 高，对应 0/1/2/3 HP）。</li>
-      </ul>
-      <p>修改后点「应用到当前格子」生效，点「清空当前格子」置空该格。可作为关卡设计器使用。</p>
+        <!-- 14. 保存与恢复 -->
+        <section class="doc-section" id="save">
+          <h2><span class="step-no">14</span>保存与恢复</h2>
+          <ul>
+            <li><strong>自动保存</strong>：应用 / 保存配置后自动写入浏览器本地存储（<code>candy_crush_config_v5</code>），刷新或重开页面自动恢复。</li>
+            <li><strong>恢复默认</strong>：在管理设置中点击「恢复默认」，或手动清空本地存储后刷新。</li>
+            <li><strong>关卡库</strong>：独立存储于 <code>candy_crush_levels_v5</code>（上限 20 个）。</li>
+          </ul>
+        </section>
 
-      <h2>11. 特殊元素说明</h2>
-      <ul>
-        <li><strong>🔒 锁定 locked</strong>：不能交换、不能被消除，用于制造障碍。</li>
-        <li><strong>❄️ 冰冻 frozen</strong>：不能交换（可被正常消除路径处理）。</li>
-        <li><strong>💣 炸弹 bomb</strong>：参与消除时波及自身周围 3×3。</li>
-        <li><strong>🧊 冰层 ice（0-6 级）</strong>：视觉与数值层，等级越高透明度越低并显示数字。</li>
-        <li><strong>围墙 wall</strong>：按方向独立存在（top/right/bottom/left），各有耐久 HP；被相邻消除/爆炸击中会掉耐久，HP 归零后消失。视觉上低=点线、中=虚线、高=实线。</li>
-      </ul>
+        <!-- 15. 常见问题 -->
+        <section class="doc-section" id="faq">
+          <h2><span class="step-no">15</span>常见问题</h2>
 
-      <h2>12. 保存与恢复</h2>
-      <ul>
-        <li><strong>自动保存</strong>：应用/保存配置后自动写入浏览器本地存储，刷新或重开页面自动恢复。</li>
-        <li><strong>恢复默认</strong>：在管理设置中点击"恢复默认"，或手动清空本地存储后刷新。</li>
-      </ul>
+          <h3>页面没有正常显示</h3>
+          <p>确认用浏览器直接打开 <code>index.html</code>，样式与脚本同目录存在，并检查控制台是否有脚本报错；如有旧缓存可强制刷新（Ctrl+F5）。</p>
 
-      <h2>13. 常见问题</h2>
-      <h3>页面没有正常显示</h3>
-      <p>确认用浏览器直接打开 index.html、样式与脚本同目录存在，并检查控制台是否有脚本报错；如有旧缓存可强制刷新（Ctrl+F5）。</p>
+          <h3>保存后出现异常字符或乱码</h3>
+          <p>通常由配置解析异常或旧的本地缓存残留导致：清空浏览器本地存储（<code>candy_crush_config_v5</code> / <code>candy_crush_levels_v5</code>），恢复默认配置后重新应用。</p>
 
-      <h3>保存后出现异常字符或乱码</h3>
-      <p>通常由配置解析异常或旧的本地缓存残留导致：清空浏览器本地存储（localStorage 中 candy_crush_config_v5 / candy_crush_levels_v5），恢复默认配置后重新应用。</p>
+          <h3>没有可执行的消除步骤</h3>
+          <p>点击「提示」查看建议；或点「重新开始」洗牌。游戏在检测到无可行步时也会自动重排，不会卡死。</p>
 
-      <h3>没有可执行的消除步骤</h3>
-      <p>点击"提示"查看建议；或点"重新开始"洗牌；游戏在检测到无可行步时也会自动重排，不会卡死。</p>
+          <h3>棋子无法交换</h3>
+          <p>确认该棋子不是锁定 / 冰冻状态；若在管理员模式下点击棋子是选中用于编辑，请先切换到游戏模式再游玩。</p>
 
-      <h3>棋子无法交换</h3>
-      <p>确认该棋子不是锁定/冰冻状态；若在管理员模式下点击棋子是选中用于编辑，请先切换到游戏模式再游玩。</p>
+          <h3>为什么目标区显示多个要求</h3>
+          <p>同时启用了最低分与「消除指定类型棋子」两种通关条件，需按设定规则判定，可在左侧面板调整。</p>
+        </section>
 
-      <h3>为什么目标区显示多个要求</h3>
-      <p>同时启用了最低分与"消除指定类型棋子"两种通关条件，需全部达成（或按设定规则判定）才可过关，可在左侧面板调整。</p>
+        <!-- 反馈条与页脚 -->
+        <div class="feedback">
+          <span>此页面是否有帮助？</span>
+          <span class="fb-btns">
+            <button type="button" onclick="alert('感谢你的反馈！')">👍 是</button>
+            <button type="button" onclick="alert('感谢你的反馈！')">👎 否</button>
+          </span>
+        </div>
 
-      <h2>14. 总结</h2>
-      <p>本游戏既是可玩的消消乐原型，也是可配置、可扩展的关卡设计工具。玩家只需切换到游戏模式即可体验完整玩法；设计者则可在管理员模式中自由配置规则、编辑棋盘并保存为关卡。</p>
-
-      <div class="footer-note">适用场景：前端游戏原型演示、规则设计教学、关卡制作、玩法扩展实验和团队评审材料。</div>
-    </div>
+        <div class="doc-footer">
+          <span>糖果消消乐 · 使用手册 · v5 规则引擎</span>
+          <span><a href="#overview">↑ 返回顶部</a> · <a href="index.html">文档首页</a></span>
+        </div>
+      </div>
+    </main>
   </div>
+
+  <script>
+    // ===== 滚动监听：高亮当前章节对应的左侧目录项 =====
+    (function () {
+      var links = Array.prototype.slice.call(document.querySelectorAll('.toc a[href^="#"]'));
+      var sections = links.map(function (a) {
+        return document.querySelector(a.getAttribute('href'));
+      }).filter(Boolean);
+
+      function onScroll() {
+        var pos = window.scrollY + 110;
+        var currentId = null;
+        for (var i = 0; i < sections.length; i++) {
+          if (sections[i].offsetTop <= pos) {
+            currentId = sections[i].getAttribute('id');
+          } else {
+            break;
+          }
+        }
+        // 页面滚到底时选中最后一节
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 4) {
+          currentId = sections.length ? sections[sections.length - 1].getAttribute('id') : currentId;
+        }
+        links.forEach(function (a) {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + currentId);
+        });
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    })();
+  </script>
 </body>
 </html>
