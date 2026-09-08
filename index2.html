@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>消消乐游戏</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="game-container">
+        <h1>消消乐游戏</h1>
+        <div id="game-board"></div>
+        <div id="ui-panel">
+            <div id="score-display">得分: 0</div>
+            <button id="settings-btn">设置</button>
+            <button id="admin-btn">管理</button>
+        </div>
+    </div>
+
+    <!-- 设置面板 -->
+    <div id="settings-panel" class="panel hidden">
+        <h2>游戏设置</h2>
+        <button id="close-settings">关闭</button>
+    </div>
+
+    <!-- 管理员面板 -->
+    <div id="admin-panel" class="panel hidden">
+        <h2>管理员面板</h2>
+        <button id="close-admin">关闭</button>
+    </div>
+
+    <script src="js/utils/constants.js"></script>
+    <script src="js/utils/helpers.js"></script>
+    <script src="js/utils/cache.js"></script>
+    <script src="js/utils/dom.js"></script>
+    <script src="js/core/MatchRules.js"></script>
+    <script src="js/core/Piece.js"></script>
+    <script src="js/core/GameEngine.js"></script>
+    <script src="js/managers/ConfigManager.js"></script>
+    <script src="js/managers/ScoreManager.js"></script>
+    <script src="js/managers/SoundManager.js"></script>
+    <script src="js/panels/SettingsPanel.js"></script>
+    <script src="js/panels/AdminPanel.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
