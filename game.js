@@ -12,7 +12,14 @@
 const EMPTY_CELL_VALUE = 'empty';
 const BLANK_PIECE_TYPE = 'blank';
 const BLANK_PIECE_CODE = 'Z';
-const DEFAULT_TYPE_CODES = { apple: 'A', grape: 'B', orange: 'C', lemon: 'D', straw: 'E', water: 'F' };
+const DEFAULT_TYPE_CODES = {
+    apple: 'A',
+    grape: 'B',
+    orange: 'C',
+    lemon: 'D',
+    straw: 'E',
+    water: 'F',
+};
 
 const DEFAULT_PIECE_UI = {
     background: { opacity: 0.35, priority: 0 },
@@ -28,20 +35,150 @@ const DEFAULT_CONFIG = {
     cols: 10,
     cellSize: 60,
     gap: 4,
-    
+
     // 棋子配置：名称:显示字符:背景色
     // 可扩展字段：background、pattern、pieceColor、patternColor、walls
     pieceTypes: [
-        { id: 'apple', code: 'A', char: '🍎', color: '#ff6b6b', background: '#ff6b6b', pattern: 'dot', patternColor: 'rgba(255,255,255,0.28)', pieceColor: '#fff7f7', pieceUI: { type: { options: [{ value: 'A', label: 'apple' }] } }, walls: { top: { enabled: false, hp: 0, color: '#ffffff' }, right: { enabled: false, hp: 0, color: '#ffffff' }, bottom: { enabled: false, hp: 0, color: '#ffffff' }, left: { enabled: false, hp: 0, color: '#ffffff' } } },
-        { id: 'grape', code: 'B', char: '🍇', color: '#a855f7', background: '#a855f7', pattern: 'stripe', patternColor: 'rgba(255,255,255,0.22)', pieceColor: '#ffffff', pieceUI: { type: { options: [{ value: 'B', label: 'grape' }] } }, walls: { top: { enabled: false, hp: 0, color: '#ffffff' }, right: { enabled: false, hp: 0, color: '#ffffff' }, bottom: { enabled: false, hp: 0, color: '#ffffff' }, left: { enabled: false, hp: 0, color: '#ffffff' } } },
-        { id: 'orange', code: 'C', char: '🍊', color: '#fb923c', background: '#fb923c', pattern: 'check', patternColor: 'rgba(255,255,255,0.24)', pieceColor: '#fffaf1', pieceUI: { type: { options: [{ value: 'C', label: 'orange' }] } }, walls: { top: { enabled: false, hp: 0, color: '#ffffff' }, right: { enabled: false, hp: 0, color: '#ffffff' }, bottom: { enabled: false, hp: 0, color: '#ffffff' }, left: { enabled: false, hp: 0, color: '#ffffff' } } },
-        { id: 'lemon', code: 'D', char: '🍋', color: '#facc15', background: '#facc15', pattern: 'spark', patternColor: 'rgba(255,255,255,0.2)', pieceColor: '#fffef3', pieceUI: { type: { options: [{ value: 'D', label: 'lemon' }] } }, walls: { top: { enabled: false, hp: 0, color: '#ffffff' }, right: { enabled: false, hp: 0, color: '#ffffff' }, bottom: { enabled: false, hp: 0, color: '#ffffff' }, left: { enabled: false, hp: 0, color: '#ffffff' } } },
-        { id: 'straw', code: 'E', char: '🍓', color: '#ec4899', background: '#ec4899', pattern: 'dot', patternColor: 'rgba(255,255,255,0.2)', pieceColor: '#fff4f8', pieceUI: { type: { options: [{ value: 'E', label: 'straw' }] } }, walls: { top: { enabled: false, hp: 0, color: '#ffffff' }, right: { enabled: false, hp: 0, color: '#ffffff' }, bottom: { enabled: false, hp: 0, color: '#ffffff' }, left: { enabled: false, hp: 0, color: '#ffffff' } } },
-        { id: 'water', code: 'F', char: '🍉', color: '#34d399', background: '#34d399', pattern: 'waves', patternColor: 'rgba(255,255,255,0.22)', pieceColor: '#f0fff7', pieceUI: { type: { options: [{ value: 'F', label: 'water' }] } }, walls: { top: { enabled: false, hp: 0, color: '#ffffff' }, right: { enabled: false, hp: 0, color: '#ffffff' }, bottom: { enabled: false, hp: 0, color: '#ffffff' }, left: { enabled: false, hp: 0, color: '#ffffff' } } },
-        { id: BLANK_PIECE_TYPE, code: BLANK_PIECE_CODE, isPiece: true, char: '', color: 'transparent', background: 'transparent', pattern: 'transparent', patternColor: 'transparent', pieceColor: 'transparent', borderColor: 'rgba(255,255,255,0.3)', walls: { top: { enabled: false, hp: 0, color: '#ffffff' }, right: { enabled: false, hp: 0, color: '#ffffff' }, bottom: { enabled: false, hp: 0, color: '#ffffff' }, left: { enabled: false, hp: 0, color: '#ffffff' } } },
-        { id: EMPTY_CELL_VALUE, code: '-', isPiece: false, char: '', color: 'transparent', background: 'transparent', pattern: 'transparent', patternColor: 'transparent', pieceColor: 'transparent', borderColor: 'transparent', walls: { top: { enabled: false, hp: 0, color: '#ffffff' }, right: { enabled: false, hp: 0, color: '#ffffff' }, bottom: { enabled: false, hp: 0, color: '#ffffff' }, left: { enabled: false, hp: 0, color: '#ffffff' } } },
+        {
+            id: 'apple',
+            code: 'A',
+            char: '🍎',
+            color: '#ff6b6b',
+            background: '#ff6b6b',
+            pattern: 'dot',
+            patternColor: 'rgba(255,255,255,0.28)',
+            pieceColor: '#fff7f7',
+            pieceUI: { type: { options: [{ value: 'A', label: 'apple' }] } },
+            walls: {
+                top: { enabled: false, hp: 0, color: '#ffffff' },
+                right: { enabled: false, hp: 0, color: '#ffffff' },
+                bottom: { enabled: false, hp: 0, color: '#ffffff' },
+                left: { enabled: false, hp: 0, color: '#ffffff' },
+            },
+        },
+        {
+            id: 'grape',
+            code: 'B',
+            char: '🍇',
+            color: '#a855f7',
+            background: '#a855f7',
+            pattern: 'stripe',
+            patternColor: 'rgba(255,255,255,0.22)',
+            pieceColor: '#ffffff',
+            pieceUI: { type: { options: [{ value: 'B', label: 'grape' }] } },
+            walls: {
+                top: { enabled: false, hp: 0, color: '#ffffff' },
+                right: { enabled: false, hp: 0, color: '#ffffff' },
+                bottom: { enabled: false, hp: 0, color: '#ffffff' },
+                left: { enabled: false, hp: 0, color: '#ffffff' },
+            },
+        },
+        {
+            id: 'orange',
+            code: 'C',
+            char: '🍊',
+            color: '#fb923c',
+            background: '#fb923c',
+            pattern: 'check',
+            patternColor: 'rgba(255,255,255,0.24)',
+            pieceColor: '#fffaf1',
+            pieceUI: { type: { options: [{ value: 'C', label: 'orange' }] } },
+            walls: {
+                top: { enabled: false, hp: 0, color: '#ffffff' },
+                right: { enabled: false, hp: 0, color: '#ffffff' },
+                bottom: { enabled: false, hp: 0, color: '#ffffff' },
+                left: { enabled: false, hp: 0, color: '#ffffff' },
+            },
+        },
+        {
+            id: 'lemon',
+            code: 'D',
+            char: '🍋',
+            color: '#facc15',
+            background: '#facc15',
+            pattern: 'spark',
+            patternColor: 'rgba(255,255,255,0.2)',
+            pieceColor: '#fffef3',
+            pieceUI: { type: { options: [{ value: 'D', label: 'lemon' }] } },
+            walls: {
+                top: { enabled: false, hp: 0, color: '#ffffff' },
+                right: { enabled: false, hp: 0, color: '#ffffff' },
+                bottom: { enabled: false, hp: 0, color: '#ffffff' },
+                left: { enabled: false, hp: 0, color: '#ffffff' },
+            },
+        },
+        {
+            id: 'straw',
+            code: 'E',
+            char: '🍓',
+            color: '#ec4899',
+            background: '#ec4899',
+            pattern: 'dot',
+            patternColor: 'rgba(255,255,255,0.2)',
+            pieceColor: '#fff4f8',
+            pieceUI: { type: { options: [{ value: 'E', label: 'straw' }] } },
+            walls: {
+                top: { enabled: false, hp: 0, color: '#ffffff' },
+                right: { enabled: false, hp: 0, color: '#ffffff' },
+                bottom: { enabled: false, hp: 0, color: '#ffffff' },
+                left: { enabled: false, hp: 0, color: '#ffffff' },
+            },
+        },
+        {
+            id: 'water',
+            code: 'F',
+            char: '🍉',
+            color: '#34d399',
+            background: '#34d399',
+            pattern: 'waves',
+            patternColor: 'rgba(255,255,255,0.22)',
+            pieceColor: '#f0fff7',
+            pieceUI: { type: { options: [{ value: 'F', label: 'water' }] } },
+            walls: {
+                top: { enabled: false, hp: 0, color: '#ffffff' },
+                right: { enabled: false, hp: 0, color: '#ffffff' },
+                bottom: { enabled: false, hp: 0, color: '#ffffff' },
+                left: { enabled: false, hp: 0, color: '#ffffff' },
+            },
+        },
+        {
+            id: BLANK_PIECE_TYPE,
+            code: BLANK_PIECE_CODE,
+            isPiece: true,
+            char: '',
+            color: 'transparent',
+            background: 'transparent',
+            pattern: 'transparent',
+            patternColor: 'transparent',
+            pieceColor: 'transparent',
+            borderColor: 'rgba(255,255,255,0.3)',
+            walls: {
+                top: { enabled: false, hp: 0, color: '#ffffff' },
+                right: { enabled: false, hp: 0, color: '#ffffff' },
+                bottom: { enabled: false, hp: 0, color: '#ffffff' },
+                left: { enabled: false, hp: 0, color: '#ffffff' },
+            },
+        },
+        {
+            id: EMPTY_CELL_VALUE,
+            code: '-',
+            isPiece: false,
+            char: '',
+            color: 'transparent',
+            background: 'transparent',
+            pattern: 'transparent',
+            patternColor: 'transparent',
+            pieceColor: 'transparent',
+            borderColor: 'transparent',
+            walls: {
+                top: { enabled: false, hp: 0, color: '#ffffff' },
+                right: { enabled: false, hp: 0, color: '#ffffff' },
+                bottom: { enabled: false, hp: 0, color: '#ffffff' },
+                left: { enabled: false, hp: 0, color: '#ffffff' },
+            },
+        },
     ],
-    
+
     // 游戏规则
     totalMoves: 30,
     matchLength: 3,
@@ -54,12 +191,12 @@ const DEFAULT_CONFIG = {
     requiredPieceCount: 10,
     requiredPieceEnabled: false,
     initialBoard: null,
-    
+
     // 消除规则开关
-    enableSquare: true,     // 田字形
-    enableDiagonal: false,  // 斜线
-    enableDrag: true,       // 拖拽交换
-    
+    enableSquare: true, // 田字形
+    enableDiagonal: false, // 斜线
+    enableDrag: true, // 拖拽交换
+
     // 爆炸规则：消除数量 → 爆炸类型
     // 支持: 'cross'(十字), 'screen'(全屏), 'blast:半径'(范围爆炸)
     explodeRules: {
@@ -67,7 +204,7 @@ const DEFAULT_CONFIG = {
         5: 'screen',
         6: 'blast:2',
     },
-    
+
     // 计分
     baseScore: 10,
     comboMultiplier: true,
@@ -112,17 +249,30 @@ function buildTileOptions(selectEl, options, selectedValue, onSelect) {
 
 function getPieceTypeCodeById(idOrCode, pieceTypes) {
     if (!idOrCode) return null;
-    const match = (pieceTypes || []).find(type => type && (type.id === idOrCode || type.code === idOrCode || DEFAULT_TYPE_CODES[type.id] === idOrCode));
-    return match ? (match.code || match.id) : idOrCode;
+    const match = (pieceTypes || []).find(
+        (type) =>
+            type &&
+            (type.id === idOrCode ||
+                type.code === idOrCode ||
+                DEFAULT_TYPE_CODES[type.id] === idOrCode),
+    );
+    return match ? match.code || match.id : idOrCode;
 }
 
 function getPieceTypeUIOption(type) {
     const code = type.code || DEFAULT_TYPE_CODES[type.id] || type.id;
     const options = type.pieceUI?.type?.options;
-    const configured = Array.isArray(options) ? options.find(option => String(option.value) === String(code) || String(option.value) === String(type.id)) : null;
+    const configured = Array.isArray(options)
+        ? options.find(
+              (option) =>
+                  String(option.value) === String(code) || String(option.value) === String(type.id),
+          )
+        : null;
     return {
         value: code,
-        label: configured?.label || (type.id === BLANK_PIECE_TYPE ? '空白棋子' : type.label || type.id),
+        label:
+            configured?.label ||
+            (type.id === BLANK_PIECE_TYPE ? '空白棋子' : type.label || type.id),
     };
 }
 
@@ -141,7 +291,10 @@ function toCssHex(value, fallback = '#888888') {
     }
     const rgb = m.match(/rgba?\(\s*([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)/i);
     if (rgb) {
-        const to2 = (n) => Math.max(0, Math.min(255, Math.round(Number(n)))).toString(16).padStart(2, '0');
+        const to2 = (n) =>
+            Math.max(0, Math.min(255, Math.round(Number(n))))
+                .toString(16)
+                .padStart(2, '0');
         return '#' + to2(rgb[1]) + to2(rgb[2]) + to2(rgb[3]);
     }
     return fallback;
@@ -149,16 +302,26 @@ function toCssHex(value, fallback = '#888888') {
 
 function hexLuminance(hex) {
     const m = String(hex || '').replace('#', '');
-    const full = m.length === 3 ? m.split('').map(c => c + c).join('') : m;
+    const full =
+        m.length === 3
+            ? m
+                  .split('')
+                  .map((c) => c + c)
+                  .join('')
+            : m;
     const n = parseInt(full || '888888', 16);
-    const r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
+    const r = (n >> 16) & 255,
+        g = (n >> 8) & 255,
+        b = n & 255;
     return (0.299 * r + 0.587 * g + 0.114 * b) / 255;
 }
 
 // background 层的图案对比色：深底用白、浅底用黑，与“类型层”完全无关。
 function contrastPatternColor(bgValue) {
     if (isTransparentColor(bgValue)) return 'rgba(255,255,255,0.7)';
-    return hexLuminance(toCssHex(bgValue, '#888888')) > 0.55 ? 'rgba(0,0,0,0.55)' : 'rgba(255,255,255,0.7)';
+    return hexLuminance(toCssHex(bgValue, '#888888')) > 0.55
+        ? 'rgba(0,0,0,0.55)'
+        : 'rgba(255,255,255,0.7)';
 }
 
 function updateLevelList() {
@@ -184,7 +347,9 @@ function updateLevelList() {
                     window.__gameEngine?.applyConfig(safeCfg);
                     window.__gameEngine?.init();
                     window.__gameEngine?.setMode('admin');
-                    window.__gameEngine?.showMessage(`✅ 已加载关卡：${safeCfg.name || level.name || '未命名关卡'}`);
+                    window.__gameEngine?.showMessage(
+                        `✅ 已加载关卡：${safeCfg.name || level.name || '未命名关卡'}`,
+                    );
                 }
             });
             row.appendChild(loadBtn);
@@ -203,9 +368,11 @@ function readAdminRuleForm() {
     const totalMoves = Number(get('admin-total-moves', '30'));
     const requiredPieceType = get('admin-required-piece-type', 'A');
     const requiredPieceCount = Number(get('admin-required-piece-count', '10'));
-    const requiredPieceEnabled = document.getElementById('admin-required-piece-enabled')?.checked ?? false;
+    const requiredPieceEnabled =
+        document.getElementById('admin-required-piece-enabled')?.checked ?? false;
     const targetScore = Number(get('admin-target-score', '50000'));
-    const targetScoreEnabled = document.getElementById('admin-target-score-enabled')?.checked ?? true;
+    const targetScoreEnabled =
+        document.getElementById('admin-target-score-enabled')?.checked ?? true;
     const enableTimeLimit = document.getElementById('admin-enable-time-limit')?.checked ?? false;
     const timeLimitSeconds = Number(get('admin-time-limit-seconds', '90'));
     const levelName = document.getElementById('admin-level-name')?.value?.trim() || '';
@@ -218,7 +385,9 @@ function readAdminRuleForm() {
         totalMoves: Number.isFinite(totalMoves) ? Math.max(1, totalMoves) : 30,
         requiredPieceEnabled,
         requiredPieceType,
-        requiredPieceCount: Number.isFinite(requiredPieceCount) ? Math.max(0, requiredPieceCount) : 10,
+        requiredPieceCount: Number.isFinite(requiredPieceCount)
+            ? Math.max(0, requiredPieceCount)
+            : 10,
         levelName,
     };
 }
@@ -288,7 +457,7 @@ function parsePieceTypeEntry(entry, fallbackId = 'piece') {
     const options = optionParts.join('|');
     const optionMap = {};
 
-    for (const segment of (options ? options.split('|') : [])) {
+    for (const segment of options ? options.split('|') : []) {
         const idx = segment.indexOf('=');
         if (idx === -1) continue;
         const name = segment.slice(0, idx).trim();
@@ -303,7 +472,10 @@ function parsePieceTypeEntry(entry, fallbackId = 'piece') {
         const hpValue = optionMap[`wall${cap}Hp`] ?? optionMap[`wall${cap}Value`] ?? 0;
         const colorValue = optionMap[`wall${cap}Color`] || 'rgba(255,255,255,0.9)';
         walls[side] = {
-            enabled: String(rawEnabled ?? 'false').trim().toLowerCase() === 'true' || rawEnabled === true,
+            enabled:
+                String(rawEnabled ?? 'false')
+                    .trim()
+                    .toLowerCase() === 'true' || rawEnabled === true,
             hp: Number(hpValue || 0),
             maxHp: Number(hpValue || 0),
             color: colorValue,
@@ -314,25 +486,43 @@ function parsePieceTypeEntry(entry, fallbackId = 'piece') {
 
     let charOption = '';
     if (optionMap.char) {
-        try { charOption = decodeURIComponent(optionMap.char); } catch (_) { charOption = optionMap.char; }
+        try {
+            charOption = decodeURIComponent(optionMap.char);
+        } catch (_) {
+            charOption = optionMap.char;
+        }
     }
-    const safeChar = (charOption && !charOption.includes('(') && !charOption.includes(','))
-        ? charOption.trim()
-        : id;
+    const safeChar =
+        charOption && !charOption.includes('(') && !charOption.includes(',')
+            ? charOption.trim()
+            : id;
 
     let codeOption = '';
     if (optionMap.code) {
-        try { codeOption = decodeURIComponent(optionMap.code); } catch (_) { codeOption = optionMap.code; }
+        try {
+            codeOption = decodeURIComponent(optionMap.code);
+        } catch (_) {
+            codeOption = optionMap.code;
+        }
     }
 
     let typeOptions = null;
     if (optionMap.typeOptions) {
-        try { typeOptions = JSON.parse(decodeURIComponent(optionMap.typeOptions)); } catch (_) { typeOptions = null; }
+        try {
+            typeOptions = JSON.parse(decodeURIComponent(optionMap.typeOptions));
+        } catch (_) {
+            typeOptions = null;
+        }
     }
 
-    const resolvedCode = id === BLANK_PIECE_TYPE ? BLANK_PIECE_CODE
-        : id === EMPTY_CELL_VALUE ? '-'
-        : (codeOption && codeOption !== id ? codeOption : id);
+    const resolvedCode =
+        id === BLANK_PIECE_TYPE
+            ? BLANK_PIECE_CODE
+            : id === EMPTY_CELL_VALUE
+              ? '-'
+              : codeOption && codeOption !== id
+                ? codeOption
+                : id;
 
     return {
         id,
@@ -353,18 +543,34 @@ function parsePieceTypeEntry(entry, fallbackId = 'piece') {
 function normalizePieceTypes(value) {
     if (!value) return [...DEFAULT_CONFIG.pieceTypes];
     if (Array.isArray(value)) {
-        const result = value.map((entry, index) => {
-            if (entry && typeof entry === 'object' && entry.id) return entry;
-            return parsePieceTypeEntry(entry, `piece${index + 1}`);
-        }).filter(Boolean);
-        if (!result.some((entry) => entry.id === BLANK_PIECE_TYPE)) result.push({ ...DEFAULT_CONFIG.pieceTypes.find((entry) => entry.id === BLANK_PIECE_TYPE) });
-        if (!result.some((entry) => entry.id === EMPTY_CELL_VALUE)) result.push({ ...DEFAULT_CONFIG.pieceTypes.find((entry) => entry.id === EMPTY_CELL_VALUE) });
+        const result = value
+            .map((entry, index) => {
+                if (entry && typeof entry === 'object' && entry.id) return entry;
+                return parsePieceTypeEntry(entry, `piece${index + 1}`);
+            })
+            .filter(Boolean);
+        if (!result.some((entry) => entry.id === BLANK_PIECE_TYPE))
+            result.push({
+                ...DEFAULT_CONFIG.pieceTypes.find((entry) => entry.id === BLANK_PIECE_TYPE),
+            });
+        if (!result.some((entry) => entry.id === EMPTY_CELL_VALUE))
+            result.push({
+                ...DEFAULT_CONFIG.pieceTypes.find((entry) => entry.id === EMPTY_CELL_VALUE),
+            });
         return result;
     }
     if (typeof value === 'string') {
-        const result = splitPieceTypeEntries(value).map((entry, index) => parsePieceTypeEntry(entry, `piece${index + 1}`)).filter(Boolean);
-        if (!result.some((entry) => entry.id === BLANK_PIECE_TYPE)) result.push({ ...DEFAULT_CONFIG.pieceTypes.find((entry) => entry.id === BLANK_PIECE_TYPE) });
-        if (!result.some((entry) => entry.id === EMPTY_CELL_VALUE)) result.push({ ...DEFAULT_CONFIG.pieceTypes.find((entry) => entry.id === EMPTY_CELL_VALUE) });
+        const result = splitPieceTypeEntries(value)
+            .map((entry, index) => parsePieceTypeEntry(entry, `piece${index + 1}`))
+            .filter(Boolean);
+        if (!result.some((entry) => entry.id === BLANK_PIECE_TYPE))
+            result.push({
+                ...DEFAULT_CONFIG.pieceTypes.find((entry) => entry.id === BLANK_PIECE_TYPE),
+            });
+        if (!result.some((entry) => entry.id === EMPTY_CELL_VALUE))
+            result.push({
+                ...DEFAULT_CONFIG.pieceTypes.find((entry) => entry.id === EMPTY_CELL_VALUE),
+            });
         return result;
     }
     return [...DEFAULT_CONFIG.pieceTypes];
@@ -379,14 +585,16 @@ function sanitizeWallConfig(walls) {
     };
 
     const result = { ...defaultWalls };
-    const source = (walls && typeof walls === 'object') ? walls : {};
+    const source = walls && typeof walls === 'object' ? walls : {};
     for (const side of ['top', 'right', 'bottom', 'left']) {
         const raw = source[side] || {};
         const hp = Number(raw.hp ?? raw.maxHp ?? 0);
         result[side] = {
             enabled: Boolean(raw.enabled) && hp > 0,
             hp: Number.isFinite(hp) ? Math.max(0, hp) : 0,
-            maxHp: Number.isFinite(Number(raw.maxHp ?? hp)) ? Math.max(0, Number(raw.maxHp ?? hp)) : Math.max(0, hp),
+            maxHp: Number.isFinite(Number(raw.maxHp ?? hp))
+                ? Math.max(0, Number(raw.maxHp ?? hp))
+                : Math.max(0, hp),
             color: typeof raw.color === 'string' ? raw.color : '#ffffff',
         };
     }
@@ -401,22 +609,43 @@ function sanitizeConfig(raw) {
     const fallback = { ...DEFAULT_CONFIG, pieceTypes: [...DEFAULT_CONFIG.pieceTypes] };
     const safe = { ...fallback, ...raw };
 
-    safe.rows = Number.isFinite(Number(raw.rows)) ? Math.max(2, Math.min(20, Number(raw.rows))) : fallback.rows;
-    safe.cols = Number.isFinite(Number(raw.cols)) ? Math.max(2, Math.min(20, Number(raw.cols))) : fallback.cols;
-    safe.cellSize = Number.isFinite(Number(raw.cellSize)) ? Math.max(20, Math.min(100, Number(raw.cellSize))) : fallback.cellSize;
-    safe.gap = Number.isFinite(Number(raw.gap)) ? Math.max(0, Math.min(12, Number(raw.gap))) : fallback.gap;
-    safe.totalMoves = Number.isFinite(Number(raw.totalMoves)) ? Math.max(1, Number(raw.totalMoves)) : fallback.totalMoves;
-    safe.matchLength = Number.isFinite(Number(raw.matchLength)) ? Math.max(3, Math.min(6, Number(raw.matchLength))) : fallback.matchLength;
-    safe.timeLimitSeconds = Number.isFinite(Number(raw.timeLimitSeconds)) ? Math.max(10, Number(raw.timeLimitSeconds)) : fallback.timeLimitSeconds;
-    safe.baseScore = Number.isFinite(Number(raw.baseScore)) ? Math.max(1, Number(raw.baseScore)) : fallback.baseScore;
+    safe.rows = Number.isFinite(Number(raw.rows))
+        ? Math.max(2, Math.min(20, Number(raw.rows)))
+        : fallback.rows;
+    safe.cols = Number.isFinite(Number(raw.cols))
+        ? Math.max(2, Math.min(20, Number(raw.cols)))
+        : fallback.cols;
+    safe.cellSize = Number.isFinite(Number(raw.cellSize))
+        ? Math.max(20, Math.min(100, Number(raw.cellSize)))
+        : fallback.cellSize;
+    safe.gap = Number.isFinite(Number(raw.gap))
+        ? Math.max(0, Math.min(12, Number(raw.gap)))
+        : fallback.gap;
+    safe.totalMoves = Number.isFinite(Number(raw.totalMoves))
+        ? Math.max(1, Number(raw.totalMoves))
+        : fallback.totalMoves;
+    safe.matchLength = Number.isFinite(Number(raw.matchLength))
+        ? Math.max(3, Math.min(6, Number(raw.matchLength)))
+        : fallback.matchLength;
+    safe.timeLimitSeconds = Number.isFinite(Number(raw.timeLimitSeconds))
+        ? Math.max(10, Number(raw.timeLimitSeconds))
+        : fallback.timeLimitSeconds;
+    safe.baseScore = Number.isFinite(Number(raw.baseScore))
+        ? Math.max(1, Number(raw.baseScore))
+        : fallback.baseScore;
     safe.enableTimeLimit = raw.enableTimeLimit === true;
-    safe.targetScore = Number.isFinite(Number(raw.targetScore)) ? Math.max(0, Number(raw.targetScore)) : 50000;
+    safe.targetScore = Number.isFinite(Number(raw.targetScore))
+        ? Math.max(0, Number(raw.targetScore))
+        : 50000;
     safe.targetScoreEnabled = raw.targetScoreEnabled !== false;
     safe.requiredPieceEnabled = raw.requiredPieceEnabled === true;
-    safe.requiredPieceType = (typeof raw.requiredPieceType === 'string' && raw.requiredPieceType.trim())
-        ? raw.requiredPieceType.trim()
-        : 'A';
-    safe.requiredPieceCount = Number.isFinite(Number(raw.requiredPieceCount)) ? Math.max(0, Number(raw.requiredPieceCount)) : 10;
+    safe.requiredPieceType =
+        typeof raw.requiredPieceType === 'string' && raw.requiredPieceType.trim()
+            ? raw.requiredPieceType.trim()
+            : 'A';
+    safe.requiredPieceCount = Number.isFinite(Number(raw.requiredPieceCount))
+        ? Math.max(0, Number(raw.requiredPieceCount))
+        : 10;
     safe.enableSquare = Boolean(raw.enableSquare);
     safe.enableDiagonal = Boolean(raw.enableDiagonal);
     safe.enableDrag = raw.enableDrag !== false;
@@ -427,22 +656,65 @@ function sanitizeConfig(raw) {
         safe.pieceTypes = normalizedPieces.map((piece) => {
             const normalized = { ...piece };
             normalized.id = String(normalized.id || 'piece');
-            normalized.isPiece = normalized.id === EMPTY_CELL_VALUE ? false : normalized.isPiece !== false;
-            normalized.code = String((DEFAULT_TYPE_CODES[normalized.id] && (!normalized.code || normalized.code === normalized.id))
-                ? DEFAULT_TYPE_CODES[normalized.id]
-                : (normalized.code || (normalized.id === BLANK_PIECE_TYPE ? BLANK_PIECE_CODE : normalized.id)));
-            normalized.char = normalized.id === BLANK_PIECE_TYPE ? '' : (normalized.id === EMPTY_CELL_VALUE ? '' : (typeof normalized.char === 'string' && normalized.char ? normalized.char : normalized.id));
-            normalized.color = typeof normalized.color === 'string' && normalized.color ? normalized.color : '#888';
-            normalized.background = typeof normalized.background === 'string' && normalized.background ? normalized.background : normalized.color;
-            normalized.pattern = typeof normalized.pattern === 'string' ? normalized.pattern : 'dot';
-            normalized.patternColor = typeof normalized.patternColor === 'string' ? normalized.patternColor : 'rgba(255,255,255,0.22)';
-            normalized.pieceColor = typeof normalized.pieceColor === 'string' ? normalized.pieceColor : '#ffffff';
-            normalized.borderColor = typeof normalized.borderColor === 'string' ? normalized.borderColor : 'rgba(255,255,255,0.3)';
-            normalized.pieceUI = normalized.pieceUI && typeof normalized.pieceUI === 'object' ? normalized.pieceUI : {};
-            normalized.pieceUI.type = normalized.pieceUI.type && typeof normalized.pieceUI.type === 'object' ? normalized.pieceUI.type : {};
+            normalized.isPiece =
+                normalized.id === EMPTY_CELL_VALUE ? false : normalized.isPiece !== false;
+            normalized.code = String(
+                DEFAULT_TYPE_CODES[normalized.id] &&
+                    (!normalized.code || normalized.code === normalized.id)
+                    ? DEFAULT_TYPE_CODES[normalized.id]
+                    : normalized.code ||
+                          (normalized.id === BLANK_PIECE_TYPE ? BLANK_PIECE_CODE : normalized.id),
+            );
+            normalized.char =
+                normalized.id === BLANK_PIECE_TYPE
+                    ? ''
+                    : normalized.id === EMPTY_CELL_VALUE
+                      ? ''
+                      : typeof normalized.char === 'string' && normalized.char
+                        ? normalized.char
+                        : normalized.id;
+            normalized.color =
+                typeof normalized.color === 'string' && normalized.color
+                    ? normalized.color
+                    : '#888';
+            normalized.background =
+                typeof normalized.background === 'string' && normalized.background
+                    ? normalized.background
+                    : normalized.color;
+            normalized.pattern =
+                typeof normalized.pattern === 'string' ? normalized.pattern : 'dot';
+            normalized.patternColor =
+                typeof normalized.patternColor === 'string'
+                    ? normalized.patternColor
+                    : 'rgba(255,255,255,0.22)';
+            normalized.pieceColor =
+                typeof normalized.pieceColor === 'string' ? normalized.pieceColor : '#ffffff';
+            normalized.borderColor =
+                typeof normalized.borderColor === 'string'
+                    ? normalized.borderColor
+                    : 'rgba(255,255,255,0.3)';
+            normalized.pieceUI =
+                normalized.pieceUI && typeof normalized.pieceUI === 'object'
+                    ? normalized.pieceUI
+                    : {};
+            normalized.pieceUI.type =
+                normalized.pieceUI.type && typeof normalized.pieceUI.type === 'object'
+                    ? normalized.pieceUI.type
+                    : {};
             normalized.pieceUI.type.options = Array.isArray(normalized.pieceUI.type.options)
-                ? normalized.pieceUI.type.options.map(option => ({ ...option, value: option.value === normalized.id ? normalized.code : option.value }))
-                : [{ value: normalized.code, label: normalized.id === BLANK_PIECE_TYPE ? '空白棋子' : (normalized.label || normalized.id) }];
+                ? normalized.pieceUI.type.options.map((option) => ({
+                      ...option,
+                      value: option.value === normalized.id ? normalized.code : option.value,
+                  }))
+                : [
+                      {
+                          value: normalized.code,
+                          label:
+                              normalized.id === BLANK_PIECE_TYPE
+                                  ? '空白棋子'
+                                  : normalized.label || normalized.id,
+                      },
+                  ];
             normalized.walls = sanitizeWallConfig(normalized.walls || {});
             return normalized;
         });
@@ -457,12 +729,16 @@ function sanitizeConfig(raw) {
     }
 
     if (Array.isArray(raw.initialBoard)) {
-        safe.initialBoard = raw.initialBoard.map(row => Array.isArray(row) ? row.map(cell => {
-            if (cell && typeof cell === 'object' && !Array.isArray(cell)) {
-                return JSON.parse(JSON.stringify(cell));
-            }
-            return String(cell ?? '');
-        }) : []);
+        safe.initialBoard = raw.initialBoard.map((row) =>
+            Array.isArray(row)
+                ? row.map((cell) => {
+                      if (cell && typeof cell === 'object' && !Array.isArray(cell)) {
+                          return JSON.parse(JSON.stringify(cell));
+                      }
+                      return String(cell ?? '');
+                  })
+                : [],
+        );
     } else if (raw.initialBoard === null || raw.initialBoard === undefined) {
         safe.initialBoard = null;
     } else {
@@ -560,12 +836,96 @@ const PRESET_CONFIGS = {
             explodeRules: { 4: 'cross', 5: 'screen', 6: 'blast:2' },
             gap: 4,
             pieceTypes: [
-                { id: 'apple', char: '🍎', color: '#ff6b6b', background: '#ff6b6b', pattern: 'dot', patternColor: 'rgba(255,255,255,0.28)', pieceColor: '#fff7f7', walls: { top: { enabled: true, hp: 2, color: '#ffffff' }, right: { enabled: false, hp: 0, color: '#ffffff' }, bottom: { enabled: true, hp: 2, color: '#ffffff' }, left: { enabled: false, hp: 0, color: '#ffffff' } } },
-                { id: 'grape', char: '🍇', color: '#a855f7', background: '#a855f7', pattern: 'stripe', patternColor: 'rgba(255,255,255,0.22)', pieceColor: '#ffffff', walls: { top: { enabled: false, hp: 0, color: '#ffffff' }, right: { enabled: true, hp: 3, color: '#ffffff' }, bottom: { enabled: false, hp: 0, color: '#ffffff' }, left: { enabled: true, hp: 3, color: '#ffffff' } } },
-                { id: 'orange', char: '🍊', color: '#fb923c', background: '#fb923c', pattern: 'check', patternColor: 'rgba(255,255,255,0.24)', pieceColor: '#fffaf1', walls: { top: { enabled: false, hp: 0, color: '#ffffff' }, right: { enabled: true, hp: 2, color: '#ffffff' }, bottom: { enabled: true, hp: 2, color: '#ffffff' }, left: { enabled: false, hp: 0, color: '#ffffff' } } },
-                { id: 'lemon', char: '🍋', color: '#facc15', background: '#facc15', pattern: 'spark', patternColor: 'rgba(255,255,255,0.2)', pieceColor: '#fffef3', walls: { top: { enabled: true, hp: 2, color: '#ffffff' }, right: { enabled: false, hp: 0, color: '#ffffff' }, bottom: { enabled: false, hp: 0, color: '#ffffff' }, left: { enabled: true, hp: 2, color: '#ffffff' } } },
-                { id: 'straw', char: '🍓', color: '#ec4899', background: '#ec4899', pattern: 'dot', patternColor: 'rgba(255,255,255,0.2)', pieceColor: '#fff4f8', walls: { top: { enabled: false, hp: 0, color: '#ffffff' }, right: { enabled: true, hp: 2, color: '#ffffff' }, bottom: { enabled: false, hp: 0, color: '#ffffff' }, left: { enabled: false, hp: 0, color: '#ffffff' } } },
-                { id: 'water', char: '🍉', color: '#34d399', background: '#34d399', pattern: 'waves', patternColor: 'rgba(255,255,255,0.22)', pieceColor: '#f0fff7', walls: { top: { enabled: true, hp: 3, color: '#ffffff' }, right: { enabled: false, hp: 0, color: '#ffffff' }, bottom: { enabled: true, hp: 3, color: '#ffffff' }, left: { enabled: false, hp: 0, color: '#ffffff' } } },
+                {
+                    id: 'apple',
+                    char: '🍎',
+                    color: '#ff6b6b',
+                    background: '#ff6b6b',
+                    pattern: 'dot',
+                    patternColor: 'rgba(255,255,255,0.28)',
+                    pieceColor: '#fff7f7',
+                    walls: {
+                        top: { enabled: true, hp: 2, color: '#ffffff' },
+                        right: { enabled: false, hp: 0, color: '#ffffff' },
+                        bottom: { enabled: true, hp: 2, color: '#ffffff' },
+                        left: { enabled: false, hp: 0, color: '#ffffff' },
+                    },
+                },
+                {
+                    id: 'grape',
+                    char: '🍇',
+                    color: '#a855f7',
+                    background: '#a855f7',
+                    pattern: 'stripe',
+                    patternColor: 'rgba(255,255,255,0.22)',
+                    pieceColor: '#ffffff',
+                    walls: {
+                        top: { enabled: false, hp: 0, color: '#ffffff' },
+                        right: { enabled: true, hp: 3, color: '#ffffff' },
+                        bottom: { enabled: false, hp: 0, color: '#ffffff' },
+                        left: { enabled: true, hp: 3, color: '#ffffff' },
+                    },
+                },
+                {
+                    id: 'orange',
+                    char: '🍊',
+                    color: '#fb923c',
+                    background: '#fb923c',
+                    pattern: 'check',
+                    patternColor: 'rgba(255,255,255,0.24)',
+                    pieceColor: '#fffaf1',
+                    walls: {
+                        top: { enabled: false, hp: 0, color: '#ffffff' },
+                        right: { enabled: true, hp: 2, color: '#ffffff' },
+                        bottom: { enabled: true, hp: 2, color: '#ffffff' },
+                        left: { enabled: false, hp: 0, color: '#ffffff' },
+                    },
+                },
+                {
+                    id: 'lemon',
+                    char: '🍋',
+                    color: '#facc15',
+                    background: '#facc15',
+                    pattern: 'spark',
+                    patternColor: 'rgba(255,255,255,0.2)',
+                    pieceColor: '#fffef3',
+                    walls: {
+                        top: { enabled: true, hp: 2, color: '#ffffff' },
+                        right: { enabled: false, hp: 0, color: '#ffffff' },
+                        bottom: { enabled: false, hp: 0, color: '#ffffff' },
+                        left: { enabled: true, hp: 2, color: '#ffffff' },
+                    },
+                },
+                {
+                    id: 'straw',
+                    char: '🍓',
+                    color: '#ec4899',
+                    background: '#ec4899',
+                    pattern: 'dot',
+                    patternColor: 'rgba(255,255,255,0.2)',
+                    pieceColor: '#fff4f8',
+                    walls: {
+                        top: { enabled: false, hp: 0, color: '#ffffff' },
+                        right: { enabled: true, hp: 2, color: '#ffffff' },
+                        bottom: { enabled: false, hp: 0, color: '#ffffff' },
+                        left: { enabled: false, hp: 0, color: '#ffffff' },
+                    },
+                },
+                {
+                    id: 'water',
+                    char: '🍉',
+                    color: '#34d399',
+                    background: '#34d399',
+                    pattern: 'waves',
+                    patternColor: 'rgba(255,255,255,0.22)',
+                    pieceColor: '#f0fff7',
+                    walls: {
+                        top: { enabled: true, hp: 3, color: '#ffffff' },
+                        right: { enabled: false, hp: 0, color: '#ffffff' },
+                        bottom: { enabled: true, hp: 3, color: '#ffffff' },
+                        left: { enabled: false, hp: 0, color: '#ffffff' },
+                    },
+                },
             ],
             initialBoard: null,
         },
@@ -592,16 +952,28 @@ class Piece {
             patternColor: definition.patternColor || 'rgba(255,255,255,0.22)',
             priority: Number(definition.backgroundPriority ?? 0),
         };
-        this.type = { value: definition.code || typeId, priority: Number(definition.typePriority ?? 1) };
+        this.type = {
+            value: definition.code || typeId,
+            priority: Number(definition.typePriority ?? 1),
+        };
         this.isPiece = definition.isPiece !== false;
         this.walls = this._normalizeWalls(definition.walls || {});
         this.walls.priority = Number(definition.wallsPriority ?? 2);
-        this.ices = { level: Math.max(0, Math.min(6, Number(definition.iceLevel || 0))), priority: Number(definition.icesPriority ?? 3) };
-        this.frozen = { value: Math.max(0, Math.min(3, Number(definition.frozenValue || 0))), priority: Number(definition.frozenPriority ?? 3) };
+        this.ices = {
+            level: Math.max(0, Math.min(6, Number(definition.iceLevel || 0))),
+            priority: Number(definition.icesPriority ?? 3),
+        };
+        this.frozen = {
+            value: Math.max(0, Math.min(3, Number(definition.frozenValue || 0))),
+            priority: Number(definition.frozenPriority ?? 3),
+        };
         this.pieceUI = {
             ...DEFAULT_PIECE_UI,
             ...(definition.pieceUI || {}),
-            background: { ...DEFAULT_PIECE_UI.background, ...(definition.pieceUI?.background || {}) },
+            background: {
+                ...DEFAULT_PIECE_UI.background,
+                ...(definition.pieceUI?.background || {}),
+            },
             type: { ...DEFAULT_PIECE_UI.type, ...(definition.pieceUI?.type || {}) },
             walls: { ...DEFAULT_PIECE_UI.walls, ...(definition.pieceUI?.walls || {}) },
             ices: { ...DEFAULT_PIECE_UI.ices, ...(definition.pieceUI?.ices || {}) },
@@ -609,22 +981,52 @@ class Piece {
         };
 
         Object.defineProperties(this, {
-            typeId: { get: () => this.id, set: value => { this.id = value; } },
-            color: { get: () => this.background.type, set: value => { this.background.type = value; } },
-            backgroundColor: { get: () => this.background.type, set: value => { this.background.type = value; } },
-            pattern: { get: () => this.background.pattern, set: value => { this.background.pattern = value; } },
-            patternColor: { get: () => this.background.patternColor, set: value => { this.background.patternColor = value; } },
-            char: { get: () => this._char, set: value => { this._char = value; } },
+            typeId: {
+                get: () => this.id,
+                set: (value) => {
+                    this.id = value;
+                },
+            },
+            color: {
+                get: () => this.background.type,
+                set: (value) => {
+                    this.background.type = value;
+                },
+            },
+            backgroundColor: {
+                get: () => this.background.type,
+                set: (value) => {
+                    this.background.type = value;
+                },
+            },
+            pattern: {
+                get: () => this.background.pattern,
+                set: (value) => {
+                    this.background.pattern = value;
+                },
+            },
+            patternColor: {
+                get: () => this.background.patternColor,
+                set: (value) => {
+                    this.background.patternColor = value;
+                },
+            },
+            char: {
+                get: () => this._char,
+                set: (value) => {
+                    this._char = value;
+                },
+            },
         });
         this._char = char;
         this.pieceColor = definition.pieceColor || '#ffffff';
         this.borderColor = definition.borderColor || 'rgba(255,255,255,0.3)';
         this.borderWidth = definition.borderWidth || 2;
-        
+
         // 特殊状态（可叠加）
-        this.states = new Set();    // 'locked', 'frozen', 'bomb', 'star'
-        this.stateData = {};        // 状态附加数据
-        
+        this.states = new Set(); // 'locked', 'frozen', 'bomb', 'star'
+        this.stateData = {}; // 状态附加数据
+
         // 额外属性（用于扩展）
         this.metadata = {};
 
@@ -651,7 +1053,9 @@ class Piece {
         if (!this.walls[side]) return false;
         this.walls[side].enabled = Boolean(options.enabled ?? true);
         this.walls[side].hp = Number(options.hp ?? this.walls[side].hp ?? 0);
-        this.walls[side].maxHp = Number(options.maxHp ?? this.walls[side].maxHp ?? this.walls[side].hp ?? 0);
+        this.walls[side].maxHp = Number(
+            options.maxHp ?? this.walls[side].maxHp ?? this.walls[side].hp ?? 0,
+        );
         this.walls[side].color = options.color || this.walls[side].color || 'rgba(255,255,255,0.9)';
         return true;
     }
@@ -671,15 +1075,16 @@ class Piece {
             .filter(([_, value]) => value && value.enabled && value.hp > 0)
             .map(([side]) => side);
     }
-    
+
     // 添加状态
     addState(state, data = null) {
         this.states.add(state);
-        if (state === 'frozen') this.frozen.value = Math.max(1, Number(data?.level || this.frozen.value || 1));
+        if (state === 'frozen')
+            this.frozen.value = Math.max(1, Number(data?.level || this.frozen.value || 1));
         if (data !== null) this.stateData[state] = data;
         return this;
     }
-    
+
     // 移除状态
     removeState(state) {
         this.states.delete(state);
@@ -687,12 +1092,12 @@ class Piece {
         delete this.stateData[state];
         return this;
     }
-    
+
     // 检查是否有某状态
     hasState(state) {
         return this.states.has(state);
     }
-    
+
     // 克隆
     clone() {
         const p = new Piece(this.typeId, this.color, this.char, {
@@ -711,22 +1116,22 @@ class Piece {
         });
         p.borderColor = this.borderColor;
         p.borderWidth = this.borderWidth;
-        this.states.forEach(s => p.states.add(s));
+        this.states.forEach((s) => p.states.add(s));
         p.stateData = { ...this.stateData };
         p.metadata = { ...this.metadata };
         return p;
     }
-    
+
     // 是否可交换（被锁定/冰冻则不可交换）
     isSwappable() {
         return !this.hasState('locked') && !this.hasState('frozen');
     }
-    
+
     // 是否可消除
     isRemovable() {
         return !this.hasState('locked');
     }
-    
+
     // 渲染为 DOM 结构
     render(cellEl, cellSize, opts = {}) {
         // 清空
@@ -747,12 +1152,20 @@ class Piece {
         pattern.className = 'piece-pattern';
         pattern.dataset.pattern = this.background.pattern || 'solid';
         const rawPatternColor = this.background.patternColor;
-        const hasVisiblePatternColor = typeof rawPatternColor === 'string' && rawPatternColor && rawPatternColor.toLowerCase() !== 'transparent';
-        const patternColor = hasVisiblePatternColor ? rawPatternColor : contrastPatternColor(this.background.type);
-        pattern.style.background = this._buildPatternBackground(this.background.pattern, patternColor);
+        const hasVisiblePatternColor =
+            typeof rawPatternColor === 'string' &&
+            rawPatternColor &&
+            rawPatternColor.toLowerCase() !== 'transparent';
+        const patternColor = hasVisiblePatternColor
+            ? rawPatternColor
+            : contrastPatternColor(this.background.type);
+        pattern.style.background = this._buildPatternBackground(
+            this.background.pattern,
+            patternColor,
+        );
         pattern.style.zIndex = String(this.pieceUI.background.priority + 0.1);
         cellEl.appendChild(pattern);
-        
+
         // Layer 3: 主体
         const main = document.createElement('div');
         main.className = 'piece-main';
@@ -761,7 +1174,7 @@ class Piece {
         main.style.fontSize = `${cellSize * Number(this.pieceUI.type.fontSize || 0.55)}px`;
         main.style.zIndex = String(this.pieceUI.type.priority);
         cellEl.appendChild(main);
-        
+
         // Layer 4: 边框
         const border = document.createElement('div');
         border.className = 'piece-border';
@@ -796,7 +1209,7 @@ class Piece {
             ice.style.zIndex = String(this.pieceUI.ices.priority);
             cellEl.appendChild(ice);
         }
-        
+
         // Layer 6: 状态叠加层
         if (this.hasState('locked')) {
             const lock = document.createElement('div');
@@ -848,14 +1261,16 @@ class MatchRule {
         this.config = config;
         this.name = 'base';
     }
-    
+
     // 检查并返回匹配的格子索引 Set
     check(board, rows, cols) {
         return new Set();
     }
-    
+
     // 获取匹配的优先级（数字越大越先处理）
-    get priority() { return 0; }
+    get priority() {
+        return 0;
+    }
 }
 /**
  * LineMatchRule - 直线消除规则（横向/纵向）
@@ -865,9 +1280,11 @@ class LineMatchRule extends MatchRule {
         super(config);
         this.matchLength = config.matchLength || 3;
     }
-    
-    get priority() { return 10; }
-    
+
+    get priority() {
+        return 10;
+    }
+
     check(board, rows, cols) {
         const matches = new Set();
         const len = this.matchLength;
@@ -884,14 +1301,24 @@ class LineMatchRule extends MatchRule {
                 let allSame = true;
                 for (let i = 1; i < len; i++) {
                     const current = board[r][c + i];
-                    if (current === null || current === undefined || current.typeId !== base.typeId) {
+                    if (
+                        current === null ||
+                        current === undefined ||
+                        current.typeId !== base.typeId
+                    ) {
                         allSame = false;
                         break;
                     }
                 }
                 if (allSame) {
                     let ext = len;
-                    while (c + ext < cols && board[r][c + ext] !== null && board[r][c + ext] !== undefined && board[r][c + ext].typeId === base.typeId) ext++;
+                    while (
+                        c + ext < cols &&
+                        board[r][c + ext] !== null &&
+                        board[r][c + ext] !== undefined &&
+                        board[r][c + ext].typeId === base.typeId
+                    )
+                        ext++;
                     for (let i = 0; i < ext; i++) matches.add(r * cols + c + i);
                     c += ext;
                 } else {
@@ -899,7 +1326,7 @@ class LineMatchRule extends MatchRule {
                 }
             }
         }
-        
+
         // 纵向
         for (let c = 0; c < cols; c++) {
             let r = 0;
@@ -921,14 +1348,25 @@ class LineMatchRule extends MatchRule {
                         break;
                     }
                     const current = nextRow[c];
-                    if (current === null || current === undefined || current.typeId !== base.typeId) {
+                    if (
+                        current === null ||
+                        current === undefined ||
+                        current.typeId !== base.typeId
+                    ) {
                         allSame = false;
                         break;
                     }
                 }
                 if (allSame) {
                     let ext = len;
-                    while (r + ext < rows && board[r + ext] && board[r + ext][c] !== null && board[r + ext][c] !== undefined && board[r + ext][c].typeId === base.typeId) ext++;
+                    while (
+                        r + ext < rows &&
+                        board[r + ext] &&
+                        board[r + ext][c] !== null &&
+                        board[r + ext][c] !== undefined &&
+                        board[r + ext][c].typeId === base.typeId
+                    )
+                        ext++;
                     for (let i = 0; i < ext; i++) matches.add((r + i) * cols + c);
                     r += ext;
                 } else {
@@ -936,7 +1374,7 @@ class LineMatchRule extends MatchRule {
                 }
             }
         }
-        
+
         return matches;
     }
 }
@@ -949,9 +1387,11 @@ class SquareMatchRule extends MatchRule {
         super(config);
         this.name = 'square';
     }
-    
-    get priority() { return 5; }
-    
+
+    get priority() {
+        return 5;
+    }
+
     check(board, rows, cols) {
         const matches = new Set();
         for (let r = 0; r < rows - 1; r++) {
@@ -964,9 +1404,17 @@ class SquareMatchRule extends MatchRule {
                 if (!downRow) continue;
                 const down = downRow[c];
                 const diag = downRow[c + 1];
-                if (right !== null && right !== undefined && right.typeId === t.typeId &&
-                    down !== null && down !== undefined && down.typeId === t.typeId &&
-                    diag !== null && diag !== undefined && diag.typeId === t.typeId) {
+                if (
+                    right !== null &&
+                    right !== undefined &&
+                    right.typeId === t.typeId &&
+                    down !== null &&
+                    down !== undefined &&
+                    down.typeId === t.typeId &&
+                    diag !== null &&
+                    diag !== undefined &&
+                    diag.typeId === t.typeId
+                ) {
                     matches.add(r * cols + c);
                     matches.add(r * cols + c + 1);
                     matches.add((r + 1) * cols + c);
@@ -987,13 +1435,15 @@ class DiagonalMatchRule extends MatchRule {
         this.name = 'diagonal';
         this.matchLength = config.matchLength || 3;
     }
-    
-    get priority() { return 8; }
-    
+
+    get priority() {
+        return 8;
+    }
+
     check(board, rows, cols) {
         const matches = new Set();
         const len = this.matchLength;
-        
+
         // 主对角线方向 (\): 从左上到右下
         for (let r = 0; r <= rows - len; r++) {
             if (!board[r]) continue;
@@ -1015,14 +1465,20 @@ class DiagonalMatchRule extends MatchRule {
                 }
                 if (allSame) {
                     let ext = len;
-                    while (r + ext < rows && c + ext < cols && 
-                           board[r + ext] && board[r + ext][c + ext] !== null && board[r + ext][c + ext] !== undefined &&
-                           board[r + ext][c + ext].typeId === t.typeId) ext++;
+                    while (
+                        r + ext < rows &&
+                        c + ext < cols &&
+                        board[r + ext] &&
+                        board[r + ext][c + ext] !== null &&
+                        board[r + ext][c + ext] !== undefined &&
+                        board[r + ext][c + ext].typeId === t.typeId
+                    )
+                        ext++;
                     for (let i = 0; i < ext; i++) matches.add((r + i) * cols + (c + i));
                 }
             }
         }
-        
+
         // 副对角线方向 (/): 从右上到左下
         for (let r = 0; r <= rows - len; r++) {
             if (!board[r]) continue;
@@ -1044,14 +1500,20 @@ class DiagonalMatchRule extends MatchRule {
                 }
                 if (allSame) {
                     let ext = len;
-                    while (r + ext < rows && c - ext >= 0 && 
-                           board[r + ext] && board[r + ext][c - ext] !== null && board[r + ext][c - ext] !== undefined &&
-                           board[r + ext][c - ext].typeId === t.typeId) ext++;
+                    while (
+                        r + ext < rows &&
+                        c - ext >= 0 &&
+                        board[r + ext] &&
+                        board[r + ext][c - ext] !== null &&
+                        board[r + ext][c - ext] !== undefined &&
+                        board[r + ext][c - ext].typeId === t.typeId
+                    )
+                        ext++;
                     for (let i = 0; i < ext; i++) matches.add((r + i) * cols + (c - i));
                 }
             }
         }
-        
+
         return matches;
     }
 }
@@ -1073,16 +1535,16 @@ class ExplosionHandler {
             };
         }
     }
-    
+
     // 检测是否有爆炸触发，返回爆炸影响的格子索引
     getExplosionCells(matches, board, rows, cols) {
         const count = matches.size;
         const rule = this.parsedRules[count];
         if (!rule) return new Set();
-        
+
         const result = new Set();
         const matchArray = Array.from(matches);
-        
+
         switch (rule.type) {
             case 'cross': {
                 // 十字爆炸：以匹配中心（或第一个）为中心，十字方向
@@ -1107,7 +1569,8 @@ class ExplosionHandler {
                 const radius = rule.radius || 1;
                 for (let dr = -radius; dr <= radius; dr++) {
                     for (let dc = -radius; dc <= radius; dc++) {
-                        const nr = r + dr, nc = c + dc;
+                        const nr = r + dr,
+                            nc = c + dc;
                         if (nr >= 0 && nr < rows && nc >= 0 && nc < cols) {
                             result.add(nr * cols + nc);
                         }
@@ -1116,12 +1579,13 @@ class ExplosionHandler {
                 break;
             }
         }
-        
+
         return result;
     }
-    
+
     _getCenter(indices, cols) {
-        let sumR = 0, sumC = 0;
+        let sumR = 0,
+            sumC = 0;
         for (const idx of indices) {
             sumR += Math.floor(idx / cols);
             sumC += idx % cols;
@@ -1137,15 +1601,15 @@ class ScoreSystem {
         this.baseScore = config.baseScore || 10;
         this.comboMultiplier = config.comboMultiplier !== false;
     }
-    
+
     calculate(matchCount, comboCount, extra = {}) {
         const multiplier = this.comboMultiplier ? comboCount : 1;
         let score = matchCount * this.baseScore * multiplier;
-        
+
         // 额外奖励
         if (extra.bonus) score += extra.bonus;
         if (extra.special) score *= 2;
-        
+
         return Math.round(score);
     }
 }
@@ -1156,12 +1620,12 @@ class GameEngine {
     constructor() {
         // 配置
         this.config = null;
-        
+
         // 棋盘
         this.rows = 0;
         this.cols = 0;
         this.board = [];
-        
+
         // 状态
         this.score = 0;
         this.movesLeft = 0;
@@ -1169,12 +1633,12 @@ class GameEngine {
         this.selected = null;
         this.isProcessing = false;
         this.mode = 'admin';
-        
+
         // 规则引擎组件
         this.matchRules = [];
         this.explosionHandler = null;
         this.scoreSystem = null;
-        
+
         // DOM 引用
         this.boardEl = document.getElementById('board');
         this.scoreEl = document.getElementById('score');
@@ -1197,10 +1661,10 @@ class GameEngine {
         this.requiredPieceCount = 10;
         this.requiredPieceEnabled = false;
         this.elimCounts = {};
-        
+
         // 缓存
         this._cellCache = {};
-        
+
         // 绑定事件
         this._bindEvents();
         if (typeof window !== 'undefined') {
@@ -1208,9 +1672,9 @@ class GameEngine {
         }
         this.refreshSelectorUI();
     }
-    
+
     /* ---------- 配置管理 ---------- */
-    
+
     loadConfig() {
         try {
             const saved = localStorage.getItem(CONFIG_KEY);
@@ -1232,7 +1696,7 @@ class GameEngine {
             return { ...DEFAULT_CONFIG, pieceTypes: [...DEFAULT_CONFIG.pieceTypes] };
         }
     }
-    
+
     applyConfig(cfg) {
         const safeCfg = sanitizeConfig(cfg);
         this.config = { ...safeCfg };
@@ -1245,21 +1709,29 @@ class GameEngine {
         this.lastHint = null;
         this._cellCache = {};
         this.targetScoreEnabled = safeCfg.targetScoreEnabled !== false;
-        this.targetScore = this.targetScoreEnabled ? Math.max(0, Number(safeCfg.targetScore || 50000)) : 0;
+        this.targetScore = this.targetScoreEnabled
+            ? Math.max(0, Number(safeCfg.targetScore || 50000))
+            : 0;
         this.timeLeft = safeCfg.enableTimeLimit ? Number(safeCfg.timeLimitSeconds || 90) : 0;
         this.requiredPieceEnabled = safeCfg.requiredPieceEnabled === true;
         this.requiredPieceType = safeCfg.requiredPieceType || safeCfg.pieceTypes?.[0]?.id || null;
-        this.requiredPieceType = getPieceTypeCodeById(this.requiredPieceType, safeCfg.pieceTypes) || this.requiredPieceType;
-        this.requiredPieceCount = Number.isFinite(Number(safeCfg.requiredPieceCount)) ? Math.max(0, Number(safeCfg.requiredPieceCount)) : 10;
+        this.requiredPieceType =
+            getPieceTypeCodeById(this.requiredPieceType, safeCfg.pieceTypes) ||
+            this.requiredPieceType;
+        this.requiredPieceCount = Number.isFinite(Number(safeCfg.requiredPieceCount))
+            ? Math.max(0, Number(safeCfg.requiredPieceCount))
+            : 10;
         this.elimCounts = {};
-        this.totalMoves = Number.isFinite(Number(safeCfg.totalMoves)) ? Math.max(1, Number(safeCfg.totalMoves)) : 30;
+        this.totalMoves = Number.isFinite(Number(safeCfg.totalMoves))
+            ? Math.max(1, Number(safeCfg.totalMoves))
+            : 30;
         this.refreshSelectorUI();
-        
+
         // 初始化规则引擎
         this._initMatchRules(safeCfg);
         this.explosionHandler = new ExplosionHandler(safeCfg);
         this.scoreSystem = new ScoreSystem(safeCfg);
-        
+
         // 更新棋盘尺寸
         const boardWidth = this.cols * safeCfg.cellSize + (this.cols - 1) * safeCfg.gap;
         const boardHeight = this.rows * safeCfg.cellSize + (this.rows - 1) * safeCfg.gap;
@@ -1274,13 +1746,13 @@ class GameEngine {
         this.boardEl.style.gridTemplateRows = `repeat(${this.rows}, ${safeCfg.cellSize}px)`;
         this.boardEl.style.gap = `${safeCfg.gap}px`;
         this.boardEl.innerHTML = '';
-        
+
         // 保存到 localStorage
         try {
             localStorage.setItem(CONFIG_KEY, JSON.stringify(safeCfg));
         } catch (err) {}
     }
-    
+
     _initMatchRules(cfg) {
         this.matchRules = [];
         // 直线规则（始终启用）
@@ -1296,67 +1768,89 @@ class GameEngine {
         // 按优先级排序
         this.matchRules.sort((a, b) => b.priority - a.priority);
     }
-    
+
     /* ---------- 棋子系统 ---------- */
-    
+
     createPiece(typeId) {
-        const type = this.config.pieceTypes.find(t => t.id === typeId || t.code === typeId);
-        if (!type) return new Piece('unknown', '#888', '❓', { background: '#888', pattern: 'solid', pieceColor: '#fff' });
-        return new Piece(type.id, type.background || type.color || '#888', type.id === BLANK_PIECE_TYPE || type.isPiece === false ? '' : (type.char || type.id), {
-            background: type.background || type.color || '#888',
-            pattern: type.pattern || 'solid',
-            patternColor: type.patternColor || 'rgba(255,255,255,0.22)',
-            pieceColor: type.pieceColor || '#ffffff',
-            borderColor: type.borderColor || 'rgba(255,255,255,0.3)',
-            borderWidth: type.borderWidth || 2,
-            walls: type.walls || {},
-            isPiece: type.isPiece !== false,
-            id: type.id,
-            code: type.code || type.id,
-            pieceUI: type.pieceUI || {},
-            iceLevel: type.iceLevel || 0,
-            frozenValue: type.frozenValue || 0,
-        });
+        const type = this.config.pieceTypes.find((t) => t.id === typeId || t.code === typeId);
+        if (!type)
+            return new Piece('unknown', '#888', '❓', {
+                background: '#888',
+                pattern: 'solid',
+                pieceColor: '#fff',
+            });
+        return new Piece(
+            type.id,
+            type.background || type.color || '#888',
+            type.id === BLANK_PIECE_TYPE || type.isPiece === false ? '' : type.char || type.id,
+            {
+                background: type.background || type.color || '#888',
+                pattern: type.pattern || 'solid',
+                patternColor: type.patternColor || 'rgba(255,255,255,0.22)',
+                pieceColor: type.pieceColor || '#ffffff',
+                borderColor: type.borderColor || 'rgba(255,255,255,0.3)',
+                borderWidth: type.borderWidth || 2,
+                walls: type.walls || {},
+                isPiece: type.isPiece !== false,
+                id: type.id,
+                code: type.code || type.id,
+                pieceUI: type.pieceUI || {},
+                iceLevel: type.iceLevel || 0,
+                frozenValue: type.frozenValue || 0,
+            },
+        );
     }
-    
+
     randomPiece() {
-        const types = (this.config.pieceTypes || []).filter((type) => type && type.isPiece !== false);
+        const types = (this.config.pieceTypes || []).filter(
+            (type) => type && type.isPiece !== false,
+        );
         if (!types.length) return null;
         const type = types[Math.floor(Math.random() * types.length)];
         return this.createPiece(type.id);
     }
-    
+
     /* ---------- 棋盘操作 ---------- */
 
     _parseInitialBoardValue(value) {
         if (!value) return null;
-        const rawRows = Array.isArray(value) ? value : String(value)
-            .split(/\n|;/)
-            .map(row => row.trim())
-            .filter(Boolean);
+        const rawRows = Array.isArray(value)
+            ? value
+            : String(value)
+                  .split(/\n|;/)
+                  .map((row) => row.trim())
+                  .filter(Boolean);
 
         if (rawRows.length === 0) return null;
 
-        const rows = rawRows.map(row => {
-            if (Array.isArray(row)) {
-                return row.map(cell => cell && typeof cell === 'object' ? cell : String(cell ?? '').trim());
-            }
-            return String(row)
-                .split(',')
-                .map(cell => cell.trim())
-                .filter(cell => cell.length > 0);
-        }).filter(row => row.length > 0);
+        const rows = rawRows
+            .map((row) => {
+                if (Array.isArray(row)) {
+                    return row.map((cell) =>
+                        cell && typeof cell === 'object' ? cell : String(cell ?? '').trim(),
+                    );
+                }
+                return String(row)
+                    .split(',')
+                    .map((cell) => cell.trim())
+                    .filter((cell) => cell.length > 0);
+            })
+            .filter((row) => row.length > 0);
 
         if (rows.length === 0) return null;
 
-        const normalized = rows.map(row => row.slice(0, this.cols));
+        const normalized = rows.map((row) => row.slice(0, this.cols));
         while (normalized.length < this.rows) normalized.push([]);
 
         const board = Array.from({ length: this.rows }, (_, r) => {
             const row = normalized[r] || [];
             const cells = Array.from({ length: this.cols }, (_, c) => {
                 const token = row[c];
-                if (!token || (typeof token === 'string' && ['-', '_', '.', 'empty', 'null', 'none'].includes(token.toLowerCase()))) {
+                if (
+                    !token ||
+                    (typeof token === 'string' &&
+                        ['-', '_', '.', 'empty', 'null', 'none'].includes(token.toLowerCase()))
+                ) {
                     return null;
                 }
 
@@ -1374,7 +1868,8 @@ class GameEngine {
             const piece = this.createPiece(token.typeId || token.id);
             if (!piece || piece.typeId === 'unknown' || piece.isPiece === false) return null;
             piece.color = token.color || piece.color;
-            piece.backgroundColor = token.backgroundColor || token.background || piece.backgroundColor;
+            piece.backgroundColor =
+                token.backgroundColor || token.background || piece.backgroundColor;
             piece.pattern = token.pattern || piece.pattern;
             piece.patternColor = token.patternColor || piece.patternColor;
             piece.pieceColor = token.pieceColor || piece.pieceColor;
@@ -1383,18 +1878,27 @@ class GameEngine {
             piece.borderWidth = Number(token.borderWidth || piece.borderWidth);
             piece.type.value = token.type?.value || token.code || piece.type.value;
             piece.type.priority = Number(token.type?.priority ?? piece.type.priority);
-            piece.background.priority = Number(token.background?.priority ?? piece.background.priority);
-            piece.ices.level = Number(token.ices?.level ?? token.stateData?.iceLayers ?? piece.ices.level);
+            piece.background.priority = Number(
+                token.background?.priority ?? piece.background.priority,
+            );
+            piece.ices.level = Number(
+                token.ices?.level ?? token.stateData?.iceLayers ?? piece.ices.level,
+            );
             piece.ices.priority = Number(token.ices?.priority ?? piece.ices.priority);
             piece.frozen.value = Number(token.frozen?.value ?? piece.frozen.value);
             piece.frozen.priority = Number(token.frozen?.priority ?? piece.frozen.priority);
             piece.walls = piece._normalizeWalls(token.walls || {});
             piece.walls.priority = Number(token.walls?.priority ?? piece.walls.priority);
-            piece.pieceUI = token.pieceUI && typeof token.pieceUI === 'object' ? token.pieceUI : piece.pieceUI;
+            piece.pieceUI =
+                token.pieceUI && typeof token.pieceUI === 'object' ? token.pieceUI : piece.pieceUI;
             piece.states = new Set(Array.isArray(token.states) ? token.states : []);
-            piece.stateData = token.stateData && typeof token.stateData === 'object' ? { ...token.stateData } : {};
+            piece.stateData =
+                token.stateData && typeof token.stateData === 'object'
+                    ? { ...token.stateData }
+                    : {};
             if (piece.states.has('frozen') && piece.frozen.value === 0) piece.frozen.value = 1;
-            if (piece.stateData.iceLayers !== undefined && piece.ices.level === 0) piece.ices.level = Number(piece.stateData.iceLayers) || 0;
+            if (piece.stateData.iceLayers !== undefined && piece.ices.level === 0)
+                piece.ices.level = Number(piece.stateData.iceLayers) || 0;
             return piece;
         }
         const cleaned = String(token).trim();
@@ -1402,15 +1906,19 @@ class GameEngine {
             return null;
         }
 
-        const rawParts = cleaned.split(/[|:]/).map(part => part.trim()).filter(Boolean);
+        const rawParts = cleaned
+            .split(/[|:]/)
+            .map((part) => part.trim())
+            .filter(Boolean);
         const baseToken = rawParts[0];
         const stateTokens = rawParts.slice(1);
 
-        const matched = this.config.pieceTypes.find(type =>
-            type.id.toLowerCase() === baseToken.toLowerCase() ||
-            String(type.code || '').toLowerCase() === baseToken.toLowerCase() ||
-            (type.char && type.char === baseToken) ||
-            (type.char && type.char === String(baseToken))
+        const matched = this.config.pieceTypes.find(
+            (type) =>
+                type.id.toLowerCase() === baseToken.toLowerCase() ||
+                String(type.code || '').toLowerCase() === baseToken.toLowerCase() ||
+                (type.char && type.char === baseToken) ||
+                (type.char && type.char === String(baseToken)),
         );
 
         // 修复：无法匹配时返回 null，而不是随机生成棋子，避免初始棋盘与预期不符
@@ -1430,32 +1938,34 @@ class GameEngine {
     }
 
     serializeCurrentBoard() {
-        return this.board.map(row => row.map(piece => {
-            if (!piece) return null;
-            return {
-                typeId: piece.typeId,
-                code: piece.typeId === BLANK_PIECE_TYPE ? BLANK_PIECE_CODE : piece.typeId,
-                isPiece: piece.isPiece,
-                id: piece.id,
-                local: { ...piece.local },
-                background: { ...piece.background },
-                type: { ...piece.type },
-                color: piece.color,
-                backgroundColor: piece.backgroundColor,
-                pattern: piece.pattern,
-                patternColor: piece.patternColor,
-                pieceColor: piece.pieceColor,
-                char: piece.char,
-                borderColor: piece.borderColor,
-                borderWidth: piece.borderWidth,
-                walls: JSON.parse(JSON.stringify(piece.walls || {})),
-                ices: { ...piece.ices },
-                frozen: { ...piece.frozen },
-                pieceUI: JSON.parse(JSON.stringify(piece.pieceUI || {})),
-                states: [...piece.states],
-                stateData: JSON.parse(JSON.stringify(piece.stateData || {})),
-            };
-        }));
+        return this.board.map((row) =>
+            row.map((piece) => {
+                if (!piece) return null;
+                return {
+                    typeId: piece.typeId,
+                    code: piece.typeId === BLANK_PIECE_TYPE ? BLANK_PIECE_CODE : piece.typeId,
+                    isPiece: piece.isPiece,
+                    id: piece.id,
+                    local: { ...piece.local },
+                    background: { ...piece.background },
+                    type: { ...piece.type },
+                    color: piece.color,
+                    backgroundColor: piece.backgroundColor,
+                    pattern: piece.pattern,
+                    patternColor: piece.patternColor,
+                    pieceColor: piece.pieceColor,
+                    char: piece.char,
+                    borderColor: piece.borderColor,
+                    borderWidth: piece.borderWidth,
+                    walls: JSON.parse(JSON.stringify(piece.walls || {})),
+                    ices: { ...piece.ices },
+                    frozen: { ...piece.frozen },
+                    pieceUI: JSON.parse(JSON.stringify(piece.pieceUI || {})),
+                    states: [...piece.states],
+                    stateData: JSON.parse(JSON.stringify(piece.stateData || {})),
+                };
+            }),
+        );
     }
 
     createBoard() {
@@ -1483,10 +1993,10 @@ class GameEngine {
         }
         return b;
     }
-    
+
     _wouldMatch(b, r, c, piece) {
         // 优化：只检查新放置位置周围是否形成消除，避免全盘扫描
-        const testBoard = b.map(row => [...row]);
+        const testBoard = b.map((row) => [...row]);
         testBoard[r][c] = piece;
         return this._hasMatchAt(testBoard, r, c);
     }
@@ -1513,19 +2023,39 @@ class GameEngine {
         if (this.config.enableSquare) {
             // 以 (r,c) 为右下角
             if (r > 0 && c > 0) {
-                if (board[r-1][c-1]?.typeId === typeId && board[r-1][c]?.typeId === typeId && board[r][c-1]?.typeId === typeId) return true;
+                if (
+                    board[r - 1][c - 1]?.typeId === typeId &&
+                    board[r - 1][c]?.typeId === typeId &&
+                    board[r][c - 1]?.typeId === typeId
+                )
+                    return true;
             }
             // 以 (r,c) 为左下角
             if (r < this.rows - 1 && c > 0) {
-                if (board[r][c-1]?.typeId === typeId && board[r+1]?.[c-1]?.typeId === typeId && board[r+1]?.[c]?.typeId === typeId) return true;
+                if (
+                    board[r][c - 1]?.typeId === typeId &&
+                    board[r + 1]?.[c - 1]?.typeId === typeId &&
+                    board[r + 1]?.[c]?.typeId === typeId
+                )
+                    return true;
             }
             // 以 (r,c) 为右上角
             if (r > 0 && c < this.cols - 1) {
-                if (board[r-1][c]?.typeId === typeId && board[r-1][c+1]?.typeId === typeId && board[r][c+1]?.typeId === typeId) return true;
+                if (
+                    board[r - 1][c]?.typeId === typeId &&
+                    board[r - 1][c + 1]?.typeId === typeId &&
+                    board[r][c + 1]?.typeId === typeId
+                )
+                    return true;
             }
             // 以 (r,c) 为左上角
             if (r < this.rows - 1 && c < this.cols - 1) {
-                if (board[r][c+1]?.typeId === typeId && board[r+1]?.[c]?.typeId === typeId && board[r+1]?.[c+1]?.typeId === typeId) return true;
+                if (
+                    board[r][c + 1]?.typeId === typeId &&
+                    board[r + 1]?.[c]?.typeId === typeId &&
+                    board[r + 1]?.[c + 1]?.typeId === typeId
+                )
+                    return true;
             }
         }
 
@@ -1533,20 +2063,36 @@ class GameEngine {
         if (this.config.enableDiagonal) {
             // 主对角线方向
             count = 1;
-            for (let i = 1; r - i >= 0 && c - i >= 0 && board[r-i][c-i]?.typeId === typeId; i++) count++;
-            for (let i = 1; r + i < this.rows && c + i < this.cols && board[r+i]?.[c+i]?.typeId === typeId; i++) count++;
+            for (let i = 1; r - i >= 0 && c - i >= 0 && board[r - i][c - i]?.typeId === typeId; i++)
+                count++;
+            for (
+                let i = 1;
+                r + i < this.rows && c + i < this.cols && board[r + i]?.[c + i]?.typeId === typeId;
+                i++
+            )
+                count++;
             if (count >= len) return true;
 
             // 副对角线方向
             count = 1;
-            for (let i = 1; r - i >= 0 && c + i < this.cols && board[r-i][c+i]?.typeId === typeId; i++) count++;
-            for (let i = 1; r + i < this.rows && c - i >= 0 && board[r+i]?.[c-i]?.typeId === typeId; i++) count++;
+            for (
+                let i = 1;
+                r - i >= 0 && c + i < this.cols && board[r - i][c + i]?.typeId === typeId;
+                i++
+            )
+                count++;
+            for (
+                let i = 1;
+                r + i < this.rows && c - i >= 0 && board[r + i]?.[c - i]?.typeId === typeId;
+                i++
+            )
+                count++;
             if (count >= len) return true;
         }
 
         return false;
     }
-    
+
     _findAllMatches(board) {
         const all = new Set();
         for (const rule of this.matchRules) {
@@ -1555,11 +2101,11 @@ class GameEngine {
         }
         return all;
     }
-    
+
     findMatches() {
         return this._findAllMatches(this.board);
     }
-    
+
     applyGravity() {
         const changed = new Set();
         for (let c = 0; c < this.cols; c++) {
@@ -1578,7 +2124,7 @@ class GameEngine {
         }
         return changed;
     }
-    
+
     stabilizeBoard() {
         let guard = 0;
         while (guard++ < 100) {
@@ -1594,30 +2140,42 @@ class GameEngine {
             this.applyGravity();
         }
     }
-    
+
     hasValidMove() {
         for (let r = 0; r < this.rows; r++) {
             for (let c = 0; c < this.cols; c++) {
                 // 如果棋子不可交换，跳过
                 if (this.board[r][c] && !this.board[r][c].isSwappable()) continue;
-                
+
                 if (c < this.cols - 1) {
-                    [this.board[r][c], this.board[r][c + 1]] = [this.board[r][c + 1], this.board[r][c]];
+                    [this.board[r][c], this.board[r][c + 1]] = [
+                        this.board[r][c + 1],
+                        this.board[r][c],
+                    ];
                     const ok = this.findMatches().size > 0;
-                    [this.board[r][c], this.board[r][c + 1]] = [this.board[r][c + 1], this.board[r][c]];
+                    [this.board[r][c], this.board[r][c + 1]] = [
+                        this.board[r][c + 1],
+                        this.board[r][c],
+                    ];
                     if (ok) return true;
                 }
                 if (r < this.rows - 1) {
-                    [this.board[r][c], this.board[r + 1][c]] = [this.board[r + 1][c], this.board[r][c]];
+                    [this.board[r][c], this.board[r + 1][c]] = [
+                        this.board[r + 1][c],
+                        this.board[r][c],
+                    ];
                     const ok = this.findMatches().size > 0;
-                    [this.board[r][c], this.board[r + 1][c]] = [this.board[r + 1][c], this.board[r][c]];
+                    [this.board[r][c], this.board[r + 1][c]] = [
+                        this.board[r + 1][c],
+                        this.board[r][c],
+                    ];
                     if (ok) return true;
                 }
             }
         }
         return false;
     }
-    
+
     /* ---------- 渲染系统 ---------- */
 
     // 相邻格子的墙共用：某条边已由“编号更小”的格子负责渲染时，本格就跳过该侧，
@@ -1669,14 +2227,20 @@ class GameEngine {
 
                 const piece = this.board[r][c];
                 if (piece) {
-                    piece.render(cell, cellSize, { skipWallSides: this._sharedWallSkipSides(r, c) });
+                    piece.render(cell, cellSize, {
+                        skipWallSides: this._sharedWallSkipSides(r, c),
+                    });
                 }
 
                 if (withFallAnim) cell.classList.add('falling');
                 if (this.selected && this.selected.r === r && this.selected.c === c) {
                     cell.classList.add('selected');
                 }
-                if (this.lastHint && ((this.lastHint.from.r === r && this.lastHint.from.c === c) || (this.lastHint.to.r === r && this.lastHint.to.c === c))) {
+                if (
+                    this.lastHint &&
+                    ((this.lastHint.from.r === r && this.lastHint.from.c === c) ||
+                        (this.lastHint.to.r === r && this.lastHint.to.c === c))
+                ) {
                     cell.classList.add('hint-cell');
                 }
 
@@ -1692,34 +2256,40 @@ class GameEngine {
             }
             return;
         }
-        
+
         for (let r = 0; r < this.rows; r++) {
             for (let c = 0; c < this.cols; c++) {
                 const cell = document.createElement('div');
                 cell.className = 'cell';
                 cell.dataset.r = r;
                 cell.dataset.c = c;
-                
+
                 const piece = this.board[r][c];
                 if (piece) {
-                    piece.render(cell, cellSize, { skipWallSides: this._sharedWallSkipSides(r, c) });
+                    piece.render(cell, cellSize, {
+                        skipWallSides: this._sharedWallSkipSides(r, c),
+                    });
                 }
-                
+
                 if (withFallAnim) cell.classList.add('falling');
                 if (this.selected && this.selected.r === r && this.selected.c === c) {
                     cell.classList.add('selected');
                 }
-                if (this.lastHint && ((this.lastHint.from.r === r && this.lastHint.from.c === c) || (this.lastHint.to.r === r && this.lastHint.to.c === c))) {
+                if (
+                    this.lastHint &&
+                    ((this.lastHint.from.r === r && this.lastHint.from.c === c) ||
+                        (this.lastHint.to.r === r && this.lastHint.to.c === c))
+                ) {
                     cell.classList.add('hint-cell');
                 }
-                
+
                 this._bindCellEvents(cell, r, c);
                 this.boardEl.appendChild(cell);
                 this._cellCache[`${r},${c}`] = cell;
             }
         }
     }
-    
+
     getCell(r, c) {
         return this._cellCache[`${r},${c}`] || null;
     }
@@ -1759,10 +2329,21 @@ class GameEngine {
         const emptyCellOption = { value: EMPTY_CELL_VALUE, label: '无棋子' };
         const adminRequiredTypeSelect = document.getElementById('admin-required-piece-type');
         if (adminRequiredTypeSelect && this.config?.pieceTypes?.length) {
-            const options = this.config.pieceTypes.filter((type) => type.isPiece !== false).map(getPieceTypeUIOption);
-            let current = this.requiredPieceType || this.config.requiredPieceType || options[0]?.value || BLANK_PIECE_TYPE;
-            current = getPieceTypeCodeById(current, this.config.pieceTypes) || options[0]?.value || BLANK_PIECE_TYPE;
-            adminRequiredTypeSelect.innerHTML = options.map((type) => `<option value="${type.value}">${type.label}</option>`).join('');
+            const options = this.config.pieceTypes
+                .filter((type) => type.isPiece !== false)
+                .map(getPieceTypeUIOption);
+            let current =
+                this.requiredPieceType ||
+                this.config.requiredPieceType ||
+                options[0]?.value ||
+                BLANK_PIECE_TYPE;
+            current =
+                getPieceTypeCodeById(current, this.config.pieceTypes) ||
+                options[0]?.value ||
+                BLANK_PIECE_TYPE;
+            adminRequiredTypeSelect.innerHTML = options
+                .map((type) => `<option value="${type.value}">${type.label}</option>`)
+                .join('');
             adminRequiredTypeSelect.value = current;
             this.requiredPieceType = current;
             this.config.requiredPieceType = current;
@@ -1774,9 +2355,16 @@ class GameEngine {
 
         const cellTypeSelect = document.getElementById('cell-piece-type');
         if (cellTypeSelect && this.config?.pieceTypes?.length) {
-            const options = [emptyCellOption, ...this.config.pieceTypes.filter((type) => type.isPiece !== false).map(getPieceTypeUIOption)];
+            const options = [
+                emptyCellOption,
+                ...this.config.pieceTypes
+                    .filter((type) => type.isPiece !== false)
+                    .map(getPieceTypeUIOption),
+            ];
             const current = cellTypeSelect.value || options[1]?.value || EMPTY_CELL_VALUE;
-            cellTypeSelect.innerHTML = options.map((type) => `<option value="${type.value}">${type.label}</option>`).join('');
+            cellTypeSelect.innerHTML = options
+                .map((type) => `<option value="${type.value}">${type.label}</option>`)
+                .join('');
             cellTypeSelect.value = current;
             buildTileOptions(cellTypeSelect, options, current, () => {
                 if (this.mode === 'admin') this.previewSelectedCellEditor();
@@ -1800,26 +2388,36 @@ class GameEngine {
             });
         }
 
-        ['left','top','right','bottom'].forEach((side) => {
+        ['left', 'top', 'right', 'bottom'].forEach((side) => {
             const wallSelect = document.getElementById(`cell-wall-${side}`);
             if (!wallSelect) return;
             const current = wallSelect.value || 'none';
-            buildTileOptions(wallSelect, [
-                { value: 'none', label: '无' },
-                { value: 'low', label: '低' },
-                { value: 'medium', label: '中' },
-                { value: 'high', label: '高' },
-            ], current, () => {
-                if (this.mode === 'admin') this.previewSelectedCellEditor();
-            });
+            buildTileOptions(
+                wallSelect,
+                [
+                    { value: 'none', label: '无' },
+                    { value: 'low', label: '低' },
+                    { value: 'medium', label: '中' },
+                    { value: 'high', label: '高' },
+                ],
+                current,
+                () => {
+                    if (this.mode === 'admin') this.previewSelectedCellEditor();
+                },
+            );
         });
 
         const adminTotalMoves = document.getElementById('admin-total-moves');
         if (adminTotalMoves) adminTotalMoves.value = String(this.config?.totalMoves || 30);
         const adminRequiredCount = document.getElementById('admin-required-piece-count');
-        if (adminRequiredCount) adminRequiredCount.value = String(this.requiredPieceCount || this.config?.requiredPieceCount || 10);
+        if (adminRequiredCount)
+            adminRequiredCount.value = String(
+                this.requiredPieceCount || this.config?.requiredPieceCount || 10,
+            );
         const adminRequiredEnabled = document.getElementById('admin-required-piece-enabled');
-        if (adminRequiredEnabled) adminRequiredEnabled.checked = (this.requiredPieceEnabled === true || this.config?.requiredPieceEnabled === true);
+        if (adminRequiredEnabled)
+            adminRequiredEnabled.checked =
+                this.requiredPieceEnabled === true || this.config?.requiredPieceEnabled === true;
         const adminLevelName = document.getElementById('admin-level-name');
         if (adminLevelName) adminLevelName.value = this.config?.name || '';
     }
@@ -1836,7 +2434,7 @@ class GameEngine {
             left: document.getElementById('cell-wall-left'),
             top: document.getElementById('cell-wall-top'),
             right: document.getElementById('cell-wall-right'),
-            bottom: document.getElementById('cell-wall-bottom')
+            bottom: document.getElementById('cell-wall-bottom'),
         };
 
         if (!pieceTypeSelect || !patternSelect || !movableInput || !iceInput) return;
@@ -1853,7 +2451,9 @@ class GameEngine {
             fillColorDefaults('transparent', 'rgba(255,255,255,0.7)');
             movableInput.checked = true;
             iceInput.value = '0';
-            Object.values(walls).forEach(el => { if (el) el.value = 'none'; });
+            Object.values(walls).forEach((el) => {
+                if (el) el.value = 'none';
+            });
             syncTileGroups();
             return;
         }
@@ -1861,21 +2461,30 @@ class GameEngine {
         const { r, c } = this.selected;
         const piece = this.board[r]?.[c];
         if (!piece) {
-            label.textContent = `当前选中：(${r + 1}, ${c + 1}) 空格`; 
+            label.textContent = `当前选中：(${r + 1}, ${c + 1}) 空格`;
             pieceTypeSelect.value = EMPTY_CELL_VALUE;
             patternSelect.value = 'solid';
             fillColorDefaults('transparent', 'rgba(255,255,255,0.7)');
             movableInput.checked = true;
             iceInput.value = '0';
-            Object.values(walls).forEach(el => { if (el) el.value = 'none'; });
+            Object.values(walls).forEach((el) => {
+                if (el) el.value = 'none';
+            });
             syncTileGroups();
             return;
         }
 
         label.textContent = `当前选中：(${r + 1}, ${c + 1}) ${piece.typeId}`;
-        pieceTypeSelect.value = getPieceTypeUIOption(this.config.pieceTypes.find(type => type.id === piece.typeId) || {}).value;
+        pieceTypeSelect.value = getPieceTypeUIOption(
+            this.config.pieceTypes.find((type) => type.id === piece.typeId) || {},
+        ).value;
         patternSelect.value = piece.pattern || 'solid';
-        fillColorDefaults(piece.background.type, isTransparentColor(piece.background.patternColor) ? contrastPatternColor(piece.background.type) : piece.background.patternColor);
+        fillColorDefaults(
+            piece.background.type,
+            isTransparentColor(piece.background.patternColor)
+                ? contrastPatternColor(piece.background.type)
+                : piece.background.patternColor,
+        );
         movableInput.checked = !piece.hasState('locked');
         const iceLayers = Number(piece.stateData?.iceLayers || (piece.hasState('frozen') ? 1 : 0));
         iceInput.value = String(Math.max(0, Math.min(6, iceLayers)));
@@ -1898,7 +2507,9 @@ class GameEngine {
         const nextTypeId = pieceTypeSelect?.value || EMPTY_CELL_VALUE;
         if (nextTypeId === EMPTY_CELL_VALUE) return null;
 
-        const targetType = this.config.pieceTypes.find(type => type.id === nextTypeId || type.code === nextTypeId);
+        const targetType = this.config.pieceTypes.find(
+            (type) => type.id === nextTypeId || type.code === nextTypeId,
+        );
         if (!targetType || targetType.isPiece === false) return null;
 
         const piece = this.createPiece(targetType.id);
@@ -1911,9 +2522,10 @@ class GameEngine {
         // background 层独立状态：底色 + 图案 + 图案颜色 由 background 层自己的控件决定，不受类型透明默认值影响。
         piece.background.type = bgColorInput?.value || piece.background.type;
         piece.background.pattern = patternSelect?.value || targetType.pattern || 'dot';
-        piece.background.patternColor = patternSelect?.value === 'transparent'
-            ? 'transparent'
-            : (patternColorInput?.value || piece.background.patternColor);
+        piece.background.patternColor =
+            patternSelect?.value === 'transparent'
+                ? 'transparent'
+                : patternColorInput?.value || piece.background.patternColor;
         piece.ices.level = Math.max(0, Math.min(6, Number(iceInput?.value || 0)));
         piece.frozen.value = movableInput && !movableInput.checked ? 1 : 0;
 
@@ -1956,22 +2568,26 @@ class GameEngine {
         this.syncEditorPanel();
         syncTileGroups();
     }
-    
+
     /* ---------- 交互系统 ---------- */
-    
+
     _bindCellEvents(cell, r, c) {
-        let startX = null, startY = null, dragging = false;
+        let startX = null,
+            startY = null,
+            dragging = false;
         const enableDrag = this.config.enableDrag !== false;
         const threshold = this.config.dragThreshold || 15;
-        
+
         cell.addEventListener('pointerdown', (e) => {
             if (this.isProcessing || this.movesLeft <= 0) return;
             startX = e.clientX;
             startY = e.clientY;
             dragging = false;
-            try { cell.setPointerCapture(e.pointerId); } catch (err) {}
+            try {
+                cell.setPointerCapture(e.pointerId);
+            } catch (err) {}
         });
-        
+
         cell.addEventListener('pointermove', (e) => {
             if (startX === null || !enableDrag) return;
             const dx = e.clientX - startX;
@@ -1981,30 +2597,35 @@ class GameEngine {
                 cell.classList.add('dragging');
             }
         });
-        
+
         cell.addEventListener('pointerup', (e) => {
             if (startX === null) return;
             const dx = e.clientX - startX;
             const dy = e.clientY - startY;
 
             if (this.mode !== 'game') {
-                startX = null; startY = null; dragging = false;
+                startX = null;
+                startY = null;
+                dragging = false;
                 this.selected = { r, c };
                 this.syncEditorPanel();
                 this.renderBoard();
                 return;
             }
-            
+
             if (dragging && enableDrag) {
                 cell.classList.remove('dragging');
-                let targetR = r, targetC = c;
+                let targetR = r,
+                    targetC = c;
                 if (Math.abs(dx) > Math.abs(dy)) {
                     targetC = c + (dx > 0 ? 1 : -1);
                 } else {
                     targetR = r + (dy > 0 ? 1 : -1);
                 }
-                startX = null; startY = null; dragging = false;
-                
+                startX = null;
+                startY = null;
+                dragging = false;
+
                 if (targetR < 0 || targetR >= this.rows || targetC < 0 || targetC >= this.cols) {
                     this.selected = null;
                     this.renderBoard();
@@ -2013,12 +2634,14 @@ class GameEngine {
                 this.selected = null;
                 this._handleSwap(r, c, targetR, targetC);
             } else {
-                startX = null; startY = null; dragging = false;
+                startX = null;
+                startY = null;
+                dragging = false;
                 this._onCellClick(r, c);
             }
         });
     }
-    
+
     _onCellClick(r, c) {
         if (this.mode !== 'game') {
             this.selected = { r, c };
@@ -2028,39 +2651,39 @@ class GameEngine {
         }
 
         if (this.isProcessing || this.movesLeft <= 0) return;
-        
+
         // 检查棋子是否可交互
         const piece = this.board[r][c];
         if (piece && !piece.isSwappable()) {
             this.showMessage('🔒 这个棋子被锁定了！');
             return;
         }
-        
+
         if (!this.selected) {
             this.selected = { r, c };
             this.renderBoard();
             return;
         }
-        
+
         const { r: sr, c: sc } = this.selected;
-        
+
         if (sr === r && sc === c) {
             this.selected = null;
             this.renderBoard();
             return;
         }
-        
+
         const isAdjacent = Math.abs(sr - r) + Math.abs(sc - c) === 1;
         if (!isAdjacent) {
             this.selected = { r, c };
             this.renderBoard();
             return;
         }
-        
+
         this.selected = null;
         this._handleSwap(sr, sc, r, c);
     }
-    
+
     findPlayableMove() {
         for (let r = 0; r < this.rows; r++) {
             for (let c = 0; c < this.cols; c++) {
@@ -2077,9 +2700,15 @@ class GameEngine {
                     const other = this.board[target.r][target.c];
                     if (!other || !other.isSwappable()) continue;
 
-                    [this.board[r][c], this.board[target.r][target.c]] = [this.board[target.r][target.c], this.board[r][c]];
+                    [this.board[r][c], this.board[target.r][target.c]] = [
+                        this.board[target.r][target.c],
+                        this.board[r][c],
+                    ];
                     const hasMatch = this.findMatches().size > 0;
-                    [this.board[r][c], this.board[target.r][target.c]] = [this.board[target.r][target.c], this.board[r][c]];
+                    [this.board[r][c], this.board[target.r][target.c]] = [
+                        this.board[target.r][target.c],
+                        this.board[r][c],
+                    ];
 
                     if (hasMatch) {
                         return { from: { r, c }, to: { r: target.r, c: target.c } };
@@ -2104,7 +2733,9 @@ class GameEngine {
 
         this.lastHint = move;
         this.renderBoard();
-        this.showMessage(`💡 提示：尝试交换 (${move.from.r + 1},${move.from.c + 1}) 和 (${move.to.r + 1},${move.to.c + 1})`);
+        this.showMessage(
+            `💡 提示：尝试交换 (${move.from.r + 1},${move.from.c + 1}) 和 (${move.to.r + 1},${move.to.c + 1})`,
+        );
 
         clearTimeout(this.hintTimer);
         this.hintTimer = setTimeout(() => {
@@ -2115,19 +2746,19 @@ class GameEngine {
 
     async _flashInvalidSwap(r1, c1, r2, c2) {
         const cells = [this.getCell(r1, c1), this.getCell(r2, c2)];
-        cells.filter(Boolean).forEach(cell => cell.classList.add('invalid-swap'));
+        cells.filter(Boolean).forEach((cell) => cell.classList.add('invalid-swap'));
         await this._sleep(260);
-        cells.filter(Boolean).forEach(cell => cell.classList.remove('invalid-swap'));
+        cells.filter(Boolean).forEach((cell) => cell.classList.remove('invalid-swap'));
     }
 
     /* ---------- 核心游戏逻辑 ---------- */
-    
+
     async _handleSwap(r1, c1, r2, c2) {
         if (this.isGameEnded) {
             return;
         }
         this.isProcessing = true;
-        
+
         // 检查两个棋子是否都可交换
         const p1 = this.board[r1][c1];
         const p2 = this.board[r2][c2];
@@ -2136,12 +2767,12 @@ class GameEngine {
             this.isProcessing = false;
             return;
         }
-        
+
         const el1 = this.getCell(r1, c1);
         const el2 = this.getCell(r2, c2);
         const dx = (c2 - c1) * this._cellPx;
         const dy = (r2 - r1) * this._cellPx;
-        
+
         if (el1 && el2) {
             el1.style.transition = 'transform 0.25s ease';
             el2.style.transition = 'transform 0.25s ease';
@@ -2151,11 +2782,11 @@ class GameEngine {
             el2.style.zIndex = '2';
             await this._sleep(250);
         }
-        
+
         [this.board[r1][c1], this.board[r2][c2]] = [this.board[r2][c2], this.board[r1][c1]];
-        
+
         let matches = this.findMatches();
-        
+
         if (matches.size === 0) {
             await this._sleep(60);
             if (el1 && el2) {
@@ -2170,13 +2801,13 @@ class GameEngine {
             this.isProcessing = false;
             return;
         }
-        
+
         this.movesLeft--;
         this.comboCount = 0;
         this._updateHUD();
-        
+
         await this._processMatches(matches);
-        
+
         if (!this.hasValidMove()) {
             await this._sleep(200);
             this.board = this.createBoard();
@@ -2192,11 +2823,11 @@ class GameEngine {
         }
         this.isProcessing = false;
     }
-    
+
     async _processMatches(matches) {
         while (matches.size > 0) {
             this.comboCount++;
-            
+
             // 标记消除动画
             const matchArray = Array.from(matches);
             for (const idx of matchArray) {
@@ -2206,7 +2837,7 @@ class GameEngine {
                 if (cell) cell.classList.add('removed');
             }
             await this._sleep(300);
-            
+
             // 触发特殊棋子效果：炸弹会扩散到周围格子
             const bombIndices = new Set();
             for (const idx of matchArray) {
@@ -2225,25 +2856,28 @@ class GameEngine {
                 }
             }
 
-            const explosionCells = new Set(this.explosionHandler.getExplosionCells(
-                matches, this.board, this.rows, this.cols
-            ));
+            const explosionCells = new Set(
+                this.explosionHandler.getExplosionCells(matches, this.board, this.rows, this.cols),
+            );
             for (const idx of bombIndices) explosionCells.add(idx);
-            
+
             // 计分
             const points = this.scoreSystem.calculate(
-                matches.size + explosionCells.size, 
+                matches.size + explosionCells.size,
                 this.comboCount,
-                { special: explosionCells.size > 0 }
+                { special: explosionCells.size > 0 },
             );
             this.score += points;
             this._updateHUD();
-            
+
             // 显示消息
-            let msg = this.comboCount > 1 ? `🔥 连击 x${this.comboCount}！+${points}` : `消除！+${points}`;
+            let msg =
+                this.comboCount > 1
+                    ? `🔥 连击 x${this.comboCount}！+${points}`
+                    : `消除！+${points}`;
             if (explosionCells.size > 0) msg += ' 💥 爆炸！';
             this.showMessage(msg);
-            
+
             // 移除匹配的棋子（不可移除的保留）
             for (const idx of matchArray) {
                 const r = Math.floor(idx / this.cols);
@@ -2255,7 +2889,7 @@ class GameEngine {
                 }
             }
             this._damageAdjacentWalls(matchArray);
-            
+
             // 爆炸：移除额外格子（但只移除可移除的）
             if (explosionCells.size > 0) {
                 // 标记爆炸动画
@@ -2266,7 +2900,7 @@ class GameEngine {
                     if (cell) cell.classList.add('exploding');
                 }
                 await this._sleep(400);
-                
+
                 for (const idx of explosionCells) {
                     const r = Math.floor(idx / this.cols);
                     const c = idx % this.cols;
@@ -2278,18 +2912,18 @@ class GameEngine {
                 }
                 this._damageAdjacentWalls(Array.from(explosionCells));
             }
-            
+
             // 仅刷新发生变化的格子，避免全盘重绘
             const changedCells = this.applyGravity();
             await this._sleep(60);
             this.renderBoard(true, changedCells);
             await this._sleep(360);
-            
+
             // 继续检测连锁
             matches = this.findMatches();
         }
     }
-    
+
     _damageAdjacentWalls(indices) {
         const sideMap = [
             { dr: -1, dc: 0, side: 'top', target: 'bottom' },
@@ -2318,9 +2952,10 @@ class GameEngine {
 
     _countElim(piece) {
         if (!this.requiredPieceEnabled || !piece || !this.requiredPieceType) return;
-        const code = piece.type && piece.type.value ? piece.type.value : (piece.typeId || '');
+        const code = piece.type && piece.type.value ? piece.type.value : piece.typeId || '';
         if (code === this.requiredPieceType) {
-            this.elimCounts[this.requiredPieceType] = (this.elimCounts[this.requiredPieceType] || 0) + 1;
+            this.elimCounts[this.requiredPieceType] =
+                (this.elimCounts[this.requiredPieceType] || 0) + 1;
             if (this.mode === 'game') this._updateHUD();
         }
     }
@@ -2330,14 +2965,19 @@ class GameEngine {
     }
 
     _elimGoalMet() {
-        return this.requiredPieceEnabled && this.requiredPieceType && this.requiredPieceCount > 0 &&
-            (this.elimCounts[this.requiredPieceType] || 0) >= this.requiredPieceCount;
+        return (
+            this.requiredPieceEnabled &&
+            this.requiredPieceType &&
+            this.requiredPieceCount > 0 &&
+            (this.elimCounts[this.requiredPieceType] || 0) >= this.requiredPieceCount
+        );
     }
 
     _elimGoalProgress() {
-        const done = this.requiredPieceEnabled && this.requiredPieceType
-            ? (this.elimCounts[this.requiredPieceType] || 0)
-            : 0;
+        const done =
+            this.requiredPieceEnabled && this.requiredPieceType
+                ? this.elimCounts[this.requiredPieceType] || 0
+                : 0;
         return `${done}/${this.requiredPieceCount || 0}`;
     }
 
@@ -2354,7 +2994,10 @@ class GameEngine {
         if (scoreGoalMet || elimGoalMet) {
             const parts = [];
             if (scoreGoalMet) parts.push(`分数 ${this.score}/${this.targetScore}`);
-            if (elimGoalMet) parts.push(`${this.requiredPieceType} 消除 ${this.elimCounts[this.requiredPieceType]}/${this.requiredPieceCount}`);
+            if (elimGoalMet)
+                parts.push(
+                    `${this.requiredPieceType} 消除 ${this.elimCounts[this.requiredPieceType]}/${this.requiredPieceCount}`,
+                );
             this.isProcessing = false;
             this.finishRound(true, `🎉 达成通关条件！(${parts.join('；')})`);
             return true;
@@ -2363,7 +3006,7 @@ class GameEngine {
     }
 
     /* ---------- UI 更新 ---------- */
-    
+
     _updateHUD() {
         this.scoreEl.textContent = this.score;
         this.movesEl.textContent = this.movesLeft;
@@ -2373,7 +3016,10 @@ class GameEngine {
             target += `  ·  ${this.requiredPieceType}×${this.requiredPieceCount}[${this._elimGoalProgress()}]`;
         }
         this.targetScoreEl.textContent = target;
-        this.timeLeftEl.textContent = this.config && this.config.enableTimeLimit && this.mode === 'game' ? this.timeLeft : '∞';
+        this.timeLeftEl.textContent =
+            this.config && this.config.enableTimeLimit && this.mode === 'game'
+                ? this.timeLeft
+                : '∞';
         if (this.movesLeft <= 5) {
             this.movesStatEl.classList.add('warning');
         } else {
@@ -2389,7 +3035,10 @@ class GameEngine {
     startTimer() {
         this.stopTimer();
         if (this.mode !== 'game') {
-            this.timeLeft = this.config && this.config.enableTimeLimit ? Number(this.config.timeLimitSeconds || 90) : 0;
+            this.timeLeft =
+                this.config && this.config.enableTimeLimit
+                    ? Number(this.config.timeLimitSeconds || 90)
+                    : 0;
             this._updateHUD();
             return;
         }
@@ -2416,8 +3065,16 @@ class GameEngine {
                 const won = this._scoreGoalMet() || this._elimGoalMet();
                 const goals = [];
                 if (this._scoreGoalMet()) goals.push(`分数 ${this.score}/${this.targetScore}`);
-                if (this._elimGoalMet()) goals.push(`${this.requiredPieceType} 消除 ${this.elimCounts[this.requiredPieceType]}/${this.requiredPieceCount}`);
-                this.finishRound(won, won ? `🎉 时间到但已通关！(${goals.join('；')})` : `⏰ 时间到！最终得分：${this.score}，目标：${this.targetScore}，消除目标：${this._elimGoalProgress()}。`);
+                if (this._elimGoalMet())
+                    goals.push(
+                        `${this.requiredPieceType} 消除 ${this.elimCounts[this.requiredPieceType]}/${this.requiredPieceCount}`,
+                    );
+                this.finishRound(
+                    won,
+                    won
+                        ? `🎉 时间到但已通关！(${goals.join('；')})`
+                        : `⏰ 时间到！最终得分：${this.score}，目标：${this.targetScore}，消除目标：${this._elimGoalProgress()}。`,
+                );
                 return;
             }
             this._updateHUD();
@@ -2441,22 +3098,22 @@ class GameEngine {
             alert(`${result}\n\n${message}`);
         }, 300);
     }
-    
+
     showMessage(msg) {
         this.messageEl.textContent = msg;
         this.messageEl.classList.add('show');
         clearTimeout(this.messageEl._t);
         this.messageEl._t = setTimeout(() => this.messageEl.classList.remove('show'), 1600);
     }
-    
+
     /* ---------- 工具 ---------- */
-    
+
     _sleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
+        return new Promise((resolve) => setTimeout(resolve, ms));
     }
-    
+
     /* ---------- 初始化 ---------- */
-    
+
     ensurePlayableBoard() {
         let attempts = 0;
         while (!this.hasValidMove() && attempts < 8) {
@@ -2472,7 +3129,10 @@ class GameEngine {
 
     init() {
         this.stopTimer();
-        const customBoard = this.config && this.config.initialBoard ? this._parseInitialBoardValue(this.config.initialBoard) : null;
+        const customBoard =
+            this.config && this.config.initialBoard
+                ? this._parseInitialBoardValue(this.config.initialBoard)
+                : null;
         this.board = customBoard && customBoard.length > 0 ? customBoard : this.createBoard();
         if (!customBoard) {
             this.stabilizeBoard();
@@ -2488,10 +3148,16 @@ class GameEngine {
         this.elimCounts = {};
         this.requiredPieceEnabled = this.config?.requiredPieceEnabled === true;
         this.requiredPieceType = this.config?.requiredPieceType || null;
-        this.requiredPieceType = getPieceTypeCodeById(this.requiredPieceType, this.config?.pieceTypes) || this.requiredPieceType;
-        this.requiredPieceCount = Number.isFinite(Number(this.config?.requiredPieceCount)) ? Math.max(0, Number(this.config?.requiredPieceCount)) : 10;
+        this.requiredPieceType =
+            getPieceTypeCodeById(this.requiredPieceType, this.config?.pieceTypes) ||
+            this.requiredPieceType;
+        this.requiredPieceCount = Number.isFinite(Number(this.config?.requiredPieceCount))
+            ? Math.max(0, Number(this.config?.requiredPieceCount))
+            : 10;
         this.targetScoreEnabled = this.config && this.config.targetScoreEnabled !== false;
-        this.targetScore = this.targetScoreEnabled ? Math.max(0, Number(this.config?.targetScore || 50000)) : 0;
+        this.targetScore = this.targetScoreEnabled
+            ? Math.max(0, Number(this.config?.targetScore || 50000))
+            : 0;
         this.movesStatEl.classList.remove('warning');
         this._updateHUD();
         this.renderBoard();
@@ -2500,9 +3166,9 @@ class GameEngine {
             this.startTimer();
         }
     }
-    
+
     /* ---------- 事件绑定 ---------- */
-    
+
     _bindEvents() {
         this.restartBtn.addEventListener('click', () => this.init());
         this.hintBtn.addEventListener('click', () => this.showHint());
@@ -2515,14 +3181,26 @@ class GameEngine {
         const refreshAdminSelectors = () => {
             if (!adminRequiredTypeSelect) return;
             const existing = this.config?.pieceTypes || [];
-            const list = existing.map((type) => ({ value: type.id, label: `${type.char || type.id}` }));
-            const current = this.requiredPieceType || this.config?.requiredPieceType || this.config?.pieceTypes?.[0]?.id || 'apple';
-            adminRequiredTypeSelect.innerHTML = list.map((type) => `<option value="${type.value}">${type.label}</option>`).join('');
+            const list = existing.map((type) => ({
+                value: type.id,
+                label: `${type.char || type.id}`,
+            }));
+            const current =
+                this.requiredPieceType ||
+                this.config?.requiredPieceType ||
+                this.config?.pieceTypes?.[0]?.id ||
+                'apple';
+            adminRequiredTypeSelect.innerHTML = list
+                .map((type) => `<option value="${type.value}">${type.label}</option>`)
+                .join('');
             adminRequiredTypeSelect.value = current;
             this.requiredPieceType = adminRequiredTypeSelect.value;
             buildTileOptions(adminRequiredTypeSelect, list, current, () => {
                 this.requiredPieceType = adminRequiredTypeSelect.value;
-                this.config = this.config || { ...DEFAULT_CONFIG, pieceTypes: [...DEFAULT_CONFIG.pieceTypes] };
+                this.config = this.config || {
+                    ...DEFAULT_CONFIG,
+                    pieceTypes: [...DEFAULT_CONFIG.pieceTypes],
+                };
                 this.config.requiredPieceType = this.requiredPieceType;
             });
         };
@@ -2530,7 +3208,10 @@ class GameEngine {
         if (adminRequiredTypeSelect) {
             adminRequiredTypeSelect.addEventListener('change', () => {
                 this.requiredPieceType = adminRequiredTypeSelect.value;
-                this.config = this.config || { ...DEFAULT_CONFIG, pieceTypes: [...DEFAULT_CONFIG.pieceTypes] };
+                this.config = this.config || {
+                    ...DEFAULT_CONFIG,
+                    pieceTypes: [...DEFAULT_CONFIG.pieceTypes],
+                };
                 this.config.requiredPieceType = this.requiredPieceType;
             });
         }
@@ -2538,7 +3219,10 @@ class GameEngine {
         if (adminTotalMoves) {
             adminTotalMoves.addEventListener('input', () => {
                 const moves = Number(adminTotalMoves.value || 30);
-                this.config = this.config || { ...DEFAULT_CONFIG, pieceTypes: [...DEFAULT_CONFIG.pieceTypes] };
+                this.config = this.config || {
+                    ...DEFAULT_CONFIG,
+                    pieceTypes: [...DEFAULT_CONFIG.pieceTypes],
+                };
                 this.config.totalMoves = Number.isFinite(moves) ? Math.max(1, moves) : 30;
                 this.movesLeft = this.config.totalMoves;
                 this._updateHUD();
@@ -2548,7 +3232,10 @@ class GameEngine {
         if (adminRequiredCount) {
             adminRequiredCount.addEventListener('input', () => {
                 const count = Number(adminRequiredCount.value || 10);
-                this.config = this.config || { ...DEFAULT_CONFIG, pieceTypes: [...DEFAULT_CONFIG.pieceTypes] };
+                this.config = this.config || {
+                    ...DEFAULT_CONFIG,
+                    pieceTypes: [...DEFAULT_CONFIG.pieceTypes],
+                };
                 this.config.requiredPieceCount = Number.isFinite(count) ? Math.max(0, count) : 10;
                 this.requiredPieceCount = this.config.requiredPieceCount;
             });
@@ -2574,23 +3261,46 @@ class GameEngine {
             const scoreValue = Number(adminTargetScoreInput?.value || 50000);
             const timeEnabled = adminEnableTimeLimit ? adminEnableTimeLimit.checked : false;
             const timeSeconds = Number(adminTimeLimitSeconds?.value || 90);
-            const movesValue = Number(document.getElementById('admin-total-moves')?.value || this.config?.totalMoves || 30);
-            const requiredEnabled = document.getElementById('admin-required-piece-enabled')?.checked ?? false;
-            const requiredType = document.getElementById('admin-required-piece-type')?.value || this.requiredPieceType || this.config?.requiredPieceType || this.config?.pieceTypes?.[0]?.id || 'A';
-            const requiredCount = Number(document.getElementById('admin-required-piece-count')?.value || 10);
+            const movesValue = Number(
+                document.getElementById('admin-total-moves')?.value ||
+                    this.config?.totalMoves ||
+                    30,
+            );
+            const requiredEnabled =
+                document.getElementById('admin-required-piece-enabled')?.checked ?? false;
+            const requiredType =
+                document.getElementById('admin-required-piece-type')?.value ||
+                this.requiredPieceType ||
+                this.config?.requiredPieceType ||
+                this.config?.pieceTypes?.[0]?.id ||
+                'A';
+            const requiredCount = Number(
+                document.getElementById('admin-required-piece-count')?.value || 10,
+            );
 
             this.targetScoreEnabled = scoreEnabled;
-            this.targetScore = scoreEnabled ? (Number.isFinite(scoreValue) ? Math.max(0, scoreValue) : 50000) : 0;
-            this.config = this.config || { ...DEFAULT_CONFIG, pieceTypes: [...DEFAULT_CONFIG.pieceTypes] };
+            this.targetScore = scoreEnabled
+                ? Number.isFinite(scoreValue)
+                    ? Math.max(0, scoreValue)
+                    : 50000
+                : 0;
+            this.config = this.config || {
+                ...DEFAULT_CONFIG,
+                pieceTypes: [...DEFAULT_CONFIG.pieceTypes],
+            };
             this.config.targetScore = this.targetScore;
             this.config.targetScoreEnabled = scoreEnabled;
             this.config.enableTimeLimit = timeEnabled;
-            this.config.timeLimitSeconds = Number.isFinite(timeSeconds) ? Math.max(10, timeSeconds) : 90;
+            this.config.timeLimitSeconds = Number.isFinite(timeSeconds)
+                ? Math.max(10, timeSeconds)
+                : 90;
             this.config.totalMoves = Number.isFinite(movesValue) ? Math.max(1, movesValue) : 30;
             this.requiredPieceEnabled = requiredEnabled;
             this.config.requiredPieceEnabled = requiredEnabled;
             this.config.requiredPieceType = requiredType;
-            this.config.requiredPieceCount = Number.isFinite(requiredCount) ? Math.max(0, requiredCount) : 10;
+            this.config.requiredPieceCount = Number.isFinite(requiredCount)
+                ? Math.max(0, requiredCount)
+                : 10;
             this.requiredPieceType = requiredType;
             this.requiredPieceCount = this.config.requiredPieceCount;
             this.timeLeft = timeEnabled ? Math.max(0, timeSeconds) : 0;
@@ -2630,7 +3340,10 @@ class GameEngine {
         if (adminSaveRulesBtn) {
             adminSaveRulesBtn.addEventListener('click', () => {
                 const form = readAdminRuleForm();
-                const baseCfg = this.config || { ...DEFAULT_CONFIG, pieceTypes: [...DEFAULT_CONFIG.pieceTypes] };
+                const baseCfg = this.config || {
+                    ...DEFAULT_CONFIG,
+                    pieceTypes: [...DEFAULT_CONFIG.pieceTypes],
+                };
                 const safeCfg = sanitizeConfig({
                     ...baseCfg,
                     targetScoreEnabled: form.targetScoreEnabled,
@@ -2643,8 +3356,13 @@ class GameEngine {
                     requiredPieceCount: form.requiredPieceCount,
                     name: form.levelName || baseCfg.name || '自定义关卡',
                 });
-                safeCfg.requiredPieceType = form.requiredPieceType || safeCfg.requiredPieceType || safeCfg.pieceTypes?.[0]?.id || 'A';
-                safeCfg.requiredPieceCount = form.requiredPieceCount || safeCfg.requiredPieceCount || 10;
+                safeCfg.requiredPieceType =
+                    form.requiredPieceType ||
+                    safeCfg.requiredPieceType ||
+                    safeCfg.pieceTypes?.[0]?.id ||
+                    'A';
+                safeCfg.requiredPieceCount =
+                    form.requiredPieceCount || safeCfg.requiredPieceCount || 10;
                 this.applyConfig(safeCfg);
                 this.init();
                 this.showMessage('✅ 规则已保存并生效。');
@@ -2654,7 +3372,10 @@ class GameEngine {
         if (adminSaveLevelBtn) {
             adminSaveLevelBtn.addEventListener('click', () => {
                 const form = readAdminRuleForm();
-                const baseCfg = this.config || { ...DEFAULT_CONFIG, pieceTypes: [...DEFAULT_CONFIG.pieceTypes] };
+                const baseCfg = this.config || {
+                    ...DEFAULT_CONFIG,
+                    pieceTypes: [...DEFAULT_CONFIG.pieceTypes],
+                };
                 const safeCfg = sanitizeConfig({
                     ...baseCfg,
                     targetScoreEnabled: form.targetScoreEnabled,
@@ -2665,15 +3386,22 @@ class GameEngine {
                     requiredPieceEnabled: form.requiredPieceEnabled,
                     requiredPieceType: form.requiredPieceType,
                     requiredPieceCount: form.requiredPieceCount,
-                    name: form.levelName || baseCfg.name || `关卡-${new Date().toLocaleDateString()}-${Date.now().toString().slice(-4)}`,
+                    name:
+                        form.levelName ||
+                        baseCfg.name ||
+                        `关卡-${new Date().toLocaleDateString()}-${Date.now().toString().slice(-4)}`,
                 });
                 safeCfg.initialBoard = this.serializeCurrentBoard();
-                const levelName = form.levelName || safeCfg.name || `关卡-${new Date().toLocaleDateString()}-${Date.now().toString().slice(-4)}`;
+                const levelName =
+                    form.levelName ||
+                    safeCfg.name ||
+                    `关卡-${new Date().toLocaleDateString()}-${Date.now().toString().slice(-4)}`;
                 const levels = JSON.parse(localStorage.getItem(LEVELS_KEY) || '[]');
                 const nextLevels = Array.isArray(levels) ? levels : [];
                 const payload = { name: levelName, config: { ...safeCfg, name: levelName } };
                 const index = nextLevels.findIndex((level) => level && level.name === levelName);
-                if (index >= 0) nextLevels[index] = payload; else nextLevels.unshift(payload);
+                if (index >= 0) nextLevels[index] = payload;
+                else nextLevels.unshift(payload);
                 localStorage.setItem(LEVELS_KEY, JSON.stringify(nextLevels.slice(0, 20)));
                 updateLevelList();
                 this.applyConfig(safeCfg);
@@ -2697,18 +3425,27 @@ class GameEngine {
                 if (this.mode === 'admin') this.previewSelectedCellEditor();
             });
         }
-        ['cell-pattern', 'cell-bg-color', 'cell-pattern-color', 'cell-movable', 'cell-ice-layer', 'cell-wall-left', 'cell-wall-top', 'cell-wall-right', 'cell-wall-bottom']
-            .forEach((id) => {
-                const el = document.getElementById(id);
-                if (el) {
-                    el.addEventListener('change', () => {
-                        if (this.mode === 'admin') this.previewSelectedCellEditor();
-                    });
-                    el.addEventListener('input', () => {
-                        if (this.mode === 'admin') this.previewSelectedCellEditor();
-                    });
-                }
-            });
+        [
+            'cell-pattern',
+            'cell-bg-color',
+            'cell-pattern-color',
+            'cell-movable',
+            'cell-ice-layer',
+            'cell-wall-left',
+            'cell-wall-top',
+            'cell-wall-right',
+            'cell-wall-bottom',
+        ].forEach((id) => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.addEventListener('change', () => {
+                    if (this.mode === 'admin') this.previewSelectedCellEditor();
+                });
+                el.addEventListener('input', () => {
+                    if (this.mode === 'admin') this.previewSelectedCellEditor();
+                });
+            }
+        });
 
         const patternTileContainer = document.getElementById('cell-pattern-tiles');
         if (patternTileContainer) {
@@ -2720,30 +3457,50 @@ class GameEngine {
                 { value: 'waves', label: 'waves' },
                 { value: 'spark', label: 'spark' },
             ];
-            buildTileOptions(document.getElementById('cell-pattern'), patternOptions, document.getElementById('cell-pattern')?.value || 'dot', () => {
-                if (this.mode === 'admin') this.previewSelectedCellEditor();
-            });
+            buildTileOptions(
+                document.getElementById('cell-pattern'),
+                patternOptions,
+                document.getElementById('cell-pattern')?.value || 'dot',
+                () => {
+                    if (this.mode === 'admin') this.previewSelectedCellEditor();
+                },
+            );
         }
-        ['left','top','right','bottom'].forEach((side) => {
+        ['left', 'top', 'right', 'bottom'].forEach((side) => {
             const wallSelect = document.getElementById(`cell-wall-${side}`);
             if (!wallSelect) return;
-            buildTileOptions(wallSelect, [
-                { value: 'none', label: '无' },
-                { value: 'low', label: '低' },
-                { value: 'medium', label: '中' },
-                { value: 'high', label: '高' },
-            ], wallSelect.value || 'none', () => {
-                if (this.mode === 'admin') this.previewSelectedCellEditor();
-            });
+            buildTileOptions(
+                wallSelect,
+                [
+                    { value: 'none', label: '无' },
+                    { value: 'low', label: '低' },
+                    { value: 'medium', label: '中' },
+                    { value: 'high', label: '高' },
+                ],
+                wallSelect.value || 'none',
+                () => {
+                    if (this.mode === 'admin') this.previewSelectedCellEditor();
+                },
+            );
         });
         const adminRequiredPieceTypeSelect = document.getElementById('admin-required-piece-type');
         if (adminRequiredPieceTypeSelect) {
-            const options = (this.config?.pieceTypes || []).filter((type) => type.isPiece !== false).map(getPieceTypeUIOption);
-            buildTileOptions(adminRequiredPieceTypeSelect, options, adminRequiredPieceTypeSelect.value || (this.config?.pieceTypes?.[0]?.id || 'apple'), () => {
-                this.requiredPieceType = adminRequiredPieceTypeSelect.value;
-                this.config = this.config || { ...DEFAULT_CONFIG, pieceTypes: [...DEFAULT_CONFIG.pieceTypes] };
-                this.config.requiredPieceType = this.requiredPieceType;
-            });
+            const options = (this.config?.pieceTypes || [])
+                .filter((type) => type.isPiece !== false)
+                .map(getPieceTypeUIOption);
+            buildTileOptions(
+                adminRequiredPieceTypeSelect,
+                options,
+                adminRequiredPieceTypeSelect.value || this.config?.pieceTypes?.[0]?.id || 'apple',
+                () => {
+                    this.requiredPieceType = adminRequiredPieceTypeSelect.value;
+                    this.config = this.config || {
+                        ...DEFAULT_CONFIG,
+                        pieceTypes: [...DEFAULT_CONFIG.pieceTypes],
+                    };
+                    this.config.requiredPieceType = this.requiredPieceType;
+                },
+            );
         }
         const cellApplyBtn = document.getElementById('cell-apply-btn');
         if (cellApplyBtn) {
@@ -2772,11 +3529,11 @@ function setupSettingsPanel(engine) {
     const cfgSaveBtn = document.getElementById('cfg-save');
     const cfgResetBtn = document.getElementById('cfg-reset');
     const cfgCloseBtn = document.getElementById('cfg-close');
-    
+
     function serializePieceType(type) {
         const walls = type.walls || {};
         const wallEntries = ['top', 'right', 'bottom', 'left']
-            .map(side => {
+            .map((side) => {
                 const wall = walls[side] || {};
                 const enabled = Boolean(wall.enabled);
                 const hp = Number(wall.hp || 0);
@@ -2816,49 +3573,56 @@ function setupSettingsPanel(engine) {
         document.getElementById('cfg-enable-time-limit').checked = cfg.enableTimeLimit === true;
         document.getElementById('cfg-time-limit-seconds').value = cfg.timeLimitSeconds || 90;
         document.getElementById('cfg-initial-board').value = Array.isArray(cfg.initialBoard)
-            ? cfg.initialBoard.map(row => row.join(',')).join('\n')
-            : (cfg.initialBoard || '');
+            ? cfg.initialBoard.map((row) => row.join(',')).join('\n')
+            : cfg.initialBoard || '';
         document.getElementById('cfg-base-score').value = cfg.baseScore;
         document.getElementById('cfg-combo-multiplier').checked = cfg.comboMultiplier;
         const presetSelect = document.getElementById('cfg-preset');
         const match = Object.entries(PRESET_CONFIGS).find(([_, preset]) => {
-            const p = { ...DEFAULT_CONFIG, ...preset.config, pieceTypes: preset.config.pieceTypes || DEFAULT_CONFIG.pieceTypes };
-            return JSON.stringify({
-                rows: p.rows,
-                cols: p.cols,
-                cellSize: p.cellSize,
-                totalMoves: p.totalMoves,
-                matchLength: p.matchLength,
-                enableSquare: p.enableSquare,
-                enableDiagonal: p.enableDiagonal,
-                enableDrag: p.enableDrag,
-                enableTimeLimit: p.enableTimeLimit,
-                timeLimitSeconds: p.timeLimitSeconds,
-                baseScore: p.baseScore,
-                comboMultiplier: p.comboMultiplier,
-                explodeRules: p.explodeRules,
-                initialBoard: p.initialBoard,
-            }) === JSON.stringify({
-                rows: cfg.rows,
-                cols: cfg.cols,
-                cellSize: cfg.cellSize,
-                totalMoves: cfg.totalMoves,
-                matchLength: cfg.matchLength,
-                enableSquare: cfg.enableSquare,
-                enableDiagonal: cfg.enableDiagonal,
-                enableDrag: cfg.enableDrag,
-                enableTimeLimit: cfg.enableTimeLimit,
-                timeLimitSeconds: cfg.timeLimitSeconds,
-                baseScore: cfg.baseScore,
-                comboMultiplier: cfg.comboMultiplier,
-                explodeRules: cfg.explodeRules,
-                initialBoard: cfg.initialBoard,
-            });
+            const p = {
+                ...DEFAULT_CONFIG,
+                ...preset.config,
+                pieceTypes: preset.config.pieceTypes || DEFAULT_CONFIG.pieceTypes,
+            };
+            return (
+                JSON.stringify({
+                    rows: p.rows,
+                    cols: p.cols,
+                    cellSize: p.cellSize,
+                    totalMoves: p.totalMoves,
+                    matchLength: p.matchLength,
+                    enableSquare: p.enableSquare,
+                    enableDiagonal: p.enableDiagonal,
+                    enableDrag: p.enableDrag,
+                    enableTimeLimit: p.enableTimeLimit,
+                    timeLimitSeconds: p.timeLimitSeconds,
+                    baseScore: p.baseScore,
+                    comboMultiplier: p.comboMultiplier,
+                    explodeRules: p.explodeRules,
+                    initialBoard: p.initialBoard,
+                }) ===
+                JSON.stringify({
+                    rows: cfg.rows,
+                    cols: cfg.cols,
+                    cellSize: cfg.cellSize,
+                    totalMoves: cfg.totalMoves,
+                    matchLength: cfg.matchLength,
+                    enableSquare: cfg.enableSquare,
+                    enableDiagonal: cfg.enableDiagonal,
+                    enableDrag: cfg.enableDrag,
+                    enableTimeLimit: cfg.enableTimeLimit,
+                    timeLimitSeconds: cfg.timeLimitSeconds,
+                    baseScore: cfg.baseScore,
+                    comboMultiplier: cfg.comboMultiplier,
+                    explodeRules: cfg.explodeRules,
+                    initialBoard: cfg.initialBoard,
+                })
+            );
         });
         if (presetSelect) {
             presetSelect.value = match ? match[0] : 'custom';
         }
-        
+
         // 爆炸规则
         const explode4 = cfg.explodeRules && cfg.explodeRules[4] ? cfg.explodeRules[4] : '';
         const explode5 = cfg.explodeRules && cfg.explodeRules[5] ? cfg.explodeRules[5] : '';
@@ -2867,12 +3631,13 @@ function setupSettingsPanel(engine) {
         document.getElementById('cfg-explode-5').value = explode5;
         document.getElementById('cfg-explode-6').value = explode6;
     }
-    
+
     function readForm() {
         const num = (id) => parseInt(document.getElementById(id).value, 10);
-        const toBool = (value) => ['true', '1', 'yes', 'on'].includes(String(value).trim().toLowerCase());
+        const toBool = (value) =>
+            ['true', '1', 'yes', 'on'].includes(String(value).trim().toLowerCase());
         const preset = document.getElementById('cfg-preset')?.value || 'custom';
-        
+
         const rows = num('cfg-rows');
         const cols = num('cfg-cols');
         const cellSize = num('cfg-cell-size');
@@ -2882,18 +3647,29 @@ function setupSettingsPanel(engine) {
         const enableTimeLimit = document.getElementById('cfg-enable-time-limit').checked;
         const timeLimitSeconds = num('cfg-time-limit-seconds');
         const targetScore = Number(document.getElementById('admin-target-score')?.value || 50000);
-        const targetScoreEnabled = document.getElementById('admin-target-score-enabled')?.checked ?? true;
+        const targetScoreEnabled =
+            document.getElementById('admin-target-score-enabled')?.checked ?? true;
         const initialBoardRaw = document.getElementById('cfg-initial-board').value.trim();
-        const initialBoard = initialBoardRaw ? initialBoardRaw.split(/\n|;/).map(row => row.split(',').map(cell => cell.trim()).filter(Boolean)) : null;
-        
+        const initialBoard = initialBoardRaw
+            ? initialBoardRaw.split(/\n|;/).map((row) =>
+                  row
+                      .split(',')
+                      .map((cell) => cell.trim())
+                      .filter(Boolean),
+              )
+            : null;
+
         // 解析棋子类型：支持 "🍎:#ff6b6b|pattern=dot|pieceColor=#fff|wallTop=true|wallTopHp=2" 这样的扩展配置
         const raw = document.getElementById('cfg-piece-types').value;
         const pieceTypes = splitPieceTypeEntries(raw)
             .map((entry, index) => parsePieceTypeEntry(entry, `piece${index + 1}`))
             .filter(Boolean);
-        
-        if (pieceTypes.length < 2) { alert('至少需要 2 种棋子'); return null; }
-        
+
+        if (pieceTypes.length < 2) {
+            alert('至少需要 2 种棋子');
+            return null;
+        }
+
         // 解析爆炸规则
         const explodeRules = {};
         const e4 = document.getElementById('cfg-explode-4').value.trim();
@@ -2902,10 +3678,12 @@ function setupSettingsPanel(engine) {
         if (e4) explodeRules[4] = e4;
         if (e5) explodeRules[5] = e5;
         if (e6) explodeRules[6] = e6;
-        
+
         return {
             presetName: preset,
-            rows, cols, cellSize,
+            rows,
+            cols,
+            cellSize,
             pieceTypes,
             totalMoves,
             matchLength,
@@ -2913,7 +3691,8 @@ function setupSettingsPanel(engine) {
             enableDiagonal: document.getElementById('cfg-enable-diagonal').checked,
             enableDrag: document.getElementById('cfg-enable-drag').checked,
             enableTimeLimit,
-            timeLimitSeconds: Number.isFinite(timeLimitSeconds) && timeLimitSeconds > 0 ? timeLimitSeconds : 90,
+            timeLimitSeconds:
+                Number.isFinite(timeLimitSeconds) && timeLimitSeconds > 0 ? timeLimitSeconds : 90,
             targetScore: Number.isFinite(targetScore) ? Math.max(0, targetScore) : 50000,
             targetScoreEnabled,
             initialBoard,
@@ -2923,16 +3702,16 @@ function setupSettingsPanel(engine) {
             gap: 4,
         };
     }
-    
+
     function openSettings() {
         fillForm(engine.config);
         settingsOverlay.classList.remove('hidden');
     }
-    
+
     function closeSettings() {
         settingsOverlay.classList.add('hidden');
     }
-    
+
     function applyPreset(presetName) {
         const preset = PRESET_CONFIGS[presetName];
         if (!preset) return;
@@ -2952,7 +3731,7 @@ function setupSettingsPanel(engine) {
         closeSettings();
         engine.showMessage('✅ 设置已保存并应用！');
     }
-    
+
     settingsBtn.addEventListener('click', openSettings);
     document.getElementById('cfg-preset')?.addEventListener('change', (e) => {
         if (e.target.value && e.target.value !== 'custom') {
@@ -2998,5 +3777,5 @@ setupSettingsPanel(game);
 
 console.log('🍬 糖果消消乐 v5 已启动！');
 console.log('📐 棋盘:', game.rows, 'x', game.cols);
-console.log('🎯 匹配规则:', game.matchRules.map(r => r.name).join(', '));
+console.log('🎯 匹配规则:', game.matchRules.map((r) => r.name).join(', '));
 console.log('💥 爆炸规则:', game.config.explodeRules);
