@@ -794,3 +794,90 @@ h1 {
     #header { gap: 6px; margin-bottom: 10px; }
     #restart-btn, #settings-btn { padding: 8px 16px; font-size: 13px; }
 }
+
+/* ========== 炸弹动画 ========== */
+
+/* A/B炸弹 - 水平晃动 */
+.bomb-horizontal {
+    animation: shakeHorizontal 0.3s ease-in-out infinite alternate;
+}
+
+/* A/B炸弹 - 垂直晃动 */
+.bomb-vertical {
+    animation: shakeVertical 0.3s ease-in-out infinite alternate;
+}
+
+@keyframes shakeHorizontal {
+    0% { transform: translateX(-4px) rotate(-5deg); }
+    100% { transform: translateX(4px) rotate(5deg); }
+}
+
+@keyframes shakeVertical {
+    0% { transform: translateY(-4px) rotate(-5deg); }
+    100% { transform: translateY(4px) rotate(5deg); }
+}
+
+/* C炸弹 - 小幅晃动 */
+.bomb-c {
+    animation: shakeSmall 0.2s ease-in-out infinite alternate;
+}
+
+@keyframes shakeSmall {
+    0% { transform: translate(-2px, -2px); }
+    100% { transform: translate(2px, 2px); }
+}
+
+/* D炸弹 - 大幅晃动 */
+.bomb-d {
+    animation: shakeLarge 0.25s ease-in-out infinite alternate;
+}
+
+@keyframes shakeLarge {
+    0% { transform: translate(-6px, -6px) scale(1.1); }
+    100% { transform: translate(6px, 6px) scale(0.9); }
+}
+
+/* E炸弹 - 彩虹闪烁 */
+.bomb-e {
+    animation: rainbowGlow 0.6s ease-in-out infinite alternate;
+}
+
+@keyframes rainbowGlow {
+    0% { color: #ff6b6b; text-shadow: 0 0 10px rgba(255,107,107,0.5); }
+    25% { color: #facc15; text-shadow: 0 0 10px rgba(250,204,21,0.5); }
+    50% { color: #34d399; text-shadow: 0 0 10px rgba(52,211,153,0.5); }
+    75% { color: #60a5fa; text-shadow: 0 0 10px rgba(96,165,250,0.5); }
+    100% { color: #a78bfa; text-shadow: 0 0 10px rgba(167,139,250,0.5); }
+}
+
+/* F炸弹 - 小鸟跳动 */
+.bomb-f {
+    animation: birdHop 0.4s ease-in-out infinite alternate;
+}
+
+@keyframes birdHop {
+    0% { transform: translateY(0) scale(1); }
+    100% { transform: translateY(-8px) scale(1.1); }
+}
+
+/* 炸弹生成动画 */
+.bomb-spawn {
+    animation: bombSpawn 0.3s ease-out forwards;
+}
+
+@keyframes bombSpawn {
+    0% { transform: scale(0) rotate(0deg); opacity: 0; }
+    50% { transform: scale(1.5) rotate(180deg); opacity: 1; }
+    100% { transform: scale(1) rotate(360deg); opacity: 1; }
+}
+
+/* 炸弹爆炸闪烁 */
+.cell.exploding {
+    animation: explodeFlash 0.4s ease forwards;
+}
+
+@keyframes explodeFlash {
+    0% { transform: scale(1); opacity: 1; box-shadow: 0 0 0 rgba(255,255,255,0); }
+    30% { transform: scale(1.4); opacity: 0.8; box-shadow: 0 0 50px rgba(255,215,0,0.6); }
+    100% { transform: scale(0); opacity: 0; box-shadow: 0 0 0 rgba(255,255,255,0); }
+}

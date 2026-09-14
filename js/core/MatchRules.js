@@ -1,75 +1,123 @@
-/**
- * 匹配规则类
- * 负责检测棋盘上的匹配
- */
-class MatchRules {
-    /**
-     * 查找所有匹配
-     */
-    static findMatches(board) {
-        const matches = [];
-        const matched = new Set();
+// ==================== 匹配规则类 ====================
 
-        // 水平匹配
-        for (let row = 0; row < board.length; row++) {
-            for (let col = 0; col < board[row].length - 2; col++) {
-                if (board[row][col] &&
-                    board[row][col + 1] &&
-                    board[row][col + 2] &&
-                    board[row][col].type === board[row][col + 1].type &&
-                    board[row][col + 1].type === board[row][col + 2].type) {
 
-                    const key1 = `${row},${col}`;
-                    const key2 = `${row},${col + 1}`;
-                    const key3 = `${row},${col + 2}`;
+class MatchRule { 
+    constructor(cfg) { this.config = cfg; this.name = 'base'; } 
+    check(b, r, c) { return new Set(); } 
+    get priority() { return 0; } 
+}
 
-                    if (!matched.has(key1) && !matched.has(key2) && !matched.has(key3)) {
-                        matches.push({
-                            type: board[row][col].type,
-                            positions: [
-                                { row, col },
-                                { row, col: col + 1 },
-                                { row, col: col + 2 }
-                            ]
-                        });
-                        matched.add(key1);
-                        matched.add(key2);
-                        matched.add(key3);
-                    }
+class LineMatchRule extends MatchRule {
+    constructor(cfg) { super(cfg); this.matchLength = cfg.matchLength || 3; }
+    get priority() { return 10; }
+    check(board, rows, cols) {
+        const matches = new Set(), len = this.matchLength;
+        for (let r = 0; r < rows; r++) {
+            if (!board[r]) continue; 
+            let c = 0;
+            while (c <= cols - len) {
+                const base = board[r][c]; 
+                if (!base) { c++; continue; }
+                let ok = true; 
+                for (let i = 1; i < len; i++) { 
+                    if (!board[r][c + i] || board[r][c + i].typeId !== base.typeId) { ok = false; break; } 
                 }
+                if (ok) {
+                    let ext = len; 
+                    while (c + ext < cols && board[r][c + ext]?.typeId === base.typeId) ext++;
+                    for (let i = 0; i < ext; i++) matches.add(rcToIdx(r, c + i, cols)); 
+                    c += ext;
+                } else c++;
             }
         }
-
-        // 垂直匹配
-        for (let col = 0; col < board[0].length; col++) {
-            for (let row = 0; row < board.length - 2; row++) {
-                if (board[row][col] &&
-                    board[row + 1][col] &&
-                    board[row + 2][col] &&
-                    board[row][col].type === board[row + 1][col].type &&
-                    board[row + 1][col].type === board[row + 2][col].type) {
-
-                    const key1 = `${row},${col}`;
-                    const key2 = `${row + 1},${col}`;
-                    const key3 = `${row + 2},${col}`;
-
-                    if (!matched.has(key1) && !matched.has(key2) && !matched.has(key3)) {
-                        matches.push({
-                            type: board[row][col].type,
-                            positions: [
-                                { row, col },
-                                { row: row + 1, col },
-                                { row: row + 2, col }
-                            ]
-                        });
-                        matched.add(key1);
-                        matched.add(key2);
-                        matched.add(key3);
-                    }
+        for (let c = 0; c < cols; c++) {
+            let r = 0;
+            while (r <= rows - len) {
+                if (!board[r]?.[c]) { r++; continue; } 
+                const base = board[r][c];
+                let ok = true; 
+                for (let i = 1; i < len; i++) { 
+                    if (!board[r + i]?.[c] || board[r + i][c].typeId !== base.typeId) { ok = false; break; } 
                 }
+                if (ok) {
+                    let ext = len; 
+                    while (r + ext < rows && board[r + ext]?.[c]?.typeId === base.typeId) ext++;
+                    for (let i = 0; i < ext; i++) matches.add(rcToIdx(r + i, c, cols)); 
+                    r += ext;
+                } else r++;
             }
         }
-
         return matches;
     }
 }
+
+class SquareMatchRule extends MatchRule {
+    constructor(cfg) { super(cfg); this.name = 'square'; }
+    get priority() { return 5; }
+    check(board, rows, cols) {
+        const matches = new Set();
+        for (let r = 0; r < rows - 1; r++) {
+            if (!board[r]) continue;
+            for (let c = 0; c < cols - 1; c++) {
+                const t = board[r][c]; 
+                if (!t) continue;
+                const ri = board[r][c + 1], 
+                      dn = board[r + 1]?.[c], 
+                      dg = board[r + 1]?.[c + 1];
+                if (ri?.typeId === t.typeId && dn?.typeId === t.typeId && dg?.typeId === t.typeId) {
+                    matches.add(rcToIdx(r, c, cols)); 
+                    matches.add(rcToIdx(r, c + 1, cols)); 
+                    matches.add(rcToIdx(r + 1, c, cols)); 
+                    matches.add(rcToIdx(r + 1, c + 1, cols));
+                }
+            }
+        } 
+        return matches;
+    }
+}
+
+class DiagonalMatchRule extends MatchRule {
+    constructor(cfg) { super(cfg); this.name = 'diagonal'; this.matchLength = cfg.matchLength || 3; }
+    get priority() { return 8; }
+    check(board, rows, cols) {
+        const matches = new Set(), len = this.matchLength;
+        for (let r = 0; r <= rows - len; r++) {
+            if (!board[r]) continue;
+            for (let c = 0; c <= cols - len; c++) {
+                const t = board[r][c]; 
+                if (!t) continue;
+                let ok = true; 
+                for (let i = 1; i < len; i++) { 
+                    if (!board[r + i]?.[c + i] || board[r + i][c + i].typeId !== t.typeId) { ok = false; break; } 
+                }
+                if (ok) {
+                    let ext = len; 
+                    while (r + ext < rows && c + ext < cols && board[r + ext]?.[c + ext]?.typeId === t.typeId) ext++;
+                    for (let i = 0; i < ext; i++) matches.add(rcToIdx(r + i, c + i, cols));
+                }
+            }
+        }
+        for (let r = 0; r <= rows - len; r++) {
+            if (!board[r]) continue;
+            for (let c = len - 1; c < cols; c++) {
+                const t = board[r][c]; 
+                if (!t) continue;
+                let ok = true; 
+                for (let i = 1; i < len; i++) { 
+                    if (!board[r + i]?.[c - i] || board[r + i][c - i].typeId !== t.typeId) { ok = false; break; } 
+                }
+                if (ok) {
+                    let ext = len; 
+                    while (r + ext < rows && c - ext >= 0 && board[r + ext]?.[c - ext]?.typeId === t.typeId) ext++;
+                    for (let i = 0; i < ext; i++) matches.add(rcToIdx(r + i, c - i, cols));
+                }
+            }
+        } 
+        return matches;
+    }
+}
+// 文件末尾：
+window.MatchRule = MatchRule;
+window.LineMatchRule = LineMatchRule;
+window.SquareMatchRule = SquareMatchRule;
+window.DiagonalMatchRule = DiagonalMatchRule;

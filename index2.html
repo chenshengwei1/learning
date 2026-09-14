@@ -3,44 +3,341 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>消消乐游戏</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>🍬 糖果消消乐 v5</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="game-container">
-        <h1>消消乐游戏</h1>
-        <div id="game-board"></div>
-        <div id="ui-panel">
-            <div id="score-display">得分: 0</div>
-            <button id="settings-btn">设置</button>
-            <button id="admin-btn">管理</button>
+    <!-- 原有HTML内容保持不变 -->
+    <div id="app-shell">
+        <!-- 左侧面板 -->
+        <aside id="left-panel" class="side-panel">
+            <h2>🎮 模式切换</h2>
+            <div class="mode-switch">
+                <button id="mode-admin-btn" class="mode-btn active" type="button">管理员模式</button>
+                <button id="mode-game-btn" class="mode-btn" type="button">游戏模式</button>
+            </div>
+
+            <div class="panel-card rules-panel">
+                <h3>通关条件</h3>
+                <label class="check-line">
+                    <input id="admin-target-score-enabled" type="checkbox" checked>
+                    启用最低分通关条件
+                </label>
+                <label>
+                    通关最低分数
+                    <input id="admin-target-score" type="number" min="0" step="1000" value="50000">
+                </label>
+                <label class="check-line">
+                    <input id="admin-enable-time-limit" type="checkbox">
+                    开启时间限定模式
+                </label>
+                <label>
+                    指定时长（秒）
+                    <input id="admin-time-limit-seconds" type="number" min="10" max="1800" value="90">
+                </label>
+                <label>
+                    总步数
+                    <input id="admin-total-moves" type="number" min="1" max="200" value="30">
+                </label>
+                <label class="check-line">
+                    <input id="admin-required-piece-enabled" type="checkbox">
+                    启用"消除指定类型棋子"通关条件
+                </label>
+                <label>
+                    指定棋子类型
+                    <select id="admin-required-piece-type"></select>
+                    <div id="admin-required-piece-type-tiles" class="tile-group"></div>
+                </label>
+                <label>
+                    最低消除数量
+                    <input id="admin-required-piece-count" type="number" min="0" max="200" value="10">
+                </label>
+                <label>
+                    关卡名称
+                    <input id="admin-level-name" type="text" maxlength="40" placeholder="例如：经典-挑战-1">
+                </label>
+                <button id="admin-save-rules-btn" class="primary-btn" type="button">保存规则</button>
+                <button id="admin-save-level-btn" class="secondary-btn" type="button">保存为关卡</button>
+            </div>
+
+            <div class="panel-card compact-actions">
+                <h3>已保存关卡</h3>
+                <div id="admin-level-list" class="level-list"></div>
+            </div>
+
+            <div class="panel-card compact-actions admin-actions-panel">
+                <button id="admin-apply-board-btn" class="primary-btn" type="button">应用管理员配置</button>
+                <button id="game-start-btn" class="secondary-btn" type="button">切换到游戏模式</button>
+            </div>
+        </aside>
+
+        <!-- 主游戏区域 -->
+        <main id="board-stage">
+            <div id="game-container">
+                <h1>🍬 糖果消消乐 <span style="font-size:14px;opacity:0.6;">v5</span></h1>
+
+                <div id="header">
+                    <div class="stat">
+                        <span class="label">🏆 分数</span>
+                        <span class="value" id="score">0</span>
+                    </div>
+                    <div class="stat">
+                        <span class="label">👣 剩余步数</span>
+                        <span class="value" id="moves">30</span>
+                    </div>
+                    <div class="stat">
+                        <span class="label">💥 连击</span>
+                        <span class="value" id="combo">0</span>
+                    </div>
+                    <div class="stat">
+                        <span class="label">🎯 目标</span>
+                        <span class="value" id="target-score">500</span>
+                    </div>
+                    <div class="stat">
+                        <span class="label">⏱️ 时间</span>
+                        <span class="value" id="time-left">90</span>
+                    </div>
+                </div>
+
+                <div id="board"></div>
+
+                <div id="message"></div>
+
+                <div id="actions">
+                    <button id="restart-btn">🔄 重新开始</button>
+                    <button id="hint-btn">💡 提示</button>
+                    <button id="settings-btn">⚙️ 管理设置</button>
+                    <button id="docs-btn" class="doc-entry-btn" type="button">📘 文档</button>
+                </div>
+            </div>
+        </main>
+
+        <!-- 编辑器面板 -->
+        <aside id="editor-panel" class="side-panel">
+            <div class="panel-card">
+                <h2>🛠️ 棋子属性编辑器</h2>
+                <div id="selected-cell-label">当前选中：未选择格子</div>
+
+                <label>
+                    棋子类型
+                    <select id="cell-piece-type"></select>
+                    <div id="cell-piece-type-tiles" class="tile-group"></div>
+                </label>
+                <label>
+                    背景图案
+                    <select id="cell-pattern">
+                        <option value="solid">solid</option>
+                        <option value="transparent">transparent</option>
+                        <option value="dot">dot</option>
+                        <option value="stripe">stripe</option>
+                        <option value="check">check</option>
+                        <option value="waves">waves</option>
+                        <option value="spark">spark</option>
+                    </select>
+                    <div id="cell-pattern-tiles" class="tile-group"></div>
+                </label>
+                <div class="color-row">
+                    <label>
+                        背景颜色
+                        <input id="cell-bg-color" type="color" value="#888888">
+                    </label>
+                    <label>
+                        图案颜色
+                        <input id="cell-pattern-color" type="color" value="#ffffff">
+                    </label>
+                </div>
+                <label class="check-line">
+                    <input id="cell-movable" type="checkbox" checked>
+                    是否可移动
+                </label>
+                <label>
+                    冰层（0-6）
+                    <input id="cell-ice-layer" type="number" min="0" max="6" value="0">
+                </label>
+
+                <div class="wall-grid">
+                    <label>左侧围墙
+                        <select id="cell-wall-left">
+                            <option value="none">无</option>
+                            <option value="low">低</option>
+                            <option value="medium">中</option>
+                            <option value="high">高</option>
+                        </select>
+                        <div id="cell-wall-left-tiles" class="tile-group compact"></div>
+                    </label>
+                    <label>上侧围墙
+                        <select id="cell-wall-top">
+                            <option value="none">无</option>
+                            <option value="low">低</option>
+                            <option value="medium">中</option>
+                            <option value="high">高</option>
+                        </select>
+                        <div id="cell-wall-top-tiles" class="tile-group compact"></div>
+                    </label>
+                    <label>右侧围墙
+                        <select id="cell-wall-right">
+                            <option value="none">无</option>
+                            <option value="low">低</option>
+                            <option value="medium">中</option>
+                            <option value="high">高</option>
+                        </select>
+                        <div id="cell-wall-right-tiles" class="tile-group compact"></div>
+                    </label>
+                    <label>下侧围墙
+                        <select id="cell-wall-bottom">
+                            <option value="none">无</option>
+                            <option value="low">低</option>
+                            <option value="medium">中</option>
+                            <option value="high">高</option>
+                        </select>
+                        <div id="cell-wall-bottom-tiles" class="tile-group compact"></div>
+                    </label>
+                </div>
+
+                <div class="panel-buttons">
+                    <button id="cell-apply-btn" class="primary-btn" type="button">应用到当前格子</button>
+                    <button id="cell-clear-btn" class="secondary-btn" type="button">清空当前格子</button>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- 管理设置面板 -->
+    <div id="settings-overlay" class="hidden">
+        <div id="settings-panel">
+            <h2>⚙️ 管理设置</h2>
+            <p class="settings-tip">修改规则后点击「保存并应用」，游戏将立即以新规则重新开始。</p>
+
+            <div class="form-section">
+                <h3>📐 棋盘</h3>
+                <div class="form-row">
+                    <label>模板
+                        <select id="cfg-preset">
+                            <option value="custom">自定义</option>
+                            <option value="classic">经典模式</option>
+                            <option value="timed">限时挑战</option>
+                            <option value="challenge">挑战关卡</option>
+                            <option value="wall">围墙模式</option>
+                        </select>
+                    </label>
+                    <button id="cfg-load-preset" type="button" class="btn-secondary">套用模板</button>
+                </div>
+                <div class="form-row">
+                    <label>行数 <input type="number" id="cfg-rows" min="2" max="20"></label>
+                    <label>列数 <input type="number" id="cfg-cols" min="2" max="20"></label>
+                    <label>格子尺寸 (px) <input type="number" id="cfg-cell-size" min="20" max="100"></label>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3>🍬 棋子配置</h3>
+                <div class="form-row">
+                    <label class="full">棋子种类（逗号分隔，格式：名称:颜色|pattern=dot|pieceColor=#fff|wallTop=true|wallTopHp=2）
+                        <input type="text" id="cfg-piece-types" placeholder="🍎:#ff6b6b|pattern=dot|pieceColor=#fff|wallTop=true|wallTopHp=2,🍇:#a855f7|pattern=stripe|wallRight=true|wallRightHp=3">
+                    </label>
+                </div>
+                <p style="font-size:12px;color:#999;margin-top:6px;">支持配置底色、图案层、主体颜色、围墙方向与每边耐久度。</p>
+            </div>
+
+            <div class="form-section">
+                <h3>🎯 消除规则</h3>
+                <div class="form-row">
+                    <label>最少连消数量 <input type="number" id="cfg-match-length" min="3" max="6"></label>
+                    <label>总步数 <input type="number" id="cfg-total-moves" min="1" max="200"></label>
+                </div>
+                <div class="form-row check-row">
+                    <label class="inline-check"><input type="checkbox" id="cfg-enable-square"> 田字形消除</label>
+                    <label class="inline-check"><input type="checkbox" id="cfg-enable-diagonal"> 斜线消除</label>
+                    <label class="inline-check"><input type="checkbox" id="cfg-enable-drag"> 拖拽交换</label>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3>⏱️ 时间限制</h3>
+                <div class="form-row">
+                    <label class="inline-check"><input type="checkbox" id="cfg-enable-time-limit"> 启用时间限制</label>
+                    <label>总时间（秒） <input type="number" id="cfg-time-limit-seconds" min="10" max="1800" value="90"></label>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3>🧩 初始棋盘</h3>
+                <div class="form-row">
+                    <label class="full">每行用逗号分隔，行与行用回车/分号分隔；支持：apple,empty,grape / apple|frozen,grape|bomb
+                        <textarea id="cfg-initial-board" rows="5" placeholder="apple,grape|frozen,orange
+orange,empty,apple|bomb
+grape,orange,apple"></textarea>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3>💥 爆炸规则</h3>
+                <div class="form-row">
+                    <label>消除4个触发 <input type="text" id="cfg-explode-4" placeholder="十字爆炸"></label>
+                    <label>消除5个触发 <input type="text" id="cfg-explode-5" placeholder="全屏爆炸"></label>
+                </div>
+                <div class="form-row">
+                    <label>消除6个触发 <input type="text" id="cfg-explode-6" placeholder="范围爆炸:3"></label>
+                </div>
+                <p style="font-size:12px;color:#999;margin-top:4px;">
+                    支持: 十字爆炸(cross), 全屏爆炸(screen), 范围爆炸(blast:半径)
+                </p>
+            </div>
+
+            <div class="form-section">
+                <h3>🏆 计分</h3>
+                <div class="form-row">
+                    <label>每颗基础分 <input type="number" id="cfg-base-score" min="1" max="1000"></label>
+                    <label class="inline-check"><input type="checkbox" id="cfg-combo-multiplier"> 连击加倍</label>
+                    <label><input type="checkbox" id="cfg-sound-enabled"> 音效</label>
+                </div>
+            </div>
+
+            <div class="settings-actions">
+                <button id="cfg-save" class="btn-primary">💾 保存并应用</button>
+                <button id="cfg-reset" class="btn-secondary">↩️ 恢复默认</button>
+                <button id="cfg-close" class="btn-secondary">✖️ 关闭</button>
+            </div>
         </div>
     </div>
 
-    <!-- 设置面板 -->
-    <div id="settings-panel" class="panel hidden">
-        <h2>游戏设置</h2>
-        <button id="close-settings">关闭</button>
-    </div>
+    <!-- 使用 type="module" 加载主脚本 -->
+    <script>
+    // 自动加载所有 JS 文件（按顺序）
+    const files = [
+        'js/utils/constants.js',
+        'js/utils/helpers.js',
+        'js/utils/cache.js',
+        'js/utils/dom.js',
+        'js/core/Piece.js',
+        'js/core/MatchRules.js',
+        'js/managers/ScoreManager.js',
+        'js/managers/SoundManager.js',
+        'js/managers/ConfigManager.js',
+        'js/core/GameEngine.js',
+        'js/panels/AdminPanel.js',
+        'js/panels/SettingsPanel.js',
+        'js/main.js'
+    ];
 
-    <!-- 管理员面板 -->
-    <div id="admin-panel" class="panel hidden">
-        <h2>管理员面板</h2>
-        <button id="close-admin">关闭</button>
-    </div>
+    // 使用同步加载确保顺序
+    function loadScript(src) {
+        const script = document.createElement('script');
+        script.src = src;
+        document.head.appendChild(script);
+        return new Promise((resolve) => {
+            script.onload = resolve;
+            script.onerror = resolve;
+        });
+    }
 
-    <script src="js/utils/constants.js"></script>
-    <script src="js/utils/helpers.js"></script>
-    <script src="js/utils/cache.js"></script>
-    <script src="js/utils/dom.js"></script>
-    <script src="js/core/MatchRules.js"></script>
-    <script src="js/core/Piece.js"></script>
-    <script src="js/core/GameEngine.js"></script>
-    <script src="js/managers/ConfigManager.js"></script>
-    <script src="js/managers/ScoreManager.js"></script>
-    <script src="js/managers/SoundManager.js"></script>
-    <script src="js/panels/SettingsPanel.js"></script>
-    <script src="js/panels/AdminPanel.js"></script>
-    <script src="js/main.js"></script>
+    async function loadAll() {
+        for (const src of files) {
+            await loadScript(src);
+        }
+    }
+    loadAll();
+    </script>
 </body>
 </html>

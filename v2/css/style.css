@@ -1,0 +1,804 @@
+/* ==================== 基础 ==================== */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    color: #e0e0e0;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* ==================== 布局 ==================== */
+
+#app-shell {
+    display: flex;
+    gap: 16px;
+    max-width: 1600px;
+    width: 100%;
+    align-items: flex-start;
+}
+
+.side-panel {
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    padding: 16px;
+    width: 280px;
+    flex-shrink: 0;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#board-stage {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    min-width: 0;
+}
+
+/* ==================== 游戏容器 ==================== */
+
+#game-container {
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 20px;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    max-width: 100%;
+    overflow: auto;
+}
+
+#game-container h1 {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, #ffd700, #ff6b6b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* ==================== HUD ==================== */
+
+#header {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+#header .stat {
+    background: rgba(255, 255, 255, 0.06);
+    padding: 4px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+#header .stat .label {
+    color: #888;
+    font-size: 12px;
+}
+
+#header .stat .value {
+    font-weight: bold;
+    color: #ffd700;
+    font-size: 16px;
+}
+
+#header .stat.warning .value {
+    color: #ff6b6b;
+    animation: pulse 0.6s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+    from { opacity: 0.6; }
+    to { opacity: 1; }
+}
+
+/* ==================== 棋盘 ==================== */
+
+#board {
+    margin: 0 auto;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+    padding: 8px;
+    position: relative;
+}
+
+.cell {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.15s;
+    user-select: none;
+    touch-action: none;
+}
+
+.cell:hover {
+    transform: scale(0.98);
+}
+
+.cell.selected {
+    outline: 3px solid #ffd700;
+    outline-offset: -2px;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+    z-index: 5;
+}
+
+.cell.hint-cell {
+    animation: hintPulse 0.8s ease-in-out 3;
+}
+
+@keyframes hintPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.4); }
+    50% { box-shadow: 0 0 25px 8px rgba(255, 215, 0, 0.6); }
+}
+
+.cell.invalid-swap {
+    animation: invalidShake 0.3s ease;
+}
+
+@keyframes invalidShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    75% { transform: translateX(8px); }
+}
+
+.cell.dragging {
+    opacity: 0.8;
+    transform: scale(0.95);
+}
+
+/* ==================== 棋子图层 ==================== */
+
+.piece-bg {
+    position: absolute;
+    inset: 0;
+    border-radius: 8px;
+}
+
+.piece-pattern {
+    position: absolute;
+    inset: 0;
+    border-radius: 8px;
+    background-size: 12px 12px;
+}
+
+.piece-main {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    font-size: 30px;
+    line-height: 1;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.piece-border {
+    position: absolute;
+    inset: 0;
+    border-radius: 8px;
+    pointer-events: none;
+}
+
+.piece-wall {
+    position: absolute;
+    pointer-events: none;
+}
+
+.piece-wall.wall-top { top: 0; left: 0; right: 0; height: 0; }
+.piece-wall.wall-right { top: 0; right: 0; bottom: 0; width: 0; }
+.piece-wall.wall-bottom { bottom: 0; left: 0; right: 0; height: 0; }
+.piece-wall.wall-left { top: 0; left: 0; bottom: 0; width: 0; }
+
+.piece-ice {
+    position: absolute;
+    inset: 0;
+    background: rgba(190, 235, 255, 0.42);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #fff;
+    pointer-events: none;
+    font-size: 20px;
+}
+
+.piece-locked {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    pointer-events: none;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.piece-frozen {
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 200, 0, 0.5);
+    border-radius: 8px;
+    pointer-events: none;
+}
+
+/* ==================== 特效动画 ==================== */
+
+.effect-anim {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: 8px;
+}
+
+.effect-line {
+    animation: lineShake 0.3s ease-in-out infinite alternate;
+}
+
+@keyframes lineShake {
+    0% { transform: translateX(-3px); }
+    100% { transform: translateX(3px); }
+}
+
+.effect-bomb {
+    animation: bombPulse 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes bombPulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 100, 100, 0.6); }
+    100% { box-shadow: 0 0 20px 5px rgba(255, 100, 100, 0.8); }
+}
+
+.effect-square {
+    animation: squareShake 0.4s ease-in-out infinite alternate;
+}
+
+@keyframes squareShake {
+    0% { transform: scale(0.95); }
+    100% { transform: scale(1.05); }
+}
+
+.effect-rainbow {
+    animation: rainbowGlow 1s ease-in-out infinite alternate;
+}
+
+@keyframes rainbowGlow {
+    0% { box-shadow: 0 0 15px 3px rgba(255, 107, 107, 0.6); }
+    25% { box-shadow: 0 0 15px 3px rgba(250, 204, 21, 0.6); }
+    50% { box-shadow: 0 0 15px 3px rgba(52, 211, 153, 0.6); }
+    75% { box-shadow: 0 0 15px 3px rgba(96, 165, 250, 0.6); }
+    100% { box-shadow: 0 0 15px 3px rgba(167, 139, 250, 0.6); }
+}
+
+.effect-magicBird {
+    animation: birdHop 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes birdHop {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-6px); }
+}
+
+/* ==================== 消除与爆炸动画 ==================== */
+
+.cell.removed {
+    animation: removePop 0.3s ease forwards;
+}
+
+@keyframes removePop {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.3); opacity: 0.6; }
+    100% { transform: scale(0); opacity: 0; }
+}
+
+.cell.exploding {
+    animation: explodeFlash 0.4s ease forwards;
+}
+
+@keyframes explodeFlash {
+    0% { transform: scale(1); opacity: 1; }
+    30% { transform: scale(1.6); opacity: 0.8; box-shadow: 0 0 50px rgba(255, 215, 0, 0.6); }
+    100% { transform: scale(0); opacity: 0; }
+}
+
+.cell.bomb-spawn {
+    animation: bombSpawn 0.4s ease-out;
+}
+
+@keyframes bombSpawn {
+    0% { transform: scale(0) rotate(0deg); }
+    60% { transform: scale(1.4) rotate(180deg); }
+    100% { transform: scale(1) rotate(360deg); }
+}
+
+/* ==================== 消息 ==================== */
+
+#message {
+    text-align: center;
+    padding: 8px;
+    margin: 8px 0;
+    font-size: 14px;
+    color: #ffd700;
+    min-height: 32px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+#message.show {
+    opacity: 1;
+}
+
+/* ==================== 操作按钮 ==================== */
+
+#actions {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 12px;
+    flex-wrap: wrap;
+}
+
+#actions button {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #e0e0e0;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.2s;
+}
+
+#actions button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+}
+
+/* ==================== 面板 ==================== */
+
+.panel-card {
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 12px;
+}
+
+.panel-card h2,
+.panel-card h3 {
+    font-size: 14px;
+    margin-bottom: 10px;
+    color: #ffd700;
+}
+
+.panel-card label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: #aaa;
+}
+
+.panel-card input[type="number"],
+.panel-card input[type="text"],
+.panel-card select {
+    width: 100%;
+    padding: 6px 10px;
+    margin-top: 4px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+    color: #e0e0e0;
+    font-size: 13px;
+}
+
+.panel-card input[type="checkbox"] {
+    margin-right: 6px;
+}
+
+.check-line {
+    display: flex !important;
+    align-items: center;
+    font-size: 13px;
+}
+
+.mode-switch {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.mode-btn {
+    flex: 1;
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    color: #aaa;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.2s;
+}
+
+.mode-btn.active {
+    background: linear-gradient(135deg, #ffd700, #ff6b6b);
+    color: #fff;
+    border-color: transparent;
+    font-weight: bold;
+}
+
+.primary-btn,
+.secondary-btn {
+    width: 100%;
+    padding: 8px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+    margin-top: 6px;
+    transition: transform 0.2s;
+}
+
+.primary-btn {
+    background: linear-gradient(135deg, #ffd700, #ff6b6b);
+    color: #fff;
+    font-weight: bold;
+}
+
+.secondary-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: #e0e0e0;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.primary-btn:hover,
+.secondary-btn:hover {
+    transform: translateY(-1px);
+}
+
+.tile-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 4px;
+}
+
+.option-tile {
+    padding: 4px 10px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+    color: #aaa;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.option-tile.selected {
+    background: rgba(255, 215, 0, 0.3);
+    color: #ffd700;
+    border-color: #ffd700;
+}
+
+/* ==================== 设置弹层 ==================== */
+
+.hidden {
+    display: none !important;
+}
+
+#settings-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+#settings-panel {
+    background: #1a1a2e;
+    border-radius: 16px;
+    padding: 24px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 85vh;
+    overflow-y: auto;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+#settings-panel h2 {
+    margin-bottom: 16px;
+    color: #ffd700;
+}
+
+.form-section {
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.form-section h3 {
+    font-size: 14px;
+    margin-bottom: 10px;
+    color: #ffd700;
+}
+
+.form-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+}
+
+.form-row label {
+    flex: 1;
+    min-width: 120px;
+    font-size: 13px;
+    color: #aaa;
+}
+
+.form-row input,
+.form-row select,
+.form-row textarea {
+    width: 100%;
+    padding: 6px 10px;
+    margin-top: 4px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+    color: #e0e0e0;
+    font-size: 13px;
+    font-family: inherit;
+}
+
+.settings-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    margin-top: 16px;
+}
+
+.settings-actions button {
+    padding: 8px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+/* ==================== 响应式 ==================== */
+
+@media (max-width: 900px) {
+    #app-shell {
+        flex-direction: column;
+    }
+    
+    .side-panel {
+        width: 100%;
+    }
+    
+    #board {
+        --cell-size: 45px !important;
+    }
+}
+
+@media (max-width: 500px) {
+    #board {
+        --cell-size: 32px !important;
+    }
+    
+    .cell .piece-main {
+        font-size: 20px !important;
+    }
+}
+
+/* ==================== 关卡列表 ==================== */
+
+.level-list {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.level-pill {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 10px;
+    margin-bottom: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+.level-pill span {
+    color: #ccc;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.level-pill button {
+    padding: 4px 10px;
+    background: rgba(255, 215, 0, 0.2);
+    border: 1px solid rgba(255, 215, 0, 0.4);
+    border-radius: 4px;
+    color: #ffd700;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s;
+}
+
+.level-pill button:hover {
+    background: rgba(255, 215, 0, 0.3);
+}
+
+/* ==================== 颜色行 ==================== */
+
+.color-row {
+    display: flex;
+    gap: 8px;
+}
+
+.color-row label {
+    flex: 1;
+}
+
+.color-row input[type="color"] {
+    width: 100%;
+    height: 30px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: transparent;
+    cursor: pointer;
+}
+
+/* ==================== 围墙网格 ==================== */
+
+.wall-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.wall-grid label {
+    font-size: 12px;
+}
+
+/* ==================== 面板按钮 ==================== */
+
+.panel-buttons {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.panel-buttons button {
+    flex: 1;
+}
+
+/* ==================== 文档入口 ==================== */
+
+.doc-entry-btn {
+    background: rgba(96, 165, 250, 0.2) !important;
+    border-color: rgba(96, 165, 250, 0.4) !important;
+    color: #60a5fa !important;
+}
+
+.doc-entry-btn:hover {
+    background: rgba(96, 165, 250, 0.3) !important;
+}
+
+/* ==================== 紧凑操作面板 ==================== */
+
+.compact-actions {
+    padding: 10px;
+}
+
+.compact-actions h3 {
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+.admin-actions-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* ==================== 设置提示 ==================== */
+
+.settings-tip {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 16px;
+    line-height: 1.5;
+}
+
+/* ==================== 内联复选框 ==================== */
+
+.inline-check {
+    display: inline-flex !important;
+    align-items: center;
+    font-size: 13px;
+    color: #aaa;
+    margin-right: 12px;
+    width: auto !important;
+}
+
+.check-row {
+    flex-wrap: wrap;
+}
+
+/* ==================== 按钮样式补充 ==================== */
+
+.btn-primary {
+    background: linear-gradient(135deg, #ffd700, #ff6b6b);
+    color: #fff;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 13px;
+    transition: transform 0.2s;
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: #e0e0e0;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 8px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* ==================== 下落动画 ==================== */
+
+.cell.falling {
+    z-index: 5;
+    will-change: transform, opacity;
+    pointer-events: none;
+}
+
+/* 可选：下落时轻微阴影 */
+.cell.falling .piece-bg {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* 可选：新棋子淡入 */
+.cell.falling .piece-main {
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0.5; }
+    to { opacity: 1; }
+}
