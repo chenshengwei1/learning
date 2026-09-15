@@ -26,6 +26,7 @@
     
     // 6. 创建游戏引擎
     const game = new GameEngine(initialConfig, registries);
+    game.configLoader = configLoader;   // ← 新增：挂载 ConfigLoader
     window.__gameEngine = game;
     
     // 7. 初始化渲染
@@ -42,6 +43,7 @@
     
     const levelSelector = new LevelSelector(game, configLoader);
     levelSelector.init();
+    game.levelSelector = levelSelector;   // ← 新增：挂载
     
     const elementEditor = new ElementEditor(game);
     elementEditor.init();
@@ -62,6 +64,7 @@
     document.getElementById('hint-btn')?.addEventListener('click', () => game.showHint());
     document.getElementById('mode-admin-btn')?.addEventListener('click', () => game.setMode('admin'));
     document.getElementById('mode-game-btn')?.addEventListener('click', () => game.setMode('game'));
+    document.getElementById('undo-btn')?.addEventListener('click', () => game.undo());
     
     // 11. 启动游戏
     game.init();

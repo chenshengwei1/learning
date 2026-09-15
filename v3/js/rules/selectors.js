@@ -207,9 +207,11 @@ function registerBuiltinSelectors(registries) {
                 });
             }
             
+            const rng = context?.$game?.rng;   // ← 从 context 拿
+
             // 洗牌
             for (let i = candidates.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
+                const j = rng ? rng.nextInt(i + 1) : Math.floor(Math.random() * (i + 1));
                 [candidates[i], candidates[j]] = [candidates[j], candidates[i]];
             }
             

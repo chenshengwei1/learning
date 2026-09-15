@@ -46,7 +46,7 @@ function matchCreationRule(rule, shapeResult, matches) {
 /**
  * 根据规则计算特效生成位置
  */
-function resolveCreationPosition(place, shapeResult) {
+function resolveCreationPosition(place, shapeResult, game) {
     const positions = shapeResult.positions;
     if (positions.length === 0) return null;
     
@@ -56,7 +56,11 @@ function resolveCreationPosition(place, shapeResult) {
         case 'intersection':
             return shapeResult.extra?.intersection || positions[0];
         case 'random':
-            return positions[Math.floor(Math.random() * positions.length)];
+            // ← 用 game.rng（如果没有，降级到 Math.random）
+            const rng = game?.rng;
+            const idx = rng ? rng.nextInt(positions.length) : Math.floor(Math.random() * positions.length);
+            return positions[idx];
+            //return positions[Math.floor(Math.random() * positions.length)];
         case 'first':
         default:
             return positions[0];

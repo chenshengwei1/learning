@@ -306,7 +306,62 @@ const SVGLibrary = (function() {
   <circle cx="30" cy="50" r="2" fill="#fff" opacity="0.6"/>
   <circle cx="50" cy="50" r="2" fill="#fff" opacity="0.6"/>
   <circle cx="70" cy="50" r="2" fill="#fff" opacity="0.6"/>
-</svg>`
+</svg>`,
+  'rainbow-bird': `
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+    <defs>
+      <linearGradient id="rbRainbow" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#ff6b6b"/>
+        <stop offset="20%" stop-color="#fbbf24"/>
+        <stop offset="40%" stop-color="#34d399"/>
+        <stop offset="60%" stop-color="#60a5fa"/>
+        <stop offset="80%" stop-color="#a78bfa"/>
+        <stop offset="100%" stop-color="#ec4899"/>
+      </linearGradient>
+      <radialGradient id="rbBody" cx="40%" cy="35%">
+        <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9"/>
+        <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="rbEye" cx="40%" cy="35%">
+        <stop offset="0%" stop-color="#ffffff"/>
+        <stop offset="100%" stop-color="#cbd5e1"/>
+      </radialGradient>
+    </defs>
+    
+    <!-- 身体：彩虹渐变圆 -->
+    <circle cx="50" cy="52" r="34" fill="url(#rbRainbow)" stroke="#ffffff" stroke-width="2"/>
+    
+    <!-- 高光 -->
+    <ellipse cx="38" cy="38" rx="14" ry="10" fill="url(#rbBody)"/>
+    
+    <!-- 左翅膀（小椭圆） -->
+    <ellipse cx="18" cy="55" rx="10" ry="14" fill="#60a5fa" stroke="#ffffff" stroke-width="1.5" transform="rotate(-15 18 55)"/>
+    
+    <!-- 右翅膀 -->
+    <ellipse cx="82" cy="55" rx="10" ry="14" fill="#ec4899" stroke="#ffffff" stroke-width="1.5" transform="rotate(15 82 55)"/>
+    
+    <!-- 眼睛（左） -->
+    <circle cx="38" cy="48" r="8" fill="url(#rbEye)" stroke="#1a1a1a" stroke-width="1.5"/>
+    <circle cx="38" cy="49" r="4" fill="#1a1a1a"/>
+    <circle cx="40" cy="47" r="1.5" fill="#ffffff"/>
+    
+    <!-- 眼睛（右） -->
+    <circle cx="62" cy="48" r="8" fill="url(#rbEye)" stroke="#1a1a1a" stroke-width="1.5"/>
+    <circle cx="62" cy="49" r="4" fill="#1a1a1a"/>
+    <circle cx="64" cy="47" r="1.5" fill="#ffffff"/>
+    
+    <!-- 尖嘴（金黄色三角） -->
+    <path d="M 50 56 L 44 66 L 56 66 Z" fill="#fbbf24" stroke="#f59e0b" stroke-width="1.5"/>
+    
+    <!-- 小脚丫（两个小三角） -->
+    <path d="M 42 82 L 40 90 L 46 86 Z" fill="#fbbf24" stroke="#f59e0b" stroke-width="1"/>
+    <path d="M 58 82 L 60 90 L 54 86 Z" fill="#fbbf24" stroke="#f59e0b" stroke-width="1"/>
+    
+    <!-- 头顶的彩虹羽冠 -->
+    <path d="M 50 18 Q 45 8 38 12" stroke="#ff6b6b" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M 50 18 Q 50 6 50 8" stroke="#fbbf24" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M 50 18 Q 55 8 62 12" stroke="#34d399" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </svg>`,
     };
     
     // ============================================================

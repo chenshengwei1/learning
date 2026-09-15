@@ -1,6 +1,39 @@
 // ==================== 关卡库 ====================
 
 const BUILTIN_LEVELS = [
+    {
+        id: 'sandbox',
+        name: '沙盒测试',
+        description: '无特效、无炸弹的纯棋子棋盘，用于功能测试',
+        board: {
+            rows: 8,
+            cols: 8,
+            layout: [
+                [1, 1, 1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1, 1, 1]
+            ]
+        },
+        pieces: null,                       // 随机填充（后续会用控制台覆盖）
+        targets: [],
+        obstacles: [],
+        goals: [],                          // 无目标 → 无限玩
+        moves: 9999,
+        config: {
+            matchLength: 3,
+            enableSquare: true,
+            enableDiagonal: false,
+            enableDrag: true,
+            enableTimeLimit: false,
+            baseScore: 10,
+            comboMultiplier: true
+        }
+    },
     
     // ============================================================
     // 关卡 1：基础三消（无目标物）

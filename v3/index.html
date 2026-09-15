@@ -95,7 +95,10 @@
 
                 <div id="actions">
                     <button id="restart-btn">🔄 重新开始</button>
+                    <button id="reset-level-btn" class="hidden">🔄 重置关卡</button>
                     <button id="hint-btn">💡 提示</button>
+                    <button id="ui-test-btn">🧪 一键测试</button>   <!-- ← 新增 -->
+                    <button id="undo-btn">↩️ 回退</button>
                 </div>
             </div>
         </main>
@@ -110,13 +113,26 @@
                 <button id="element-save-btn" class="primary-btn">💾 保存</button>
                 <button id="element-test-btn" class="secondary-btn">🧪 测试</button>
                 <button id="element-close-btn" class="secondary-btn">✖️ 关闭</button>
+                
             </div>
         </div>
+    </div>
+    <div id="editor-panel" class="editor-panel hidden">
+        <div class="editor-panel-header">
+            <h2>🛠️ 格子编辑器</h2>
+            <button id="editor-panel-close" class="editor-panel-close" type="button">✖</button>
+        </div>
+        <div class="editor-mode-switch">
+            <button id="editor-mode-single" class="editor-mode-btn active" type="button">单选</button>
+            <button id="editor-mode-multi" class="editor-mode-btn" type="button">多选</button>
+        </div>
+        <div id="editor-panel-content"></div>
     </div>
 
     <!-- ==================== JS 加载顺序 ==================== -->
     
     <!-- 1. 工具层 -->
+    <script src="js/utils/seeded-random.js"></script>
     <script src="js/utils/constants.js"></script>
     <script src="js/utils/helpers.js"></script>
     <script src="js/utils/cache.js"></script>
@@ -171,6 +187,7 @@
     <script src="js/core/GameEngine.js"></script>
     
     <!-- 9. 配置层 -->
+    <script src="js/config/swapRules.js"></script>
     <script src="js/config/elements.js"></script>
     <script src="js/config/rules.js"></script>
     <script src="js/config/levels.js"></script>
@@ -189,5 +206,12 @@
     
     <!-- 11. 入口 -->
     <script src="js/main.js"></script>
+    <script src="js/console-tools.js"></script>
+
+    <!-- 开发工具（生产环境可删） -->
+    
+    <!-- 测试工具（生产环境可删） -->
+    <script src="test/page-checker.js"></script>
+    <script src="test/ui-test-runner.js"></script>   <!-- ← 新增 -->
 </body>
 </html>

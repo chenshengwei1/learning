@@ -34,10 +34,15 @@ class GameEngine {
         this.initialTargetCount = 0;
         
         this.selected = null;
+        this.selectedCells = new Set();   // ← 新增
+        this.editorMode = 'single';       // ← 新增：'single' | 'multi'
         this.isProcessing = false;
         this.isGameEnded = false;
         this.mode = 'admin';
         this.history = [];
+        if (this.rng) {
+            this.rng.reset(config.seed ?? Date.now());
+        }
         this.maxHistory = 5;
         
         // 特效合成规则
@@ -67,6 +72,9 @@ class GameEngine {
         this.selected = null;
         this.isProcessing = false;
         this.isGameEnded = false;
+
+        // ← 新增：清空回退历史
+        this.clearHistory();
         
         this.timeLeft = this.config.enableTimeLimit 
             ? Number(this.config.timeLimitSeconds || 90) 
@@ -74,6 +82,9 @@ class GameEngine {
         
         // ← 关键修复 1：先注册匹配规则，后续 stabilize 才能检测
         this._initMatchRules();
+
+        // ← 新增：种子随机数生成器（默认 Date.now()，每局不同）
+        this.rng = new SeededRandom(this.config.seed ?? Date.now());
         
         // 创建棋盘（随机生成时内置 _wouldMatch 防三连，人为指定时保留原状）
         this.board = this._createBoardFromConfig();
@@ -322,10 +333,18 @@ class GameEngine {
     // ==================== 交换 ====================
     
     async swap(r1, c1, r2, c2) {
-        if (this.isProcessing || this.isGameEnded) return;
-        if (Math.abs(r1 - r2) + Math.abs(c1 - c2) !== 1) return;
+        console.log('[swap] 被调用', r1, c1, r2, c2);
+
+        if (this.isProcessing || this.isGameEnded){
+            console.log('[swap] 被拦截: isProcessing=', this.isProcessing, 'isGameEnded=', this.isGameEnded);
+            return;
+        } 
+        if (Math.abs(r1 - r2) + Math.abs(c1 - c2) !== 1)  {
+            console.log('[swap] 不相邻');
+            return;
+        }
         
-        // 清空选中状态（防止拖拽交换时残留选中）
+        // 清空选中状态
         if (this.selected) {
             this._updateSelectionUI(this.selected, null);
             this.selected = null;
@@ -339,6 +358,17 @@ class GameEngine {
             return;
         }
         
+        // ← 新增：双特效交换分支
+        if (p1.effect && p2.effect) {
+            console.log('[swap] 走双特效分支');
+            this.isProcessing = true;
+            this._saveHistory();   // ← 新增
+            await this._handleEffectSwap(r1, c1, r2, c2);
+            this.isProcessing = false;
+            return;
+        }
+        
+        console.log('[swap] 走普通交换分支');
         this.isProcessing = true;
 
         if (window.__DEBUG_TRACE__) {
@@ -390,8 +420,360 @@ class GameEngine {
         
         this.isProcessing = false;
     }
+
+    // ==================== 双特效交换 ====================
+
+    /**
+     * 处理双特效交换
+     */
+    async _handleEffectSwap(r1, c1, r2, c2) {
+        console.log('[EffectSwap] 开始', r1, c1, r2, c2);
+
+        const p1 = this.board.get(r1, c1);
+        const p2 = this.board.get(r2, c2);
+        
+        // 1. 数据层交换
+        this.board.swap(r1, c1, r2, c2);
+        this.matchSystem.clearCache();
+        this.renderSystem.renderPartial(new Set([posToKey(r1, c1), posToKey(r2, c2)]));
+        await sleep(200);
+        
+        // 2. 交换后的棋子
+        const p1After = this.board.get(r1, c1);   // 交换后 (r1,c1) 的棋子
+        const p2After = this.board.get(r2, c2);   // 交换后 (r2,c2) 的棋子
+        console.log('[EffectSwap] 交换后 p1After:', p1After?.id, 'effect=', p1After?.effect, '| p2After:', p2After?.id, 'effect=', p2After?.effect);
+        
+        // 3. 匹配组合规则
+        const rule = this._findSwapRule(p1After, p2After, r1, c1, r2, c2);
+        console.log('[EffectSwap] 匹配规则:', rule?.id, 'targets=', rule?.effect?.targets);
+        
+        if (window.__DEBUG_TRACE__) {
+            console.log(`[EffectSwap] 规则=${rule.id}`);
+            console.log(`  交换后: (${r1},${c1})=${p1After.effect}  (${r2},${c2})=${p2After.effect}`);
+        }
+        
+        // 4. 构建 context
+        const context = this._buildSwapContext(p1After, p2After, r1, c1, r2, c2);
+        console.log('[EffectSwap] context:', context);
+        
+        // 5. 解析目标
+        let targets;
+        if (rule.effect.targets === 'each') {
+            console.log('[EffectSwap] 走 each 分支');
+            targets = await this._resolveEachTrigger(p1After, p2After, r1, c1, r2, c2);
+        } else {
+            console.log('[EffectSwap] 走 targets 分支');
+            targets = this._resolveSwapEffectTargets(rule.effect, context);
+        }
+        
+        console.log('[EffectSwap] 受影响格子数:', targets.size, [...targets]);
+        const damage = rule.effect.damage || 1;
+        
+        if (window.__DEBUG_TRACE__) {
+            console.log(`  受影响格子数: ${targets.size}`);
+        }
+        
+        // 6. 应用效果
+        await this._applySwapEffect(targets, damage);
+
+        
+        // 7. 消耗步数
+        this.movesLeft--;
+        this.updateHUD();
+        
+        // 8. 连锁检查
+        await sleep(200);
+        this.matchSystem.clearCache();
+        const chainMatches = this.matchSystem.findMatches();
+        console.log('[EffectSwap] 连锁匹配:', chainMatches.size);
+        if (chainMatches.size > 0) {
+            await this.processMatches(chainMatches);
+        }
+        
+        this._checkGameEnd();
+    }
+
+    /**
+     * 查找匹配的组合规则
+     */
+    _findSwapRule(p1, p2, r1, c1, r2, c2) {
+        const rules = (typeof BUILTIN_SWAP_RULES !== 'undefined') ? BUILTIN_SWAP_RULES : [];
+        
+        for (const rule of rules) {
+            if (this._matchSwapRule(rule.when, p1, p2, r1, c1, r2, c2)) {
+                return rule;
+            }
+        }
+        
+        return rules[rules.length - 1] || { id: 'empty', effect: { targets: 'each', damage: 1 } };
+    }
+
+    /**
+     * 检查规则是否匹配
+     */
+    _matchSwapRule(when, p1, p2, r1, c1, r2, c2) {
+        // 效应匹配
+        if (when.p1Effect) {
+            const expected = Array.isArray(when.p1Effect) ? when.p1Effect : [when.p1Effect];
+            if (!p1?.effect || !expected.includes(p1.effect)) return false;
+        }
+        if (when.p2Effect) {
+            const expected = Array.isArray(when.p2Effect) ? when.p2Effect : [when.p2Effect];
+            if (!p2?.effect || !expected.includes(p2.effect)) return false;
+        }
+        
+        // 条件匹配
+        if (when.condition) {
+            switch (when.condition) {
+                case 'sameRow': if (r1 !== r2) return false; break;
+                case 'diffRow': if (r1 === r2) return false; break;
+                case 'sameCol': if (c1 !== c2) return false; break;
+                case 'diffCol': if (c1 === c2) return false; break;
+            }
+        }
+        
+        return true;
+    }
+
+    /**
+     * 构建 context 变量
+     */
+    _buildSwapContext(p1After, p2After, r1, c1, r2, c2) {
+        // 判定哪个是 line
+        const isLine1 = p1After.effect?.startsWith('line');
+        const isLine2 = p2After.effect?.startsWith('line');
+        const isBomb1 = p1After.effect === 'bomb';
+        const isBomb2 = p2After.effect === 'bomb';
+        
+        // line 优先
+        let lineRow, lineCol, lineRow2, lineCol2;
+        if (isLine1) {
+            lineRow = r1; lineCol = c1;
+            lineRow2 = r2; lineCol2 = c2;
+        } else if (isLine2) {
+            lineRow = r2; lineCol = c2;
+            lineRow2 = r1; lineCol2 = c1;
+        } else {
+            lineRow = r1; lineCol = c1;
+            lineRow2 = r2; lineCol2 = c2;
+        }
+        
+        // bomb 优先
+        let bombRow, bombCol;
+        if (isBomb1) {
+            bombRow = r1; bombCol = c1;
+        } else if (isBomb2) {
+            bombRow = r2; bombCol = c2;
+        } else {
+            bombRow = r1; bombCol = c1;
+        }
+        
+        return {
+            $r1: r1, $c1: c1, $r2: r2, $c2: c2,
+            $piece1: p1After, $piece2: p2After,
+            $row1: r1, $row2: r2,
+            $col1: c1, $col2: c2,
+            $lineRow: lineRow, $lineCol: lineCol,
+            $lineRow2: lineRow2, $lineCol2: lineCol2,
+            $bombRow: bombRow, $bombCol: bombCol,
+            // offset 变量用于 ± 1 行/列
+            $bombRowOffset: bombRow,
+            $bombColOffset: bombCol,
+            $lineRowOffset: lineRow,
+            $lineColOffset: lineCol
+        };
+    }
+
+    /**
+     * fallback：各自触发各自效果
+     */
+    async _resolveEachTrigger(p1After, p2After, r1, c1, r2, c2) {
+        const targets = new Set();
+        
+        for (const [p, r, c] of [[p1After, r1, c1], [p2After, r2, c2]]) {
+            if (!p?.effect) continue;
+            
+            const effectEl = this.registries.elements.get(p.effect);
+            if (!effectEl?.events) continue;
+            
+            for (const ev of effectEl.events) {
+                if (ev.event !== 'onRemove') continue;
+                
+                for (const action of ev.actions || []) {
+                    if (action.type !== 'remove') continue;
+                    
+                    const ctx = { r, c, $r: r, $c: c };
+                    for (const sel of (Array.isArray(action.targets) ? action.targets : [action.targets])) {
+                        const cells = this._resolveSelectorSimple(sel, ctx);
+                        for (const k of cells) targets.add(k);
+                    }
+                }
+            }
+        }
+        
+        return targets;
+    }
+
+    /**
+     * 解析组合效果的目标格子
+     */
+    _resolveSwapEffectTargets(effect, context) {
+        const targets = new Set();
+        
+        for (const sel of effect.targets) {
+            const cells = this._resolveSelectorSimple(sel, context);
+            for (const k of cells) targets.add(k);
+        }
+        
+        return targets;
+    }
+
+    /**
+     * 简化版选择器解析（支持 row / col / area / all）
+     * 支持 offset 字段：表示在解析出的行/列基础上偏移
+     */
+    _resolveSelectorSimple(sel, ctx) {
+        const board = this.board;
+        const result = new Set();
+        
+        if (sel.type === 'row') {
+            let r = this._resolveValue(sel.r, ctx);
+            if (typeof sel.offset === 'number') r += sel.offset;
+            if (r < 0 || r >= board.rows) return result;
+            for (let c = 0; c < board.cols; c++) result.add(posToKey(r, c));
+        } else if (sel.type === 'col') {
+            let c = this._resolveValue(sel.c, ctx);
+            if (typeof sel.offset === 'number') c += sel.offset;
+            if (c < 0 || c >= board.cols) return result;
+            for (let r = 0; r < board.rows; r++) result.add(posToKey(r, c));
+        } else if (sel.type === 'area') {
+            const r = this._resolveValue(sel.r, ctx);
+            const c = this._resolveValue(sel.c, ctx);
+            const radius = sel.radius || 1;
+            for (let dr = -radius; dr <= radius; dr++) {
+                for (let dc = -radius; dc <= radius; dc++) {
+                    if (!sel.diagonal && Math.abs(dr) + Math.abs(dc) > radius) continue;
+                    const nr = r + dr, nc = c + dc;
+                    if (board.isInBounds(nr, nc)) result.add(posToKey(nr, nc));
+                }
+            }
+        } else if (sel.type === 'all') {
+            for (let r = 0; r < board.rows; r++) {
+                for (let c = 0; c < board.cols; c++) result.add(posToKey(r, c));
+            }
+        }
+        
+        return result;
+    }
+
+    /**
+     * 解析变量值
+     */
+    _resolveValue(val, ctx) {
+        if (typeof val === 'number') return val;
+        if (typeof val === 'string') {
+            if (val.startsWith('$')) {
+                // context 里的 key 是 '$xxx' 格式，直接用 val 查
+                const value = ctx[val];
+                if (value === undefined) {
+                    console.warn(`[EffectSwap] 变量 "${val}" 未定义，context keys:`, Object.keys(ctx));
+                    return 0;
+                }
+                return value;
+            }
+        }
+        return Number(val) || 0;
+    }
+
+    /**
+     * 应用双特效交换的效果
+     */
+    async _applySwapEffect(targets, damage) {
+        if (targets.size === 0) return;
+        let eliminated = 0;
+        // 1. 消除棋子
+        for (const key of targets) {
+            const { r, c } = keyToPos(key);
+            const piece = this.board.get(r, c);
+            if (piece?.isRemovable()) {
+                this._countElim(piece);
+                this.board.set(r, c, null);
+                eliminated++;   // ← 新增：统计消除数量
+            }
+        }
+        
+        // ← 新增：计分
+        if (eliminated > 0) {
+            const points = this.scoreSystem.calculate(eliminated, 1, { special: true });
+            this.score += points;
+            this.updateHUD();
+            console.log(`[EffectSwap] 消除 ${eliminated} 个棋子，+${points} 分`);
+        }
+        
+        // 2. 对障碍物造成伤害（每个冰单独计算）
+        for (const key of targets) {
+            const { r, c } = keyToPos(key);
+            const obstacle = this.board.getObstacleAt(r, c);
+            if (obstacle) {
+                this.board.damageObstacleAt(r, c, damage);
+            }
+        }
+        
+        // 3. 重绘
+        this.renderSystem.renderAll();
+        await sleep(350);
+        
+        // 4. 重力
+        const gravityResult = this.gravitySystem.apply();
+        this.matchSystem.clearCache();
+        this.renderSystem.renderPartial(gravityResult.changed);
+        await this.renderSystem.animateGravityDrop(gravityResult.drops);
+    }
     
-    async handleCellClick(r, c) {
+    async handleCellClick(r, c, ctrlKey = false) {
+        // ← 管理员模式
+        if (this.mode === 'admin') {
+            const key = posToKey(r, c);
+            
+            if (this.editorMode === 'single') {
+                // 单选模式：只保留一个
+                this.selectedCells.clear();
+                this.selectedCells.add(key);
+            } else {
+                // 多选模式
+                if (ctrlKey) {
+                    // Ctrl 点击：切换
+                    if (this.selectedCells.has(key)) {
+                        this.selectedCells.delete(key);
+                    } else {
+                        this.selectedCells.add(key);
+                    }
+                } else {
+                    // 普通点击：清空后只选这一个
+                    this.selectedCells.clear();
+                    this.selectedCells.add(key);
+                }
+            }
+            
+            // 同步 selected（指向第一个）
+            const first = [...this.selectedCells][0];
+            this.selected = first ? keyToPos(first) : null;
+            
+            this.renderSystem.renderAll();
+            
+            // 打开编辑器
+            if (this.selectedCells.size > 0) {
+                if (this.adminPanel) {
+                    this.adminPanel.showCellEditorForMultiple([...this.selectedCells]);
+                }
+            } else {
+                // 全部取消，关闭编辑器
+                document.getElementById('editor-panel')?.classList.add('hidden');
+            }
+            return;
+        }
+        
+        // ← 游戏模式（原有逻辑）
         if (this.isGameEnded) return;
         if (this.isProcessing) return;
         if (this.movesLeft <= 0) {
@@ -520,7 +902,7 @@ class GameEngine {
             // ========== 步骤 6：记录匹配位置（用于生成特效）==========
             let creationPos = null;
             if (creation) {
-                creationPos = resolveCreationPosition(creation.place, shapeResult);
+                creationPos = resolveCreationPosition(creation.place, shapeResult, this);
             }
             
             // ========== 步骤 7：遍历匹配，收集要触发的特效，并消除普通棋子 ==========
@@ -637,6 +1019,11 @@ class GameEngine {
             }
 
             this.matchSystem.clearCache();
+
+            // ← 新增：特效生成位置也加入 changed
+            if (creation && creationPos) {
+                gravityResult.changed.add(posToKey(creationPos.r, creationPos.c));
+            }
             
             if (gravityResult.changed && gravityResult.changed.size > 0) {
                 this.renderSystem.renderPartial(gravityResult.changed);
@@ -876,9 +1263,64 @@ class GameEngine {
             board: this.board.serialize(),
             score: this.score,
             movesLeft: this.movesLeft,
-            elimCounts: { ...this.elimCounts }
+            elimCounts: { ...this.elimCounts },
+            rngState: this.rng.saveState(),   // ← 新增
         });
         if (this.history.length > this.maxHistory) this.history.shift();
+    }
+
+    /**
+     * 回退到上一次交换前的状态
+     */
+    undo() {
+        if (this.history.length === 0) {
+            this.showMessage('⚠️ 没有可回退的操作');
+            return false;
+        }
+        
+        if (this.isProcessing) {
+            this.showMessage('⏳ 正在处理中，请稍后');
+            return false;
+        }
+        
+        if (this.isGameEnded) {
+            this.showMessage('⛔ 游戏已结束，无法回退');
+            return false;
+        }
+        
+        const snapshot = this.history.pop();
+        
+        // 恢复棋盘
+        this.board = Board.deserialize(snapshot.board);
+        
+        // 恢复状态
+        this.score = snapshot.score;
+        this.movesLeft = snapshot.movesLeft;
+        this.elimCounts = { ...(snapshot.elimCounts || {}) };
+
+        // ← 恢复随机数状态（关键！）
+        if (snapshot.rngState !== undefined) {
+            this.rng.restoreState(snapshot.rngState);
+        }
+        
+        // 清空选中
+        this.selected = null;
+        this.selectedCells.clear();
+        
+        // 清缓存 + 重绘
+        this.matchSystem.clearCache();
+        this.renderSystem.renderAll();
+        this.updateHUD();
+        
+        this.showMessage(`↩️ 已回退（剩余可回退 ${this.history.length} 步）`);
+        return true;
+    }
+
+    /**
+     * 清空回退历史
+     */
+    clearHistory() {
+        this.history = [];
     }
     
     async _flashInvalid(r1, c1, r2, c2) {
@@ -903,7 +1345,25 @@ class GameEngine {
         if (rulesPanel) rulesPanel.style.display = this.mode === 'admin' ? '' : 'none';
         if (adminActions) adminActions.style.display = this.mode === 'admin' ? '' : 'none';
         
+        // 控制按钮显示
+        const restartBtn = document.getElementById('restart-btn');
+        const resetLevelBtn = document.getElementById('reset-level-btn');
+        
+        if (this.mode === 'admin') {
+            restartBtn?.classList.add('hidden');
+            resetLevelBtn?.classList.remove('hidden');
+        } else {
+            restartBtn?.classList.remove('hidden');
+            resetLevelBtn?.classList.add('hidden');
+        }
+        
+        // 关闭编辑器
+        if (this.mode === 'game') {
+            document.getElementById('editor-panel')?.classList.add('hidden');
+        }
+        
         this.selected = null;
+        this.selectedCells.clear();   // ← 新增
         this.renderSystem.renderAll();
         
         if (this.mode === 'game') {

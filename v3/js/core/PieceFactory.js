@@ -1,8 +1,9 @@
 // ==================== PieceFactory 棋子工厂 ====================
 
 class PieceFactory {
-    constructor(registries) {
+    constructor(registries, game) {
         this.registries = registries;
+        this.game = game;   // ← 新增
     }
     
     /**
@@ -40,9 +41,11 @@ class PieceFactory {
     random() {
         const pieces = this.registries.elements
             .getByCategory(ELEMENT_CATEGORIES.PIECE)
-            .filter(e => e.id !== 'empty');   // ← 排除 empty
+            .filter(e => e.id !== 'empty');
         if (pieces.length === 0) return null;
-        const idx = Math.floor(Math.random() * pieces.length);
+        // ← 改用 game.rng（如果没有，降级到 Math.random）
+        const rng = this.game?.rng;
+        const idx = rng ? rng.nextInt(pieces.length) : Math.floor(Math.random() * pieces.length);
         return this.create(pieces[idx].id);
     }
     

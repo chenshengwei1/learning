@@ -39,6 +39,9 @@ class RenderSystem {
         this.boardEl.innerHTML = '';
         this.cellCache.clear();
         
+        // 确保棋盘容器是 relative
+        this.boardEl.style.position = 'relative';
+        
         this._renderLayout();
         this._renderTargets();
         this._renderObstacles();
@@ -326,22 +329,47 @@ class RenderSystem {
     }
     
     _renderPiece(cell, piece, r, c) {
-        // ← 新增这一行
+        // 清除临时动画类
         cell.classList.remove('removed', 'exploding', 'bomb-spawn', 'hint-cell', 'invalid-swap');
-
+        
+        // 清除特效类（防止残留）
+        cell.className = cell.className.replace(/\beffect-[\w-]+\b/g, '').trim();
+        
         cell.innerHTML = '';
         const { cellSize } = this.game.config;
         
-        // 元素配置
+        if (!piece) return;
+        
+        const effect = piece.effect;
+        
+        // ===== 特殊：彩虹特效 → 直接替换图标 =====
+        if (effect === 'rainbow') {
+            const rainbowEl = document.createElement('img');
+            rainbowEl.className = 'piece-svg rainbow-bird';
+            rainbowEl.src = SVGLibrary.resolve('@rainbow-bird');
+            rainbowEl.style.cssText = `
+                position: absolute;
+                inset: 6%;
+                width: 88%;
+                height: 88%;
+                object-fit: contain;
+                pointer-events: none;
+                z-index: 1;
+            `;
+            cell.appendChild(rainbowEl);
+            cell.classList.add('effect-rainbow');
+            return;
+        }
+        
+        // ===== 其他情况：保留棋子图标 =====
         const elementDef = piece.element 
             ? this.game.registries.elements.get(piece.element)
             : null;
         
-        // 优先用棋子自身的 svg，否则用元素定义的
         const svg = piece.visual.svg || elementDef?.svg;
         
         if (svg) {
-             const img = document.createElement('img');
+            const img = document.createElement('img');
             img.src = SVGLibrary.resolve(svg) || svg;
             img.className = 'piece-svg';
             img.style.cssText = `
@@ -356,7 +384,6 @@ class RenderSystem {
             `;
             cell.appendChild(img);
         } else {
-            // 用字符
             const main = document.createElement('div');
             main.className = 'piece-main';
             main.textContent = piece.visual.char || '';
@@ -366,12 +393,9 @@ class RenderSystem {
             cell.appendChild(main);
         }
         
-        // 特效动画层
-        if (piece.effect) {
-            const eff = document.createElement('div');
-            eff.className = `effect-anim effect-${piece.effect}`;
-            eff.style.zIndex = '2';
-            cell.appendChild(eff);
+        // ===== 特效：保留棋子 + 加动画类 =====
+        if (effect) {
+            cell.classList.add(`effect-${effect}`);
         }
         
         // 状态
@@ -437,8 +461,16 @@ class RenderSystem {
         const piece = board.get(r, c);
         if (piece) this._renderPiece(cell, piece, r, c);
         
-        if (this.game.selected?.r === r && this.game.selected?.c === c) {
-            cell.classList.add('selected');
+        // ← 修改：支持多选高亮
+        const key = posToKey(r, c);
+        if (this.game.mode === 'admin') {
+            if (this.game.selectedCells?.has(key)) {
+                cell.classList.add('selected-multi');
+            }
+        } else {
+            if (this.game.selected?.r === r && this.game.selected?.c === c) {
+                cell.classList.add('selected');
+            }
         }
         
         this.game.inputSystem.bindCell(cell, r, c);
@@ -447,7 +479,7 @@ class RenderSystem {
     }
 
     _updateCellContent(cell, r, c) {
-        // ← 新增：兜底重置格子状态（防止上次动画残留）
+        // 兜底重置
         cell.style.zIndex = String(RENDER_LAYERS.PIECE);
         cell.style.transform = '';
         cell.style.transition = '';
@@ -457,10 +489,20 @@ class RenderSystem {
         const piece = this.game.board.get(r, c);
         this._renderPiece(cell, piece, r, c);
         
-        if (this.game.selected?.r === r && this.game.selected?.c === c) {
-            cell.classList.add('selected');
+        // ← 修改：支持单选和多选高亮
+        const key = posToKey(r, c);
+        cell.classList.remove('selected', 'selected-multi');
+        
+        if (this.game.mode === 'admin') {
+            // 管理员模式：多选高亮
+            if (this.game.selectedCells?.has(key)) {
+                cell.classList.add('selected-multi');
+            }
         } else {
-            cell.classList.remove('selected');
+            // 游戏模式：单选高亮
+            if (this.game.selected?.r === r && this.game.selected?.c === c) {
+                cell.classList.add('selected');
+            }
         }
     }
     

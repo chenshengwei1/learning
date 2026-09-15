@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>🧪 糖果消消乐 - 测试</title>
+    <style>
+        body {
+            font-family: 'Menlo', 'Consolas', monospace;
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 20px;
+        }
+        h1 { color: #fbbf24; }
+        button {
+            background: linear-gradient(135deg, #fbbf24, #ef4444);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 8px;
+        }
+        #output {
+            background: #1e293b;
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 16px;
+            font-size: 13px;
+            line-height: 1.6;
+            max-height: 600px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+        #stats {
+            background: #1e293b;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 16px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 糖果消消乐 - 测试</h1>
+    
+    <button onclick="runAllTests()">▶️ 运行所有测试</button>
+    <button onclick="clearOutput()">🗑️ 清空</button>
+    
+    <div id="stats"></div>
+    <div id="output"></div>
+    
+    <!-- 加载游戏引擎（只用逻辑，不用 UI）-->
+    <script src="../js/utils/constants.js"></script>
+    <script src="../js/utils/helpers.js"></script>
+    <script src="../js/utils/cache.js"></script>
+    <script src="../js/assets/svg-library.js"></script>
+    <script src="../js/engine/registries/ActionRegistry.js"></script>
+    <script src="../js/engine/registries/EventRegistry.js"></script>
+    <script src="../js/engine/registries/SelectorRegistry.js"></script>
+    <script src="../js/engine/registries/ConditionRegistry.js"></script>
+    <script src="../js/engine/registries/ElementRegistry.js"></script>
+    <script src="../js/engine/registries/GoalRegistry.js"></script>
+    <script src="../js/engine/registries/index.js"></script>
+    <script src="../js/engine/dsl/VariableResolver.js"></script>
+    <script src="../js/engine/dsl/ExpressionParser.js"></script>
+    <script src="../js/engine/dsl/ConfigValidator.js"></script>
+    <script src="../js/engine/runtime/EventBus.js"></script>
+    <script src="../js/engine/runtime/RuleRuntime.js"></script>
+    <script src="../js/core/Piece.js"></script>
+    <script src="../js/core/Board.js"></script>
+    <script src="../js/core/ShapeResult.js"></script>
+    <script src="../js/core/PieceFactory.js"></script>
+    <script src="../js/core/EventQueue.js"></script>
+    <script src="../js/rules/selectors.js"></script>
+    <script src="../js/rules/conditions.js"></script>
+    <script src="../js/rules/actions.js"></script>
+    <script src="../js/rules/events.js"></script>
+    <script src="../js/rules/goals.js"></script>
+    <script src="../js/rules/index.js"></script>
+    <script src="../js/systems/MatchSystem.js"></script>
+    <script src="../js/systems/GravitySystem.js"></script>
+    <script src="../js/systems/ScoreSystem.js"></script>
+    <script src="../js/systems/GoalSystem.js"></script>
+    <script src="../js/systems/TimerSystem.js"></script>
+    <script src="../js/systems/RenderSystem.js"></script>
+    <script src="../js/systems/InputSystem.js"></script>
+    <script src="../js/systems/SaveSystem.js"></script>
+    <script src="../js/core/GameEngine.js"></script>
+    <script src="../js/config/elements.js"></script>
+    <script src="../js/config/rules.js"></script>
+    <script src="../js/config/swapRules.js"></script>
+    <script src="../js/config/levels.js"></script>
+    <script src="../js/config/presets.js"></script>
+    <script src="../js/config/creationRules.js"></script>
+    <script src="../js/config/index.js"></script>
+    
+    <!-- 测试脚手架 -->
+    <script src="harness.js"></script>
+    <script src="assertions.js"></script>
+    <script src="page-checker.js"></script>
+    
+    <script>
+        const output = document.getElementById('output');
+        const stats = document.getElementById('stats');
+        
+        function log(msg) {
+            output.textContent += msg + '\n';
+            output.scrollTop = output.scrollHeight;
+        }
+        
+        function clearOutput() {
+            output.textContent = '';
+            stats.textContent = '';
+        }
+        
+        // 劫持 console.log 到页面
+        const originalLog = console.log;
+        const originalError = console.error;
+        console.log = (...args) => {
+            originalLog(...args);
+            log(args.map(a => typeof a === 'object' ? JSON.stringify(a) : a).join(' '));
+        };
+        console.error = (...args) => {
+            originalError(...args);
+            log('❌ ' + args.map(a => typeof a === 'object' ? JSON.stringify(a) : a).join(' '));
+        };
+        
+        async function runAllTests() {
+            clearOutput();
+            
+            const { createTestGame, setupBoard, setEffect, doSwap, snapshotBoard } = window.__testHarness;
+            const { assert, assertEqual, assertGreaterThan, resetCounters, getResults } = window.__testAssertions;
+            const checker = window.__pageChecker;
+            
+            const suites = [
+                { name: '3 消', fn: testMatch3 },
+                { name: '4 消', fn: testMatch4 },
+                { name: '5 消', fn: testMatch5 },
+                { name: '田字', fn: testSquare },
+                { name: 'T 形', fn: testTShape },
+                { name: 'L 形', fn: testLShape },
+                { name: 'line + bomb', fn: testSwapLineBomb },
+                { name: 'line + line', fn: testSwapLineLine },
+                { name: 'bomb + bomb', fn: testSwapBombBomb },
+                { name: 'rainbow + line', fn: testSwapRainbowLine },
+            ];
+            
+            let totalPass = 0;
+            let totalFail = 0;
+            
+            for (const suite of suites) {
+                log(`\n========== ${suite.name} ==========`);
+                resetCounters();
+                
+                try {
+                    await suite.fn({ createTestGame, setupBoard, setEffect, doSwap, snapshotBoard, assert, assertEqual, assertGreaterThan });
+                } catch (e) {
+                    log(`❌ 崩溃: ${e.message}`);
+                    log(e.stack);
+                }
+                
+                const { passCount, failCount } = getResults();
+                totalPass += passCount;
+                totalFail += failCount;
+            }
+            
+            stats.innerHTML = `
+                <strong>📊 结果</strong>：
+                <span style="color:#4ade80">✅ 通过 ${totalPass}</span>
+                &nbsp;&nbsp;
+                <span style="color:#ef4444">❌ 失败 ${totalFail}</span>
+            `;
+        }
+        
+        // ==================== 测试实现 ====================
+        
+        async function testMatch3(api) {
+            const game = api.createTestGame();
+            game.setMode('game');
+            api.setupBoard(game, [
+                [0, 0, 'fox'], [0, 1, 'fox'], [0, 2, 'cat'], [0, 3, 'fox'],
+            ]);
+            const before = api.snapshotBoard(game);
+            await api.doSwap(game, 0, 2, 0, 3);
+            const after = api.snapshotBoard(game);
+            api.assertGreaterThan(after.score, before.score, '分数增加');
+            api.assertEqual(after.movesLeft, before.movesLeft - 1, '步数 -1');
+        }
+        
+        async function testMatch4(api) {
+            const game = api.createTestGame();
+            game.setMode('game');
+            api.setupBoard(game, [
+                [0, 2, 'fox'],
+                [1, 0, 'fox'], [1, 1, 'fox'], [1, 2, 'cat'], [1, 3, 'fox'], [1, 4, 'cat'],
+            ]);
+            const before = api.snapshotBoard(game);
+            await api.doSwap(game, 0, 2, 1, 2);
+            const after = api.snapshotBoard(game);
+            api.assertGreaterThan(after.score, before.score, '分数增加');
+            const hasLine = after.grid.some(row => row.some(cell => cell && cell.effect === 'line-horizontal'));
+            api.assert(hasLine, '生成 line-horizontal');
+        }
+        
+        async function testMatch5(api) {
+            const game = api.createTestGame();
+            game.setMode('game');
+            api.setupBoard(game, [
+                [0, 2, 'fox'],
+                [1, 0, 'fox'], [1, 1, 'fox'], [1, 2, 'cat'], [1, 3, 'fox'], [1, 4, 'fox'],
+                [1, 5, 'cat'], [1, 6, 'cat'], [1, 7, 'cat'],
+            ]);
+            const before = api.snapshotBoard(game);
+            await api.doSwap(game, 0, 2, 1, 2);
+            const after = api.snapshotBoard(game);
+            api.assertGreaterThan(after.score, before.score, '分数增加');
+            const hasRainbow = after.grid.some(row => row.some(cell => cell && cell.effect === 'rainbow'));
+            api.assert(hasRainbow, '生成 rainbow');
+        }
+        
+        async function testSquare(api) {
+            const game = api.createTestGame();
+            game.setMode('game');
+            api.setupBoard(game, [
+                [0, 3, 'fox'], [0, 4, 'fox'],
+                [1, 3, 'fox'], [1, 4, 'cat'], [1, 5, 'fox'],
+                [0, 5, 'cat'],
+            ]);
+            const before = api.snapshotBoard(game);
+            await api.doSwap(game, 1, 4, 1, 5);
+            const after = api.snapshotBoard(game);
+            api.assertGreaterThan(after.score, before.score, '分数增加');
+            const hasSquare = after.grid.some(row => row.some(cell => cell && cell.effect === 'square-effect'));
+            api.assert(hasSquare, '生成 square-effect');
+        }
+        
+        async function testTShape(api) {
+            const game = api.createTestGame();
+            game.setMode('game');
+            api.setupBoard(game, [
+                [0, 0, 'fox'], [0, 1, 'fox'], [0, 2, 'cat'], [0, 3, 'fox'], [0, 4, 'fox'],
+                [1, 2, 'fox'], [2, 2, 'fox'], [3, 2, 'fox'], [4, 2, 'fox'],
+            ]);
+            const before = api.snapshotBoard(game);
+            await api.doSwap(game, 0, 2, 0, 3);
+            const after = api.snapshotBoard(game);
+            api.assertGreaterThan(after.score, before.score, '分数增加');
+            const hasBomb = after.grid.some(row => row.some(cell => cell && cell.effect === 'bomb'));
+            api.assert(hasBomb, '生成 bomb');
+        }
+        
+        async function testLShape(api) {
+            const game = api.createTestGame();
+            game.setMode('game');
+            api.setupBoard(game, [
+                [0, 0, 'fox'], [1, 0, 'fox'], [2, 0, 'fox'],
+                [0, 1, 'fox'], [0, 2, 'cat'], [0, 3, 'fox'],
+            ]);
+            const before = api.snapshotBoard(game);
+            await api.doSwap(game, 0, 2, 0, 3);
+            const after = api.snapshotBoard(game);
+            api.assertGreaterThan(after.score, before.score, '分数增加');
+            const hasBomb = after.grid.some(row => row.some(cell => cell && cell.effect === 'bomb'));
+            api.assert(hasBomb, '生成 bomb');
+        }
+        
+        async function testSwapLineBomb(api) {
+            const game = api.createTestGame();
+            game.setMode('game');
+            api.setupBoard(game, [[3, 3, 'fox'], [3, 4, 'owl']]);
+            api.setEffect(game, 3, 3, 'line-horizontal');
+            api.setEffect(game, 3, 4, 'bomb');
+            const before = api.snapshotBoard(game);
+            await api.doSwap(game, 3, 3, 3, 4);
+            const after = api.snapshotBoard(game);
+            api.assertGreaterThan(after.score, before.score, '分数增加');
+            api.assertEqual(after.movesLeft, before.movesLeft - 1, '步数 -1');
+        }
+        
+        async function testSwapLineLine(api) {
+            const game = api.createTestGame();
+            game.setMode('game');
+            api.setupBoard(game, [[3, 3, 'fox'], [3, 4, 'owl']]);
+            api.setEffect(game, 3, 3, 'line-horizontal');
+            api.setEffect(game, 3, 4, 'line-vertical');
+            const before = api.snapshotBoard(game);
+            await api.doSwap(game, 3, 3, 3, 4);
+            const after = api.snapshotBoard(game);
+            api.assertGreaterThan(after.score - before.score, 100, '分数增加 > 100');
+        }
+        
+        async function testSwapBombBomb(api) {
+            const game = api.createTestGame();
+            game.setMode('game');
+            api.setupBoard(game, [[3, 3, 'fox'], [3, 4, 'owl']]);
+            api.setEffect(game, 3, 3, 'bomb');
+            api.setEffect(game, 3, 4, 'bomb');
+            const before = api.snapshotBoard(game);
+            await api.doSwap(game, 3, 3, 3, 4);
+            const after = api.snapshotBoard(game);
+            api.assertGreaterThan(after.score - before.score, 200, '分数增加 > 200');
+        }
+        
+        async function testSwapRainbowLine(api) {
+            const game = api.createTestGame();
+            game.setMode('game');
+            api.setupBoard(game, [[3, 3, 'fox'], [3, 4, 'owl']]);
+            api.setEffect(game, 3, 3, 'rainbow');
+            api.setEffect(game, 3, 4, 'line-horizontal');
+            const before = api.snapshotBoard(game);
+            await api.doSwap(game, 3, 3, 3, 4);
+            const after = api.snapshotBoard(game);
+            api.assertGreaterThan(after.score - before.score, 1000, '分数增加 > 1000');
+        }
+    </script>
+</body>
+</html>

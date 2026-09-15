@@ -334,7 +334,10 @@ function registerBuiltinActions(registries) {
             const options = action.options || [];
             if (options.length === 0) return;
             
-            const pick = options[Math.floor(Math.random() * options.length)];
+            const rng = game?.rng;
+            const idx = rng ? rng.nextInt(options.length) : Math.floor(Math.random() * options.length);
+            const pick = options[idx];
+
             const parsed = parser.parseAction(pick);
             await parser.executeAction(parsed, game, context);
         }

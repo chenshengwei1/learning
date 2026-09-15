@@ -789,3 +789,374 @@ body {
         max-height: none;
     }
 }
+
+/* ==================== 格子编辑器（浮动） ==================== */
+
+.editor-panel {
+    position: fixed;
+    right: 20px;
+    top: 20px;
+    width: 320px;
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+    background: #1e293b;
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    z-index: 500;
+}
+
+.editor-panel.hidden {
+    display: none;
+}
+
+.editor-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.editor-panel-header h2 {
+    font-size: 15px;
+    color: #fbbf24;
+    margin: 0;
+}
+
+.editor-panel-close {
+    background: none;
+    border: none;
+    color: #94a3b8;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.editor-panel-close:hover {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+}
+
+.editor-section {
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.editor-section:last-child {
+    border-bottom: none;
+}
+
+.editor-section h4 {
+    font-size: 12px;
+    color: #94a3b8;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.editor-section label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 13px;
+    color: #cbd5e1;
+}
+
+.editor-section input[type="text"],
+.editor-section input[type="number"],
+.editor-section select {
+    width: 100%;
+    padding: 6px 10px;
+    margin-top: 4px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+    color: #e2e8f0;
+    font-size: 13px;
+    font-family: inherit;
+}
+
+.editor-section input[type="checkbox"] {
+    margin-right: 6px;
+}
+
+.editor-section .check-line {
+    display: flex;
+    align-items: center;
+}
+
+.editor-section .inline-fields {
+    display: flex;
+    gap: 8px;
+}
+
+.editor-section .inline-fields label {
+    flex: 1;
+}
+
+.editor-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.editor-actions button {
+    flex: 1;
+    padding: 8px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: inherit;
+}
+
+.editor-actions .primary-btn {
+    background: linear-gradient(135deg, #fbbf24, #ef4444);
+    color: #fff;
+    font-weight: bold;
+}
+
+.editor-actions .secondary-btn {
+    background: rgba(255, 255, 255, 0.08);
+    color: #e2e8f0;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.editor-actions .danger-btn {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.4);
+}
+
+.editor-actions .danger-btn:hover {
+    background: rgba(239, 68, 68, 0.3);
+}
+
+.editor-panel .position-label {
+    font-size: 14px;
+    color: #fbbf24;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+/* ==================== 关卡列表标签 ==================== */
+
+.level-name-wrap {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex: 1;
+    overflow: hidden;
+}
+
+.level-name-wrap span:first-child {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #cbd5e1;
+}
+
+.level-tag {
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 4px;
+    flex-shrink: 0;
+}
+
+.level-tag.builtin {
+    background: rgba(59, 130, 246, 0.2);
+    color: #60a5fa;
+    border: 1px solid rgba(59, 130, 246, 0.4);
+}
+
+.level-tag.custom {
+    background: rgba(251, 191, 36, 0.2);
+    color: #fbbf24;
+    border: 1px solid rgba(251, 191, 36, 0.4);
+}
+
+.level-pill .danger {
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #ef4444;
+    padding: 2px 6px;
+    font-size: 11px;
+}
+
+.level-pill .danger:hover {
+    background: rgba(239, 68, 68, 0.3);
+}
+
+/* 隐藏元素 */
+.hidden {
+    display: none !important;
+}
+
+/* ==================== 格子编辑器 - 选择模式 ==================== */
+
+.editor-mode-switch {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 12px;
+    padding: 3px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+}
+
+.editor-mode-btn {
+    flex: 1;
+    padding: 6px;
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.2s;
+    font-family: inherit;
+}
+
+.editor-mode-btn.active {
+    background: linear-gradient(135deg, #fbbf24, #ef4444);
+    color: #fff;
+    font-weight: bold;
+}
+
+.editor-mode-btn:not(.active):hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #e2e8f0;
+}
+
+/* ==================== 格子多选高亮 ==================== */
+
+.cell.selected-multi {
+    outline: 3px solid #60a5fa;
+    outline-offset: -3px;
+    box-shadow: 0 0 12px rgba(96, 165, 250, 0.5);
+    z-index: 5;
+}
+
+/* 框选矩形 */
+#selection-box {
+    position: absolute;
+    background: rgba(59, 130, 246, 0.2);
+    border: 2px solid #3b82f6;
+    pointer-events: none;
+    z-index: 100;
+    border-radius: 4px;
+    display: none;
+}
+
+#selection-box.active {
+    display: block;
+}
+
+/* 混合值提示 */
+.mixed-warning {
+    font-size: 11px;
+    color: #fbbf24;
+    margin-top: 4px;
+    padding: 4px 8px;
+    background: rgba(251, 191, 36, 0.1);
+    border-left: 2px solid #fbbf24;
+    border-radius: 4px;
+}
+
+/* 特效下拉框分组 */
+.editor-section h4.effect-title {
+    color: #a78bfa;
+}
+
+/* ==================== 特效动画 ==================== */
+
+/* ---------- 直线特效（水平）：动物左右看 ---------- */
+
+/* ---------- 直线特效（水平）：3D 左右翻面 ---------- */
+
+.cell.effect-line-horizontal .piece-svg,
+.cell.effect-line-horizontal .piece-main {
+    animation: lookLeftRight 0.8s ease-in-out infinite alternate;
+    transform-style: preserve-3d;
+}
+
+@keyframes lookLeftRight {
+    0% { transform: perspective(120px) rotateY(-18deg); }
+    100% { transform: perspective(120px) rotateY(18deg); }
+}
+
+/* ---------- 直线特效（垂直）：3D 上下翻面 ---------- */
+
+.cell.effect-line-vertical .piece-svg,
+.cell.effect-line-vertical .piece-main {
+    animation: lookUpDown 0.8s ease-in-out infinite alternate;
+    transform-style: preserve-3d;
+}
+
+@keyframes lookUpDown {
+    0% { transform: perspective(120px) rotateX(-15deg); }
+    100% { transform: perspective(120px) rotateX(15deg); }
+}
+
+/* ---------- 爆炸特效：红橙色外发光（大范围） ---------- */
+
+.cell.effect-bomb {
+    animation: bombOuterGlow 0.9s ease-in-out infinite alternate;
+    border-radius: 8px;
+}
+
+@keyframes bombOuterGlow {
+    0% { 
+        box-shadow: 0 0 4px 2px rgba(255, 100, 100, 0.4),
+                    0 0 8px 4px rgba(249, 115, 22, 0.3);
+    }
+    100% { 
+        box-shadow: 0 0 20px 8px rgba(255, 100, 100, 0.9),
+                    0 0 40px 16px rgba(249, 115, 22, 0.5);
+    }
+}
+
+/* ---------- 田字特效：金黄色内发光（紧贴边缘） ---------- */
+
+.cell.effect-square-effect {
+    animation: squareInnerGlow 0.8s ease-in-out infinite alternate;
+    border-radius: 8px;
+}
+
+@keyframes squareInnerGlow {
+    0% { 
+        box-shadow: inset 0 0 0 2px rgba(255, 215, 0, 0.5),
+                    inset 0 0 8px 2px rgba(255, 215, 0, 0.3);
+    }
+    100% { 
+        box-shadow: inset 0 0 0 3px rgba(255, 215, 0, 0.9),
+                    inset 0 0 16px 6px rgba(255, 215, 0, 0.6);
+    }
+}
+
+/* ---------- 彩虹特效：彩虹鸟脉动 ---------- */
+
+/* ---------- 彩虹特效：只颜色变化，不移动 ---------- */
+
+.cell.effect-rainbow {
+    /* 格子无变化 */
+    border-radius: 8px;
+}
+
+.rainbow-bird {
+    /* 用 filter 旋转色相，让整只鸟的颜色循环变化 */
+    animation: rainbowHueShift 3s linear infinite;
+}
+
+@keyframes rainbowHueShift {
+    0%   { filter: hue-rotate(0deg); }
+    25%  { filter: hue-rotate(90deg); }
+    50%  { filter: hue-rotate(180deg); }
+    75%  { filter: hue-rotate(270deg); }
+    100% { filter: hue-rotate(360deg); }
+}

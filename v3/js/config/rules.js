@@ -14,16 +14,24 @@
  *   preserve: ['direction', 'color']      // 传递什么属性
  * }
  */
-
 const BUILTIN_CREATION_RULES = [
     
-    // ===== 直线 4 连 → 直线特效 =====
+    // ===== 直线 4 连（水平）→ 水平直线特效 =====
     {
-        id: 'line4',
-        when: { shape: 'line', length: 4 },
-        create: 'line',
+        id: 'line4-horizontal',
+        when: { shape: 'line', length: 4, direction: 'horizontal' },
+        create: 'line-horizontal',
         place: 'middle',
-        preserve: ['direction', 'color']
+        preserve: ['color']
+    },
+    
+    // ===== 直线 4 连（垂直）→ 垂直直线特效 =====
+    {
+        id: 'line4-vertical',
+        when: { shape: 'line', length: 4, direction: 'vertical' },
+        create: 'line-vertical',
+        place: 'middle',
+        preserve: ['color']
     },
     
     // ===== 直线 5 连及以上 → 彩虹特效 =====

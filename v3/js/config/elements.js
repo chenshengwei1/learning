@@ -111,21 +111,36 @@ const BUILTIN_ELEMENTS = [
     
     // ===== 特效 =====
     {
-        id: 'line',
-        name: '直线特效',
+        id: 'line-horizontal',
+        name: '直线特效（水平）',
         category: 'effect',
         svg: null,
         char: '↔️',
         color: '#3b82f6',
+        direction: 'horizontal',
         properties: {},
         events: [{
             event: 'onRemove',
             actions: [{
                 type: 'remove',
-                targets: [
-                    { type: 'row', r: '$r' },
-                    { type: 'col', c: '$c' }
-                ]
+                targets: [{ type: 'row', r: '$r' }]
+            }]
+        }]
+    },
+    {
+        id: 'line-vertical',
+        name: '直线特效（垂直）',
+        category: 'effect',
+        svg: null,
+        char: '↕️',
+        color: '#3b82f6',
+        direction: 'vertical',
+        properties: {},
+        events: [{
+            event: 'onRemove',
+            actions: [{
+                type: 'remove',
+                targets: [{ type: 'col', c: '$c' }]
             }]
         }]
     },
@@ -165,7 +180,7 @@ const BUILTIN_ELEMENTS = [
         id: 'rainbow',
         name: '彩虹特效',
         category: 'effect',
-        svg: null,
+        svg: '@rainbow-bird',
         char: '🌈',
         color: '#ec4899',
         properties: {},
