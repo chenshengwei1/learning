@@ -29,22 +29,24 @@ const DIRECTIONS = {
 
 // ===== 元素类型（元数据的 category）=====
 const ELEMENT_CATEGORIES = {
-    PIECE: 'piece',         // 普通棋子
-    EFFECT: 'effect',       // 特效
-    OBSTACLE: 'obstacle',   // 障碍物
-    GENERATOR: 'generator', // 生成器
-    TARGET: 'target',       // 目标物
-    DECORATION: 'decoration' // 装饰
+    PIECE: 'piece',
+    EFFECT: 'effect',           // 特效棋子（待重构，本质是 piece）
+    OBSTACLE: 'obstacle',       // 棋子下方的障碍物
+    OVERLAY: 'overlay',         // ← 新增：棋子上方的覆盖物（藤蔓）
+    GENERATOR: 'generator',
+    TARGET: 'target',
+    DECORATION: 'decoration'
 };
 
 // ===== 渲染层 =====
 const RENDER_LAYERS = {
     BOARD: 0,           // 底板
-    TARGET: 1,          // 目标物（水果等）
-    OBSTACLE: 2,        // 障碍物（冰、藤蔓等）
-    PIECE: 3,           // 棋子
-    EFFECT: 4,          // 特效覆盖层
-    OVERLAY: 5          // 弹层
+    TARGET: 10,         // 目标物（水果等）
+    OBSTACLE: 20,       // 障碍物（冰、锁链，棋子下）
+    PIECE: 30,          // 棋子（含特效棋子）
+    EFFECT: 40,         // 棋子上层（覆盖在棋子上的视觉元素，如藤蔓）
+    SELECTED: 45,       // 选中高亮
+    OVERLAY: 50         // 弹层（覆盖在棋子上的元素，如冰块、锁链）
 };
 
 // ===== 动画时长（默认）=====
@@ -90,6 +92,17 @@ const DEFAULT_CONFIG = {
     version: CONFIG_VERSION
 };
 
+// ===== category → 渲染层 映射 =====
+const CATEGORY_LAYERS = {
+    decoration: RENDER_LAYERS.BOARD,
+    target:     RENDER_LAYERS.TARGET,
+    obstacle:   RENDER_LAYERS.OBSTACLE,
+    piece:      RENDER_LAYERS.PIECE,
+    effect:     RENDER_LAYERS.PIECE,      // 特效棋子本质是棋子
+    overlay:    RENDER_LAYERS.EFFECT,     // 棋子上层
+    generator:  RENDER_LAYERS.OBSTACLE
+};
+
 const EMPTY_CELL_VALUE = 'empty';
 
 // 暴露到全局（供测试和其他文件访问）
@@ -103,3 +116,4 @@ window.ANIMATION = ANIMATION;
 window.LIMITS = LIMITS;
 window.STORAGE_KEYS = STORAGE_KEYS;
 window.CONFIG_VERSION = CONFIG_VERSION;
+window.CATEGORY_LAYERS = CATEGORY_LAYERS;

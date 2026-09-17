@@ -18,6 +18,9 @@ class Board {
         
         // Layer 3: 棋子（可移动）
         this.grid = Array.from({ length: rows }, () => Array(cols).fill(null));
+
+        // Layer 4: 棋子（可移动）
+        this.overlays  = [];    // ← 新增：棋子上层覆盖
     }
     
     // ===== 基础访问 =====
@@ -84,26 +87,80 @@ class Board {
     }
     
     // ===== 目标物层 =====
-    addTarget(target) {
+    addTarget(target, registries = null) {
+        const cells = target.cells || this._expandRect(target.r, target.c, target.w, target.h);
+        const def = registries?.elements.get(target.element);
+        const minR = Math.min(...cells.map(p => p.r));
+        const maxR = Math.max(...cells.map(p => p.r));
+        const minC = Math.min(...cells.map(p => p.c));
+        const maxC = Math.max(...cells.map(p => p.c));
         this.targets.push({
             id: target.id || `target_${this.targets.length}_${Date.now()}`,
             element: target.element || 'target',
-            r: target.r,
-            c: target.c,
-            w: target.w || 1,
-            h: target.h || 1,
+            cells,
+            // 兼容字段：cells 的 bounding box 左上角
+            r: target.r ?? minR, c: target.c ?? minC,          // ← 兼容
+            w: target.w ?? (maxC - minC + 1), h: target.h ?? (maxR - minR + 1),   // ← 兼容
             hp: target.hp ?? 1,
             maxHp: target.maxHp ?? target.hp ?? 1,
+            hpMode: target.hpMode ?? def?.properties?.hpMode ?? 'whole',
             svg: target.svg || null,
             metadata: target.metadata || {}
         });
     }
+
+    addObstacle(obstacle, registries = null) {
+        const cells = obstacle.cells || this._expandRect(obstacle.r, obstacle.c, 1, 1);
+        const def = registries?.elements.get(obstacle.element);
+        const minR = Math.min(...cells.map(p => p.r));
+        const maxR = Math.max(...cells.map(p => p.r));
+        const minC = Math.min(...cells.map(p => p.c));
+        const maxC = Math.max(...cells.map(p => p.c));
+        this.obstacles.push({
+            id: obstacle.id || `obs_${this.obstacles.length}_${Date.now()}`,
+            element: obstacle.element || 'obstacle',
+            cells,
+            r: obstacle.r ?? minR, c: obstacle.c ?? minC,       // ← 兼容
+            w: obstacle.w ?? (maxC - minC + 1), h: obstacle.h ?? (maxR - minR + 1),   // ← 兼容
+            hp: obstacle.hp ?? 1,
+            maxHp: obstacle.maxHp ?? obstacle.hp ?? 1,
+            hpMode: obstacle.hpMode ?? def?.properties?.hpMode ?? 'whole',
+            layers: obstacle.layers || null,
+            metadata: obstacle.metadata || {}
+        });
+    }
+
+    addOverlay(overlay, registries = null) {
+        const cells = overlay.cells || this._expandRect(overlay.r, overlay.c, overlay.w, overlay.h);
+        const def = registries?.elements.get(overlay.element);
+        const minR = Math.min(...cells.map(p => p.r));
+        const minC = Math.min(...cells.map(p => p.c));
+        const maxR = Math.max(...cells.map(p => p.r));
+        const maxC = Math.max(...cells.map(p => p.c));
+        this.overlays.push({
+            id: overlay.id || `ovl_${this.overlays.length}_${Date.now()}`,
+            element: overlay.element,
+            cells,
+            r: overlay.r ?? minR, c: overlay.c ?? minC,          // ← 兼容
+            w: overlay.w ?? (maxC - minC + 1), h: overlay.h ?? (maxR - minR + 1),   // ← 兼容
+            hp: overlay.hp ?? def?.properties?.hp ?? 1,
+            maxHp: overlay.maxHp ?? overlay.hp ?? def?.properties?.hp ?? 1,
+            hpMode: overlay.hpMode ?? def?.properties?.hpMode ?? 'whole',
+            blocksMovement: overlay.blocksMovement ?? def?.properties?.blocksMovement ?? false,
+            metadata: overlay.metadata || {}
+        });
+    }
     
     getTargetAt(r, c) {
-        return this.targets.find(t =>
-            r >= t.r && r < t.r + t.h &&
-            c >= t.c && c < t.c + t.w
-        ) || null;
+        return this.targets.find(t => this._entityHasCell(t, r, c)) || null;
+    }
+
+    getObstacleAt(r, c) {
+        return this.obstacles.find(o => this._entityHasCell(o, r, c)) || null;
+    }
+
+    getOverlayAt(r, c) {
+        return this.overlays.find(o => this._entityHasCell(o, r, c)) || null;
     }
     
     getTargetById(id) {
@@ -136,40 +193,104 @@ class Board {
     }
     
     // ===== 障碍物层 =====
-    addObstacle(obstacle) {
-        this.obstacles.push({
-            id: obstacle.id || `obs_${this.obstacles.length}_${Date.now()}`,
-            element: obstacle.element || 'obstacle',
-            r: obstacle.r,
-            c: obstacle.c,
-            hp: obstacle.hp ?? 1,
-            maxHp: obstacle.maxHp ?? obstacle.hp ?? 1,
-            layers: obstacle.layers || null,   // 多层结构
-            metadata: obstacle.metadata || {}
-        });
+    // ===== cells 工具 =====
+    _expandRect(r, c, w = 1, h = 1) {
+        const cells = [];
+        for (let dr = 0; dr < h; dr++)
+            for (let dc = 0; dc < w; dc++)
+                cells.push({ r: r + dr, c: c + dc });
+        return cells;
+    }
+
+    _entityHasCell(entity, r, c) {
+        if (!entity.cells) return false;
+        return entity.cells.some(p => p.r === r && p.c === c);
+    }
+
+    _getLayerArray(category) {
+        switch (category) {
+            case 'target':   return this.targets;
+            case 'obstacle': return this.obstacles;
+            case 'overlay':  return this.overlays;
+            default: return null;
+        }
+    }
+
+    // ===== 通用层接口 =====
+    getAt(category, r, c) {
+        const arr = this._getLayerArray(category);
+        if (!arr) return null;
+        return arr.find(e => this._entityHasCell(e, r, c)) || null;
+    }
+
+    damageAt(category, r, c, amount = 1) {
+        const entity = this.getAt(category, r, c);
+        if (!entity) return { removed: false, entity: null };
+        
+        entity.hp -= amount;
+        
+        // perCell：每次受伤减 1 格（按 amount 次）
+        if (entity.hpMode === 'perCell' && Array.isArray(entity.cells)) {
+            for (let i = 0; i < amount; i++) entity.cells.pop();
+        }
+        
+        const isEmpty = (entity.hpMode === 'perCell')
+            ? (entity.cells.length === 0)
+            : (entity.hp <= 0);
+        
+        if (entity.hp <= 0 || isEmpty) {
+            const arr = this._getLayerArray(category);
+            const idx = arr.indexOf(entity);
+            if (idx >= 0) arr.splice(idx, 1);
+            return { removed: true, entity };
+        }
+        
+        return { removed: false, entity };
+    }
+
+    removeAt(category, r, c) {
+        const arr = this._getLayerArray(category);
+        if (!arr) return null;
+        const entity = this.getAt(category, r, c);
+        if (!entity) return null;
+        const idx = arr.indexOf(entity);
+        if (idx >= 0) arr.splice(idx, 1);
+        return entity;
+    }
+
+    // 该格所有实体，从上到下：overlay → piece → obstacle → target
+    getEntitiesAt(r, c) {
+        const result = [];
+        const overlay = this.getOverlayAt(r, c);
+        if (overlay) result.push({ category: 'overlay', entity: overlay });
+        const piece = this.get(r, c);
+        if (piece) result.push({ category: 'piece', entity: piece });
+        const obstacle = this.getObstacleAt(r, c);
+        if (obstacle) result.push({ category: 'obstacle', entity: obstacle });
+        const target = this.getTargetAt(r, c);
+        if (target) result.push({ category: 'target', entity: target });
+        return result;
+    }
+
+    hasBlockingOverlay(r, c) {
+        const overlay = this.getOverlayAt(r, c);
+        return !!(overlay && overlay.blocksMovement);
     }
     
-    getObstacleAt(r, c) {
-        return this.obstacles.find(o => o.r === r && o.c === c) || null;
-    }
+
     
     hasObstacle(r, c) {
         return !!this.getObstacleAt(r, c);
     }
     
     damageObstacleAt(r, c, amount = 1) {
-        const obs = this.getObstacleAt(r, c);
-        if (!obs) return { removed: false, obstacle: null };
-        
-        obs.hp -= amount;
-        
-        if (obs.hp <= 0) {
-            const idx = this.obstacles.indexOf(obs);
-            if (idx >= 0) this.obstacles.splice(idx, 1);
-            return { removed: true, obstacle: obs };
-        }
-        
-        return { removed: false, obstacle: obs };
+        const result = this.damageAt('obstacle', r, c, amount);
+        return { removed: result.removed, obstacle: result.entity };
+    }
+
+    damageTargetAt(r, c, amount = 1) {
+        const result = this.damageAt('target', r, c, amount);
+        return result.removed;
     }
     
     removeObstacleAt(r, c) {
@@ -197,6 +318,7 @@ class Board {
             piece: this.get(r, c),
             target: this.getTargetAt(r, c),
             obstacle: this.getObstacleAt(r, c),
+            overlay: this.getOverlayAt(r, c),   // ← 新增
             isActive: this.isCellActive(r, c)
         };
     }
@@ -207,6 +329,7 @@ class Board {
             rows: this.rows,
             cols: this.cols,
             layout: this.layout.map(row => [...row]),
+            overlays: this.overlays.map(o => ({ ...o, metadata: deepClone(o.metadata) })),
             targets: this.targets.map(t => ({
                 ...t,
                 metadata: deepClone(t.metadata)
@@ -235,6 +358,9 @@ class Board {
         
         if (Array.isArray(obj.obstacles)) {
             board.obstacles = obj.obstacles.map(o => ({ ...o, metadata: { ...(o.metadata || {}) } }));
+        }
+        if (Array.isArray(obj.overlays)) {
+            board.overlays = obj.overlays.map(o => ({ ...o, metadata: { ...(o.metadata || {}) } }));
         }
         
         for (let r = 0; r < obj.rows; r++) {

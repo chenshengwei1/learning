@@ -75,7 +75,7 @@ class ElementList {
             this.game.registries.elements.register({
                 id,
                 name: id,
-                category: 'piece',
+                category: ELEMENT_CATEGORIES.PIECE,
                 svg: null,
                 char: '❓',
                 color: '#888888',

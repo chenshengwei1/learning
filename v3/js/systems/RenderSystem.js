@@ -43,9 +43,10 @@ class RenderSystem {
         this.boardEl.style.position = 'relative';
         
         this._renderLayout();
-        this._renderTargets();
-        this._renderObstacles();
+        this._renderLayer('target');      // 替代 _renderTargets
+        this._renderLayer('obstacle');    // 替代 _renderObstacles
         this._renderPieces();
+        this._renderLayer('overlay');     // ← 新增
     }
     
     _getPos(r, c) {
@@ -189,26 +190,7 @@ class RenderSystem {
      * 重绘某格障碍物（增量）
      */
     renderObstacleAt(r, c) {
-        const board = this.game.board;
-        const obs = board.getObstacleAt(r, c);
-        const oldEl = this.boardEl.querySelector(`.obstacle-layer[data-r="${r}"][data-c="${c}"]`);
-        
-        if (!obs) {
-            // 障碍物已移除
-            oldEl?.remove();
-            return;
-        }
-        
-        if (!oldEl) {
-            // 新障碍物
-            this._appendObstacle(obs);
-            return;
-        }
-        
-        // 已有障碍物，更新内容
-        oldEl.className = `obstacle-layer obstacle-${obs.element}`;
-        oldEl.dataset.obstacleId = obs.id;
-        this._paintObstacle(oldEl, obs);
+        this.renderLayerAt('obstacle', r, c);
     }
 
     /**
@@ -267,47 +249,7 @@ class RenderSystem {
      * 重绘某格目标物（增量）
      */
     renderTargetAt(r, c) {
-        const board = this.game.board;
-        const target = board.getTargetAt(r, c);
-        
-        // 在 DOM 中查找"覆盖 (r,c) 的 target-layer"
-        const findTargetEl = () => {
-            const allTargets = this.boardEl.querySelectorAll('.target-layer');
-            for (const el of allTargets) {
-                const tr = Number(el.dataset.r);
-                const tc = Number(el.dataset.c);
-                const tw = Number(el.dataset.w) || 1;
-                const th = Number(el.dataset.h) || 1;
-                
-                if (r >= tr && r < tr + th && c >= tc && c < tc + tw) {
-                    return el;
-                }
-            }
-            return null;
-        };
-        
-        const oldEl = findTargetEl();
-        
-        if (!target) {
-            // 目标物已从数据层移除 → 删除 DOM
-            oldEl?.remove();
-            return;
-        }
-        
-        if (!oldEl) {
-            // DOM 中没有，全量重绘
-            this._renderTargets();
-            return;
-        }
-        
-        // 更新内容
-        oldEl.className = 'target-layer';
-        oldEl.dataset.targetId = target.id;
-        oldEl.dataset.r = target.r;
-        oldEl.dataset.c = target.c;
-        oldEl.dataset.w = target.w;
-        oldEl.dataset.h = target.h;
-        this._paintTarget(oldEl, target);
+        this.renderLayerAt('target', r, c);
     }
     
     // ===== Layer 3: 棋子 =====
@@ -595,6 +537,110 @@ class RenderSystem {
     
     getCell(r, c) {
         return this.cellCache.get(posToKey(r, c)) || null;
+    }
+
+    _getCellsBounds(cells) {
+        let minR = Infinity, maxR = -Infinity, minC = Infinity, maxC = -Infinity;
+        for (const { r, c } of cells) {
+            minR = Math.min(minR, r); maxR = Math.max(maxR, r);
+            minC = Math.min(minC, c); maxC = Math.max(maxC, c);
+        }
+        return { minR, maxR, minC, maxC };
+    }
+
+    _renderLayer(category) {
+        const arr = this.game.board._getLayerArray(category);
+        if (!arr) return;
+        const layer = CATEGORY_LAYERS[category] ?? RENDER_LAYERS.OBSTACLE;
+        const { cellSize, gap } = this.game.config;
+        
+        for (const entity of arr) {
+            const el = document.createElement('div');
+            el.className = `${category}-layer ${category}-${entity.element}`;
+            el.dataset.id = entity.id;
+            el.dataset.r = entity.cells[0].r;
+            el.dataset.c = entity.cells[0].c;
+
+            // ← 新增：兼容 page-checker 的 target 查询
+            if (category === 'target') {
+                el.dataset.targetId = entity.id;
+            }
+            // ← 可选：兼容旧障碍物查询
+            if (category === 'obstacle') {
+                el.dataset.obstacleId = entity.id;
+            }
+            
+            const bounds = this._getCellsBounds(entity.cells);
+            const pos = this._getPos(bounds.minR, bounds.minC);
+            const w = (bounds.maxC - bounds.minC + 1) * cellSize + (bounds.maxC - bounds.minC) * gap;
+            const h = (bounds.maxR - bounds.minR + 1) * cellSize + (bounds.maxR - bounds.minR) * gap;
+            
+            el.style.cssText = `
+                position: absolute;
+                left: ${pos.left}px;
+                top: ${pos.top}px;
+                width: ${w}px;
+                height: ${h}px;
+                z-index: ${layer};
+                pointer-events: none;
+            `;
+            
+            this._paintEntity(el, entity);
+            this.boardEl.appendChild(el);
+        }
+    }
+
+    _paintEntity(el, entity) {
+        el.innerHTML = '';
+        const elementDef = this.game.registries.elements.get(entity.element);
+        const svg = this._resolveVisual(elementDef, entity);
+        if (svg) {
+            const img = document.createElement('img');
+            img.src = SVGLibrary.resolve(svg) || svg;
+            img.style.cssText = 'width:100%;height:100%;object-fit:fill;';
+            el.appendChild(img);
+        }
+    }
+
+    renderLayerAt(category, r, c) {
+        const arr = this.game.board._getLayerArray(category);
+        if (!arr) return;
+        
+        const entity = this.game.board.getAt(category, r, c);
+        
+        // 按 id 找该实体对应的 DOM（跨格时 data-r/c 只存第一个 cell，不能精确匹配）
+        let oldEl = null;
+        if (entity) {
+            oldEl = this.boardEl.querySelector(`.${category}-layer[data-id="${entity.id}"]`);
+        }
+        
+        if (!entity) {
+            // 该格没实体：遍历该层 DOM，删掉"覆盖 (r,c) 但数据里已不存在"的
+            // 简化：全量重绘该层
+            this._removeLayerEls(category);
+            this._renderLayer(category);
+            return;
+        }
+        
+        if (!oldEl) {
+            // DOM 里没有该实体 → 全量重绘该层（简单可靠）
+            this._removeLayerEls(category);
+            this._renderLayer(category);
+            return;
+        }
+        
+        // 更新内容
+        oldEl.className = `${category}-layer ${category}-${entity.element}`;
+        oldEl.dataset.id = entity.id;
+        oldEl.dataset.id = entity.id;
+        if (category === 'target') oldEl.dataset.targetId = entity.id;
+        if (category === 'obstacle') oldEl.dataset.obstacleId = entity.id;
+        this._paintEntity(oldEl, entity);
+    }
+
+    _removeLayerEls(category) {
+        const els = this.boardEl.querySelectorAll(`.${category}-layer`);
+        els.forEach(el => el.remove());
     }
 }
 

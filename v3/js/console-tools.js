@@ -174,6 +174,7 @@
             for (let c = 0; c < board.cols; c++) {
                 const p = board.get(r, c);
                 const obs = board.getObstacleAt(r, c);
+                const ovl = board.getOverlayAt(r, c);
                 
                 let cell = '  ';
                 if (p) {
@@ -183,6 +184,7 @@
                 
                 let label = `[${cell}]`;
                 if (obs) label += `{${obs.element[0]}${obs.hp}}`;
+                if (ovl) label += `{${ovl.element[0]}${ovl.hp}}`;   // ← 新增
                 line += label.padEnd(6, ' ');
             }
             console.log(line);
@@ -339,7 +341,7 @@
     
     function addVine(r, c, hp = 2) {
         const game = getGame();
-        game.board.addObstacle({ element: 'vine', r, c, hp });
+        game.board.addOverlay({ element: 'vine', r, c, hp }, game.registries);
         game.renderSystem.renderAll();
         console.log(`✅ 添加藤蔓 (${r},${c}) hp=${hp}`);
     }
@@ -354,6 +356,7 @@
     function clearObstacles() {
         const game = getGame();
         game.board.obstacles = [];
+        game.board.overlays = [];
         game.renderSystem.renderAll();
         console.log('✅ 已清除所有障碍物');
     }
@@ -412,6 +415,7 @@
             mode = 'game',
             clearObstacles = true,
             clearTargets = true,
+            clearOverlays = clearObstacles
         } = options;
         
         // ========== 1. 切模式 ==========
@@ -467,6 +471,7 @@
             }
             // 清障碍物
             if (clearObstacles) game.board.obstacles = [];
+            if (clearOverlays) game.board.overlays = [];
             // 清目标物
             if (clearTargets) game.board.targets = [];
         }

@@ -122,9 +122,10 @@ class RuleRuntime {
         const mapping = {
             'onMatch': ['match:done'],
             'onRemove': ['piece:removed'],
-            'onCellCleared': ['cell:cleared'],   // ← 新增
-            'onAnyMatch': ['any:match'],          // ← 新增
-            'onObstacleCleared': ['obstacle:cleared'],   // ← 新增
+            'onCellCleared': ['cell:cleared'],   
+            'onAnyMatch': ['any:match'],       
+            'onObstacleCleared': ['obstacle:cleared', 'overlay:cleared'],   // ← 改：兼容两者
+            'onOverlayCleared': ['overlay:cleared'],                         // ← 新增
             'onSwap': ['piece:swapped'],
             'onTurn': ['turn:end'],
             'onAdjacent': ['adjacent:match'],

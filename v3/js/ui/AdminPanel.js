@@ -305,7 +305,7 @@ class AdminPanel {
                 <label>类型
                     <select id="edit-piece-type">
                         <option value="">— 无 —</option>
-                        ${this._renderOptions('piece', piece?.id || '')}
+                        ${this._renderOptions(ELEMENT_CATEGORIES.PIECE, piece?.id || '')}
                     </select>
                 </label>
                 <label class="check-line">
@@ -324,7 +324,7 @@ class AdminPanel {
                 <label>类型
                     <select id="edit-effect-type">
                         <option value="">— 无 —</option>
-                        ${this._renderOptions('effect', piece?.effect || '')}
+                        ${this._renderOptions(ELEMENT_CATEGORIES.EFFECT, piece?.effect || '')}
                     </select>
                 </label>
                 <p style="font-size:11px;color:#64748b;margin-top:4px;">

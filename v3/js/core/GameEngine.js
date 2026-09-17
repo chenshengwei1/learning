@@ -141,14 +141,21 @@ class GameEngine {
         // 目标物
         if (Array.isArray(this.config.targets)) {
             for (const t of this.config.targets) {
-                board.addTarget(t);
+                board.addTarget(t, this.registries);
             }
         }
         
         // 障碍物
         if (Array.isArray(this.config.obstacles)) {
             for (const o of this.config.obstacles) {
-                board.addObstacle(o);
+                board.addObstacle(o, this.registries);
+            }
+        }
+
+        // 覆盖物 ← 新增
+        if (Array.isArray(this.config.overlays)) {
+            for (const o of this.config.overlays) {
+                board.addOverlay(o, this.registries);
             }
         }
         
@@ -341,6 +348,12 @@ class GameEngine {
         } 
         if (Math.abs(r1 - r2) + Math.abs(c1 - c2) !== 1)  {
             console.log('[swap] 不相邻');
+            return;
+        }
+
+        // ← 新增：藤蔓阻挡
+        if (this.board.hasBlockingOverlay(r1, c1) || this.board.hasBlockingOverlay(r2, c2)) {
+            this.showMessage('🌿 藤蔓缠住了，先消除它');
             return;
         }
         
@@ -1106,16 +1119,19 @@ class GameEngine {
         console.log('[adjacent] diagonalSet:', [...diagonalSet]);
         console.log('[adjacent] neighborMap:', [...neighborMap]);
         
-        // 逐个触发
+        // 逐个触发（查该格所有层）
         for (const [key, direction] of neighborMap) {
             const { r, c } = keyToPos(key);
-            const obstacle = this.board.getObstacleAt(r, c);
-            if (obstacle) {
-                console.log(`[adjacent] ${direction} 事件 (${r},${c}) obstacle=${obstacle.element}`);
+            const entities = this.board.getEntitiesAt(r, c);
+            
+            for (const { category, entity } of entities) {
+                if (category === 'piece') continue;   // 棋子不响应 adjacent
                 await this.ruleRuntime.emit('adjacent:match', {
                     r, c,
-                    obstacle,
-                    element: obstacle.element,
+                    obstacle: entity,        // 兼容旧字段
+                    entity,
+                    element: entity.element,
+                    category,
                     source: 'match',
                     direction
                 });
@@ -1463,6 +1479,266 @@ class GameEngine {
             lines.push(line);
         }
         console.log(lines.join('\n'));
+    }
+    // ==================== 重排（卡死时用）====================
+
+    /**
+     * 打乱棋盘上所有棋子，保证：
+     * 1. 重排后无现成三消（直线 + 田字 + 斜线）
+     * 2. 重排后至少有一个可三消交换（直线形态）
+     * 
+     * @returns {boolean} true=成功，false=无法重排（游戏结束）
+     */
+    reshuffle(maxAttempts = 50) {
+        const board = this.board;
+        const rows = board.rows, cols = board.cols;
+        
+        // 1. 收集棋子池
+        const pool = [];
+        for (let r = 0; r < rows; r++) {
+            for (let c = 0; c < cols; c++) {
+                if (board.layout[r][c] !== 1) continue;
+                const p = board.get(r, c);
+                if (p) pool.push(p.id);
+            }
+        }
+        if (pool.length === 0) return false;
+        
+        // 2. 统计颜色
+        const colorCount = {};
+        for (const id of pool) colorCount[id] = (colorCount[id] || 0) + 1;
+        const colors = Object.keys(colorCount);
+        if (colors.length === 0) return false;
+        
+        // 3. 找可构造位置
+        const site = this._findConstructionSite();
+        if (!site) return false;
+        
+        // 4. 尝试多次
+        for (let attempt = 0; attempt < maxAttempts; attempt++) {
+            // 清空棋盘
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    if (board.layout[r][c] === 1) board.set(r, c, null);
+                }
+            }
+            
+            // 4.1 放置构造棋子
+            const used = this._placeConstruction(site, colorCount);
+            if (!used) continue;
+            
+            // 4.2 剩余棋子池
+            const remaining = [...pool];
+            for (const id of used) {
+                const idx = remaining.indexOf(id);
+                if (idx >= 0) remaining.splice(idx, 1);
+            }
+            
+            // 4.3 剩余格子随机填
+            const emptyPositions = [];
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    if (board.layout[r][c] !== 1) continue;
+                    if (board.get(r, c) === null) emptyPositions.push({ r, c });
+                }
+            }
+            
+            for (let i = remaining.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [remaining[i], remaining[j]] = [remaining[j], remaining[i]];
+            }
+            
+            for (let i = 0; i < emptyPositions.length; i++) {
+                const { r, c } = emptyPositions[i];
+                board.set(r, c, this.pieceFactory.create(remaining[i]));
+            }
+            
+            // 4.4 检查无现成三消
+            this.matchSystem.clearCache();
+            if (this.matchSystem.findMatches().size > 0) continue;
+            
+            return true;
+        }
+        
+        // 5. 棋盘格兜底
+        return this._reshuffleCheckerboard(pool);
+    }
+
+    /**
+     * 找可构造位置
+     * 1. 优先：连续 4 个有效格（同行或同列）
+     * 2. 次之：连续 3 个有效格 + 第 3 格的相邻有效格
+     */
+    _findConstructionSite() {
+        const board = this.board;
+        const rows = board.rows, cols = board.cols;
+        
+        // ===== 优先：连续 4 格 =====
+        // 横向
+        for (let r = 0; r < rows; r++) {
+            for (let c = 0; c <= cols - 4; c++) {
+                if (board.layout[r][c] !== 1) continue;
+                if (board.layout[r][c+1] !== 1) continue;
+                if (board.layout[r][c+2] !== 1) continue;
+                if (board.layout[r][c+3] !== 1) continue;
+                
+                return {
+                    type: 'line4',
+                    cells: [
+                        { r, c }, { r, c: c+1 }, { r, c: c+2 },
+                    ],
+                    bPos: { r, c: c+2 },
+                    aPos: { r, c: c+3 },
+                };
+            }
+        }
+        // 竖向
+        for (let c = 0; c < cols; c++) {
+            for (let r = 0; r <= rows - 4; r++) {
+                if (board.layout[r][c] !== 1) continue;
+                if (board.layout[r+1][c] !== 1) continue;
+                if (board.layout[r+2][c] !== 1) continue;
+                if (board.layout[r+3][c] !== 1) continue;
+                
+                return {
+                    type: 'line4',
+                    cells: [
+                        { r, c }, { r: r+1, c }, { r: r+2, c },
+                    ],
+                    bPos: { r: r+2, c },
+                    aPos: { r: r+3, c },
+                };
+            }
+        }
+        
+        // ===== 次之：连续 3 格 + 第 3 格相邻有效格 =====
+        // 横向
+        for (let r = 0; r < rows; r++) {
+            for (let c = 0; c <= cols - 3; c++) {
+                if (board.layout[r][c] !== 1) continue;
+                if (board.layout[r][c+1] !== 1) continue;
+                if (board.layout[r][c+2] !== 1) continue;
+                
+                const p2 = { r, c: c+2 };
+                const aPos = this._findAdjacentValid(p2, [{r, c}, {r, c: c+1}, p2]);
+                if (aPos) {
+                    return {
+                        type: 'line3',
+                        cells: [{ r, c }, { r, c: c+1 }],
+                        bPos: p2,
+                        aPos,
+                    };
+                }
+            }
+        }
+        // 竖向
+        for (let c = 0; c < cols; c++) {
+            for (let r = 0; r <= rows - 3; r++) {
+                if (board.layout[r][c] !== 1) continue;
+                if (board.layout[r+1][c] !== 1) continue;
+                if (board.layout[r+2][c] !== 1) continue;
+                
+                const p2 = { r: r+2, c };
+                const aPos = this._findAdjacentValid(p2, [{r, c}, {r: r+1, c}, p2]);
+                if (aPos) {
+                    return {
+                        type: 'line3',
+                        cells: [{ r, c }, { r: r+1, c }],
+                        bPos: p2,
+                        aPos,
+                    };
+                }
+            }
+        }
+        
+        return null;
+    }
+
+    /**
+     * 找 p 的相邻有效格（排除 excludeCells）
+     * 方向顺序：右、下、左、上（保证 _findHint 能检测到）
+     */
+    _findAdjacentValid(p, excludeCells) {
+        const board = this.board;
+        const dirs = [[0,1],[1,0],[0,-1],[-1,0]];   // 右、下、左、上
+        const excludeKeys = new Set(excludeCells.map(cell => posToKey(cell.r, cell.c)));
+        
+        for (const [dr, dc] of dirs) {
+            const nr = p.r + dr, nc = p.c + dc;
+            if (!board.isInBounds(nr, nc)) continue;
+            if (board.layout[nr][nc] !== 1) continue;
+            if (excludeKeys.has(posToKey(nr, nc))) continue;
+            return { r: nr, c: nc };
+        }
+        return null;
+    }
+
+    /**
+     * 放置构造棋子
+     * cells 放 colorX，bPos 放 colorB，aPos 放 colorX
+     * 
+     * 返回用掉的棋子 id 列表，失败返回 null
+     */
+    _placeConstruction(site, colorCount) {
+        const board = this.board;
+        
+        // 选一个数量 ≥ 3 的颜色 X
+        const candidates = Object.keys(colorCount).filter(id => colorCount[id] >= 3);
+        if (candidates.length === 0) return null;
+        const colorX = candidates[Math.floor(Math.random() * candidates.length)];
+        
+        // 选一个非 X 的颜色 B（数量 ≥ 1）
+        const otherColors = Object.keys(colorCount).filter(id => id !== colorX && colorCount[id] >= 1);
+        if (otherColors.length === 0) return null;
+        const colorB = otherColors[Math.floor(Math.random() * otherColors.length)];
+        
+        // 放置
+        for (const { r, c } of site.cells) {
+            board.set(r, c, this.pieceFactory.create(colorX));
+        }
+        board.set(site.bPos.r, site.bPos.c, this.pieceFactory.create(colorB));
+        board.set(site.aPos.r, site.aPos.c, this.pieceFactory.create(colorX));
+        
+        // 用掉的棋子
+        return [...site.cells.map(() => colorX), colorB, colorX];
+    }
+
+    /**
+     * 棋盘格兜底
+     * (r+c) % 2 交替两种颜色，保证无三消无田字
+     */
+    _reshuffleCheckerboard(pool) {
+        const board = this.board;
+        const rows = board.rows, cols = board.cols;
+        
+        const colorCount = {};
+        for (const id of pool) colorCount[id] = (colorCount[id] || 0) + 1;
+        const colors = Object.keys(colorCount);
+        if (colors.length < 2) return false;
+        
+        colors.sort((a, b) => colorCount[b] - colorCount[a]);
+        const [colorA, colorB] = colors;
+        
+        let needA = 0, needB = 0;
+        for (let r = 0; r < rows; r++) {
+            for (let c = 0; c < cols; c++) {
+                if (board.layout[r][c] !== 1) continue;
+                if ((r + c) % 2 === 0) needA++; else needB++;
+            }
+        }
+        
+        if (colorCount[colorA] < needA || colorCount[colorB] < needB) return false;
+        
+        for (let r = 0; r < rows; r++) {
+            for (let c = 0; c < cols; c++) {
+                if (board.layout[r][c] !== 1) continue;
+                const color = (r + c) % 2 === 0 ? colorA : colorB;
+                board.set(r, c, this.pieceFactory.create(color));
+            }
+        }
+        
+        this.matchSystem.clearCache();
+        return this.matchSystem.findMatches().size === 0;
     }
 }
 

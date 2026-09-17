@@ -37,7 +37,8 @@ function registerBuiltinActions(registries) {
                     options: [
                         { value: 'obstacle', label: '障碍物' },
                         { value: 'target', label: '目标物' },
-                        { value: 'piece', label: '棋子' }
+                        { value: 'overlay', label: '覆盖物' },        // ← 新增
+                        { value: ELEMENT_CATEGORIES.PIECE, label: '棋子' }
                     ],
                     default: 'obstacle'
                 }
@@ -52,52 +53,62 @@ function registerBuiltinActions(registries) {
             
             for (const key of targets) {
                 const { r, c } = keyToPos(key);
-                
-                if (layer === 'obstacle') {
-                    const before = game.board.getObstacleAt(r, c);
-                    console.log(`[damage][obstacle] (${r},${c}) 前:`, before ? `${before.element} hp=${before.hp}` : 'null');
-                    
-                    const result = game.board.damageObstacleAt(r, c, amount);
-                    game.renderSystem.renderObstacleAt(r, c);
-                    
-                    const after = game.board.getObstacleAt(r, c);
-                    console.log(`[damage][obstacle] (${r},${c}) 后:`, after ? `${after.element} hp=${after.hp}` : 'null');
-                    
-                    // 障碍物被移除时，触发 obstacle:cleared 事件
-                    if (result.removed && result.obstacle) {
-                        console.log(`[damage][obstacle] (${r},${c}) 障碍物被移除，触发 obstacle:cleared`);
-                        await game.ruleRuntime.emit('obstacle:cleared', {
-                            r, c,
-                            obstacle: result.obstacle,
-                            element: result.obstacle.element
-                        });
-                    }
-                } else if (layer === 'target') {
-                    const target = game.board.getTargetAt(r, c);
-                    if (!target) {
-                        console.log(`[damage][target] (${r},${c}) 无目标物`);
-                        continue;
-                    }
-                    
-                    // ← 新增：检查目标物覆盖范围内是否还有冰
-                    const hasObstacle = checkTargetHasObstacle(game.board, target);
-                    if (hasObstacle) {
-                        console.log(`[damage][target] (${r},${c}) 目标物 ${target.element} 上还有冰，跳过`);
-                        continue;
-                    }
-                    
-                    console.log(`[damage][target] (${r},${c}) 前: ${target.element} hp=${target.hp}`);
-                    game.board.damageTargetAt(r, c, amount);
-                    game.renderSystem.renderTargetAt(r, c);
-                    
-                    const after = game.board.getTargetAt(r, c);
-                    console.log(`[damage][target] (${r},${c}) 后:`, after ? `${after.element} hp=${after.hp}` : 'null');
-                } else if (layer === 'piece') {
+
+                // ===== piece 层：改 attrs.hp =====
+                if (layer === ELEMENT_CATEGORIES.PIECE) {
                     const piece = game.board.get(r, c);
                     if (piece) {
                         piece.attrs.hp = (piece.attrs.hp || 0) - amount;
                         game.renderSystem.renderPartial(new Set([key]));
                     }
+                    continue;
+                }
+                
+                // ===== target 层：保留"冰遮挡"检查 =====
+                if (layer === 'target') {
+                    const target = game.board.getTargetAt(r, c);
+                    if (!target) {
+                        console.log(`[damage][target] (${r},${c}) 无目标物`);
+                        continue;
+                    }
+                    const hasObstacle = checkTargetHasObstacle(game.board, target);
+                    if (hasObstacle) {
+                        console.log(`[damage][target] (${r},${c}) 目标物 ${target.element} 上还有冰，跳过`);
+                        continue;
+                    }
+                    console.log(`[damage][target] (${r},${c}) 前: ${target.element} hp=${target.hp}`);
+                    game.board.damageTargetAt(r, c, amount);
+                    game.renderSystem.renderTargetAt(r, c);
+                    const after = game.board.getTargetAt(r, c);
+                    console.log(`[damage][target] (${r},${c}) 后:`, after ? `${after.element} hp=${after.hp}` : 'null');
+                    continue;
+                }
+
+                // 通用实体层
+                console.log('[DAMAGE-DEBUG] layer=', layer, 'r=', r, 'c=', c);
+                console.log('[DAMAGE-DEBUG] board.overlays=', game.board.overlays);
+                console.log('[DAMAGE-DEBUG] _getLayerArray(overlay)=', game.board._getLayerArray('overlay'));
+                console.log('[DAMAGE-DEBUG] getAt=', game.board.getAt(layer, r, c));
+                console.log('[DAMAGE-DEBUG] getOverlayAt=', game.board.getOverlayAt(r, c));
+                
+                // ===== 通用实体层：obstacle / overlay / 未来任何实体层 =====
+                const before = game.board.getAt(layer, r, c);
+                console.log(`[damage][entity] (${r},${c}) 前:`, before ? `${before.element} hp=${before.hp}` : 'null');
+                
+                const result = game.board.damageAt(layer, r, c, amount);
+                game.renderSystem.renderLayerAt(layer, r, c);
+                
+                const after = game.board.getAt(layer, r, c);
+                console.log(`[damage][entity] (${r},${c}) 后:`, after ? `${after.element} hp=${after.hp}` : 'null');
+                
+                if (result.removed && result.entity) {
+                    console.log(`[damage][${layer}] (${r},${c}) 实体被移除，触发 ${layer}:cleared`);
+                    await game.ruleRuntime.emit(`${layer}:cleared`, {
+                        r, c,
+                        entity: result.entity,
+                        element: result.entity.element,
+                        obstacle: result.entity
+                    });
                 }
             }
         }
@@ -392,10 +403,9 @@ function registerBuiltinActions(registries) {
  * 检查目标物覆盖范围内是否还有障碍物
  */
 function checkTargetHasObstacle(board, target) {
-    for (let r = target.r; r < target.r + target.h; r++) {
-        for (let c = target.c; c < target.c + target.w; c++) {
-            if (board.getObstacleAt(r, c)) return true;
-        }
+    if (!target.cells) return false;
+    for (const { r, c } of target.cells) {
+        if (board.getObstacleAt(r, c)) return true;
     }
     return false;
 }

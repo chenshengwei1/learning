@@ -231,7 +231,7 @@
             name: '冰 + 藤蔓共存',
             validate: (game) => {
                 const ice = game.board.getObstacleAt(0, 2);
-                const vine = game.board.getObstacleAt(1, 1);
+                const vine = game.board.getOverlayAt(1, 1);
                 return (!ice) && (vine && vine.hp === 2);
             },
             validateMsg: '冰消失 + 藤蔓不变',
@@ -297,6 +297,116 @@
                 await __t.swap(0, 2, 0, 3);
             }
         },
+        {
+            name: '藤蔓（阻挡交换）',
+            validate: (game) => {
+                // 交换被拦截，两个棋子还在原位
+                const p1 = game.board.get(0, 2);
+                const p2 = game.board.get(0, 3);
+                return p1?.id === 'cat' && p2?.id === 'fox';
+            },
+            validateMsg: '(0,2)-(0,3) 交换被拦截，棋子未动',
+            setup: async () => {
+                __t.reset('sandbox');
+                __t.setupBoard([
+                    [0,0,'fox'],[0,1,'fox'],[0,2,'cat'],[0,3,'fox'],
+                ]);
+                __t.addVine(0, 2, 2);   // 藤蔓盖在 (0,2)，棋子是 cat
+                await __t.swap(0, 2, 0, 3);
+            }
+        },
+        // ==================== 藤蔓阻挡交换 ====================
+        {
+            name: '藤蔓（阻挡交换）',
+            validate: (game) => {
+                // 交换被拦截，步数没减
+                return game.movesLeft === 9999;
+            },
+            validateMsg: '藤蔓阻挡交换，步数未减',
+            setup: async () => {
+                __t.reset('sandbox');
+                __t.setupBoard([
+                    // r5
+                    [5, 0, 'fox'], [5, 1, 'bear'], [5, 2, 'fox'], [5, 3, 'bear'],
+                    // r6（r6c1 盖藤蔓）
+                    [6, 0, 'chick'], [6, 1, 'fox'], [6, 2, 'chick'], [6, 3, 'fox'],
+                    // r7
+                    [7, 0, 'fox'], [7, 1, 'bear'], [7, 2, 'fox'], [7, 3, 'bear'],
+                ]);
+                __t.addVine(6, 1, 1);
+                await __t.swap(6, 0, 6, 1);
+            }
+        },
+
+        // ==================== 藤蔓打掉后可交换 ====================
+        {
+            name: '藤蔓（打掉后可交换）',
+            validate: (game) => {
+                // 两次 swap 都成功 = 步数 -2；藤蔓已消失
+                return game.movesLeft === 9997 && !game.board.getOverlayAt(6, 1);
+            },
+            validateMsg: '藤蔓打掉后，交换成功（步数 -2）',
+            setup: async () => {
+                __t.reset('sandbox');
+                __t.setupBoard([
+                    // r5
+                    [5, 0, 'fox'], [5, 1, 'bear'], [5, 2, 'fox'], [5, 3, 'bear'],
+                    // r6（r6c1 盖藤蔓）
+                    [6, 0, 'chick'], [6, 1, 'fox'], [6, 2, 'chick'], [6, 3, 'fox'],
+                    // r7
+                    [7, 0, 'fox'], [7, 1, 'bear'], [7, 2, 'fox'], [7, 3, 'bear'],
+                ]);
+                __t.addVine(6, 1, 1);
+                await __t.swap(6, 2, 6, 3);   // 打藤蔓（c2 列三消）
+                await __t.swap(6, 0, 6, 1);   // 藤蔓消失后交换
+            }
+        },
+        {
+            name: '自动对局（30 步，10×10，每步必须消除）',
+            validate: (game) => {
+                const s = window.__autoPlayState;
+                if (!s) return false;
+                return s.noElimination === 0 && s.steps === 30;
+            },
+            validateMsg: '30 步全部产生消除，无空转',
+            setup: async () => {
+                __t.reset('sandbox-10*10');
+                __t.setupBoard([], { fill: 'random' });
+                
+                const state = { steps: 0, noElimination: 0 };
+                window.__autoPlayState = state;
+                
+                const MAX_STEPS = 30;
+                
+                while (state.steps < MAX_STEPS) {
+                    const hint = __gameEngine._findHint();
+                    
+                    if (!hint) {
+                        if (!__gameEngine.reshuffle()) {
+                            console.log('🚫 无法重排出可三消的棋盘，提前结束');
+                            break;
+                        }
+                        __gameEngine.matchSystem.clearCache();
+                        __gameEngine.renderSystem.renderAll();
+                        console.log('🔄 棋盘已重排');
+                        continue;
+                    }
+                    
+                    const scoreBefore = __gameEngine.score;
+                    await __t.swap(hint.from.r, hint.from.c, hint.to.r, hint.to.c);
+                    
+                    if (__gameEngine.score <= scoreBefore) {
+                        state.noElimination++;
+                        console.warn(`⚠️ 第 ${state.steps + 1} 步无消除`);
+                    }
+                    
+                    state.steps++;
+                    console.log(`✅ 第 ${state.steps} 步完成`);
+                }
+                
+                console.log(`🎮 自动对局完成：${state.steps} 步，无消除 ${state.noElimination} 次`);
+            }
+        }
     ];
     
     // ==================== 辅助函数 ====================

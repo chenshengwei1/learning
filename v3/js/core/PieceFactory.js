@@ -36,12 +36,13 @@ class PieceFactory {
     }
     
     /**
-     * 创建随机棋子（仅从 category='piece' 中选）
+     * 创建随机棋子（仅从 category=ELEMENT_CATEGORIES.PIECE 中选）
      */
     random() {
         const pieces = this.registries.elements
             .getByCategory(ELEMENT_CATEGORIES.PIECE)
-            .filter(e => e.id !== 'empty');
+            .filter(e => e.id !== 'empty')
+            .filter(e => e.properties?.createable);
         if (pieces.length === 0) return null;
         // ← 改用 game.rng（如果没有，降级到 Math.random）
         const rng = this.game?.rng;

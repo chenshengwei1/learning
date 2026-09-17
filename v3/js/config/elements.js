@@ -3,13 +3,33 @@
 const BUILTIN_ELEMENTS = [
     
     // ===== 普通棋子（动物）=====
-    { id: 'fox',     name: '狐狸',   category: 'piece', svg: '@fox',     color: '#e63946', properties: {} },
-    { id: 'owl',     name: '猫头鹰', category: 'piece', svg: '@owl',     color: '#a855f7', properties: {} },
-    { id: 'cat',     name: '猫',     category: 'piece', svg: '@cat',     color: '#60a5fa', properties: {} },
-    { id: 'chick',   name: '小鸡',   category: 'piece', svg: '@chick',   color: '#fbbf24', properties: {} },
-    { id: 'bear',    name: '熊',     category: 'piece', svg: '@bear',    color: '#a16207', properties: {} },
-    { id: 'frog',    name: '青蛙',   category: 'piece', svg: '@frog',    color: '#22c55e', properties: {} },
-    { id: 'octopus', name: '章鱼',   category: 'piece', svg: '@octopus', color: '#ec4899', properties: {} },
+    { id: 'fox',     name: '狐狸',   category: ELEMENT_CATEGORIES.PIECE, svg: '@fox',     color: '#e63946', properties: {
+        matchable: true,
+        createable: true
+    }, type:'base' },
+    { id: 'owl',     name: '猫头鹰', category: ELEMENT_CATEGORIES.PIECE, svg: '@owl',     color: '#a855f7', properties: {
+        matchable: true,
+        createable: true
+    }, type:'base' },
+    { id: 'cat',     name: '猫',     category: ELEMENT_CATEGORIES.PIECE, svg: '@cat',     color: '#60a5fa', properties: {
+        matchable: true,
+        createable: true
+    }, type:'base' },
+    { id: 'chick',   name: '小鸡',   category: ELEMENT_CATEGORIES.PIECE, svg: '@chick',   color: '#fbbf24', properties: {
+        matchable: true,
+        createable: true
+    } },
+    { id: 'bear',    name: '熊',     category: ELEMENT_CATEGORIES.PIECE, svg: '@bear',    color: '#a16207', properties: {
+        matchable: true,
+        createable: true
+    } , type:'base'},
+    { id: 'frog',    name: '青蛙',   category: ELEMENT_CATEGORIES.PIECE, svg: '@frog',    color: '#22c55e', properties: {
+        matchable: true,
+        createable: true
+    }, type:'base' },
+    { id: 'octopus', name: '章鱼',   category: ELEMENT_CATEGORIES.PIECE, svg: '@octopus', color: '#ec4899', properties: {
+        movable: false
+    } },
     
     // ===== 目标物（水果）=====
     { id: 'watermelon', name: '西瓜', category: 'target', svg: '@watermelon', color: '#ef4444', properties: { hp: 1 } ,
@@ -87,13 +107,22 @@ const BUILTIN_ELEMENTS = [
     {
         id: 'vine',
         name: '藤蔓',
-        category: 'obstacle',
+        category: 'overlay',           // ← obstacle 改 overlay
         svg: '@vine',
-        properties: { hp: 2 },
+        properties: {
+            hp: 3,                     // ← 2 改 3
+            hpMode: 'whole',
+            blocksMovement: true       // ← 新增
+        },
         events: [{
             event: 'onAdjacent',
             when: { direction: 'cross', source: 'match' },
-            actions: [{ type: 'damage', targets: { type: 'cell', r: '$r', c: '$c' }, amount: 1, layer: 'obstacle' }]
+            actions: [{
+                type: 'damage',
+                targets: { type: 'cell', r: '$r', c: '$c' },
+                amount: 1,
+                layer: 'overlay'       // ← obstacle 改 overlay
+            }]
         }]
     },
     {
@@ -113,7 +142,7 @@ const BUILTIN_ELEMENTS = [
     {
         id: 'line-horizontal',
         name: '直线特效（水平）',
-        category: 'effect',
+        category: ELEMENT_CATEGORIES.PIECE,
         svg: null,
         char: '↔️',
         color: '#3b82f6',
@@ -130,7 +159,7 @@ const BUILTIN_ELEMENTS = [
     {
         id: 'line-vertical',
         name: '直线特效（垂直）',
-        category: 'effect',
+        category: ELEMENT_CATEGORIES.PIECE,
         svg: null,
         char: '↕️',
         color: '#3b82f6',
@@ -147,7 +176,7 @@ const BUILTIN_ELEMENTS = [
     {
         id: 'bomb',
         name: '爆炸特效',
-        category: 'effect',
+        category: ELEMENT_CATEGORIES.PIECE,
         svg: null,
         char: '💣',
         color: '#f97316',
@@ -163,7 +192,7 @@ const BUILTIN_ELEMENTS = [
     {
         id: 'square-effect',
         name: '田字特效',
-        category: 'effect',
+        category: ELEMENT_CATEGORIES.PIECE,
         svg: null,
         char: '✨',
         color: '#facc15',
@@ -179,7 +208,7 @@ const BUILTIN_ELEMENTS = [
     {
         id: 'rainbow',
         name: '彩虹特效',
-        category: 'effect',
+        category: ELEMENT_CATEGORIES.PIECE,
         svg: '@rainbow-bird',
         char: '🌈',
         color: '#ec4899',
@@ -194,7 +223,7 @@ const BUILTIN_ELEMENTS = [
     {
         id: 'empty',
         name: '空',
-        category: 'decoration',   // ← 从 'piece' 改为 'decoration'
+        category: 'decoration',   // ← 从 ELEMENT_CATEGORIES.PIECE 改为 'decoration'
         svg: null,
         char: '',
         color: 'transparent',
