@@ -77,40 +77,22 @@ class MatchSystem {
         const firstPiece = this.game.board.get(firstPos.r, firstPos.c);
         const color = firstPiece?.id || null;
         
-        // 按行列分组
-        const rowGroups = {}, colGroups = {};
-        for (const p of positions) {
-            if (!rowGroups[p.r]) rowGroups[p.r] = [];
-            if (!colGroups[p.c]) colGroups[p.c] = [];
-            rowGroups[p.r].push(p);
-            colGroups[p.c].push(p);
+        const posSet = new Set(positions.map(p => posToKey(p.r, p.c)));
+        
+        const templates = window.SHAPE_TEMPLATES || [];
+        const sorted = [...templates].sort((a, b) => b.priority - a.priority);
+        
+        console.log(`[MatchSystem] detectShape: positions=${positions.length} 格, 模板数=${sorted.length}`);
+        
+        for (const template of sorted) {
+            const result = this._tryTemplate(template, positions, posSet, color);
+            if (result) {
+                console.log(`[MatchSystem] detectShape → 匹配模板 ${template.id}`);
+                return result;
+            }
         }
         
-        // 1. 检测直线
-        const lineResult = this._detectLine(rowGroups, colGroups, positions, color);
-        if (lineResult) return lineResult;
-        
-        // 2. 检测大 T（横竖都 >= 5）
-        const bigTResult = this._detectBigT(rowGroups, colGroups, positions, color);
-        if (bigTResult) return bigTResult;
-        
-        // 3. 检测 T 形
-        const tResult = this._detectTShape(rowGroups, colGroups, positions, color);
-        if (tResult) return tResult;
-        
-        // 4. 检测 L 形
-        const lResult = this._detectLShape(rowGroups, colGroups, positions, color);
-        if (lResult) return lResult;
-        
-        // 5. 检测十字架
-        const crossResult = this._detectCross(rowGroups, colGroups, positions, color);
-        if (crossResult) return crossResult;
-        
-        // 6. 检测田字
-        const squareResult = this._detectSquare(positions, color);
-        if (squareResult) return squareResult;
-        
-        // 7. 复杂
+        console.log(`[MatchSystem] detectShape → 复杂（无模板匹配）`);
         return new ShapeResult({
             shape: SHAPES.COMPLEX,
             length: positions.length,
@@ -118,6 +100,36 @@ class MatchSystem {
             center: positions[Math.floor(positions.length / 2)],
             color
         });
+    }
+    
+    _tryTemplate(template, positions, posSet, color) {
+        for (const origin of positions) {
+            let allMatch = true;
+            for (const cell of template.cells) {
+                const r = origin.r + cell.dr;
+                const c = origin.c + cell.dc;
+                if (!posSet.has(posToKey(r, c))) {
+                    allMatch = false;
+                    break;
+                }
+            }
+            if (allMatch) {
+                const center = {
+                    r: origin.r + (template.center?.dr || 0),
+                    c: origin.c + (template.center?.dc || 0),
+                };
+                return new ShapeResult({
+                    shape: template.shape,
+                    direction: template.direction,
+                    length: template.cells.length,
+                    positions,
+                    center,
+                    color,
+                    extra: { templateId: template.id, matchedAt: origin },
+                });
+            }
+        }
+        return null;
     }
     
     _detectLine(rowGroups, colGroups, positions, color) {

@@ -284,24 +284,24 @@ class RenderSystem {
         
         const effect = piece.effect;
         
-        // ===== 特殊：彩虹特效 → 直接替换图标 =====
-        if (effect === 'rainbow') {
-            const rainbowEl = document.createElement('img');
-            rainbowEl.className = 'piece-svg rainbow-bird';
-            rainbowEl.src = SVGLibrary.resolve('@rainbow-bird');
-            rainbowEl.style.cssText = `
-                position: absolute;
-                inset: 6%;
-                width: 88%;
-                height: 88%;
-                object-fit: contain;
-                pointer-events: none;
-                z-index: 1;
-            `;
-            cell.appendChild(rainbowEl);
-            cell.classList.add('effect-rainbow');
-            return;
-        }
+        // ===== 特殊：rainbow-plus → 固定彩色彩虹鸟 =====
+        // if (effect === 'rainbow-plus') {
+        //     const rainbowEl = document.createElement('img');
+        //     rainbowEl.className = 'piece-svg rainbow-bird';
+        //     rainbowEl.src = SVGLibrary.resolve('@rainbow-bird');
+        //     rainbowEl.style.cssText = `
+        //         position: absolute;
+        //         inset: 6%;
+        //         width: 88%;
+        //         height: 88%;
+        //         object-fit: contain;
+        //         pointer-events: none;
+        //         z-index: 1;
+        //     `;
+        //     cell.appendChild(rainbowEl);
+        //     cell.classList.add('effect-rainbow-plus');
+        //     return;
+        // }
         
         // ===== 其他情况：保留棋子图标 =====
         const elementDef = piece.element 

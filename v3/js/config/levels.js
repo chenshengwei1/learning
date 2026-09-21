@@ -136,6 +136,12 @@ const BUILTIN_LEVELS = [
             // 2×2 橙子
             { element: 'orange', r: 6, c: 6, w: 2, h: 2, hp: 1 }
         ],
+        overlays: [
+            // 中间藤蔓
+            { element: 'vine', r: 3, c: 3, hp: 2 },
+            { element: 'vine', r: 3, c: 4, hp: 2 },
+            { element: 'vine', r: 4, c: 3, hp: 2 },
+            { element: 'vine', r: 4, c: 4, hp: 2 }],
         obstacles: [
             // 覆盖在水果上的冰
             { element: 'ice', r: 0, c: 0, hp: 1 },
@@ -156,13 +162,7 @@ const BUILTIN_LEVELS = [
             { element: 'ice', r: 6, c: 6, hp: 2 },
             { element: 'ice', r: 6, c: 7, hp: 1 },
             { element: 'ice', r: 7, c: 6, hp: 2 },
-            { element: 'ice', r: 7, c: 7, hp: 1 },
-            
-            // 中间藤蔓
-            { element: 'vine', r: 3, c: 3, hp: 2 },
-            { element: 'vine', r: 3, c: 4, hp: 2 },
-            { element: 'vine', r: 4, c: 3, hp: 2 },
-            { element: 'vine', r: 4, c: 4, hp: 2 }
+            { element: 'ice', r: 7, c: 7, hp: 1 }
         ],
         goals: [
             { type: 'collectAll' }

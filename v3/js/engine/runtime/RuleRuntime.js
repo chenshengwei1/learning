@@ -89,8 +89,15 @@ class RuleRuntime {
             
             for (const listener of listeners) {
                 // piece:removed 的源元素检查（只对 piece:removed 生效）
-                if (eventType === 'piece:removed' && data.piece && data.piece.element && data.piece.element !== listener.element.id) {
-                    if (listener.element.category !== 'obstacle' && listener.element.category !== 'generator') {
+                if (eventType === 'piece:removed' && data.piece) {
+                    const piece = data.piece;
+                    const listenerEl = listener.element;
+                    const matched =
+                        piece.element === listenerEl.id ||      // 普通棋子 / 障碍物 id 匹配
+                        piece.effect === listenerEl.id ||       // 特效棋子：effect 匹配
+                        listenerEl.category === 'obstacle' ||   // 障碍物兜底
+                        listenerEl.category === 'generator';    // 生成器兜底
+                    if (!matched) {
                         continue;
                     }
                 }
@@ -147,9 +154,16 @@ class RuleRuntime {
         console.log(`[_executeListener] 元素=${element.id} 事件=${eventType}`);
         
         // piece:removed 的源元素检查（只对 piece:removed 生效）
-        if (eventType === 'piece:removed' && data.piece && data.piece.element && data.piece.element !== element.id) {
-            if (element.category !== 'obstacle' && element.category !== 'generator') {
-                console.log(`[_executeListener] ${element.id} 被 piece:removed 源元素检查跳过`);
+               // piece:removed 的源元素检查（只对 piece:removed 生效）
+        if (eventType === 'piece:removed' && data.piece) {
+            const piece = data.piece;
+            const matched =
+                piece.element === element.id ||      // 普通棋子 / 障碍物 id 匹配
+                piece.effect === element.id ||       // 特效棋子：effect 匹配
+                element.category === 'obstacle' ||   // 障碍物兜底
+                element.category === 'generator';    // 生成器兜底
+            if (!matched) {
+                console.log(`[_executeListener] ${element.id} 被 piece:removed 过滤跳过`);
                 return;
             }
         }

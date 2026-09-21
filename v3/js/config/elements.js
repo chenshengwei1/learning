@@ -207,9 +207,22 @@ const BUILTIN_ELEMENTS = [
     },
     {
         id: 'rainbow',
-        name: '彩虹特效',
+        name: '彩虹特效（纯色）',
         category: ELEMENT_CATEGORIES.PIECE,
-        svg: '@rainbow-bird',
+        svg: null,           // 动态取原动物的 svg
+        char: '🌈',
+        color: '#ec4899',
+        properties: {},
+        events: [{
+            event: 'onRemove',
+            actions: [{ type: 'remove', targets: { type: 'all' } }]
+        }]
+    },
+    {
+        id: 'rainbow-plus',
+        name: '彩虹特效（延伸）',
+        category: ELEMENT_CATEGORIES.PIECE,
+        svg: '@rainbow-bird',   // 固定用彩虹鸟
         char: '🌈',
         color: '#ec4899',
         properties: {},

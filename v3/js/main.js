@@ -65,6 +65,13 @@
     document.getElementById('mode-admin-btn')?.addEventListener('click', () => game.setMode('admin'));
     document.getElementById('mode-game-btn')?.addEventListener('click', () => game.setMode('game'));
     document.getElementById('undo-btn')?.addEventListener('click', () => game.undo());
+    document.getElementById('debug-btn')?.addEventListener('click', () => {
+        window.__DEBUG_TRACE__ = true;
+        window.__DEBUG_MATCH__ = true;
+        window.__DEBUG_GRAVITY__ = true;
+    });
+
+    
     
     // 11. 启动游戏
     game.init();

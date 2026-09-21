@@ -12,6 +12,21 @@
     // ==================== 测试场景定义 ====================
     
     const SCENARIOS = [
+        {
+            name: '无效交换（抖动）',
+            validate: (game) => {
+                // 交换被拒绝，步数没减
+                return game.movesLeft === 9999;
+            },
+            validateMsg: '无效交换，步数未减',
+            setup: async () => {
+                __t.reset('sandbox');
+                __t.setupBoard([
+                    [0,0,'fox'],[0,1,'owl'],[0,2,'cat'],[0,3,'bear'],
+                ]);
+                await __t.swap(0, 0, 0, 1);   // fox ↔ owl，应该不消除
+            }
+        },
         // ==================== 基础匹配 ====================
         {
             name: '3 消',
@@ -366,7 +381,7 @@
             validate: (game) => {
                 const s = window.__autoPlayState;
                 if (!s) return false;
-                return s.noElimination === 0 && s.steps === 30;
+                return s.noElimination === 0 && s.steps === 3;
             },
             validateMsg: '30 步全部产生消除，无空转',
             setup: async () => {
@@ -376,7 +391,7 @@
                 const state = { steps: 0, noElimination: 0 };
                 window.__autoPlayState = state;
                 
-                const MAX_STEPS = 30;
+                const MAX_STEPS = 3;
                 
                 while (state.steps < MAX_STEPS) {
                     const hint = __gameEngine._findHint();

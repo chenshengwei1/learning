@@ -340,60 +340,64 @@ class GameEngine {
     // ==================== 交换 ====================
     
     async swap(r1, c1, r2, c2) {
-        console.log('[swap] 被调用', r1, c1, r2, c2);
-
-        if (this.isProcessing || this.isGameEnded){
-            console.log('[swap] 被拦截: isProcessing=', this.isProcessing, 'isGameEnded=', this.isGameEnded);
-            return;
-        } 
-        if (Math.abs(r1 - r2) + Math.abs(c1 - c2) !== 1)  {
-            console.log('[swap] 不相邻');
+        console.log(`[swap] 请求 (${r1},${c1}) ↔ (${r2},${c2})`);
+        
+        // ===== 阶段 1：基础检查 =====
+        if (this.isProcessing || this.isGameEnded) {
+            console.log(`[swap] 拒绝: isProcessing=${this.isProcessing} isGameEnded=${this.isGameEnded}`);
             return;
         }
-
-        // ← 新增：藤蔓阻挡
+        if (Math.abs(r1 - r2) + Math.abs(c1 - c2) !== 1) {
+            console.log(`[swap] 拒绝: 不相邻`);
+            return;
+        }
         if (this.board.hasBlockingOverlay(r1, c1) || this.board.hasBlockingOverlay(r2, c2)) {
             this.showMessage('🌿 藤蔓缠住了，先消除它');
+            console.log(`[swap] 拒绝: 有藤蔓阻挡`);
             return;
         }
         
-        // 清空选中状态
+        const p1 = this.board.get(r1, c1);
+        const p2 = this.board.get(r2, c2);
+        if (!p1 || !p2) {
+            console.log(`[swap] 拒绝: 有空位`);
+            return;
+        }
+        if (!p1.isSwappable() || !p2.isSwappable()) {
+            this.showMessage('🔒 有棋子被锁定');
+            console.log(`[swap] 拒绝: 棋子被锁定`);
+            return;
+        }
+        
+        // 清空选中
         if (this.selected) {
             this._updateSelectionUI(this.selected, null);
             this.selected = null;
         }
         
-        const p1 = this.board.get(r1, c1);
-        const p2 = this.board.get(r2, c2);
-        if (!p1 || !p2) return;
-        if (!p1.isSwappable() || !p2.isSwappable()) {
-            this.showMessage('🔒 有棋子被锁定');
-            return;
-        }
+        this.isProcessing = true;
+        this._saveHistory();
         
-        // ← 新增：双特效交换分支
-        if (p1.effect && p2.effect) {
-            console.log('[swap] 走双特效分支');
-            this.isProcessing = true;
-            this._saveHistory();   // ← 新增
-            await this._handleEffectSwap(r1, c1, r2, c2);
+        // ===== 阶段 2：预判 =====
+        const canSwap = this._canSwapProduceEffect(r1, c1, r2, c2, p1, p2);
+        console.log(`[swap] 预判可交换: ${canSwap}`);
+        
+        if (!canSwap) {
+            // 不可交换：抖动，不位移
+            await this._flashInvalid(r1, c1, r2, c2);
+            this.showMessage('不能消除，换一个试试～');
             this.isProcessing = false;
             return;
         }
         
-        console.log('[swap] 走普通交换分支');
-        this.isProcessing = true;
-
-        if (window.__DEBUG_TRACE__) {
-            console.log(`\n========== [SWAP] (${r1},${c1}) ↔ (${r2},${c2}) ==========`);
-            const p1 = this.board.get(r1, c1);
-            const p2 = this.board.get(r2, c2);
-            console.log(`  ${p1?.id || '空'} ↔ ${p2?.id || '空'}`);
-        }
-
-        this._saveHistory();
+        // ===== 阶段 3：交换动画 =====
+        await this.renderSystem.animateSwap(r1, c1, r2, c2);
+        this.board.swap(r1, c1, r2, c2);
+        this.matchSystem.clearCache();
+        this.renderSystem.renderPartial(new Set([posToKey(r1, c1), posToKey(r2, c2)]));
+        await sleep(50);
         
-        // 触发交换事件
+        // ===== 阶段 4：触发交换事件 =====
         await this.ruleRuntime.emit('piece:swapped', {
             r1, c1, r2, c2,
             piece1: p1, piece2: p2,
@@ -403,35 +407,127 @@ class GameEngine {
         });
         await this.ruleRuntime.flush();
         
-        // 交换动画
-        await this.renderSystem.animateSwap(r1, c1, r2, c2);
+        // ===== 阶段 5：分支处理 =====
+        const p1After = this.board.get(r2, c2);   // p1 换到 (r2,c2)
+        const p2After = this.board.get(r1, c1);   // p2 换到 (r1,c1)
         
-        // 交换数据
-        this.board.swap(r1, c1, r2, c2);
-        this.matchSystem.clearCache();
-        this.renderSystem.renderPartial(new Set([posToKey(r1, c1), posToKey(r2, c2)]));
-        await sleep(50);
+        if (p1After.effect && p2After.effect) {
+            // 双特效分支（含 rainbow + rainbow、rainbow + line/bomb）
+            console.log(`[swap] 走双特效分支`);
+            await this._handleEffectSwap(r1, c1, r2, c2);
+        } else if (this._isRainbowSwap(p1After, p2After)) {
+            // 彩虹 + 普通分支（第 2 步实现，现在先走普通）
+            console.log(`[swap] 走普通分支（彩虹+普通待实现）`);
+            await this._handleNormalSwap(r1, c1, r2, c2, p1After, p2After);
+        } else {
+            // 普通分支
+            console.log(`[swap] 走普通分支`);
+            await this._handleNormalSwap(r1, c1, r2, c2, p1After, p2After);
+        }
         
-        // 检查匹配
+        this._checkGameEnd();
+        this.isProcessing = false;
+    }
+    
+    /**
+     * 预判：交换后是否能产生效果（消除 / 特效触发）
+     */
+    _canSwapProduceEffect(r1, c1, r2, c2, p1, p2) {
+        // 1. 彩虹 + 任意 → 可交换
+        if (p1.effect === 'rainbow' || p1.effect === 'rainbow-plus'
+            || p2.effect === 'rainbow' || p2.effect === 'rainbow-plus') {
+            return true;
+        }
+        // 2. 双特效 → 可交换
+        if (p1.effect && p2.effect) {
+            return true;
+        }
+        // 3. 普通 + 普通 → 检查交换后是否形成匹配
+        return this._checkLocalMatchAfterSwap(r1, c1, r2, c2);
+    }
+    
+    /**
+     * 试交换 + 局部检查 + 还原
+     */
+    _checkLocalMatchAfterSwap(r1, c1, r2, c2) {
+        const board = this.board;
+        board.swap(r1, c1, r2, c2);
+        
+        const has1 = this._checkLocalMatch(r2, c2);   // p1 换到 (r2,c2)
+        const has2 = this._checkLocalMatch(r1, c1);   // p2 换到 (r1,c1)
+        
+        board.swap(r1, c1, r2, c2);   // 还原
+        
+        return has1 || has2;
+    }
+    
+    /**
+     * 检查 (r,c) 位置的横竖 3 连 + 田字
+     */
+    _checkLocalMatch(r, c) {
+        const board = this.board;
+        const piece = board.get(r, c);
+        if (!piece) return false;
+        
+        const id = piece.id;
+        const len = this.config.matchLength || 3;
+        
+        // 横向
+        let count = 1;
+        for (let i = c - 1; i >= 0 && board.get(r, i)?.id === id; i--) count++;
+        for (let i = c + 1; i < board.cols && board.get(r, i)?.id === id; i++) count++;
+        if (count >= len) return true;
+        
+        // 竖向
+        count = 1;
+        for (let i = r - 1; i >= 0 && board.get(i, c)?.id === id; i--) count++;
+        for (let i = r + 1; i < board.rows && board.get(i, c)?.id === id; i++) count++;
+        if (count >= len) return true;
+        
+        // 田字
+        if (this.config.enableSquare) {
+            for (const [dr, dc] of [[0,0],[-1,0],[0,-1],[-1,-1]]) {
+                const rr = r + dr, cc = c + dc;
+                if (rr < 0 || cc < 0 || rr + 1 >= board.rows || cc + 1 >= board.cols) continue;
+                const a = board.get(rr, cc);
+                const b = board.get(rr, cc + 1);
+                const cc2 = board.get(rr + 1, cc);
+                const d = board.get(rr + 1, cc + 1);
+                if (a?.id === id && b?.id === id && cc2?.id === id && d?.id === id) return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    /**
+     * 是否彩虹 + 普通交换
+     */
+    _isRainbowSwap(p1, p2) {
+        const isRainbow = (p) => p.effect === 'rainbow' || p.effect === 'rainbow-plus';
+        return (isRainbow(p1) && !p2.effect) || (isRainbow(p2) && !p1.effect);
+    }
+    
+    /**
+     * 普通交换处理（当前逻辑抽出）
+     */
+    async _handleNormalSwap(r1, c1, r2, c2, p1After, p2After) {
         const matches = this.matchSystem.findMatches();
+        console.log(`[swap] 普通分支 findMatches: ${matches.size} 格`);
+        
         if (matches.size === 0) {
-            // 回退
+            // 理论上不该发生（预判通过但全局无匹配）
+            console.warn(`[swap] 预判通过但全局无匹配，回退`);
             this.board.swap(r1, c1, r2, c2);
             this.matchSystem.clearCache();
             this.renderSystem.renderPartial(new Set([posToKey(r1, c1), posToKey(r2, c2)]));
             await this._flashInvalid(r1, c1, r2, c2);
-            this.showMessage('不能消除，换一个试试～');
-            this.isProcessing = false;
             return;
         }
         
         this.movesLeft--;
         this.updateHUD();
-        
         await this.processMatches(matches);
-        this._checkGameEnd();
-        
-        this.isProcessing = false;
     }
 
     // ==================== 双特效交换 ====================

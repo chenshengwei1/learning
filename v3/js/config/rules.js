@@ -69,13 +69,22 @@ const BUILTIN_CREATION_RULES = [
     },
     
     // ===== 十字架 5 连及以上 → 彩虹特效 =====
+        // ===== 大 T → 彩色小鸟 =====
     {
-        id: 'cross',
-        when: { shape: 'cross', minLength: 5 },
-        create: 'rainbow',
+        id: 'bigT',
+        when: { shape: 'bigT' },
+        create: 'rainbow-plus',
         place: 'intersection',
         preserve: []
-    }
+    },
+        // ===== 直线 5 连及以上 → 彩虹特效（纯色） =====
+    {
+        id: 'line5',
+        when: { shape: 'line', minLength: 5 },
+        create: 'rainbow',
+        place: 'middle',
+        preserve: ['color']    // ← 加这行
+    },
 ];
 
 /**

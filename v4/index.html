@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍬 糖果消消乐 v8</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="app-shell">
+        <!-- 左侧面板 -->
+        <aside id="left-panel" class="side-panel">
+            <h2>🎮 模式切换</h2>
+            <div class="mode-switch">
+                <button id="mode-admin-btn" class="mode-btn active" type="button">管理员</button>
+                <button id="mode-game-btn" class="mode-btn" type="button">游戏</button>
+            </div>
+
+            <div class="panel-card">
+                <h3>📋 关卡</h3>
+                <div id="level-list" class="level-list"></div>
+            </div>
+
+            <div class="panel-card rules-panel">
+                <h3>通关条件</h3>
+                <label class="check-line">
+                    <input id="admin-target-score-enabled" type="checkbox" checked>
+                    启用最低分
+                </label>
+                <label>
+                    最低分数
+                    <input id="admin-target-score" type="number" min="0" step="1000" value="50000">
+                </label>
+                <label class="check-line">
+                    <input id="admin-enable-time-limit" type="checkbox">
+                    时间限定
+                </label>
+                <label>
+                    时长（秒）
+                    <input id="admin-time-limit-seconds" type="number" min="10" max="1800" value="90">
+                </label>
+                <label>
+                    总步数
+                    <input id="admin-total-moves" type="number" min="1" max="200" value="30">
+                </label>
+                <label>
+                    关卡名称
+                    <input id="admin-level-name" type="text" maxlength="40" placeholder="关卡名">
+                </label>
+                <button id="admin-save-rules-btn" class="primary-btn" type="button">保存规则</button>
+                <button id="admin-save-level-btn" class="secondary-btn" type="button">保存为关卡</button>
+            </div>
+
+            <div class="panel-card">
+                <h3>📦 元素库</h3>
+                <button id="element-new-btn" class="secondary-btn" type="button">+ 新建元素</button>
+                <div id="element-list"></div>
+            </div>
+
+            <div class="panel-card admin-actions-panel">
+                <button id="admin-apply-board-btn" class="primary-btn" type="button">应用配置</button>
+                <button id="game-start-btn" class="secondary-btn" type="button">切换到游戏</button>
+            </div>
+        </aside>
+
+        <!-- 主游戏区域 -->
+        <main id="board-stage">
+            <div id="game-container">
+                <h1>🍬 糖果消消乐 <span style="font-size:14px;opacity:0.6;">v8</span></h1>
+
+                <div id="header">
+                    <div class="stat">
+                        <span class="label">🏆 分数</span>
+                        <span class="value" id="score">0</span>
+                    </div>
+                    <div class="stat">
+                        <span class="label">👣 步数</span>
+                        <span class="value" id="moves">30</span>
+                    </div>
+                    <div class="stat">
+                        <span class="label">💥 连击</span>
+                        <span class="value" id="combo">0</span>
+                    </div>
+                    <div class="stat">
+                        <span class="label">⏱️ 时间</span>
+                        <span class="value" id="time-left">∞</span>
+                    </div>
+                </div>
+
+                <div id="goals"></div>
+
+                <div id="board"></div>
+
+                <div id="message"></div>
+
+                <div id="actions">
+                    <button id="restart-btn">🔄 重新开始</button>
+                    <button id="reset-level-btn" class="hidden">🔄 重置关卡</button>
+                    <button id="hint-btn">💡 提示</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 元素编辑器 -->
+    <div id="element-editor" class="hidden">
+        <div>
+            <h2>🛠️ 元素编辑器</h2>
+            <div id="element-editor-content"></div>
+            <div style="display:flex; gap:8px; margin-top:16px;">
+                <button id="element-save-btn" class="primary-btn">💾 保存</button>
+                <button id="element-test-btn" class="secondary-btn">🧪 测试</button>
+                <button id="element-close-btn" class="secondary-btn">✖️ 关闭</button>
+            </div>
+        </div>
+    </div>
+    <div id="editor-panel" class="editor-panel hidden">
+        <div class="editor-panel-header">
+            <h2>🛠️ 格子编辑器</h2>
+            <button id="editor-panel-close" class="editor-panel-close" type="button">✖</button>
+        </div>
+        <div class="editor-mode-switch">
+            <button id="editor-mode-single" class="editor-mode-btn active" type="button">单选</button>
+            <button id="editor-mode-multi" class="editor-mode-btn" type="button">多选</button>
+        </div>
+        <div id="editor-panel-content"></div>
+    </div>
+
+    <!-- ==================== JS 加载顺序 ==================== -->
+    
+    <!-- 1. 工具层 -->
+    <script src="js/utils/constants.js"></script>
+    <script src="js/utils/helpers.js"></script>
+    <script src="js/utils/cache.js"></script>
+
+    <!-- SVG 资源库（必须在 config/elements.js 之前）-->
+    <script src="js/assets/svg-library.js"></script>
+    
+    <!-- 2. 注册表 -->
+    <script src="js/engine/registries/ActionRegistry.js"></script>
+    <script src="js/engine/registries/EventRegistry.js"></script>
+    <script src="js/engine/registries/SelectorRegistry.js"></script>
+    <script src="js/engine/registries/ConditionRegistry.js"></script>
+    <script src="js/engine/registries/ElementRegistry.js"></script>
+    <script src="js/engine/registries/GoalRegistry.js"></script>
+    <script src="js/engine/registries/index.js"></script>
+    
+    <!-- 3. DSL -->
+    <script src="js/engine/dsl/VariableResolver.js"></script>
+    <script src="js/engine/dsl/ExpressionParser.js"></script>
+    <script src="js/engine/dsl/ConfigValidator.js"></script>
+    
+    <!-- 4. 运行时 -->
+    <script src="js/engine/runtime/EventBus.js"></script>
+    <script src="js/engine/runtime/RuleRuntime.js"></script>
+    
+    <!-- 5. 领域模型 -->
+    <script src="js/core/Piece.js"></script>
+    <script src="js/core/Board.js"></script>
+    <script src="js/core/ShapeResult.js"></script>
+    <script src="js/core/PieceFactory.js"></script>
+    <script src="js/core/EventQueue.js"></script>
+    
+    <!-- 6. 内置词表 -->
+    <script src="js/rules/selectors.js"></script>
+    <script src="js/rules/conditions.js"></script>
+    <script src="js/rules/actions.js"></script>
+    <script src="js/rules/events.js"></script>
+    <script src="js/rules/goals.js"></script>
+    <script src="js/rules/index.js"></script>
+    
+    <!-- 7. 系统层 -->
+    <script src="js/systems/MatchSystem.js"></script>
+    <script src="js/systems/GravitySystem.js"></script>
+    <script src="js/systems/ScoreSystem.js"></script>
+    <script src="js/systems/GoalSystem.js"></script>
+    <script src="js/systems/TimerSystem.js"></script>
+    <script src="js/systems/RenderSystem.js"></script>
+    <script src="js/systems/InputSystem.js"></script>
+    <script src="js/systems/SaveSystem.js"></script>
+    
+    <!-- 8. 引擎 -->
+    <script src="js/core/GameEngine.js"></script>
+    
+    <!-- 9. 配置层 -->
+    <script src="js/config/swapRules.js"></script>
+    <script src="js/config/elements.js"></script>
+    <script src="js/config/rules.js"></script>
+    <script src="js/config/levels.js"></script>
+    <script src="js/config/presets.js"></script>
+    <script src="js/config/creationRules.js"></script>
+    <script src="js/config/index.js"></script>
+    
+    <!-- 10. UI 层 -->
+    <script src="js/ui/HUD.js"></script>
+    <script src="js/ui/AdminPanel.js"></script>
+    <script src="js/ui/LevelSelector.js"></script>
+    <script src="js/ui/ElementEditor.js"></script>
+    <script src="js/ui/ElementList.js"></script>
+    
+    <!-- 11. 入口 -->
+    <script src="js/main.js"></script>
+</body>
+</html>

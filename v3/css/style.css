@@ -1148,10 +1148,11 @@ body {
     border-radius: 8px;
 }
 
-.rainbow-bird {
-    /* 用 filter 旋转色相，让整只鸟的颜色循环变化 */
+
+.cell.effect-rainbow-plus img.piece-svg {
     animation: rainbowHueShift 3s linear infinite;
 }
+
 
 @keyframes rainbowHueShift {
     0%   { filter: hue-rotate(0deg); }

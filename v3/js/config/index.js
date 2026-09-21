@@ -89,6 +89,7 @@ class ConfigLoader {
             pieces: level.pieces || null,
             targets: level.targets || [],
             obstacles: level.obstacles || [],
+            overlays: level.overlays || [],
             goals: level.goals || [],
             
             totalMoves: level.moves || 30,

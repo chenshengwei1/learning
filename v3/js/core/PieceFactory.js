@@ -52,17 +52,50 @@ class PieceFactory {
     
     /**
      * 创建特效棋子
+     * 
+     * 规则：
+     * - 特效元素自己有 svg（如 rainbow-plus 的 @rainbow-bird）→ 用特效元素
+     * - 否则用原动物（保留 svg/char/color），只加 effect 字段
+     * 
+     * @param {string} effectId - 特效类型（'line-horizontal' / 'bomb' / 'rainbow' / 'rainbow-plus' 等）
+     * @param {Object} options
+     *   - color: 原动物的 id（如 'fox'）
+     *   - direction: 'horizontal' | 'vertical'
+     *   - variant: 扩展字段
+     *   - extra: 额外 stateData
      */
-    createEffect(elementId, options = {}) {
-        const element = this.registries.elements.get(elementId);
-        if (!element) return null;
+    createEffect(effectId, options = {}) {
+        const effectDef = this.registries.elements.get(effectId);
+        if (!effectDef) {
+            console.warn(`[PieceFactory] createEffect: 找不到特效元素 "${effectId}"`);
+            return null;
+        }
         
-        const piece = this.create(elementId);
-        piece.effect = elementId;
+        const baseColor = options.color;
+        const baseDef = baseColor ? this.registries.elements.get(baseColor) : null;
+        
+        let piece;
+        let source;
+        
+        if (effectDef.svg) {
+            piece = this.create(effectId);
+            source = `特效元素(${effectId})`;
+        } else if (baseDef) {
+            piece = this.create(baseColor);
+            source = `原动物(${baseColor})`;
+        } else {
+            piece = this.create(effectId);
+            source = `兜底(${effectId})`;
+        }
+        
+        piece.effect = effectId;
         
         if (options.direction) piece.stateData.direction = options.direction;
         if (options.color) piece.stateData.color = options.color;
+        if (options.variant) piece.stateData.variant = options.variant;
         if (options.extra) Object.assign(piece.stateData, options.extra);
+        
+        console.log(`[PieceFactory] createEffect(${effectId}) color=${baseColor || '-'} → id=${piece.id} svg=${piece.visual.svg || '-'} 来源=${source}`);
         
         return piece;
     }
