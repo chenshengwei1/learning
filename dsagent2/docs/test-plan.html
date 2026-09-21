@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>糖果消消乐 v3 项目测试计划</title>
+  <style>
+    :root {
+      --bg: #f5f7ff;
+      --panel: #ffffff;
+      --soft: #eef3ff;
+      --line: #dfe8ff;
+      --primary: #4f46e5;
+      --primary-dark: #1f1b4d;
+      --text: #1f2937;
+      --muted: #667085;
+      --shadow: 0 16px 32px rgba(79,70,229,0.08);
+      --success: #10b981;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: "Segoe UI", "Microsoft YaHei", sans-serif; background: var(--bg); color: var(--text); }
+    .container { max-width: 1100px; margin: 28px auto 60px; padding: 0 20px; }
+    .topbar { position: sticky; top: 0; z-index: 10; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+    .topbar-inner { max-width: 1100px; margin: 0 auto; padding: 14px 20px; display: flex; justify-content: space-between; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .brand { font-weight: 800; color: var(--primary-dark); }
+    .nav a { color: var(--primary); text-decoration: none; margin-left: 12px; font-weight: 600; }
+    .nav a:hover { text-decoration: underline; }
+    .card { background: var(--panel); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow); padding: 28px 30px; }
+    h1 { font-size: clamp(2rem, 3vw, 2.8rem); margin-top: 0; color: var(--primary-dark); }
+    h2 { font-size: 1.35rem; margin-top: 26px; color: var(--primary-dark); }
+    h3 { font-size: 1.08rem; margin-top: 20px; color: var(--primary-dark); }
+    p, li { line-height: 1.8; color: var(--text); }
+    ul, ol { padding-left: 22px; }
+    .tag { display: inline-block; background: var(--soft); border: 1px solid var(--line); color: var(--primary); padding: 7px 12px; border-radius: 999px; font-size: 0.82rem; font-weight: 700; margin-bottom: 12px; }
+    .meta { color: var(--muted); font-size: 0.9rem; }
+    .case { margin-top: 18px; border: 1px solid var(--line); background: #fafbff; border-radius: 12px; padding: 16px 18px; }
+    .case strong { color: var(--primary-dark); }
+    .case .steps, .case .expect { margin-top: 6px; }
+    .case code { background: #f3f4f6; border: 1px solid #e5e7eb; padding: 1px 6px; border-radius: 5px; font-size: 0.92em; }
+    .footer-note { margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.92rem; }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">糖果消消乐 v3 · 测试计划</div>
+      <div class="nav">
+        <a href="index.html">首页</a>
+        <a href="design.html">设计说明</a>
+        <a href="test-plan.html">测试计划</a>
+        <a href="user-guide.html">使用手册</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="card">
+      <div class="tag">项目测试计划 · v3 规则引擎</div>
+      <h1>糖果消消乐 v3 项目测试计划</h1>
+
+      <h2>1. 文档目的</h2>
+      <p>本文档用于对糖果消消乐 v3（规则驱动架构）进行功能验证、回归检查和交付验收。覆盖核心玩法、双特效交换、多层棋盘（含覆盖物）、事件驱动系统、配置能力、状态系统、模式切换、关卡系统与浏览器表现。</p>
+
+      <h2>2. 测试目标</h2>
+      <ul>
+        <li>棋盘渲染与交互是否正常（点击交换 / 拖拽交换）</li>
+        <li>直线、田字、斜线匹配规则与最少连消数量是否正确</li>
+        <li>特效合成规则（4连直线、5连彩虹、田字方块、T/L形炸弹）是否正确</li>
+        <li>双特效交换组合（line+line、line+bomb、bomb+bomb、rainbow+任意）是否正确</li>
+        <li>多层棋盘（布局/目标物/障碍物/覆盖物/棋子）数据是否一致</li>
+        <li>事件驱动系统（onCellCleared、onAdjacent、onAnyMatch 等）是否正确触发</li>
+        <li>管理员模式多选编辑、游戏模式切换、通关目标结算是否正确</li>
+        <li>棋盘重排（reshuffle）在无解时能否正常工作</li>
+        <li>存档系统（localStorage）读写是否正确</li>
+        <li>DOM 一致性检测通过</li>
+      </ul>
+
+      <h2>3. 测试范围</h2>
+      <h3>功能验证</h3>
+      <ul>
+        <li>基础消除 / 连锁响应 / 计分逻辑 / 步数控制 / 时间限制 / 胜负判断</li>
+        <li>特效合成（4连直线、5连彩虹、田字方块、T/L形炸弹）</li>
+        <li>双特效交换组合（4种组合 + fallback）</li>
+        <li>覆盖物阻挡移动机制（vine）</li>
+        <li>冰的同格伤害（onCellCleared）vs 藤蔓的相邻伤害（onAdjacent）</li>
+      </ul>
+
+      <h3>配置验证</h3>
+      <ul>
+        <li>预设模板切换 / 自定义棋子 / 初始棋盘 / 爆炸规则配置</li>
+        <li>配置保存与恢复 / 默认配置回退 / 配置解析稳定性</li>
+        <li>关卡保存与加载（本地关卡库）</li>
+      </ul>
+
+      <h3>特殊状态与障碍验证</h3>
+      <ul>
+        <li>locked / frozen 状态</li>
+        <li>ice（障碍物）- 同格消除触发</li>
+        <li>vine（覆盖物）- 阻挡移动 + 相邻消除触发</li>
+        <li>chain（障碍物）- 相邻任意消除触发</li>
+      </ul>
+
+      <h3>编辑器验证</h3>
+      <ul>
+        <li>单选/多选格子编辑</li>
+        <li>应用配置与棋盘重建</li>
+      </ul>
+
+      <h2>4. 测试环境</h2>
+      <h3>运行环境</h3>
+      <ul>
+        <li>浏览器：Chrome、Edge、Firefox 的现代版本</li>
+        <li>运行方式：直接打开 v3/index.html（或通过 docs/index.html 入口）</li>
+        <li>依赖项：无额外安装依赖</li>
+      </ul>
+
+      <h3>验收方式</h3>
+      <ul>
+        <li>手动交互验证（管理员模式构造场景 + 游戏模式验证）</li>
+        <li>浏览器控制台检查报错</li>
+        <li>localStorage 检查配置持久化与关卡库（candy_config_v7 / candy_levels_v7）</li>
+        <li>UI 一键测试运行器（__uiTest.run()）</li>
+      </ul>
+
+      <h2>5. 测试用例</h2>
+
+      <h3>5.1 基础匹配测试</h3>
+
+      <div class="case">
+        <strong>TC-01：页面正常加载</strong>
+        <p class="steps"><strong>目标：</strong>页面稳定初始化并展示完整 UI。</p>
+        <p><strong>步骤：</strong>打开 v3/index.html，观察左侧规则面板、中央棋盘、底部操作按钮。</p>
+        <p><strong>预期：</strong>棋盘稳定显示（默认 8×8），分数/步数/连击/时间可见，控制台无脚本错误；加载后棋盘内不存在初始三连。</p>
+      </div>
+
+      <div class="case">
+        <strong>TC-02：有效交换与消除</strong>
+        <p><strong>目标：</strong>相邻棋子合法交换后可形成匹配并消除。</p>
+        <p><strong>预期：</strong>形成 3 连及以上后棋子被移除，分数增加，重力补齐生效，UI 同步更新。</p>
+      </div>
+
+      <div class="case">
+        <strong>TC-03：无效交换</strong>
+        <p><strong>目标：</strong>不构成有效消除的交换不产生错误结果。</p>
+        <p><strong>预期：</strong>操作被拒绝、棋子抖动提示、无错误计分、状态保持一致。</p>
+      </div>
+
+      <div class="case">
+        <strong>TC-04：点击交换与拖拽交换</strong>
+        <p><strong>目标：</strong>两种交互方式均可用。</p>
+        <p><strong>步骤：</strong>①先点击棋子 A 再点击相邻棋子 B 完成交换；②直接按住棋子向相邻方向拖拽超过阈值后松手。</p>
+        <p><strong>预期：</strong>两种方式均触发相同交换逻辑；拖拽越界（棋盘边缘）不报错；模式为管理员时点击应选中格子而非交换。</p>
+      </div>
+
+      <div class="case">
+        <strong>TC-05：连锁消除与连击</strong>
+        <p><strong>目标：</strong>多轮连锁消除可连续执行且计分稳定。</p>
+        <p><strong>预期：</strong>comboCount 递增，多次消除连续执行，分数按连击倍数计算，无卡死或状态异常。</p>
+      </div>
+
+      <h3>5.2 特效合成测试</h3>
+
+      <div class="case">
+        <strong>TC-06：4 连直线特效</strong>
+        <p><strong>目标：</strong>直线 4 连生成对应方向的直线特效。</p>
+        <p><strong>步骤：</strong>构造水平 4 连或垂直 4 连，执行交换。</p>
+        <p><strong>预期：</strong>生成 line-horizontal 或 line-vertical 特效棋子。</p>
+      </div>
+
+      <div class="case">
+        <strong>TC-07：5 连彩虹特效</strong>
+        <p><strong>目标：</strong>直线 ≥5 连生成彩虹特效。</p>
+        <p><strong>步骤：</strong>构造水平 5 连，执行交换。</p>
+        <p><strong>预期：</strong>生成 rainbow 特效棋子。</p>
+      </div>
+
+      <div class="case">
+        <strong>TC-08：田字方块特效</strong>
+        <p><strong>目标：</strong>2×2 田字生成方块特效。</p>
+        <p><strong>步骤：</strong>构造田字形状，执行交换。</p>
+        <p><strong>预期：</strong>生成 square-effect 特效棋子。</p>
+      </div>
+
+      <div class="case">
+        <strong>TC-09：T 形炸弹</strong>
+        <p><strong>目标：</strong>T 形匹配生成炸弹。</p>
+        <p><strong>步骤：</strong>构造 T 形，执行交换。</p>
+        <p><strong>预期：</strong>生成 bomb 特效棋子。</p>
+      </div>
+
+      <div class="case">
+        <strong>TC-10：L 形炸弹</strong>
+        <p><strong>目标：</strong>L 形匹配生成炸弹。</p>
+        <p><strong>步骤：</strong>构造 L 形，执行交换。</p>
+        <p><strong>预期：</strong>生成 bomb 特效棋子。</p>
+      </div>
+
+      <h3>5.3 双特效交换测试</h3>
+
+      <div class="case">
+        <strong>TC-11：直线 + 直线（同向）</strong>
+        <p><strong>目标：</strong>两条同向直线交换，清除整行/整列。</p>
+        <p><strong>预期：</strong>分数 ≥ 100，触发整行/整列消除。</p>
+      </div>
+
+      <div class="case">
+        <strong>TC-12：直线 + 直线（交叉）</strong>
+        <p><strong>目标：</strong>水平直线 + 垂直直线交换，触发十字清除。</p>
+        <p><strong>预期：</strong>触发十字清除效果。</p>
+      </div>
+
+      <div class="case">
+        <strong>TC-13：直线 + 炸弹</strong>
+        <p><strong>目标：</strong>直线 + 炸弹交换，触发三行三列清除。</p>
+        <p><strong>预期：</strong>分数 ≥ 100，3×3 范围清除。</p>
+      </div>
+
+      <div class="case">
+        <strong>TC-14：炸弹 + 炸弹</strong>
+        <p><strong>目标：</strong>两个炸弹交换，触发 5×5 全屏清除。</p>
+        <p><strong>预期：</strong>分数 ≥ 200，5×5 范围清除。</p>
+      </div>
+
+      <div class="case">
+        <strong>TC-15：彩虹 + 任意特效</strong>
+        <p><strong>目标：</strong>彩虹与任意特效交换，触发全屏清除。</p>
+        <p><strong>预期：</strong>分数 ≥ 1000，全屏清除。</p>
+      </div>
+
+      <h3>5.4 障碍物测试</h3>
+
+      <div class="case">
+        <strong>TC-16：冰（同格伤害）</strong>
+        <p><strong>目标：</strong>冰监听 onCellCleared，同格棋子被消除时受伤。</p>
+        <p><strong>步骤：</strong>在格子 (0,2) 放置冰（hp=1），在其同格放置棋子，执行交换使同格棋子消除。</p>
+        <p><strong>预期：</strong>冰被消除。</p>
+      </div>
+
+      <div class="case">
+        <strong>TC-17：冰（不响应相邻消除）</strong>
+        <p><strong>目标：</strong>冰不应响应相邻消除事件。</p>
+        <p><strong>步骤：</strong>在 (1,1) 放置冰（hp=2），在 (0,2) 和 (0,3) 执行消除。</p>
+        <p><strong>预期：</strong>(1,1) 的冰 hp 不变。</p>
+      </div>
+
+      <div class="case">
+        <strong>TC-18：藤蔓（相邻伤害 + 阻挡移动）</strong>
+        <p><strong>目标：</strong>藤蔓监听 onAdjacent，相邻棋子被消除时受伤，且阻挡交换。</p>
+        <p><strong>步骤 1：</strong>在 (0,2) 放置藤蔓（hp=2），交换 (0,2) 和 (0,3) 的棋子。</p>
+        <p><strong>预期 1：</strong>交换被拦截，步数未减。</p>
+        <p><strong>步骤 2：</strong>消除 (0,1)-(0,2)-(0,3) 使藤蔓相邻格子被消除。</p>
+        <p><strong>预期 2：</strong>藤蔓 hp 减少。</p>
+      </div>
+
+      <div class="case">
+        <strong>TC-19：锁链</strong>
+        <p><strong>目标：</strong>锁链监听 onAdjacent（source=any），任意棋子消除时受伤。</p>
+        <p><strong>预期：</strong>相邻消除触发锁链受伤。</p>
+      </div>
+
+      <h3>5.5 目标物测试</h3>
+
+      <div class="case">
+        <strong>TC-20：水果收集</strong>
+        <p><strong>目标：</strong>覆盖在水果上的冰被消除后，水果受到伤害。</p>
+        <p><strong>步骤：</strong>放置西瓜（2×2），上面覆盖冰，消除冰。</p>
+        <p><strong>预期：</strong>西瓜 hp 减少，所有冰清除后西瓜消失。</p>
+      </div>
+
+      <h3>5.6 模式与功能测试</h3>
+
+      <div class="case">
+        <strong>TC-21：时间限制</strong>
+        <p><strong>目标：</strong>计时归零后正确结算。</p>
+        <p><strong>步骤：</strong>开启时间限制并设置短倒计时，切换到游戏模式等待耗尽。</p>
+        <p><strong>预期：</strong>时间递减正确，到 0 结束并弹出结算。</p>
+      </div>
+
+      <div class="case">
+        <strong>TC-22：步数限制与胜负判定</strong>
+        <p><strong>目标：</strong>步数用尽后胜负判定与目标检查一致。</p>
+        <p><strong>预期：</strong>每步递减 1；到 0 时若已达成通关目标判胜，否则判负；低步数时出现预警样式。</p>
+      </div>
+
+      <div class="case">
+        <strong>TC-23：通关目标（最低分 / 收集目标）</strong>
+        <p><strong>目标：</strong>两种通关条件可单独或同时生效。</p>
+        <p><strong>步骤：</strong>启用最低分 5000 并设总步数 30；另启用收集目标，分别验证。</p>
+        <p><strong>预期：</strong>达成任一启用目标即触发胜利结算；HUD 目标区显示进度。</p>
+      </div>
+
+      <div class="case">
+        <strong>TC-24：提示与重排</strong>
+        <p><strong>目标：</strong>提示功能与棋盘重排正常。</p>
+        <p><strong>步骤：</strong>点"提示"按钮观察高亮；构造无可行步盘面后走一步。</p>
+        <p><strong>预期：</strong>提示高亮建议交换并在约 1.5s 后消失；若无可行步，游戏自动重排并稳定化，不卡死。</p>
+      </div>
+
+      <div class="case">
+        <strong>TC-25：回退功能</strong>
+        <p><strong>目标：</strong>undo 可回退到上一步状态。</p>
+        <p><strong>步骤：</strong>执行一次有效交换，点"回退"按钮。</p>
+        <p><strong>预期：</strong>棋盘、分数、步数恢复到交换前状态。</p>
+      </div>
+
+      <div class="case">
+        <strong>TC-26：管理员模式多选编辑</strong>
+        <p><strong>目标：</strong>多选模式下可同时编辑多个格子。</p>
+        <p><strong>步骤：</strong>切换到管理员模式，启用多选，框选多个格子，修改棋子类型后应用。</p>
+        <p><strong>预期：</strong>所有选中格子被统一修改，显示警告信息（如状态不一致）。</p>
+      </div>
+
+      <h3>5.7 DOM 一致性测试</h3>
+
+      <div class="case">
+        <strong>TC-27：初始状态一致性</strong>
+        <p><strong>目标：</strong>初始状态下 Board 数据与 DOM 节点一致。</p>
+        <p><strong>预期：</strong>格子总数、棋子 SVG、障碍物、目标物、层级、位置全部正确。</p>
+      </div>
+
+      <div class="case">
+        <strong>TC-28：交换后一致性</strong>
+        <p><strong>目标：</strong>交换后 Board 数据与 DOM 节点一致。</p>
+        <p><strong>预期：</strong>交换完成后，棋盘数据与 DOM 节点完全同步。</p>
+      </div>
+
+      <h2>6. 自动化测试</h2>
+      <h3>运行方式</h3>
+      <ul>
+        <li>打开 v3/test/index.html，点击「▶️ 运行所有测试」</li>
+        <li>或在游戏页面控制台执行：<code>__uiTest.run()</code></li>
+        <li>Node.js 环境：<code>node test/run-all.js</code></li>
+      </ul>
+      <h3>测试场景列表</h3>
+      <table>
+        <tr><th style="width:200px;">场景</th><th>类别</th><th>验证点</th></tr>
+        <tr><td>无效交换（抖动）</td><td>基础</td><td>步数未减</td></tr>
+        <tr><td>3 消</td><td>基础</td><td>分数 > 0</td></tr>
+        <tr><td>4 消</td><td>特效</td><td>生成 line-horizontal</td></tr>
+        <tr><td>5 消</td><td>特效</td><td>生成 rainbow</td></tr>
+        <tr><td>田字</td><td>特效</td><td>生成 square-effect</td></tr>
+        <tr><td>T 形</td><td>特效</td><td>生成 bomb</td></tr>
+        <tr><td>L 形</td><td>特效</td><td>生成 bomb</td></tr>
+        <tr><td>双特效 line + bomb</td><td>双特效</td><td>分数 ≥ 100</td></tr>
+        <tr><td>双特效 line + line</td><td>双特效</td><td>分数 ≥ 100</td></tr>
+        <tr><td>双特效 bomb + bomb</td><td>双特效</td><td>分数 ≥ 200</td></tr>
+        <tr><td>双特效 rainbow + line</td><td>双特效</td><td>分数 ≥ 1000</td></tr>
+        <tr><td>冰（同格伤害 - 单层）</td><td>障碍</td><td>冰消失</td></tr>
+        <tr><td>冰（同格伤害 - 多层）</td><td>障碍</td><td>冰 hp 减少</td></tr>
+        <tr><td>冰（不响应相邻消除）</td><td>障碍</td><td>冰 hp 不变</td></tr>
+        <tr><td>藤蔓（相邻伤害）</td><td>覆盖物</td><td>藤蔓 hp 减少</td></tr>
+        <tr><td>锁链</td><td>障碍</td><td>正常运行</td></tr>
+        <tr><td>冰 + 藤蔓共存</td><td>障碍</td><td>冰消失 + 藤蔓不变</td></tr>
+        <tr><td>水果收集（1×1）</td><td>目标</td><td>水果消失</td></tr>
+        <tr><td>水果 + 多层冰</td><td>目标</td><td>冰 hp 减少</td></tr>
+        <tr><td>多重障碍组合</td><td>障碍</td><td>冰受伤</td></tr>
+        <tr><td>藤蔓（阻挡交换）</td><td>覆盖物</td><td>交换被拦截</td></tr>
+        <tr><td>自动对局（30 步）</td><td>综合</td><td>全部产生消除</td></tr>
+      </table>
+
+      <h2>7. 缺陷回归清单</h2>
+      <ul>
+        <li>双特效交换后连锁匹配未触发</li>
+        <li>冰的伤害事件从 onAdjacent 改为 onCellCleared 后回归</li>
+        <li>覆盖物（vine）阻挡交换机制失效</li>
+        <li>棋盘重排后仍无可行步</li>
+        <li>回退时随机数状态未恢复导致棋盘不一致</li>
+        <li>DOM 节点与 Board 数据不同步</li>
+        <li>多选编辑器状态警告不显示</li>
+      </ul>
+
+      <h2>8. 测试结论</h2>
+      <p>当以上测试用例全部通过时，说明 v3 版本具备稳定的规则驱动架构、完整的双特效交换机制、正确的多层棋盘处理、可靠的配置/关卡持久化，以及可持续扩展的设计基础。</p>
+
+      <div class="footer-note">交付判定：建议将该版本视为可演示、可评审、可扩展的规则驱动消消乐引擎；后续扩展玩法时应优先补充自动化回归、配置校验与状态一致性测试。</div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>糖果消消乐项目设计说明</title>
+  <style>
+    :root {
+      --bg: #f5f7ff;
+      --panel: #ffffff;
+      --soft: #eef3ff;
+      --line: #dfe8ff;
+      --primary: #4f46e5;
+      --primary-dark: #1f1b4d;
+      --text: #1f2937;
+      --muted: #667085;
+      --accent: #ec4899;
+      --shadow: 0 16px 32px rgba(79,70,229,0.08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; font-family: "Segoe UI", "Microsoft YaHei", sans-serif; background: var(--bg); color: var(--text);
+    }
+    .container {
+      max-width: 1100px; margin: 28px auto 60px; padding: 0 20px;
+    }
+    .topbar {
+      position: sticky; top: 0; z-index: 10; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line); margin-bottom: 24px;
+    }
+    .topbar-inner {
+      max-width: 1100px; margin: 0 auto; padding: 14px 20px; display: flex; justify-content: space-between; gap: 12px; align-items: center; flex-wrap: wrap;
+    }
+    .brand { font-weight: 800; color: var(--primary-dark); }
+    .nav a {
+      color: var(--primary); text-decoration: none; margin-left: 12px; font-weight: 600;
+    }
+    .nav a:hover { text-decoration: underline; }
+    .card {
+      background: var(--panel); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow); padding: 28px 30px;
+    }
+    h1 { font-size: clamp(2rem, 3vw, 2.8rem); margin-top: 0; color: var(--primary-dark); }
+    h2 { font-size: 1.35rem; margin-top: 28px; color: var(--primary-dark); }
+    h3 { font-size: 1.1rem; margin-top: 22px; color: var(--primary-dark); }
+    h4 { font-size: 1rem; margin-top: 18px; color: var(--primary-dark); }
+    p, li { line-height: 1.8; color: var(--text); }
+    ul, ol { padding-left: 22px; }
+    code {
+      background: #f3f4f6; border: 1px solid #e5e7eb; padding: 2px 7px; border-radius: 6px; font-size: 0.92em;
+    }
+    pre {
+      background: #0f172a; color: #e2e8f0; padding: 16px 18px; border-radius: 12px; overflow-x: auto; line-height: 1.7;
+    }
+    table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 0.94rem; }
+    th, td { border: 1px solid var(--line); padding: 8px 12px; text-align: left; }
+    th { background: var(--soft); color: var(--primary-dark); }
+    .muted { color: var(--muted); }
+    .section-tag {
+      display: inline-block; background: var(--soft); border: 1px solid var(--line); color: var(--primary); padding: 7px 12px; border-radius: 999px; font-size: 0.82rem; font-weight: 700; margin-bottom: 12px;
+    }
+    .footer-note {
+      margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.92rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">糖果消消乐 · 设计说明</div>
+      <div class="nav">
+        <a href="index.html">首页</a>
+        <a href="design.html">设计说明</a>
+        <a href="test-plan.html">测试计划</a>
+        <a href="user-guide.html">使用手册</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="card">
+      <div class="section-tag">项目设计说明 · v5 规则引擎</div>
+      <h1>糖果消消乐项目设计说明</h1>
+
+      <h2>1. 文档定位</h2>
+      <p>本文档为糖果消消乐项目（v5 规则引擎架构）的技术设计说明，面向项目交付、迭代评审和后续扩展维护。它用于说明该项目的设计思路、关键模块职责、规则引擎机制以及演进方向，适合团队在实现评审、方案沟通和后续二次开发时作为统一依据。</p>
+
+      <h2>2. 项目概述</h2>
+      <p>本项目是一个基于原生 HTML、CSS 和 JavaScript 开发的消消乐小游戏，不依赖任何第三方前端框架。整体采用「策略模式 + 工厂模式 + 观察者模式」组织代码，将棋盘渲染、规则判定、状态管理、计分结算与配置化能力解耦，突出展示"游戏玩法 + 可配置规则 + 可扩展架构"的实现思路。</p>
+
+      <h3>2.1 当前能力</h3>
+      <ul>
+        <li><strong>双模式运行</strong>：管理员模式（规则配置 + 棋盘编辑）与游戏模式（实际游玩）一键切换。</li>
+        <li><strong>可插拔消除规则</strong>：直线（横/纵）、田字形、斜线三种规则独立实现、按开关启用，并支持配置最少连消数量（3-6）。</li>
+        <li><strong>爆炸与连锁系统</strong>：按消除数量触发 cross（十字）、screen（全屏）、blast:N（范围）爆炸，配合炸弹棋子形成多轮连锁。</li>
+        <li><strong>可配置通关目标</strong>：最低分数、消除指定类型棋子数量，二选一或并存；总步数与倒计时双维度结算。</li>
+        <li><strong>特殊状态与障碍</strong>：锁定 locked、冰冻 frozen、炸弹 bomb、冰层 ice（0-6 级）、四边独立围墙（带耐久 hp）。</li>
+        <li><strong>配置驱动</strong>：预设模板（经典/限时/挑战/围墙）、自定义棋子类型、自定义初始棋盘、localStorage 持久化。</li>
+        <li><strong>关卡系统</strong>：支持将当前棋盘与规则"保存为关卡"，并在本地关卡库（最多 20 个）中加载回放。</li>
+        <li><strong>棋盘自愈</strong>：初始化/洗牌后自动稳定化，保证绝无初始三连，且确保存在至少一步可行交换。</li>
+        <li><strong>局部重绘</strong>：消除与下落仅刷新发生变化的格子，避免整盘重绘造成的闪烁与性能损耗。</li>
+        <li><strong>双交互方式</strong>：点击交换与指针拖拽交换（Pointer Events）均可操作。</li>
+      </ul>
+
+      <h3>2.2 设计目标</h3>
+      <ol>
+        <li>交互简单：玩家可直接在浏览器中体验完整基础玩法。</li>
+        <li>规则可配置：不同模板与管理员设置下可切换玩法规则与参数。</li>
+        <li>架构可扩展：通过 MatchRule 基类可插拔地加入更多消除规则与特殊效果。</li>
+        <li>代码轻量：无框架依赖，适合演示、教学、原型开发和功能快速迭代。</li>
+      </ol>
+
+      <h2>3. 架构设计</h2>
+      <h3>3.1 总体结构</h3>
+      <ul>
+        <li>index.html：游戏页面、左右侧面板与设置弹窗等全部 UI 控件</li>
+        <li>style.css：棋盘样式、状态样式、多层级视觉样式</li>
+        <li>game.js：游戏核心逻辑（配置/棋子/规则/计分/引擎/管理面板）</li>
+        <li>docs/：项目说明、测试计划和操作手册（HTML 文档入口：docs/index.html）</li>
+        <li>data/project_status.json：项目状态追踪文件</li>
+      </ul>
+
+      <h3>3.2 核心模块</h3>
+
+      <h4>配置系统</h4>
+      <p>配置模块是本项目最重要的扩展点，集中维护默认规则、预设模板、棋盘尺寸、棋子类型、时间/步数限制、初始布局以及本地缓存键，避免玩法参数散落在各函数中。关键对象：</p>
+      <ul>
+        <li><code>DEFAULT_CONFIG</code>：默认配置（10×10、6 种棋子、30 步、matchLength=3 等）</li>
+        <li><code>PRESET_CONFIGS</code>：预设模板（classic / timed / challenge / wall）</li>
+        <li><code>CONFIG_KEY</code>：当前配置持久化键名（candy_crush_config_v5）</li>
+        <li><code>LEVELS_KEY</code>：关卡库持久化键名（candy_crush_levels_v5）</li>
+      </ul>
+
+      <h4>棋子对象模型 Piece</h4>
+      <p>棋子使用统一 <code>Piece</code> 类表达，采用「多层属性 + 行为状态」分离设计：</p>
+      <ul>
+        <li><strong>视觉层</strong>：background（底色/图案/图案色）、main（显示字符 emoji）、border（边框）、ice、frozen、walls 分层渲染，各自带 zIndex 优先级。</li>
+        <li><strong>逻辑状态</strong>：<code>states</code> 集合（locked / frozen / bomb），可叠加。</li>
+        <li><strong>墙体</strong>：<code>walls[side] = { enabled, hp, maxHp, color }</code>，四个方向独立。</li>
+        <li><strong>定义与渲染分离</strong>：pieceTypes 中每个类型的 UI 配置通过 <code>pieceUI</code> 表达，逻辑层通过 <code>typeId</code>/<code>code</code> 参与判定。</li>
+      </ul>
+
+      <h4>匹配规则系统</h4>
+      <p>规则系统以 <code>MatchRule</code> 为基类，采用策略模式注册多个规则，每个规则独立实现 <code>check()</code>，返回命中的格子索引集合，最终由引擎统一合并去重：</p>
+      <ul>
+        <li><code>LineMatchRule</code>：横向 / 纵向连续匹配（matchLength 可配置）</li>
+        <li><code>SquareMatchRule</code>：田字形 2×2 判定（enableSquare 开关）</li>
+        <li><code>DiagonalMatchRule</code>：主/副对角线匹配（enableDiagonal 开关）</li>
+        <li><code>ExplosionHandler</code>：按命中数量触发爆炸效果</li>
+      </ul>
+      <p>规则通过 <code>priority</code> 排序执行（直线最高、斜线次之、田字最低），先处理更"强"的规则，避免低优先级规则抢占消除机会。</p>
+
+      <h4>爆炸与连锁系统</h4>
+      <p>一次消除中，会合并三类来源的爆炸：</p>
+      <ol>
+        <li>匹配数量达到阈值时，按 <code>explodeRules</code> 配置触发爆炸：<code>cross</code>（十字 5 格×双向）、<code>screen</code>（全屏）、<code>blast:N</code>（以命中中心为圆心半径 N）；</li>
+        <li>被消除的棋子若带 <code>bomb</code> 状态，会额外扩散其周围 3×3 区域；</li>
+        <li>所有爆炸区域与匹配区域共同参与消除与计分。</li>
+      </ol>
+      <p>消除完成后触发重力下落，并循环检测新的匹配，形成 <code>comboCount</code> 连击。默认爆炸映射为：4 连 → cross、5 连 → screen、6 连 → blast:2。</p>
+
+      <h4>计分系统</h4>
+      <p><code>ScoreSystem</code> 负责：基础消除分数（每颗 baseScore）、连击倍数（comboMultiplier 开启时 ×comboCount）、爆炸特殊奖励（special 翻倍）。</p>
+      <pre><code>score = (匹配数 + 爆炸数) × baseScore × comboCount [× 2（含爆炸）]</code></pre>
+
+      <h4>游戏主引擎 GameEngine</h4>
+      <p><code>GameEngine</code> 是核心协调器，职责覆盖：加载/应用配置、构建规则引擎、创建与稳定化棋盘、处理交换（点击/拖拽）、判定合法性、执行消除/重力/填充、计分与目标结算、局部渲染更新、计时器与胜负判定、提示与洗牌、管理员编辑与关卡管理。</p>
+
+      <h4>管理员模式与单格编辑器</h4>
+      <p>左侧栏提供通关条件表单（最低分/时间/步数/消除指定棋子）、规则保存、关卡保存与加载；右侧棋子属性编辑器允许点选单个格子修改其类型、背景图案、底色、图案色、是否可移动、冰层等级与四边围墙耐久，形成"所见即所得"的棋盘设计体验。</p>
+
+      <h2>4. 关键算法设计</h2>
+      <h3>4.1 棋盘表示</h3>
+      <pre><code>board[row][col] = Piece | null</code></pre>
+      <p>二维数组表示便于规则扫描、重力计算、可交换判定与按格索引的局部渲染。空位用 <code>null</code> 表示。</p>
+
+      <h3>4.2 匹配判定逻辑</h3>
+      <p>每个规则生成独立的匹配集合，最终合并去重。优点：规则可独立开发与测试；结果去重避免重复消除；连锁与状态回复逻辑统一。运行时匹配检测使用 <code>findMatches()</code>（全盘），初始化阶段则使用局部检测 <code>_hasMatchAt()</code> 判断某格是否会造成新三连，大幅减少扫描成本。</p>
+
+      <h3>4.3 重力下落算法</h3>
+      <ol>
+        <li>逐列遍历，自下而上收集非空棋子；</li>
+        <li>按"底部优先"顺序回填该列；</li>
+        <li>顶部空位生成新的随机棋子；</li>
+        <li>记录受影响的格子集合，仅局部刷新这些格子。</li>
+      </ol>
+
+      <h3>4.4 棋盘自愈：稳定化与可玩性保障</h3>
+      <ul>
+        <li><strong>stabilizeBoard</strong>：初始化或洗牌后循环消除自动形成的匹配（至多 100 轮），保证棋盘绝无初始三连；</li>
+        <li><strong>ensurePlayableBoard</strong>：若检测到没有可行步，则最多重建棋盘 8 次；</li>
+        <li><strong>hasValidMove</strong>：逐格尝试上下/左右交换，判断是否存在可形成匹配的移动；</li>
+        <li>游戏中对局中途若玩家使盘面进入无解状态，引擎会自动重新洗牌并稳定化。</li>
+      </ul>
+
+      <h3>4.5 围墙破坏机制</h3>
+      <p>围墙按方向独立配置于 <code>piece.walls[side]</code>（top/right/bottom/left），每条含 <code>enabled / hp / maxHp / color</code>。当某格被消除或爆炸时，通过方向映射（相邻格的相反边）对四周邻居的对应围墙造成伤害，HP 归零后围墙消失。渲染上按 HP 区分粗细与线型：1=低（点线）、2=中（虚线）、3+=高（实线）；相邻格子的共享边由编号更小的格子绘制一次，避免重复描边。</p>
+
+      <h3>4.6 配置解析设计</h3>
+      <p>配置解析是本项目重点防护的风险区域。棋子配置字符串同时包含颜色值（可能为 rgba）、pattern、pieceColor、围墙方向与 HP、初始棋盘布局等字段，必须按「括号深度 + 冒号/分号」边界正确切分，避免把颜色字符串或围墙字段误拆成多段而"渲染进棋盘"。系统通过 <code>sanitizeConfig</code> 对载入配置做范围钳制与字段归一化，保证脏数据不会破坏棋盘。</p>
+
+      <h3>4.7 渲染层级设计</h3>
+      <p>单格渲染按固定 zIndex 分层，保证视觉正确叠放：</p>
+      <ol>
+        <li>底色层（background）→ 图案层（pattern）→ 主体 emoji（main）→ 边框（border）</li>
+        <li>围墙层（walls）→ 冰层（ice）→ 冻结/锁定/炸弹状态叠加层</li>
+      </ol>
+      <p>全盘渲染仅在棋盘重建时执行；消除、下落、交换结果一律走「changedCells 局部替换」路径，通过 <code>_cellCache</code> 缓存 DOM 格子。</p>
+
+      <h2>5. 状态管理设计</h2>
+      <h3>5.1 运行状态（GameEngine）</h3>
+      <ul>
+        <li><code>mode</code>：'admin'（管理员）| 'game'（游戏）</li>
+        <li><code>isProcessing</code>：是否正在执行交换/消除流程（互斥锁，防止并发操作）</li>
+        <li><code>isGameEnded</code>：是否已结算结束</li>
+        <li><code>selected</code>：当前选中格子（管理员编辑或游戏选棋）</li>
+        <li><code>lastHint</code>：提示功能给出的建议交换</li>
+        <li><code>comboCount / movesLeft / score / timeLeft</code>：实时对局数值</li>
+      </ul>
+
+      <h3>5.2 棋子状态</h3>
+      <ul>
+        <li><code>locked</code>：锁定，既不能交换也不能被消除（isRemovable=false）</li>
+        <li><code>frozen</code>：冰冻，不能参与交换</li>
+        <li><code>bomb</code>：炸弹，参与消除时波及 3×3</li>
+        <li><code>ices.level</code>（0-6）：独立于 frozen 的冰层数值层级</li>
+        <li>各状态可叠加，亦可组合出护盾/封印等更复杂的扩展玩法。</li>
+      </ul>
+
+      <h2>6. 配置与持久化</h2>
+      <h3>6.1 存储键</h3>
+      <ul>
+        <li><code>candy_crush_config_v5</code>：当前生效配置（应用配置时自动写入）</li>
+        <li><code>candy_crush_levels_v5</code>：保存的关卡库（上限 20 个，按名称覆盖/置顶）</li>
+      </ul>
+      <pre><code>localStorage.setItem(CONFIG_KEY, JSON.stringify(cfg));</code></pre>
+
+      <h3>6.2 预设模板参数</h3>
+      <table>
+        <tr><th>模板</th><th>棋盘</th><th>步数</th><th>连消</th><th>田字</th><th>斜线</th><th>时间</th><th>基础分</th><th>备注</th></tr>
+        <tr><td>classic 经典</td><td>10×10</td><td>30</td><td>3</td><td>✓</td><td>✗</td><td>90s</td><td>10</td><td>均衡默认</td></tr>
+        <tr><td>timed 限时</td><td>9×9</td><td>25</td><td>3</td><td>✗</td><td>✓</td><td>60s</td><td>12</td><td>斜线+高基础分</td></tr>
+        <tr><td>challenge 挑战</td><td>8×8</td><td>18</td><td>4</td><td>✓</td><td>✓</td><td>不限</td><td>14</td><td>需 4 连，含预设 frozen/bomb/empty/locked 布局</td></tr>
+        <tr><td>wall 围墙</td><td>8×8</td><td>20</td><td>3</td><td>✓</td><td>✗</td><td>120s</td><td>12</td><td>棋子自带多方向围墙（2-3 HP）</td></tr>
+      </table>
+
+      <h2>7. 可扩展性设计</h2>
+      <h3>玩法扩展</h3>
+      <ul>
+        <li>新增消除规则：继承 <code>MatchRule</code> 实现 <code>check()</code> 并注册进引擎即可</li>
+        <li>新增道具：交换器、横向/纵向清除、颜色炸弹等</li>
+        <li>新增任务目标：分数、消除指定棋子数量之外的可扩展目标类型</li>
+        <li>新增动态事件：随机掉落、卡片效果、机关格子</li>
+      </ul>
+
+      <h3>视觉扩展</h3>
+      <ul>
+        <li>底色与图案层分离，可独立配置颜色/图案（solid/dot/stripe/check/waves/spark/transparent）</li>
+        <li>冰冻、冰层、护盾和封印层相互独立渲染</li>
+        <li>围墙支撑层与边框层独立，便于加动画/粒子特效</li>
+      </ul>
+
+      <h2>8. 关键风险与工程注意事项</h2>
+      <ol>
+        <li><strong>配置解析风险</strong>：颜色字符串、围墙字段和状态字段混排易误拆分，必须严格按括号/分隔符边界切分并做 sanitize 校验。</li>
+        <li><strong>重渲染成本</strong>：全盘重绘会导致闪烁与性能下降，须坚持"仅刷新受影响格子"的局部更新策略。</li>
+        <li><strong>连锁逻辑复杂性</strong>：多轮连锁需保证每轮先刷新状态、再检测下一轮，直到无新匹配，同时做好 isProcessing 复位防止死锁。</li>
+        <li><strong>状态脏数据问题</strong>：配置/模板切换后若未重置旧棋盘与旧状态，会出现残留异常；applyConfig 后必须 init 重建并稳定化。</li>
+        <li><strong>并发输入防护</strong>：交换/消除期间必须用 isProcessing 阻断新的点击与拖拽，避免棋盘状态竞争。</li>
+      </ol>
+
+      <h2>9. 设计结论</h2>
+      <p>本项目以"玩法清晰、架构可扩展、配置灵活、可演示"为工程目标，v5 版本已实现从棋盘生成、多规则判定、爆炸连锁、障碍物系统、目标结算到关卡管理、可视化棋盘编辑的完整闭环，且全部基于原生 Web 技术实现。它具备良好的教学展示价值，也为后续演化为完整消消乐产品原型提供了清晰的扩展边界。</p>
+
+      <div class="footer-note">交付建议：后续优先推进道具与组合机制、关卡目标多样化、自动化回归测试、模板可视编辑器与动画/音效增强，使项目从演示型原型逐步升级为更成熟的产品级实现。</div>
+    </div>
+  </div>
+</body>
+</html>
