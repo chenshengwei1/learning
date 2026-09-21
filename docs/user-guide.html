@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>糖果消消乐 · 使用手册</title>
+  <title>糖果消消乐 v3 · 使用手册</title>
   <style>
-    /* ===== 微软 Learn 风格基础变量 ===== */
     :root {
       --ms-blue: #0067b8;
       --ms-blue-dark: #005a9e;
@@ -31,7 +30,7 @@
       line-height: 1.7;
     }
 
-    /* ===== 顶部文档栏（微软风格深色 header） ===== */
+    /* ===== 顶部文档栏 ===== */
     .site-header {
       background: var(--header-bg);
       color: #fff;
@@ -339,11 +338,11 @@
     <div class="site-header-inner">
       <div class="brand">
         <span class="logo">🍬</span>
-        <span>糖果消消乐</span>
+        <span>糖果消消 le v3</span>
         <span class="crumb">/<a href="index.html">文档中心</a>/使用手册</span>
       </div>
       <nav class="head-nav">
-        <a href="../index.html">游戏页面</a>
+        <a href="../v3/index.html">游戏页面</a>
         <a href="design.html">设计说明</a>
         <a href="test-plan.html">测试计划</a>
         <a href="user-guide.html" class="active">使用手册</a>
@@ -370,34 +369,35 @@
         <ul>
           <li><a href="#mode">4. 模式切换</a></li>
           <li><a href="#play">5. 游戏操作</a></li>
-          <li><a href="#explode">6. 爆炸效果</a></li>
-          <li><a href="#hud">7. 顶部状态栏</a></li>
+          <li><a href="#effects">6. 特效系统</a></li>
+          <li><a href="#double">7. 双特效交换</a></li>
+          <li><a href="#hud">8. 顶部状态栏</a></li>
+        </ul>
+      </div>
+
+      <div class="toc-group">
+        <p class="toc-group-label">障碍与目标</p>
+        <ul>
+          <li><a href="#obstacles">9. 障碍物说明</a></li>
+          <li><a href="#overlays">10. 覆盖物说明</a></li>
+          <li><a href="#targets">11. 目标物说明</a></li>
         </ul>
       </div>
 
       <div class="toc-group">
         <p class="toc-group-label">配置与设计</p>
         <ul>
-          <li><a href="#goal">8. 通关目标设置</a></li>
-          <li><a href="#settings">9. 管理设置面板</a></li>
-          <li><a href="#editor">10. 棋子属性编辑器</a></li>
-          <li><a href="#level">11. 关卡系统</a></li>
-        </ul>
-      </div>
-
-      <div class="toc-group">
-        <p class="toc-group-label">元素与规则</p>
-        <ul>
-          <li><a href="#special">12. 特殊元素说明</a></li>
-          <li><a href="#board-format">13. 初始棋盘写法</a></li>
+          <li><a href="#goal">12. 通关目标设置</a></li>
+          <li><a href="#editor">13. 格子编辑器</a></li>
+          <li><a href="#level">14. 关卡系统</a></li>
         </ul>
       </div>
 
       <div class="toc-group">
         <p class="toc-group-label">维护与支持</p>
         <ul>
-          <li><a href="#save">14. 保存与恢复</a></li>
-          <li><a href="#faq">15. 常见问题</a></li>
+          <li><a href="#save">15. 保存与恢复</a></li>
+          <li><a href="#faq">16. 常见问题</a></li>
         </ul>
       </div>
     </aside>
@@ -407,26 +407,34 @@
       <div class="content-inner">
 
         <div class="doc-head">
-          <h1>🍬 糖果消消乐使用手册（v5）</h1>
+          <h1>🍬 糖果消消乐 v3 使用手册</h1>
           <div class="meta">
-            <span class="pill">📄 文档版本：v5 规则引擎</span>
+            <span class="pill">📄 文档版本：v3 规则引擎</span>
             <span class="pill">🧩 技术栈：HTML / CSS / JS</span>
             <span class="pill">🖥️ 浏览器直接运行</span>
+            <span class="pill">🔧 规则驱动架构</span>
           </div>
         </div>
 
         <!-- 1. 项目简介 -->
         <section class="doc-section" id="overview">
           <h2><span class="step-no">1</span>项目简介</h2>
-          <p>本项目是基于浏览器运行的糖果消消乐小游戏，内置<strong>管理员模式</strong>与<strong>游戏模式</strong>：既可以作为玩家直接游玩，也可以作为关卡设计器自由配置规则并设计棋盘。</p>
+          <p>本项目是基于浏览器运行的规则驱动消消 le 游戏引擎。核心设计理念：</p>
+          <ul>
+            <li><strong>引擎无业务</strong>：核心代码不包含任何具体游戏内容</li>
+            <li><strong>内容全配置</strong>：所有棋子、特效、障碍、关卡都以 JSON 定义</li>
+            <li><strong>策划可用</strong>：新增元素、修改行为不需要改引擎代码</li>
+            <li><strong>事件驱动</strong>：元素通过监听事件来响应游戏事件</li>
+          </ul>
           <h3>功能亮点</h3>
           <ul>
             <li>两种模式一键切换（管理员 / 游戏）</li>
-            <li>预设模板：经典、限时挑战、挑战关卡、围墙模式</li>
-            <li>可配置消除规则：直线 / 田字 / 斜线、连消数量</li>
-            <li>可配置通关目标：最低分、消除指定棋子、步数、倒计时</li>
-            <li>特殊元素：炸弹、锁定、冰冻、冰层、四边围墙</li>
-            <li>关卡保存与加载、浏览器本地持久化</li>
+            <li>多种匹配规则：直线、田字、斜线</li>
+            <li>丰富的特效系统：直线、炸弹、彩虹、方块</li>
+            <li>双特效交换组合：产生更强力的效果</li>
+            <li>多层棋盘：布局/目标物/障碍物/覆盖物/棋子</li>
+            <li>棋盘重排：无解时自动重排</li>
+            <li>关卡保存与加载</li>
           </ul>
         </section>
 
@@ -435,11 +443,11 @@
           <h2><span class="step-no">2</span>运行方式</h2>
           <h3>直接运行</h3>
           <ol class="steps">
-            <li>打开项目目录：<code>C:\doc\work\dsagent2</code></li>
-            <li>找到根目录下的 <code>index.html</code></li>
-            <li>使用浏览器直接打开该文件即可开始游戏</li>
+            <li>打开项目目录：<code>C:\doc\work\dsagent2\v3</code></li>
+            <li>找到 <code>index.html</code></li>
+            <li>使用浏览器直接打开即可开始游戏</li>
           </ol>
-          <div class="note info">💡 如需浏览项目文档，可打开 <code>docs/index.html</code>，它汇总了设计说明、测试计划与本文档的导航。在游戏页面底部点击「📘 文档」按钮也会跳转到该入口。</div>
+          <div class="note info">💡 如需浏览项目文档，可打开 <code>docs/index.html</code>。</div>
         </section>
 
         <!-- 3. 界面总览 -->
@@ -448,9 +456,9 @@
           <p>游戏主界面分为三块区域：</p>
           <table>
             <tr><th style="width:140px;">区域</th><th>位置</th><th>作用</th></tr>
-            <tr><td><strong>左侧面板</strong></td><td>页面左侧</td><td>模式切换、通关条件设置、已保存关卡列表、应用配置入口</td></tr>
-            <tr><td><strong>中央棋盘区</strong></td><td>页面中间</td><td>顶部为状态栏，中部为棋盘，底部为操作按钮与消息提示</td></tr>
-            <tr><td><strong>右侧编辑器</strong></td><td>页面右侧</td><td>棋子属性编辑器（仅管理员模式可用）</td></tr>
+            <tr><td><strong>左侧面板</strong></td><td>页面左侧</td><td>模式切换、通关条件设置、关卡列表、元素库</td></tr>
+            <tr><td><strong>中央棋盘区</strong></td><td>页面中间</td><td>顶部为状态栏，中部为棋盘，底部为操作按钮</td></tr>
+            <tr><td><strong>格子编辑器</strong></td><td>弹出面板</td><td>编辑选中格子的属性（仅管理员模式）</td></tr>
           </table>
         </section>
 
@@ -460,15 +468,10 @@
           <p>页面左侧顶部提供两个模式按钮：</p>
           <table>
             <tr><th style="width:140px;">模式</th><th>说明</th></tr>
-            <tr><td><strong>管理员模式</strong>（默认）</td><td>可配置通关条件、保存规则/关卡、点选格子并编辑属性</td></tr>
-            <tr><td><strong>游戏模式</strong></td><td>隐藏编辑类面板，进入正式游玩，开始计分、计时与目标结算</td></tr>
+            <tr><td><strong>管理员模式</strong>（默认）</td><td>可配置通关条件、保存关卡、编辑格子属性</td></tr>
+            <tr><td><strong>游戏模式</strong></td><td>隐藏编辑面板，正式游玩</td></tr>
           </table>
-          <h3>切换方法</h3>
-          <ul>
-            <li>点击左侧顶部的「管理员模式」/「游戏模式」按钮；</li>
-            <li>或使用左下角「切换到游戏模式」按钮与「应用管理员配置」按钮。</li>
-          </ul>
-          <div class="note warn">⚠️ 修改规则后请先点击「保存规则」或「应用管理员配置」，再切换到游戏模式，否则修改可能不会生效。</div>
+          <div class="note warn">⚠️ 修改规则后请先点击「保存规则」或「应用配置」，再切换到游戏模式。</div>
         </section>
 
         <!-- 5. 游戏操作 -->
@@ -478,184 +481,178 @@
           <h3>5.1 交换棋子</h3>
           <ul>
             <li><strong>点击交换</strong>：先点击一个棋子选中（高亮），再点击其上下左右的相邻棋子完成交换。</li>
-            <li><strong>拖拽交换</strong>：直接按住棋子向相邻方向拖拽超过一定距离后松手即可交换（可在管理设置中关闭）。</li>
-            <li>再次点击已选中的棋子可取消选择；点击不相邻的棋子会改选后者。</li>
+            <li><strong>拖拽交换</strong>：直接按住棋子向相邻方向拖拽后松手即可交换。</li>
             <li>锁定 / 冰冻状态的棋子无法参与交换。</li>
           </ul>
 
           <h3>5.2 消除与计分</h3>
           <ul>
-            <li>横 / 纵方向连续 3 颗及以上同种棋子即可消除（连消数量可配置 3-6）；</li>
-            <li>开启田字规则时，2×2 同色方块也构成消除；开启斜线规则时，对角线连续同色亦消除；</li>
-            <li>消除后上方棋子下落补齐；若再次形成匹配则自动连锁，连击数递增、分数翻倍。</li>
+            <li>横 / 纵方向连续 3 颗及以上同种棋子即可消除（连消数量可配置）</li>
+            <li>开启田字规则时，2×2 同色方块也构成消除</li>
+            <li>开启斜线规则时，对角线连续同色亦消除</li>
+            <li>消除后上方棋子下落补齐；若再次形成匹配则自动连锁</li>
           </ul>
 
           <h3>5.3 游戏按钮</h3>
           <table>
             <tr><th style="width:140px;">按钮</th><th>功能</th></tr>
             <tr><td>🔄 重新开始</td><td>按当前规则重置棋盘重新开局</td></tr>
-            <tr><td>💡 提示</td><td>高亮显示一步可形成消除的交换位置；若盘面无可行步会自动洗牌</td></tr>
-            <tr><td>⚙️ 管理设置</td><td>打开设置面板，配置模板、棋盘、棋子、规则等</td></tr>
-            <tr><td>📘 文档</td><td>跳转到项目文档入口</td></tr>
+            <tr><td>💡 提示</td><td>高亮显示一步可形成消除的交换位置</td></tr>
+            <tr><td>🧪 一键测试</td><td>运行 UI 测试套件</td></tr>
+            <tr><td>↩️ 回退</td><td>回退到上一步状态</td></tr>
           </table>
         </section>
 
-        <!-- 6. 爆炸效果 -->
-        <section class="doc-section" id="explode">
-          <h2><span class="step-no">6</span>爆炸效果</h2>
-          <p>单次消除数量达到阈值时触发爆炸，默认映射如下：</p>
+        <!-- 6. 特效系统 -->
+        <section class="doc-section" id="effects">
+          <h2><span class="step-no">6</span>特效系统</h2>
+          <p>通过特殊匹配形状生成特效棋子：</p>
           <table>
-            <tr><th>一次消除数量</th><th>触发爆炸</th><th>效果</th></tr>
-            <tr><td>4 连</td><td><code>cross</code> 十字爆炸</td><td>以命中区域中心为原点，向上下左右延伸清除</td></tr>
-            <tr><td>5 连</td><td><code>screen</code> 全屏爆炸</td><td>清除整个棋盘可消除棋子</td></tr>
-            <tr><td>6 连</td><td><code>blast:2</code> 范围爆炸</td><td>清除以命中中心为圆心半径 2 的区域</td></tr>
+            <tr><th>匹配形状</th><th>生成特效</th><th>效果</th></tr>
+            <tr><td>直线 4 连</td><td><code>line-horizontal</code> / <code>line-vertical</code></td><td>消除整行或整列</td></tr>
+            <tr><td>直线 ≥5 连</td><td><code>rainbow</code></td><td>消除所有指定颜色的棋子</td></tr>
+            <tr><td>田字（2×2）</td><td><code>square-effect</code></td><td>消除 3×3 范围</td></tr>
+            <tr><td>T 形 / L 形</td><td><code>bomb</code></td><td>消除 3×3 范围</td></tr>
           </table>
-          <div class="note tip">💡 爆炸会清除波及范围内可消除的棋子，也会对围墙造成伤害。三种阈值与爆炸类型均可通过「管理设置 → 爆炸规则」自定义。</div>
         </section>
 
-        <!-- 7. 顶部状态栏 -->
+        <!-- 7. 双特效交换 -->
+        <section class="doc-section" id="double">
+          <h2><span class="step-no">7</span>双特效交换</h2>
+          <p>两个特效棋子相邻交换时，触发组合效果：</p>
+          <table>
+            <tr><th>组合</th><th>效果</th></tr>
+            <tr><td>直线 + 直线（同向）</td><td>清除整行或整列</td></tr>
+            <tr><td>直线 + 直线（交叉）</td><td>十字清除（行+列）</td></tr>
+            <tr><td>直线 + 炸弹</td><td>三行三列范围清除</td></tr>
+            <tr><td>炸弹 + 炸弹</td><td>5×5 范围清除</td></tr>
+            <tr><td>彩虹 + 任意</td><td>全屏清除</td></tr>
+          </table>
+        </section>
+
+        <!-- 8. 顶部状态栏 -->
         <section class="doc-section" id="hud">
-          <h2><span class="step-no">7</span>顶部状态栏说明</h2>
+          <h2><span class="step-no">8</span>顶部状态栏说明</h2>
           <table>
             <tr><th style="width:130px;">字段</th><th>说明</th></tr>
             <tr><td>🏆 分数</td><td>当前得分</td></tr>
-            <tr><td>👣 剩余步数</td><td>剩余可走步数（≤5 时变红预警）</td></tr>
+            <tr><td>👣 步数</td><td>剩余可走步数（≤5 时变红预警）</td></tr>
             <tr><td>💥 连击</td><td>当前连锁次数</td></tr>
-            <tr><td>🎯 目标</td><td>通关目标与进度，例如 <code>50000 · A×10[3/10]</code> 表示需达成 50000 分且消除 A 类棋子 3/10；未启用目标时显示 "—"</td></tr>
-            <tr><td>⏱️ 时间</td><td>剩余秒数（启用时间限制时显示，否则显示 ∞；≤10 秒预警）</td></tr>
+            <tr><td>⏱️ 时间</td><td>剩余秒数（启用时间限制时显示）</td></tr>
+            <tr><td>🎯 目标</td><td>通关目标与进度</td></tr>
           </table>
         </section>
 
-        <!-- 8. 通关目标设置 -->
-        <section class="doc-section" id="goal">
-          <h2><span class="step-no">8</span>通关目标设置（左侧面板）</h2>
-          <p>在管理员模式下可配置以下通关条件，保存后进入游戏模式即生效：</p>
-          <ul>
-            <li><strong>启用最低分通关条件</strong> + 通关最低分数：达到分数即过关；</li>
-            <li><strong>启用"消除指定类型棋子"通关条件</strong> + 指定棋子类型 + 最低消除数量：消除够指定数量即过关；</li>
-            <li><strong>开启时间限定模式</strong> + 指定时长（秒）；</li>
-            <li><strong>总步数</strong>：限定总步数。</li>
-          </ul>
-          <h3>结算规则</h3>
-          <p>在步数用尽或倒计时归零前，达成<strong>任一</strong>已启用的通关目标即判胜；若步数 / 时间耗尽仍未达成，则判负。未启用任何分数 / 消除目标时，以步数或时间耗尽作为结束条件。</p>
-        </section>
-
-        <!-- 9. 管理设置面板 -->
-        <section class="doc-section" id="settings">
-          <h2><span class="step-no">9</span>管理设置面板（⚙️ 管理设置）</h2>
-          <p>点击游戏区下方的「管理设置」按钮弹出设置面板，可配置：</p>
+        <!-- 9. 障碍物说明 -->
+        <section class="doc-section" id="obstacles">
+          <h2><span class="step-no">9</span>障碍物说明</h2>
+          <p>障碍物覆盖在棋子上，需要先消除才能到达下方的棋子或目标物：</p>
           <table>
-            <tr><th style="width:110px;">配置项</th><th>说明</th></tr>
-            <tr><td>模板</td><td>经典 / 限时挑战 / 挑战关卡 / 围墙模式，选择后点「套用模板」</td></tr>
-            <tr><td>棋盘</td><td>行数 / 列数（2-20）/ 格子尺寸</td></tr>
-            <tr><td>棋子配置</td><td>文本格式定义棋子种类（详见下方格式）</td></tr>
-            <tr><td>消除规则</td><td>最少连消数量、总步数、田字形、斜线消除、拖拽交换开关</td></tr>
-            <tr><td>时间限制</td><td>是否启用及总时长</td></tr>
-            <tr><td>初始棋盘</td><td>自定义布局文本，每行用逗号分隔、行间用回车/分号分隔</td></tr>
-            <tr><td>爆炸规则</td><td>分别设置消除 4/5/6 个触发的爆炸类型</td></tr>
-            <tr><td>计分</td><td>每颗基础分、连击加倍开关</td></tr>
+            <tr><th style="width:120px;">类型</th><th>触发方式</th><th>说明</th></tr>
+            <tr><td>🧊 冰</td><td><code>onCellCleared</code></td><td>同格棋子被消除时受伤</td></tr>
+            <tr><td>⛓️ 锁链</td><td><code>onAdjacent</code></td><td>相邻任意棋子被消除时受伤</td></tr>
           </table>
-          <h3>棋子配置格式</h3>
-          <pre><code>名称:颜色|pattern=图案|pieceColor=主体色|wallTop=true|wallTopHp=2</code></pre>
-          <p>多个棋子用逗号分隔。支持配置底色、图案层、主体颜色、围墙方向与每边耐久度。</p>
-          <div class="note warn">⚠️ 修改完成后点击「保存并应用」立即生效并重开棋盘；「恢复默认」重置所有设置；按 <code>Esc</code> 或点击遮罩可关闭面板。</div>
+          <div class="note info">💡 冰只在棋子被<strong>同格消除</strong>时受伤，相邻消除不会伤害冰。</div>
         </section>
 
-        <!-- 10. 棋子属性编辑器 -->
-        <section class="doc-section" id="editor">
-          <h2><span class="step-no">10</span>棋子属性编辑器（右侧面板）</h2>
-          <p>仅管理员模式可用。点击棋盘任意格子后，可在右侧编辑器修改该格子：</p>
+        <!-- 10. 覆盖物说明 -->
+        <section class="doc-section" id="overlays">
+          <h2><span class="step-no">10</span>覆盖物说明</h2>
+          <p>覆盖物会阻挡玩家的交换操作：</p>
+          <table>
+            <tr><th style="width:120px;">类型</th><th>特性</th><th>说明</th></tr>
+            <tr><td>🌿 藤蔓</td><td><code>blocksMovement: true</code></td><td>阻挡交换 + 相邻消除时受伤</td></tr>
+          </table>
+          <div class="note warn">⚠️ 藤蔓覆盖的格子上的棋子无法参与交换，直到藤蔓被消除。</div>
+        </section>
+
+        <!-- 11. 目标物说明 -->
+        <section class="doc-section" id="targets">
+          <h2><span class="step-no">11</span>目标物说明</h2>
+          <p>目标物是需要保护的水果，覆盖范围内所有障碍物清除后才会消失：</p>
+          <table>
+            <tr><th style="width:120px;">类型</th><th>说明</th></tr>
+            <tr><td>🍉 西瓜</td><td>2×2 大水果</td></tr>
+            <tr><td>🍇 葡萄</td><td>1×1 小水果</td></tr>
+            <tr><td>🍋 柠檬</td><td>1×1 小水果</td></tr>
+            <tr><td>🍊 橙子</td><td>1×1 小水果</td></tr>
+            <tr><td>🍓 草莓</td><td>1×1 小水果</td></tr>
+          </table>
+        </section>
+
+        <!-- 12. 通关目标设置 -->
+        <section class="doc-section" id="goal">
+          <h2><span class="step-no">12</span>通关目标设置（左侧面板）</h2>
+          <p>在管理员模式下可配置以下通关条件：</p>
           <ul>
-            <li><strong>棋子类型</strong>：切换为某种糖果，或选「无棋子」清空；</li>
-            <li><strong>背景图案 / 背景颜色 / 图案颜色</strong>：调整格子的视觉样式；</li>
-            <li><strong>是否可移动</strong>：取消勾选 = 给棋子加锁定状态（🔒）；</li>
-            <li><strong>冰层（0-6）</strong>：为格子添加冰层视觉与数值；</li>
-            <li><strong>四边围墙</strong>：分别设置左 / 上 / 右 / 下的围墙强度（无 / 低 / 中 / 高，对应 0/1/2/3 HP）。</li>
+            <li><strong>最低分通关</strong>：达到指定分数即过关</li>
+            <li><strong>时间限制</strong>：在指定时间内完成</li>
+            <li><strong>总步数</strong>：限定总步数</li>
           </ul>
-          <h3>操作步骤</h3>
-          <ol class="steps">
-            <li>切换到<strong>管理员模式</strong>；</li>
-            <li>点击棋盘上想要修改的格子，右侧面板会显示该格当前属性；</li>
-            <li>按需调整类型、图案、颜色、冰层、围墙等属性；</li>
-            <li>点击「应用到当前格子」生效，或点「清空当前格子」置空该格。</li>
-          </ol>
-          <div class="note tip">💡 该编辑器可作为关卡设计器使用，逐格构建自定义盘面后再「保存为关卡」。</div>
         </section>
 
-        <!-- 11. 关卡系统 -->
+        <!-- 13. 格子编辑器 -->
+        <section class="doc-section" id="editor">
+          <h2><span class="step-no">13</span>格子编辑器</h2>
+          <p>仅管理员模式可用。点击棋盘格子后，在弹出面板中可编辑：</p>
+          <ul>
+            <li><strong>棋子类型</strong>：选择棋子或清空</li>
+            <li><strong>特效</strong>：为棋子添加特效</li>
+            <li><strong>障碍物</strong>：添加/移除障碍物</li>
+            <li><strong>目标物</strong>：添加/移除目标物</li>
+          </ul>
+          <h3>单选/多选模式</h3>
+          <p>编辑器顶部可切换单选或多选模式。多选模式下可以同时编辑多个格子：</p>
+          <ul>
+            <li>按住 <code>Ctrl</code> 点击格子可多选</li>
+            <li>多选时如果状态不一致，会显示警告信息</li>
+          </ul>
+        </section>
+
+        <!-- 14. 关卡系统 -->
         <section class="doc-section" id="level">
-          <h2><span class="step-no">11</span>关卡系统</h2>
+          <h2><span class="step-no">14</span>关卡系统</h2>
           <h3>保存为关卡</h3>
           <ol class="steps">
-            <li>在左侧面板填写「关卡名称」；</li>
-            <li>点击「保存为关卡」按钮；</li>
-            <li>当前规则与整盘棋子状态（含空位、状态、围墙、冰层）会存入浏览器本地关卡库（上限 20 个，同名覆盖）。</li>
+            <li>在左侧面板填写「关卡名称」</li>
+            <li>点击「保存为关卡」按钮</li>
+            <li>当前配置存入浏览器本地关卡库</li>
           </ol>
           <h3>加载关卡</h3>
           <ol class="steps">
-            <li>在左侧「已保存关卡」列表中浏览已保存关卡；</li>
-            <li>点击对应关卡的「加载」按钮；</li>
-            <li>该关卡的规则与棋盘布局即被完整恢复。</li>
+            <li>在左侧「关卡列表」中浏览已保存关卡</li>
+            <li>点击「加载」按钮恢复该关卡</li>
           </ol>
         </section>
 
-        <!-- 12. 特殊元素说明 -->
-        <section class="doc-section" id="special">
-          <h2><span class="step-no">12</span>特殊元素说明</h2>
-          <table>
-            <tr><th style="width:160px;">元素</th><th>说明</th></tr>
-            <tr><td>🔒 锁定 locked</td><td>不能交换、不能被消除，用于制造障碍</td></tr>
-            <tr><td>❄️ 冰冻 frozen</td><td>不能交换（可被正常消除路径处理）</td></tr>
-            <tr><td>💣 炸弹 bomb</td><td>参与消除时波及自身周围 3×3</td></tr>
-            <tr><td>🧊 冰层 ice（0-6 级）</td><td>视觉与数值层，等级越高透明度越低并显示数字</td></tr>
-            <tr><td>🧱 围墙 wall</td><td>按方向独立存在（top/right/bottom/left），各有耐久 HP；被相邻消除/爆炸击中会掉耐久，HP 归零后消失。视觉上低=点线、中=虚线、高=实线</td></tr>
-          </table>
-        </section>
-
-        <!-- 13. 初始棋盘写法 -->
-        <section class="doc-section" id="board-format">
-          <h2><span class="step-no">13</span>初始棋盘写法</h2>
-          <p>在「管理设置 → 初始棋盘」中可输入自定义布局，示例：</p>
-          <pre><code>apple,grape|frozen,orange
-orange,empty,apple|bomb
-grape,orange,apple|locked</code></pre>
-          <table>
-            <tr><th style="width:220px;">写法</th><th>含义</th></tr>
-            <tr><td><code>empty</code> / <code>-</code> / <code>_</code> / <code>.</code></td><td>空格（无棋子）</td></tr>
-            <tr><td><code>apple|frozen</code></td><td>苹果并带冻结状态</td></tr>
-            <tr><td><code>grape|bomb</code></td><td>葡萄并带炸弹状态</td></tr>
-            <tr><td><code>apple|locked</code></td><td>苹果并带锁定状态</td></tr>
-          </table>
-        </section>
-
-        <!-- 14. 保存与恢复 -->
+        <!-- 15. 保存与恢复 -->
         <section class="doc-section" id="save">
-          <h2><span class="step-no">14</span>保存与恢复</h2>
+          <h2><span class="step-no">15</span>保存与恢复</h2>
           <ul>
-            <li><strong>自动保存</strong>：应用 / 保存配置后自动写入浏览器本地存储（<code>candy_crush_config_v5</code>），刷新或重开页面自动恢复。</li>
-            <li><strong>恢复默认</strong>：在管理设置中点击「恢复默认」，或手动清空本地存储后刷新。</li>
-            <li><strong>关卡库</strong>：独立存储于 <code>candy_crush_levels_v5</code>（上限 20 个）。</li>
+            <li><strong>自动保存</strong>：应用/保存配置后自动写入浏览器本地存储（<code>candy_config_v7</code>），刷新后自动恢复。</li>
+            <li><strong>关卡库</strong>：独立存储于 <code>candy_levels_v7</code>。</li>
+            <li><strong>元素库</strong>：自定义元素存储于 <code>candy_elements_v7</code>。</li>
           </ul>
         </section>
 
-        <!-- 15. 常见问题 -->
+        <!-- 16. 常见问题 -->
         <section class="doc-section" id="faq">
-          <h2><span class="step-no">15</span>常见问题</h2>
+          <h2><span class="step-no">16</span>常见问题</h2>
 
           <h3>页面没有正常显示</h3>
-          <p>确认用浏览器直接打开 <code>index.html</code>，样式与脚本同目录存在，并检查控制台是否有脚本报错；如有旧缓存可强制刷新（Ctrl+F5）。</p>
-
-          <h3>保存后出现异常字符或乱码</h3>
-          <p>通常由配置解析异常或旧的本地缓存残留导致：清空浏览器本地存储（<code>candy_crush_config_v5</code> / <code>candy_crush_levels_v5</code>），恢复默认配置后重新应用。</p>
-
-          <h3>没有可执行的消除步骤</h3>
-          <p>点击「提示」查看建议；或点「重新开始」洗牌。游戏在检测到无可行步时也会自动重排，不会卡死。</p>
+          <p>确认用浏览器直接打开 <code>v3/index.html</code>，检查控制台是否有脚本报错；如有旧缓存可强制刷新（Ctrl+F5）。</p>
 
           <h3>棋子无法交换</h3>
-          <p>确认该棋子不是锁定 / 冰冻状态；若在管理员模式下点击棋子是选中用于编辑，请先切换到游戏模式再游玩。</p>
+          <p>确认该棋子不是锁定/冰冻状态；检查是否有藤蔓覆盖（覆盖物会阻挡交换）；确认在ゲーム模式而非管理员模式。</p>
 
-          <h3>为什么目标区显示多个要求</h3>
-          <p>同时启用了最低分与「消除指定类型棋子」两种通关条件，需按设定规则判定，可在左侧面板调整。</p>
+          <h3>冰没有受伤</h3>
+          <p>冰只在<strong>同格棋子被消除</strong>时受伤（<code>onCellCleared</code>），相邻消除不会伤害冰。如果需要冰受伤，请确保有棋子在同格被消除。</p>
+
+          <h3>没有可执行的消除步骤</h3>
+          <p>点击「提示」查看建议；或等待游戏自动重排。游戏在检测到无可行步时会自动重排，不会卡死。</p>
+
+          <h3>目标区显示多个要求</h3>
+          <p>同时启用了多个通关条件，需按设定规则判定，可在左侧面板调整。</p>
         </section>
 
         <!-- 反馈条与页脚 -->
@@ -668,7 +665,7 @@ grape,orange,apple|locked</code></pre>
         </div>
 
         <div class="doc-footer">
-          <span>糖果消消乐 · 使用手册 · v5 规则引擎</span>
+          <span>糖果消消 le v3 · 使用手册 · 规则驱动架构</span>
           <span><a href="#overview">↑ 返回顶部</a> · <a href="index.html">文档首页</a></span>
         </div>
       </div>
@@ -693,7 +690,6 @@ grape,orange,apple|locked</code></pre>
             break;
           }
         }
-        // 页面滚到底时选中最后一节
         if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 4) {
           currentId = sections.length ? sections[sections.length - 1].getAttribute('id') : currentId;
         }
