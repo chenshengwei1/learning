@@ -27,7 +27,8 @@
 │   ├── utils/                  # 工具层（无依赖）
 │   │   ├── constants.js        # 全局常量、默认配置、枚举
 │   │   ├── helpers.js          # 通用工具函数（posToKey/clamp/sleep等）
-│   │   └── cache.js            # SimpleCache（LRU缓存）
+│   │   ├── cache.js            # SimpleCache（LRU缓存）
+│   │   └── seeded-random.js    # SeededRandom（可重现随机数）
 │   │
 │   ├── assets/                 # 资源层
 │   │   └── svg-library.js      # 所有 SVG 素材（内联，Data URI）
@@ -51,7 +52,7 @@
 │   │
 │   ├── core/                   # 领域模型
 │   │   ├── Piece.js            # 棋子（身份/视觉/属性/特效数据）
-│   │   ├── Board.js            # 多层棋盘（底板/目标物/障碍物/棋子）
+│   │   ├── Board.js            # 多层棋盘（底板/目标物/障碍物/覆盖物/棋子）
 │   │   ├── ShapeResult.js      # 形状分析结果
 │   │   ├── PieceFactory.js     # 棋子工厂
 │   │   ├── EventQueue.js       # 事件队列
@@ -68,19 +69,20 @@
 │   │   └── SaveSystem.js       # localStorage 读写
 │   │
 │   ├── rules/                  # 内置词表（扩展词表就在这里加）
-│   │   ├── selectors.js        # 13 个选择器
-│   │   ├── conditions.js       # 10 个条件
-│   │   ├── actions.js          # 14 个动作
-│   │   ├── events.js           # 10 个事件
-│   │   ├── goals.js            # 8 个目标
+│   │   ├── selectors.js        # 14 个选择器
+│   │   ├── conditions.js       # 5 个条件
+│   │   ├── actions.js          # 15 个动作
+│   │   ├── events.js           # 13 个事件
+│   │   ├── goals.js            # 6 个目标
 │   │   └── index.js            # registerAllBuiltins()
 │   │
 │   ├── config/                 # 内容层（策划改这里）
-│   │   ├── elements.js         # 元素库（棋子/特效/障碍/目标物）
-│   │   ├── rules.js            # 特效合成规则
+│   │   ├── elements.js         # 元素库（棋子/特效/障碍/覆盖物/目标物）
+│   │   ├── rules.js            # 规则聚合入口
 │   │   ├── levels.js           # 关卡数据
 │   │   ├── presets.js          # 预设模式
-│   │   ├── creationRules.js    # 合成规则的执行函数
+│   │   ├── creationRules.js    # 合成规则处理器
+│   │   ├── swapRules.js        # 双特效交换规则
 │   │   └── index.js            # ConfigLoader
 │   │
 │   ├── ui/                     # UI 层
@@ -90,6 +92,7 @@
 │   │   ├── ElementEditor.js    # 元素编辑器（元数据驱动表单）
 │   │   └── ElementList.js      # 元素列表
 │   │
+│   ├── console-tools.js        # 控制台调试工具
 │   └── main.js                 # 入口，装配所有模块
 └── assets/                     # 预留（当前用 svg-library.js）
 ```
@@ -106,10 +109,10 @@
 |------|------|------|
 | `piece` | 普通棋子 | 狐狸、猫头鹰、猫 |
 | `effect` | 特效 | 直线、爆炸、彩虹 |
-| `obstacle` | 障碍物 | 冰、藤蔓、锁链 |
-| `generator` | 生成器 | 蜂巢（预留） |
+| `obstacle` | 障碍物 | 冰、锁链 |
+| `overlay` | 覆盖物（阻挡移动） | 藤蔓 |
 | `target` | 目标物 | 西瓜、葡萄 |
-| `decoration` | 装饰 | （预留） |
+| `decoration` | 装饰 | empty（空占位） |
 
 **元素的结构**：
 
@@ -123,7 +126,7 @@
     properties: { hp: 1 },              // 属性（数值）
     events: [                           // 事件响应（行为）
         {
-            event: 'onAdjacent',        // 何时
+            event: 'onCellCleared',     // 何时（注意：冰改为 onCellCleared）
             when: { direction: 'cross' },// 条件
             actions: [                  // 做什么
                 { type: 'damage', targets: {...}, amount: 1 }
@@ -133,17 +136,35 @@
 }
 ```
 
+**元素事件类型**：
+
+| 事件类型 | 匹配触发事件 | 说明 |
+|----------|-------------|------|
+| `onMatch` | `match:done` | 匹配完成 |
+| `onRemove` | `piece:removed` | 棋子被消除 |
+| `onSwap` | `piece:swapped` | 棋子交换 |
+| `onAdjacent` | `adjacent:match` | 相邻消除 |
+| `onObstacleCleared` | `obstacle:cleared` | 障碍物消除 |
+| `onCellCleared` | `cell:cleared` | 所在格棋子被消除 |
+| `onAnyMatch` | `any:match` | 任意位置匹配 |
+| `onTurn` | `turn:end` | 回合结束 |
+| `onLand` | `piece:landed` | 棋子落地 |
+| `onCreate` | `effect:created` | 特效生成 |
+| `onChain` | `chain:triggered` | 连锁触发 |
+| `onGameStart` | `game:start` | 游戏开始 |
+| `onGameEnd` | `game:end` | 游戏结束 |
+
 ### 2. 词表（Vocabulary）
 
 引擎认识的所有"词"分为 5 类，都在 `js/rules/*.js` 中注册：
 
 | 词表 | 数量 | 作用 | 文件 |
 |------|------|------|------|
-| **选择器** | 13 | "哪些格子" | `selectors.js` |
-| **条件** | 10 | "何时满足" | `conditions.js` |
-| **动作** | 14 | "做什么" | `actions.js` |
-| **事件** | 10 | "什么时候触发" | `events.js` |
-| **目标** | 8 | "通关条件" | `goals.js` |
+| **选择器** | 14 | "哪些格子" | `selectors.js` |
+| **条件** | 5 | "何时满足" | `conditions.js` |
+| **动作** | 15 | "做什么" | `actions.js` |
+| **事件** | 13 | "什么时候触发" | `events.js` |
+| **目标** | 6 | "通关条件" | `goals.js` |
 
 **每个"词"都有两部分**：
 - `meta`：元数据（label/description/params），用于**自动生成策划表单**
@@ -153,31 +174,21 @@
 
 游戏在关键时刻会**发出事件**，元素可以**监听事件**并执行动作。
 
-| 事件类型 | 触发时机 | 对应元素监听 |
-|---------|---------|-------------|
-| `match:done` | 匹配形成 | `onMatch` |
-| `piece:removed` | 棋子被消除 | `onRemove` |
-| `piece:swapped` | 棋子交换 | `onSwap` |
-| `adjacent:match` | 相邻消除 | `onAdjacent` |
-| `turn:end` | 回合结束 | `onTurn` |
-| `piece:landed` | 棋子落地 | `onLand` |
-| `effect:created` | 特效生成 | `onCreate` |
-| `chain:triggered` | 连锁触发 | `onChain` |
-| `game:start` | 游戏开始 | `onGameStart` |
-| `game:end` | 游戏结束 | `onGameEnd` |
-
 ### 4. 多层棋盘
 
-`Board` 有 4 层，从下到上：
+`Board` 有 5 层，从下到上：
 
 ```
 Layer 0: layout    底板（哪些格子存在）
 Layer 1: targets   目标物（水果，跨格子）
-Layer 2: obstacles 障碍物（冰、藤蔓，逐格）
+Layer 2: obstacles 障碍物（冰、锁链，逐格）
 Layer 3: grid      棋子（动物，可移动）
+Layer 4: overlays  覆盖物（藤蔓，阻挡移动）
 ```
 
-**关键规则**：消除棋子 → 相邻障碍物受伤 → 障碍物清空 → 水果自动收集。
+**关键规则**：
+- 消除棋子 → 相邻/同格障碍物受伤 → 障碍物清空 → 水果自动收集
+- 藤蔓（overlay）可以阻挡玩家交换棋子（`blocksMovement: true`）
 
 ### 5. DSL 变量
 
@@ -203,12 +214,21 @@ Layer 3: grid      棋子（动物，可移动）
   ↓
 InputSystem 捕获 → GameEngine.swap(r1,c1,r2,c2)
   ↓
-RuleRuntime.emit('piece:swapped')   ← 元素可响应
+规则运行时检查：
+  - 是否被覆盖物阻挡（vine）
+  - 棋子是否被锁定（locked/frozen）
   ↓
-交换数据 → MatchSystem.findMatches()
+预判：是否能产生效果（彩虹+任意/双特效/普通匹配）
   ↓
-无匹配 → 回退 → 结束
-有匹配 → processMatches()
+执行交换动画 → 触发 piece:swapped 事件
+  ↓
+分支处理：
+  ├── 双特效分支：_handleEffectSwap
+  │   ├── 匹配 swapRules
+  │   ├── 解析目标格子
+  │   └── 消除 + 伤害 + 重力
+  └── 普通分支：_handleNormalSwap
+      └── processMatches()
 ```
 
 ### processMatches 流程（核心）
@@ -224,9 +244,10 @@ RuleRuntime.emit('piece:swapped')   ← 元素可响应
   ├─ 7. 遍历匹配，收集特效，消除棋子
   ├─ 8. 生成新特效 + 触发 effect:created
   ├─ 9. 发送 adjacent:match（障碍物受伤）
-  ├─ 10. 触发被消除的特效（连锁）
-  ├─ 11. 重力下落
-  └─ 12. 检查新匹配 → 继续循环
+  ├─ 10. 发送 any:match（任意匹配）
+  ├─ 11. 触发被消除的特效（连锁）
+  ├─ 12. 重力下落
+  └─ 13. 检查新匹配 → 继续循环
 ```
 
 ---
@@ -248,9 +269,8 @@ RuleRuntime.emit('piece:swapped')   ← 元素可响应
 **操作**：修改事件配置，如：
 ```javascript
 events: [{
-    event: 'onAdjacent',
-    when: { direction: 'all' },    // ← 改这里
-    actions: [{ type: 'damage', amount: 2 }]  // ← 或这里
+    event: 'onCellCleared',    // ← 注意：冰已改为 onCellCleared（同格消除时触发）
+    actions: [{ type: 'damage', amount: 2 }]
 }]
 ```
 
@@ -278,13 +298,38 @@ events: [{
 
 **不需要动引擎。**
 
-### 场景 4：新增一种特效（如"闪电"）
+### 场景 4：新增一种覆盖物（如"锁链墙"）
 
-**位置**：`js/config/elements.js` + `js/config/rules.js`
+**位置**：`js/config/elements.js`
 
 **操作**：
+```javascript
+{
+    id: 'chain-wall',
+    name: '锁链墙',
+    category: 'overlay',    // ← 使用 overlay 类别
+    svg: '@chain',
+    properties: { hp: 3, blocksMovement: true },
+    events: [{
+        event: 'onAdjacent',
+        when: { direction: 'cross', source: 'match' },
+        actions: [{ type: 'damage', targets: { type: 'cell', r: '$r', c: '$c' }, amount: 1, layer: 'overlay' }]
+    }]
+}
+```
 
-`elements.js` 加：
+关卡配置中使用：
+```javascript
+overlays: [
+    { element: 'chain-wall', r: 3, c: 3, hp: 3 }
+]
+```
+
+### 场景 5：新增一种特效（如"闪电"）
+
+**位置**：`js/config/elements.js`
+
+**操作**：
 ```javascript
 {
     id: 'lightning',
@@ -299,26 +344,13 @@ events: [{
 }
 ```
 
-`rules.js` 加：
-```javascript
-{
-    id: 'lightning-rule',
-    when: { shape: 'lshape', minLength: 5 },
-    create: 'lightning',
-    place: 'intersection',
-    preserve: ['color']
-}
-```
-
-**不需要动引擎。**
-
-### 场景 5：新增一个关卡
+### 场景 6：新增一个关卡
 
 **位置**：`js/config/levels.js`
 
 **操作**：加一段 JSON，或者用游戏里的"保存为关卡"按钮。**不需要动引擎。**
 
-### 场景 6：新增一种动作（如"传送"）
+### 场景 7：新增一种动作（如"传送"）
 
 **位置**：`js/rules/actions.js`
 
@@ -341,14 +373,6 @@ A.register('teleport', {
 ```
 
 **只改 1 个文件。**
-
-### 场景 7：新增一种事件（如"棋子落地时"）
-
-**位置**：`js/rules/events.js`
-
-**操作**：注册 + 在 GameEngine 中发出事件。
-
-**改 2 个文件**（events.js + GameEngine.js 触发点）。
 
 ### 场景 8：修改匹配算法（如"支持 3 连斜线"）
 
@@ -378,9 +402,11 @@ A.register('teleport', {
 | 改棋子外观 | `js/config/elements.js` |
 | 改棋子行为 | `js/config/elements.js` |
 | 加新棋子 | `js/config/elements.js` |
-| 加新特效 | `js/config/elements.js` + `js/config/rules.js` |
+| 加新覆盖物 | `js/config/elements.js` |
+| 加新特效 | `js/config/elements.js` |
 | 加新关卡 | `js/config/levels.js` |
-| 改特效合成条件 | `js/config/rules.js` |
+| 改特效合成条件 | `js/config/creationRules.js` |
+| 改双特效交换规则 | `js/config/swapRules.js` |
 | 改棋盘渲染 | `js/systems/RenderSystem.js` |
 | 改匹配算法 | `js/systems/MatchSystem.js` |
 | 改重力 | `js/systems/GravitySystem.js` |
@@ -450,6 +476,7 @@ __registries__.elements.getAll()
 __gameEngine.board.get(0, 0)           // 某格棋子
 __gameEngine.board.targets             // 所有目标物
 __gameEngine.board.obstacles           // 所有障碍物
+__gameEngine.board.overlays            // 所有覆盖物
 
 // 手动触发事件
 __gameEngine.ruleRuntime.emit('match:done', {...})
@@ -467,14 +494,14 @@ localStorage.clear()
 
 ```
 ✅ 内置词表注册完成
-   选择器: 13
-   条件: 10
-   动作: 14
-   事件: 10
-   目标: 8
+   选择器: 14
+   条件: 5
+   动作: 15
+   事件: 13
+   目标: 6
 ✅ 配置层加载完成
    元素: 22
-   关卡: 5
+   关卡: 6
 🍬 糖果消消乐 v7 已启动
    棋盘: 8 x 8
 ```
@@ -490,13 +517,15 @@ localStorage.clear()
 | `xxx is not defined` | 加载顺序错 | `index.html` |
 | 棋子渲染不出来 | SVG 路径错 | `svg-library.js` / `RenderSystem.js` |
 | 交换无效 | 匹配算法未识别 | `MatchSystem.js` |
-| 消除后不生成特效 | 合成规则未匹配 | `rules.js` / `creationRules.js` |
+| 消除后不生成特效 | 合成规则未匹配 | `creationRules.js` |
 | 障碍物不受伤 | 事件未触发 | `GameEngine._emitAdjacentEvents` |
 | 关卡加载失败 | 配置格式错 | `levels.js` / `ConfigLoader` |
 | 元素编辑器打不开 | 元数据缺字段 | `rules/*.js` 的 meta |
 | 表单输入无响应 | 事件绑定丢失 | `ElementEditor.js` |
 | 下落动画卡顿 | `gravitySpeed` 太大 | `constants.js` |
 | 目标不判定 | 目标配置错 | `goals.js` / `GoalSystem.js` |
+| 藤蔓阻挡不了交换 | `blocksMovement` 未设置 | `elements.js` |
+| 冰不触发伤害 | 使用了旧事件 `onAdjacent` | `elements.js` |
 
 ---
 
@@ -507,6 +536,7 @@ localStorage.clear()
 3. **元数据驱动**：每个词必须带 `meta`，编辑器才能自动生成表单
 4. **纯 JSON**：所有配置必须可序列化，不能有函数
 5. **事件优先**：让元素"监听事件 + 执行动作"，而不是硬编码行为
+6. **多层棋盘**：5 层数据结构支持复杂游戏机制
 
 ---
 

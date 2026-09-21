@@ -27,7 +27,8 @@
     
     pieces: null,                       // 棋子初始布局（null = 随机）
     targets: [],                        // 目标物（水果）
-    obstacles: [],                      // 障碍物（冰、藤蔓）
+    obstacles: [],                      // 障碍物（冰、锁链）
+    overlays: [],                       // 覆盖物（藤蔓等阻挡移动的物体）
     goals: [],                          // 通关条件
     
     moves: 30,                          // 总步数
@@ -61,6 +62,7 @@
 | `pieces` | array \| null | ❌ | 棋子初始布局，`null` 表示随机生成 |
 | `targets` | array | ❌ | 目标物列表，默认 `[]` |
 | `obstacles` | array | ❌ | 障碍物列表，默认 `[]` |
+| `overlays` | array | ❌ | 覆盖物列表，默认 `[]` |
 | `goals` | array | ❌ | 通关条件，默认 `[]`（无目标则无限玩） |
 | `moves` | number | ✅ | 总步数，默认 30 |
 | `config` | object | ❌ | 局内配置，见下方 |
@@ -141,6 +143,7 @@ pieces: [
 | `w` | number | ❌ | 宽度（跨几列），默认 1 |
 | `h` | number | ❌ | 高度（跨几行），默认 1 |
 | `hp` | number | ❌ | 血量，默认 1 |
+| `hpMode` | string | ❌ | 血量模式：`whole`（整体）/ `perCell`（逐格），默认 `whole` |
 | `metadata` | object | ❌ | 自定义元数据 |
 
 **示例**：
@@ -173,24 +176,22 @@ targets: [
 
 | 字段 | 类型 | 必填 | 说明 |
 |------|------|------|------|
-| `element` | string | ✅ | 元素 id（如 `'ice'`、`'vine'`） |
+| `element` | string | ✅ | 元素 id（如 `'ice'`、`'chain'`） |
 | `r` | number | ✅ | 行 |
 | `c` | number | ✅ | 列 |
 | `hp` | number | ❌ | 血量，默认 1 |
 | `maxHp` | number | ❌ | 最大血量，默认等于 hp |
+| `hpMode` | string | ❌ | 血量模式：`whole`（整体）/ `perCell`（逐格），默认 `whole` |
 | `metadata` | object | ❌ | 自定义元数据 |
 
 **示例**：
 
 ```javascript
 obstacles: [
-    // 冰，2 层血
-    { element: 'ice', r: 0, c: 0, hp: 2 },
+    // 冰，3 层血
+    { element: 'ice', r: 0, c: 0, hp: 3 },
     
-    // 藤蔓，1 层血
-    { element: 'vine', r: 3, c: 3, hp: 1 },
-    
-    // 锁链
+    // 锁链，1 层血
     { element: 'chain', r: 5, c: 5, hp: 1 }
 ]
 ```
@@ -201,12 +202,50 @@ obstacles: [
 - **`element` 必须是 `category: 'obstacle'` 的元素**
 - **障碍物的伤害规则由元素配置决定**：
   - `ice` 监听 `onCellCleared`（同格棋子被消除时受伤）
+  - `chain` 监听 `onAdjacent`（相邻棋子被消除时受伤）
+  - 具体见 `elements.js` 的 `events`
+
+---
+
+### 6. `overlays` — 覆盖物（阻挡移动）
+
+**每个 overlay 是一个对象**：
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `element` | string | ✅ | 元素 id（如 `'vine'`） |
+| `r` | number | ✅ | 起始行（左上角） |
+| `c` | number | ✅ | 起始列（左上角） |
+| `w` | number | ❌ | 宽度（跨几列），默认 1 |
+| `h` | number | ❌ | 高度（跨几行），默认 1 |
+| `hp` | number | ❌ | 血量，默认 1 |
+| `hpMode` | string | ❌ | 血量模式，默认 `whole` |
+| `metadata` | object | ❌ | 自定义元数据 |
+
+**示例**：
+
+```javascript
+overlays: [
+    // 2×2 藤蔓，阻挡移动
+    { element: 'vine', r: 3, c: 3, w: 2, h: 2, hp: 2 },
+    
+    // 单格藤蔓
+    { element: 'vine', r: 0, c: 0, hp: 1 }
+]
+```
+
+**规则**：
+
+- **覆盖物跨格子**，覆盖 `(r, c)` 到 `(r+h-1, c+w-1)`
+- **`element` 必须是 `category: 'overlay'` 的元素**
+- **覆盖物会阻挡玩家交换棋子**（`blocksMovement: true`）
+- **覆盖物的伤害规则由元素配置决定**：
   - `vine` 监听 `onAdjacent`（相邻棋子被消除时受伤）
   - 具体见 `elements.js` 的 `events`
 
 ---
 
-### 6. `goals` — 通关条件
+### 7. `goals` — 通关条件
 
 **每个 goal 是一个对象**：
 
@@ -256,7 +295,7 @@ goals: []
 
 ---
 
-### 7. `config` — 局内配置
+### 8. `config` — 局内配置
 
 | 字段 | 类型 | 默认 | 说明 |
 |------|------|------|------|
@@ -291,13 +330,14 @@ goals: []
     pieces: null,
     targets: [],
     obstacles: [],
+    overlays: [],
     goals: [{ type: 'score', value: 5000 }],
     moves: 30,
     config: {}
 }
 ```
 
-### 示例 2：收集水果关卡（带冰）
+### 示例 2：收集水果关卡（带冰 + 藤蔓覆盖物）
 
 ```javascript
 {
@@ -317,18 +357,16 @@ goals: []
         { element: 'orange', r: 6, c: 6, w: 2, h: 2, hp: 1 }
     ],
     obstacles: [
-        // 覆盖在水果上的冰
+        // 覆盖在水果上的冰（ice 监听 onCellCleared）
         { element: 'ice', r: 0, c: 0, hp: 1 },
         { element: 'ice', r: 0, c: 1, hp: 1 },
         { element: 'ice', r: 1, c: 0, hp: 1 },
         { element: 'ice', r: 1, c: 1, hp: 1 },
         // ... 其他水果上的冰
-        
-        // 中间藤蔓
-        { element: 'vine', r: 3, c: 3, hp: 2 },
-        { element: 'vine', r: 3, c: 4, hp: 2 },
-        { element: 'vine', r: 4, c: 3, hp: 2 },
-        { element: 'vine', r: 4, c: 4, hp: 2 }
+    ],
+    overlays: [
+        // 中间藤蔓（vine 监听 onAdjacent，阻挡移动）
+        { element: 'vine', r: 3, c: 3, w: 2, h: 2, hp: 2 }
     ],
     goals: [{ type: 'collectAll' }],
     moves: 25,
@@ -364,6 +402,7 @@ goals: []
     ],
     targets: [],
     obstacles: [],
+    overlays: [],
     goals: [{ type: 'score', value: 3000 }],
     moves: 15,
     config: {}
@@ -465,6 +504,19 @@ location.reload();
 - **能改代码**（改 `js/config/levels.js`）
 - **不能运行时改**（编辑器会另存为新关卡）
 
+### Q9：覆盖物（overlay）和障碍物（obstacle）有什么区别？
+
+**答**：
+- **障碍物**（obstacle）：需要被消除才能露出下方的目标物，一般通过匹配/伤害消除
+- **覆盖物**（overlay）：阻挡玩家交换棋子（`blocksMovement: true`），需要通过伤害消除
+- **藤蔓**（vine）是 overlay 类别，它会阻止玩家交换它覆盖的格子上的棋子
+
+### Q10：冰的伤害触发机制是什么？
+
+**答**：冰监听 `onCellCleared` 事件，当同格的棋子被消除时（而不是相邻消除），冰会受伤。这意味着：
+- 普通匹配消除同格棋子 → 冰受伤
+- 特效消除（如炸弹）→ 冰不受影响（除非特效也覆盖了该格）
+
 ---
 
 ## 七、字段速查表
@@ -482,6 +534,8 @@ location.reload();
 | `targets[].r/c/w/h/hp` | number | 部分 | 1 |
 | `obstacles[].element` | string | ✅ | - |
 | `obstacles[].r/c/hp` | number | 部分 | 1 |
+| `overlays[].element` | string | ✅ | - |
+| `overlays[].r/c/w/h/hp` | number | 部分 | 1 |
 | `goals[].type` | string | ✅ | - |
 | `moves` | number | ✅ | 30 |
 | `config.matchLength` | number | ❌ | 3 |
@@ -504,8 +558,9 @@ location.reload();
 |------|---------|
 | **棋子** | `fox`, `owl`, `cat`, `chick`, `bear`, `frog`, `octopus` |
 | **目标物** | `watermelon`, `grape`, `lemon`, `orange`, `strawberry` |
-| **障碍物** | `ice`, `vine`, `chain` |
-| **特效** | `line-horizontal`, `line-vertical`, `bomb`, `square-effect`, `rainbow` |
+| **障碍物** | `ice`, `chain` |
+| **覆盖物** | `vine` |
+| **特效** | `line-horizontal`, `line-vertical`, `bomb`, `square-effect`, `rainbow`, `rainbow-plus` |
 | **特殊** | `empty`（空占位） |
 
 **自定义元素**：在编辑器里新建，或改 `js/config/elements.js`。

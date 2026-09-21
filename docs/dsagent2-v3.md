@@ -49,7 +49,7 @@ v3/
 │   │   ├── index.js           # ConfigLoader 聚合入口
 │   │   ├── elements.js        # 元素库 BUILTIN_ELEMENTS
 │   │   ├── levels.js          # 关卡库 BUILTIN_LEVELS
-│   │   ├── creationRules.js   # 特效合成规则
+│   │   ├── creationRules.js   # 特效合成规则处理器
 │   │   ├── swapRules.js       # 双特效交换规则
 │   │   ├── rules.js           # 规则聚合（registerAllBuiltins）
 │   │   └── presets.js         # 预设配置
@@ -96,6 +96,7 @@ v3/
 | `applyConfig(config)` | 用新配置重新初始化 |
 | `showHint()` / `_findHint()` | 提示功能 |
 | `triggerEffect(r,c,piece)` | 手动触发特效 |
+| `reshuffle(maxAttempts)` | 棋盘重排（卡死时使用） |
 
 **内部系统依赖**：
 
@@ -126,7 +127,8 @@ this.isProcessing     // 是否正在处理中（防重复操作）
 this.isGameEnded      // 游戏是否结束
 this.mode             // 'admin' | 'game'
 this.selected         // 当前选中的棋子 {r,c}
-this.selectedCells    // 多选集合 Set<string>
+this.selectedCells    // 多选集合 Set<string>（管理员模式）
+this.editorMode       // 'single' | 'multi'（编辑器单选/多选模式）
 this.history          // 回退历史栈（含棋盘快照 + rngState）
 this.rng              // SeededRandom 实例
 ```
@@ -161,7 +163,7 @@ this.rng              // SeededRandom 实例
 
 ### 1.2 Board.js — 多层棋盘数据结构
 
-**概述**：承载 4 层数据（布局 / 目标物 / 障碍物 / 棋子），提供统一的 CRUD 接口。
+**概述**：承载 5 层数据（布局 / 目标物 / 障碍物 / 覆盖物 / 棋子），提供统一的 CRUD 接口。
 
 **数据结构**：
 
@@ -171,6 +173,7 @@ this.rng              // SeededRandom 实例
 | 1 | `targets` | `Array<{id,element,r,c,w,h,hp,maxHp}>` | 可跨格子的目标物（水果等） |
 | 2 | `obstacles` | `Array<{id,element,r,c,hp,maxHp,layers}>` | 逐格的障碍物（冰、藤蔓） |
 | 3 | `grid` | `any[][]` | 棋子网格，null 表示空 |
+| 4 | `overlays` | `Array<{id,element,r,c,w,h,hp}>` | 覆盖层（藤蔓等阻挡移动的物体） |
 
 **关键 API**：
 
@@ -181,6 +184,7 @@ board.swap(r1,c1,r2,c2)    // 交换两个格子
 board.isInBounds(r, c)     // 边界检测
 board.isCellActive(r, c)   // 格子是否有效（layout=1）
 board.getAdjacent(r, c, opts)  // 相邻格子（可选对角）
+board.hasBlockingOverlay(r, c) // 是否有阻挡移动的覆盖物
 
 // 目标物
 board.addTarget(target)
@@ -193,12 +197,20 @@ board.addObstacle(obstacle)
 board.getObstacleAt(r, c)
 board.damageObstacleAt(r, c, amount)  // 返回 {removed, obstacle}
 board.removeObstacleAt(r, c)
+
+// 通用层（支持 target/obstacle/overlay）
+board.getAt(category, r, c)
+board.damageAt(category, r, c, amount)
+board.removeAt(category, r, c)
+
+// 获取某格所有实体（从上到下）
+board.getEntitiesAt(r, c)   // [{category, entity}, ...]
 ```
 
 **序列化支持**：
 
 ```javascript
-Board.serialize()   // → {rows, cols, layout, grid, targets, obstacles}
+Board.serialize()   // → {rows, cols, layout, grid, targets, obstacles, overlays}
 Board.deserialize(obj)  // 静态方法，重建 Board
 ```
 
@@ -372,7 +384,7 @@ renderSystem.getCell(r, c)           // 获取 DOM 元素
 renderSystem.animateSwap(r1,c1,r2,c2)  // 交换动画
 renderSystem.animateRemove(keys)     // 消除动画
 renderSystem.animateGravityDrop(drops) // 重力下落动画
-renderSystem.renderObstacleAt(r, c)  // 重绘单个障碍物
+renderSystem.renderLayerAt(category, r, c) // 重绘指定层的单个实体
 ```
 
 **cellCache**：`Map<"r,c", DOMElement>`，用于快速查找格子的 DOM。
@@ -635,13 +647,14 @@ configLoader.levelToConfig(level) // 将关卡转为 GameEngine config
 | `piece` | 普通棋子（可移动） | fox, owl, cat, chick, bear, frog, octopus |
 | `target` | 目标物（被保护的水果） | watermelon, grape, lemon, orange, strawberry |
 | `obstacle` | 障碍物（需要消除的冰、藤蔓） | ice, vine, chain |
+| `overlay` | 覆盖物（阻挡移动） | vine |
 | `effect` | 特效棋子 | line-horizontal, line-vertical, bomb, rainbow, square-effect |
 
 **元素事件格式**：
 
 ```javascript
 {
-  event: 'onRemove' | 'onAdjacent' | 'onObstacleCleared' | 'onCellCleared',
+  event: 'onRemove' | 'onAdjacent' | 'onObstacleCleared' | 'onCellCleared' | 'onAnyMatch',
   when: { direction: 'cross', source: 'match' },  // 可选
   actions: [{ type, targets, amount, layer }]
 }
@@ -650,6 +663,12 @@ configLoader.levelToConfig(level) // 将关卡转为 GameEngine config
 **特殊机制**：
 - `visualResolver`：根据 `hp` 字段切换 SVG（冰有 3 级形态）
 - 目标物的 `onObstacleCleared` 事件：障碍物消除时对下方目标物造成伤害
+- `overlay` 类别的障碍物可以设置 `blocksMovement: true` 阻止玩家交换棋子
+
+**注意事项**：
+- 藤蔓（vine）已从 `obstacle` 类别移至 `overlay` 类别
+- 冰（ice）的伤害触发已从 `onAdjacent` 改为 `onCellCleared`
+- 空白格（empty）已改为 `decoration` 类别
 
 ---
 
@@ -670,6 +689,7 @@ configLoader.levelToConfig(level) // 将关卡转为 GameEngine config
   pieces: number[][] | null,  // null=随机填充，非 null=人为指定
   targets: Array<{r,c,w,h,element,hp}>，
   obstacles: Array<{r,c,element,hp}>，
+  overlays: Array<{r,c,w,h,element,hp}>，  // ← 新增：覆盖物
   goals: Array<{type, value}>，
   moves: number,
   config: {...}
@@ -679,11 +699,16 @@ configLoader.levelToConfig(level) // 将关卡转为 GameEngine config
 **内置关卡**：
 - `sandbox`：沙盒测试，9999步，无目标
 - `level-001`：教学关卡，30步，目标分 5000
-- `level-002`：水果收集，经典关卡
+- `level-002`：水果收集，经典关卡（含冰覆盖水果 + 中间藤蔓）
+- `level-003`：捕猎狐狸，消除 30 只狐狸
+- `level-004`：限时挑战，60秒内 10000 分
+- `level-005`：固定布局，6×6 异形棋盘
 
 ---
 
-### 4.4 creationRules.js — 特效合成规则
+### 4.4 creationRules.js — 特效合成规则处理器
+
+**职责**：根据形状分析结果，决定生成什么特效棋子。
 
 **规则格式**：
 
@@ -697,17 +722,6 @@ configLoader.levelToConfig(level) // 将关卡转为 GameEngine config
 }
 ```
 
-**内置规则**：
-
-| 形状 | 条件 | 生成 |
-|------|------|------|
-| 直线 4连 | shape=line, length=4 | line-horizontal / line-vertical |
-| 直线 ≥5连 | shape=line, minLength=5 | rainbow |
-| 田字 | shape=square, length=4 | square-effect |
-| T形 | shape=tshape | bomb |
-| L形 | shape=lshape | bomb |
-| 十字 ≥5连 | shape=cross, minLength=5 | rainbow |
-
 **核心函数**：
 
 ```javascript
@@ -719,6 +733,8 @@ resolveCreationData(preserve, shapeResult, matches) → {direction, color}
 ---
 
 ### 4.5 swapRules.js — 双特效交换规则
+
+**职责**：定义双特效交换时的组合效果。
 
 **规则格式**：
 
@@ -732,296 +748,7 @@ resolveCreationData(preserve, shapeResult, matches) → {direction, color}
 
 **condition 可选值**：`sameRow`、`diffRow`、`sameCol`、`diffCol`
 
----
-
-## 十一、测试层（test/）
-
-### 11.1 目录结构
-
-```
-test/
-├── harness.js            # 测试脚手架（Node.js vm 沙箱 + 浏览器双环境）
-├── assertions.js         # 自定义断言库
-├── page-checker.js       # DOM 一致性检测器
-├── ui-test-runner.js     # UI 一键测试运行器（17 个场景）
-├── run-all.js            # Node.js 测试入口（扫描 suites/*.test.js）
-├── index.html            # 浏览器测试页
-└── suites/
-    ├── 01-match-3.test.js          # 3 消基础测试
-    ├── 02-match-4.test.js          # 4 消 → 直线特效
-    ├── 03-match-5.test.js          # 5 消 → 彩虹特效
-    ├── 04-match-square.test.js     # 田字 → 方块特效
-    ├── 05-match-tshape.test.js     # T 形 → 炸弹
-    ├── 06-match-lshape.test.js     # L 形 → 炸弹
-    ├── 07-swap-line-bomb.test.js   # 双特效：直线+炸弹
-    ├── 08-swap-line-line.test.js   # 双特效：直线+直线十字清除
-    ├── 09-swap-bomb-bomb.test.js   # 双特效：炸弹+炸弹全屏
-    ├── 10-swap-rainbow-line.test.js# 双特效：彩虹+直线
-    └── 11-page-check.test.js       # DOM 一致性检查
-```
-
----
-
-### 11.2 harness.js — 测试脚手架
-
-**职责**：在 Node.js（vm 沙箱）或浏览器环境中加载所有模块，提供统一的测试 API。
-
-**加载顺序**（Node.js 环境）：
-```
-utils/constants → utils/helpers → utils/cache
-→ assets/svg-library.js
-→ engine/registries/* (Action/Event/Selector/Condition/Element/Goal)
-→ engine/dsl/* (VariableResolver/ExpressionParser/ConfigValidator)
-→ engine/runtime/* (EventBus/RuleRuntime)
-→ core/* (Piece/Board/ShapeResult/PieceFactory/EventQueue)
-→ rules/* (selectors/conditions/actions/events/goals)
-→ systems/* (Match/Gravity/Score/Goal/Timer/Render/Input/Save)
-→ core/GameEngine.js
-→ config/* (elements/rules/swapRules/levels/presets/creationRules)
-```
-
-**核心 API**：
-
-```javascript
-// 创建隔离测试实例
-const game = createTestGame(config)   // 默认用 DEFAULT_CONFIG
-
-// 棋盘操作
-setupBoard(game, [[r,c,element],...])   // 设置初始棋盘
-setEffect(game, [[r,c,effect],...])     // 设置棋子特效
-doSwap(game, r1, c1, r2, c2)           // 执行交换（异步，等待动画）
-snapshotBoard(game)                     // 快照：{board, score, movesLeft, ...}
-
-// 调试辅助
-game.setMode('game')                    // 切换模式
-```
-
-**浏览器环境**：通过 `window.__t` 暴露相同 API，并额外支持：
-```javascript
-__t.reset('sandbox')       // 重置关卡
-__t.setupBoard(assignments)
-__t.setEffects([[r,c,e],...])
-__t.swap(r1,c1,r2,c2)
-__t.addIce(r,c,hp)         // 添加冰障碍
-__t.addVine(r,c,hp)        // 添加藤蔓
-__t.addFruit(elem,r,c,w,h) // 添加水果目标
-__t.snapshot()
-```
-
----
-
-### 11.3 assertions.js — 断言库
-
-**职责**：收集通过/失败统计，替代 jest/ava 等外部框架。
-
-**API**：
-```javascript
-assert(condition, message)           // 布尔断言
-assertEqual(actual, expected, msg)   // 深度相等（JSON.stringify 比较）
-assertNotEqual(actual, expected, msg)
-assertGreaterThan(actual, expected, msg)
-assertContains(arr, item, msg)
-assertArrayEqual(arr1, arr2, msg)
-
-assertions.resetCounters()           // 重置计数
-assertions.getResults()              // { passCount, failCount, failures }
-```
-
----
-
-### 11.4 page-checker.js — DOM 一致性检测
-
-**职责**：校验棋盘数据 ↔ DOM 节点完全同步。
-
-**检测项**：
-| 检测项 | 说明 |
-|--------|------|
-| 格子总数 | `#board .cell` 数量 = rows × cols |
-| 棋子存在性 | 每个非空格子有对应 `.cell` 节点 |
-| SVG 匹配 | piece 的 SVG src 与元素定义一致 |
-| 障碍物检测 | ice/vine 等障碍物的 DOM 存在性 |
-| 目标物检测 | fruit/target 的跨格尺寸和 SVG |
-| 层级 | z-index 正确 |
-| 位置 | left/top 坐标正确 |
-| 动画清理 | 无残留动画类 |
-
-**返回值**：
-```javascript
-{ consistent: boolean, issues: string[], stats: {...} }
-```
-
----
-
-### 11.5 ui-test-runner.js — UI 一键测试运行器
-
-**职责**：在浏览器中一键运行 17 个 UI 测试场景。
-
-**调用方式**：
-- 点击页面「🧪 一键测试」按钮
-- 控制台执行：`__uiTest.run()`
-
-**测试场景分类**：
-
-| 类别 | 场景数 | 内容 |
-|------|--------|------|
-| 基础匹配 | 6 | 3消/4消/5消/田字/T形/L形 |
-| 双特效交换 | 4 | line+bomb / line+line / bomb+bomb / rainbow+line |
-| 障碍与目标 | 7 | 冰/藤蔓伤害、水果收集、组合效果 |
-
-**每个场景结构**：
-```javascript
-{
-    name: '场景名',
-    setup: async () => { /* 初始化棋盘 + 执行交换 */ },
-    validate: (game) => boolean,     // 验证条件
-    validateMsg: '期望结果描述'
-}
-```
-
----
-
-### 11.6 index.html — 浏览器测试页
-
-**职责**：在浏览器中加载游戏 + 测试脚手架，提供可视化测试界面。
-
-**特点**：
-- 暗色主题（`#0f172a` 背景）
-- 劫持 `console.*` → 输出到 `#output` div
-- 显示统计 `#stats` div
-- 按钮：「▶️ 运行所有测试」「🗑️ 清空」
-
----
-
-### 11.7 run-all.js — Node.js 测试入口
-
-**职责**：扫描 `test/suites/*.test.js`（按字母序），逐个执行并汇总结果。
-
-**执行流程**：
-```
-for each suiteFile in suites/*.test.js (sorted):
-    resetCounters()
-    try:
-        testFn = require(suiteFile)
-        await testFn()
-    catch:
-        打印崩溃信息
-        totalFail++
-    累加 pass/fail 计数
-打印最终统计 + 失败列表
-```
-
----
-
-### 11.8 各测试用例详解
-
-| 文件 | 测试内容 | 关键验证点 |
-|------|---------|-----------|
-| `01-match-3.test.js` | 3 消基础 | 分数增加、步数 -1 |
-| `02-match-4.test.js` | 4 消 | 生成 `line-horizontal` 特效 |
-| `03-match-5.test.js` | 5 消 | 生成 `rainbow` 特效 |
-| `04-match-square.test.js` | 田字 | 生成 `square-effect` |
-| `05-match-tshape.test.js` | T 形 | 生成 `bomb` |
-| `06-match-lshape.test.js` | L 形 | 生成 `bomb` |
-| `07-swap-line-bomb.test.js` | 直线+炸弹 | 分数 ≥ 150，组合效果触发 |
-| `08-swap-line-line.test.js` | 直线+直线 | 十字清除，分数 > 200 |
-| `09-swap-bomb-bomb.test.js` | 炸弹+炸弹 | 全屏消除，分数 > 200 |
-| `10-swap-rainbow-line.test.js` | 彩虹+直线 | 分数 > 1000 |
-| `11-page-check.test.js` | DOM 一致性 | 初始状态 + 交换后状态 |
-
----
-
-### 11.9 测试架构总结
-
-```
-┌─────────────────────────────────────────────────────┐
-│                   测试运行入口                        │
-│  Node.js: test/run-all.js  →  遍历 suites/*.test.js │
-│  浏览器:   test/index.html  →  __uiTest.run()       │
-└─────────────────────────────────────────────────────┘
-                         ↓
-┌─────────────────────────────────────────────────────┐
-│                   测试脚手架 (harness.js)            │
-│  - Node.js: vm.createContext() + vm.runInContext()  │
-│  - 浏览器:   window 全局上下文                       │
-│  - 统一 API: createTestGame / setupBoard / doSwap    │
-└─────────────────────────────────────────────────────┘
-                         ↓
-┌─────────────────────────────────────────────────────┐
-│                    断言库 (assertions.js)            │
-│  assert / assertEqual / assertGreaterThan / ...     │
-│  收集 pass/fail 计数，不抛出异常                      │
-└─────────────────────────────────────────────────────┘
-                         ↓
-┌─────────────────────────────────────────────────────┐
-│                  业务测试套件 (suites/)              │
-│  01-06: 匹配规则测试（3~5消、田字、T/L形）           │
-│  07-10: 双特效交换测试（4 种组合）                   │
-│  11:    DOM 一致性检查                               │
-└─────────────────────────────────────────────────────┘
-                         ↓
-┌─────────────────────────────────────────────────────┐
-│                辅助工具 (page-checker.js)            │
-│  校验 Board 数据 ↔ DOM 节点同步                      │
-│  检测：格子数、棋子、SVG、障碍、目标、层级、位置      │
-└─────────────────────────────────────────────────────┘
-```
-
-**运行方式**：
-```bash
-# Node.js 环境
-npm test
-# 或
-node test/run-all.js
-
-# 浏览器环境
-# 打开 test/index.html，点击「运行所有测试」
-```
-
----
-
-## 📊 完整架构总结
-
-本项目的分层架构清晰，核心设计原则是**规则驱动、事件优先、配置即内容**：
-
-| 层级 | 职责 | 关键文件 |
-|------|------|---------|
-| **工具层** | 常量、通用函数、缓存 | `utils/` |
-| **资源层** | SVG 字符串库 | `assets/svg-library.js` |
-| **注册表层** | 词表注册中心 | `engine/registries/` |
-| **DSL 层** | 变量解析、表达式、校验 | `engine/dsl/` |
-| **运行时** | 事件总线、规则引擎 | `engine/runtime/` |
-| **领域层** | 棋子、棋盘、匹配、重力 | `core/`, `systems/` |
-| **词表层** | 内置动作/事件/选择器/条件/目标 | `rules/` |
-| **配置层** | 元素/规则/关卡/预设 | `config/` |
-| **UI 层** | 管理面板、HUD、编辑器 | `ui/` |
-| **测试层** | 单元测试、DOM 一致性 | `test/` |
-| **入口** | 组装所有模块，启动游戏 | `main.js` |
-
-**核心一句话**：**先拆分、先读、先诊断、后改、最小改、每步确认。**
-
----
-
-## 📊 完整架构总结
-
-本项目的分层架构清晰，核心设计原则是**规则驱动、事件优先、配置即内容**：
-
-| 层级 | 职责 | 关键文件 |
-|------|------|---------|
-| **工具层** | 常量、通用函数、缓存 | `utils/` |
-| **资源层** | SVG 字符串库 | `assets/svg-library.js` |
-| **注册表层** | 词表注册中心 | `engine/registries/` |
-| **DSL 层** | 变量解析、表达式、校验 | `engine/dsl/` |
-| **运行时** | 事件总线、规则引擎 | `engine/runtime/` |
-| **领域层** | 棋子、棋盘、匹配、重力 | `core/`, `systems/` |
-| **词表层** | 内置动作/事件/选择器/条件/目标 | `rules/` |
-| **配置层** | 元素/规则/关卡/预设 | `config/` |
-| **UI 层** | 管理面板、HUD、编辑器 | `ui/` |
-| **测试层** | 单元测试、DOM 一致性 | `test/` |
-| **入口** | 组装所有模块，启动游戏 | `main.js` |
-
-**核心一句话**：**先拆分、先读、先诊断、后改、最小改、每步确认。**
-
-**内置规则（部分）**：
+**内置规则组合**：
 
 | 组合 | 条件 | 效果 |
 |------|------|------|
@@ -1030,7 +757,9 @@ node test/run-all.js
 | line-v + line-v | sameCol | 整列消除，伤害2 |
 | line-v + line-v | diffCol | 两列各消除，伤害1 |
 | line-h + line-v | — | 十字清除（行+列） |
-| bomb + bomb | — | 全屏消除 |
+| line + bomb | — | 三行三列范围清除 |
+| bomb + bomb | — | 5×5 范围全屏消除 |
+| rainbow + 任意 | — | 全屏清除 |
 | fallback | — | 各自触发（each） |
 
 ---
@@ -1060,12 +789,27 @@ node test/run-all.js
 |----------|------|----------|
 | `remove` | 消除棋子 | `targets`（选择器） |
 | `damage` | 造成伤害 | `targets`, `amount`, `layer` |
-| `create` | 创建棋子 | `element`, `r`, `c` |
-| `setAttr` | 设置属性 | `targets`, `attrName`, `value` |
-| `swap` | 交换棋子 | `r1,c1,r2,c2` |
-| `lock` | 锁定棋子 | `targets` |
-| `unlock` | 解锁棋子 | `targets` |
-| `generate` | 生成器触发 | — |
+| `convert` | 转化棋子 | `targets`, `to`（目标元素） |
+| `spawn` | 生成棋子 | `targets`, `element` |
+| `trigger` | 触发特效 | `targets` |
+| `wait` | 等待 | `ms` |
+| `collect` | 收集目标物 | `targets` |
+| `addScore` | 加分 | `amount` |
+| `scorePerTarget` | 按目标计分 | `targets`, `perUnit` |
+| `if` | 条件分支 | `condition`, `then`, `else` |
+| `repeat` | 循环执行 | `times`, `actions` |
+| `randomPick` | 随机选一个 | `options` |
+| `setVar` | 设置变量 | `name`, `value` |
+| `log` | 调试日志 | `message` |
+| `updateHUD` | 刷新界面 | — |
+
+**damage 动作的 layer 参数**：
+- `obstacle`：伤害障碍物（默认）
+- `target`：伤害目标物（跳过障碍物保护）
+- `overlay`：伤害覆盖物（新增）
+- `piece`：伤害棋子 HP（修改 attrs.hp）
+
+---
 
 ### 5.2 events.js — 内置事件
 
@@ -1076,20 +820,37 @@ node test/run-all.js
 | `onSwap` | `piece:swapped` | 棋子交换 |
 | `onAdjacent` | `adjacent:match` | 相邻消除 |
 | `onObstacleCleared` | `obstacle:cleared` | 障碍物消除 |
-| `onCellCleared` | `cell:cleared` | 格子被清理 |
-| `onEffectCreated` | `effect:created` | 特效生成 |
+| `onCellCleared` | `cell:cleared` | 所在格棋子被消除 |
+| `onAnyMatch` | `any:match` | 任意位置匹配 |
+| `onTurn` | `turn:end` | 回合结束 |
+| `onLand` | `piece:landed` | 棋子落地 |
+| `onCreate` | `effect:created` | 特效生成 |
+| `onChain` | `chain:triggered` | 连锁触发 |
+| `onGameStart` | `game:start` | 游戏开始 |
+| `onGameEnd` | `game:end` | 游戏结束 |
+
+---
 
 ### 5.3 selectors.js — 内置选择器
 
 | 选择器类型 | 参数 | 说明 |
 |------------|------|------|
-| `row` | `r`（支持变量） | 整行 |
-| `col` | `c`（支持变量） | 整列 |
-| `area` | `r`, `c`, `radius`, `diagonal` | 矩形/圆形区域 |
-| `all` | — | 全棋盘 |
 | `cell` | `r`, `c` | 单格 |
-| `self` | — | 事件源格子 |
-| `sameColor` | — | 同色棋子 |
+| `row` | `r` | 整行 |
+| `col` | `c` | 整列 |
+| `cross` | `r`, `c` | 十字（行+列） |
+| `area` | `r`, `c`, `radius`, `diagonal` | 圆形/方形区域 |
+| `all` | — | 全棋盘 |
+| `sameColor` | `color` | 同色棋子 |
+| `sameElement` | `element` | 同类型棋子 |
+| `random` | `count`, `filter` | 随机 N 个 |
+| `adjacent` | `r`, `c`, `diagonal` | 相邻格子 |
+| `obstacles` | `element` | 所有障碍物 |
+| `targets` | `element` | 所有目标物 |
+| `inShape` | — | 匹配形状内 |
+| `varCell` | `var` | 变量位置 |
+
+---
 
 ### 5.4 conditions.js — 内置条件
 
@@ -1101,14 +862,18 @@ node test/run-all.js
 | `diffCol` | 不同列 |
 | `atLeast` | 至少 N 个 |
 
+---
+
 ### 5.5 goals.js — 内置目标
 
 | 目标类型 | 检查逻辑 |
 |----------|----------|
 | `score` | 分数 ≥ value |
 | `collect` | 收集 N 个指定元素 |
+| `collectAll` | 收集所有目标物 |
 | `eliminate` | 消除 N 个指定元素 |
-| `timeLimit` | 时间内完成 |
+| `movesLeft` | 剩余步数 ≥ min |
+| `timeLeft` | 剩余时间 ≥ min |
 
 ---
 
@@ -1274,3 +1039,231 @@ rng.reset(seed)
 5. **扩展无侵入**：加新动作/事件/选择器/条件/目标 = 注册一个即可，无需改引擎
 6. **种子随机**：`SeededRandom` 保证同一局棋盘可重现，支持 undo 恢复随机状态
 7. **分层渲染**：6 层 z-index 分离，局部更新不影响其他层
+8. **多层棋盘**：5 层数据结构支持复杂游戏机制（布局/目标/障碍/覆盖/棋子）
+
+---
+
+## 十一、修改定位指南
+
+### 场景 1：修改某个棋子的外观
+
+**位置**：`js/config/elements.js`
+
+**操作**：修改对应元素的 `svg` / `color` / `name`。或打开游戏用"元素编辑器"直接改。
+
+**不需要动引擎。**
+
+### 场景 2：修改某个棋子的行为（如"冰的伤害规则"）
+
+**位置**：`js/config/elements.js` 中对应元素的 `events` 字段
+
+**操作**：修改事件配置，如：
+```javascript
+events: [{
+    event: 'onCellCleared',    // ← 注意：冰已改为 onCellCleared
+    actions: [{ type: 'damage', amount: 2 }]
+}]
+```
+
+**不需要动引擎。**
+
+### 场景 3：新增一种障碍物（如"果冻"）
+
+**位置**：`js/config/elements.js`
+
+**操作**：加一段 JSON：
+```javascript
+{
+    id: 'jelly',
+    name: '果冻',
+    category: 'obstacle',
+    svg: '@jelly',       // 需先在 svg-library.js 加
+    properties: { hp: 1 },
+    events: [{
+        event: 'onMatch',
+        when: { shapes: ['square'] },
+        actions: [{ type: 'damage', amount: 1 }]
+    }]
+}
+```
+
+**不需要动引擎。**
+
+### 场景 4：新增一种覆盖物（如"锁链墙"）
+
+**位置**：`js/config/elements.js`
+
+**操作**：
+```javascript
+{
+    id: 'chain-wall',
+    name: '锁链墙',
+    category: 'overlay',    // ← 使用 overlay 类别
+    svg: '@chain',
+    properties: { hp: 3, blocksMovement: true },
+    events: [{
+        event: 'onAdjacent',
+        when: { direction: 'cross', source: 'match' },
+        actions: [{ type: 'damage', targets: { type: 'cell', r: '$r', c: '$c' }, amount: 1, layer: 'overlay' }]
+    }]
+}
+```
+
+关卡配置中使用：
+```javascript
+overlays: [
+    { element: 'chain-wall', r: 3, c: 3, hp: 3 }
+]
+```
+
+### 场景 5：新增一种特效（如"闪电"）
+
+**位置**：`js/config/elements.js` + `js/config/creationRules.js`（如需合成）
+
+**操作**：
+
+`elements.js` 加：
+```javascript
+{
+    id: 'lightning',
+    name: '闪电特效',
+    category: 'effect',
+    svg: null,
+    char: '⚡',
+    events: [{
+        event: 'onRemove',
+        actions: [{ type: 'remove', targets: { type: 'area', radius: 2 } }]
+    }]
+}
+```
+
+### 场景 6：新增一个关卡
+
+**位置**：`js/config/levels.js`
+
+**操作**：加一段 JSON，或者用游戏里的"保存为关卡"按钮。**不需要动引擎。**
+
+### 场景 7：新增一种动作（如"传送"）
+
+**位置**：`js/rules/actions.js`
+
+**操作**：加一段注册：
+```javascript
+A.register('teleport', {
+    meta: { label: '传送', description: '把目标棋子传到另一个位置', category: '特殊', params: [...] },
+    execute: async (game, action, context) => { /* 实现 */ }
+});
+```
+
+**只改 1 个文件。**
+
+### 场景 8：修改匹配算法（如"支持 3 连斜线"）
+
+**位置**：`js/systems/MatchSystem.js` 中的 `DiagonalMatchRule`，或新增规则类。
+
+**这是引擎逻辑，需要谨慎修改。**
+
+### 场景 9：修改渲染层级（如"给水果加一层光效"）
+
+**位置**：`js/systems/RenderSystem.js` + `js/utils/constants.js` 中的 `RENDER_LAYERS`
+
+**修改渲染层，会影响所有元素。**
+
+---
+
+## 十二、快速定位表
+
+| 我想…… | 打开文件 |
+|--------|---------|
+| 改棋子外观 | `js/config/elements.js` |
+| 改棋子行为 | `js/config/elements.js` |
+| 加新棋子 | `js/config/elements.js` |
+| 加新覆盖物 | `js/config/elements.js` |
+| 加新特效 | `js/config/elements.js` |
+| 加新关卡 | `js/config/levels.js` |
+| 改特效合成条件 | `js/config/creationRules.js` |
+| 改双特效交换规则 | `js/config/swapRules.js` |
+| 改棋盘渲染 | `js/systems/RenderSystem.js` |
+| 改匹配算法 | `js/systems/MatchSystem.js` |
+| 改重力 | `js/systems/GravitySystem.js` |
+| 改计分 | `js/systems/ScoreSystem.js` |
+| 改目标检查 | `js/systems/GoalSystem.js` |
+| 改输入 | `js/systems/InputSystem.js` |
+| 改存档 | `js/systems/SaveSystem.js` |
+| 改主流程 | `js/core/GameEngine.js` |
+| 改棋盘数据结构 | `js/core/Board.js` |
+| 改棋子数据结构 | `js/core/Piece.js` |
+| 加新动作词 | `js/rules/actions.js` |
+| 加新事件词 | `js/rules/events.js` |
+| 加新选择器 | `js/rules/selectors.js` |
+| 加新条件 | `js/rules/conditions.js` |
+| 加新目标 | `js/rules/goals.js` |
+| 改注册表逻辑 | `js/engine/registries/*` |
+| 改 DSL 解析 | `js/engine/dsl/*` |
+| 改规则运行时 | `js/engine/runtime/RuleRuntime.js` |
+| 改 HUD | `js/ui/HUD.js` |
+| 改策划编辑器 | `js/ui/ElementEditor.js` |
+| 改 SVG 素材 | `js/assets/svg-library.js` |
+| 改样式 | `css/style.css` |
+
+---
+
+## 十三、测试层（test/）
+
+### 13.1 目录结构
+
+```
+test/
+├── harness.js            # 测试脚手架（Node.js vm 沙箱 + 浏览器双环境）
+├── assertions.js         # 自定义断言库
+├── page-checker.js       # DOM 一致性检测器
+├── ui-test-runner.js     # UI 一键测试运行器（17 个场景）
+├── run-all.js            # Node.js 测试入口（扫描 suites/*.test.js）
+├── index.html            # 浏览器测试页
+└── suites/
+    ├── 01-match-3.test.js          # 3 消基础测试
+    ├── 02-match-4.test.js          # 4 消 → 直线特效
+    ├── 03-match-5.test.js          # 5 消 → 彩虹特效
+    ├── 04-match-square.test.js     # 田字 → 方块特效
+    ├── 05-match-tshape.test.js     # T 形 → 炸弹
+    ├── 06-match-lshape.test.js     # L 形 → 炸弹
+    ├── 07-swap-line-bomb.test.js   # 双特效：直线+炸弹
+    ├── 08-swap-line-line.test.js   # 双特效：直线+直线十字清除
+    ├── 09-swap-bomb-bomb.test.js   # 双特效：炸弹+炸弹全屏
+    ├── 10-swap-rainbow-line.test.js# 双特效：彩虹+直线
+    └── 11-page-check.test.js       # DOM 一致性检查
+```
+
+### 13.2 运行方式
+
+```bash
+# Node.js 环境
+npm test
+# 或
+node test/run-all.js
+
+# 浏览器环境
+# 打开 test/index.html，点击「运行所有测试」
+```
+
+---
+
+## 📊 完整架构总结
+
+本项目的分层架构清晰，核心设计原则是**规则驱动、事件优先、配置即内容**：
+
+| 层级 | 职责 | 关键文件 |
+|------|------|---------|
+| **工具层** | 常量、通用函数、缓存 | `utils/` |
+| **资源层** | SVG 字符串库 | `assets/svg-library.js` |
+| **注册表层** | 词表注册中心 | `engine/registries/` |
+| **DSL 层** | 变量解析、表达式、校验 | `engine/dsl/` |
+| **运行时** | 事件总线、规则引擎 | `engine/runtime/` |
+| **领域层** | 棋子、棋盘、匹配、重力 | `core/`, `systems/` |
+| **词表层** | 内置动作/事件/选择器/条件/目标 | `rules/` |
+| **配置层** | 元素/规则/关卡/预设 | `config/` |
+| **UI 层** | 管理面板、HUD、编辑器 | `ui/` |
+| **测试层** | 单元测试、DOM 一致性 | `test/` |
+| **入口** | 组装所有模块，启动游戏 | `main.js` |
+
+**核心一句话**：**先拆分、先读、先诊断、后改、最小改、每步确认。**
