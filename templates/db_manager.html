@@ -1,0 +1,2295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据库管理</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f5f7fa;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        h1 { color: #2c3e50; }
+        .stats {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .stat-card {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            flex: 1;
+            min-width: 150px;
+        }
+        .stat-card .number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .stat-card .label {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        .stat-card.danger .number { color: #e74c3c; }
+        .stat-card.success .number { color: #27ae60; }
+        
+        .section {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .section h2 {
+            margin-top: 0;
+            font-size: 18px;
+            color: #2c3e50;
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .section h2 .toggle-icon {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        th, td {
+            padding: 8px 12px;
+            text-align: left;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+        }
+        tr:hover { background: #f8f9fa; }
+        .badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            background: #3498db;
+            color: white;
+        }
+        .badge.danger { background: #e74c3c; }
+        .badge.success { background: #27ae60; }
+        .badge.warning { background: #f39c12; }
+        .badge.purple { background: #9b59b6; }
+        .badge.orange { background: #e67e22; }
+        .checkpoint.main { background: #27ae60; }
+        
+        button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        button:hover { opacity: 0.8; }
+        button.primary { background: #3498db; color: white; }
+        button.danger { background: #e74c3c; color: white; }
+        button.success { background: #27ae60; color: white; }
+        button.warning { background: #f39c12; color: white; }
+        button.purple { background: #9b59b6; color: white; }
+        button.orange { background: #e67e22; color: white; }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
+        
+        .pagination {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        .pagination button { background: #ecf0f1; }
+        .pagination .current { background: #3498db; color: white; }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #7f8c8d;
+        }
+        
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        .search-box input, .search-box select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        .search-box input:focus, .search-box select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .modal.active { display: flex; }
+        .modal-content {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 80vh;
+            overflow: auto;
+        }
+        .modal-content h3 { margin-top: 0; }
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: flex-end;
+        }
+        
+        .sql-input {
+            width: 100%;
+            min-height: 80px;
+            padding: 10px;
+            font-family: monospace;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+        .sql-input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            z-index: 2000;
+            animation: slideIn 0.3s ease;
+        }
+        .toast.success { background: #27ae60; }
+        .toast.error { background: #e74c3c; }
+        .toast.info { background: #3498db; }
+        .toast.warning { background: #f39c12; }
+        @keyframes slideIn {
+            from { transform: translateX(100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .empty { color: #95a5a6; text-align: center; padding: 20px; }
+        
+        .btn-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .btn-group button { font-size: 12px; padding: 4px 10px; }
+        
+        .json-view {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-family: monospace;
+            max-height: 200px;
+            overflow: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        
+        /* Checkpoint 详情样式 */
+        .checkpoint-detail {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 10px;
+        }
+        .checkpoint-detail .msg-item {
+            border-left: 3px solid #3498db;
+            padding-left: 12px;
+            margin: 8px 0;
+            background: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+        }
+        .checkpoint-detail .msg-item .msg-role {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .checkpoint-detail .msg-item .msg-content {
+            color: #34495e;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        
+        /* 图可视化 */
+        .graph-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            min-height: 200px;
+            align-items: flex-start;
+        }
+        .graph-node {
+            background: white;
+            border: 2px solid #3498db;
+            border-radius: 8px;
+            padding: 10px 15px;
+            min-width: 100px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .graph-node .node-id {
+            font-size: 11px;
+            color: #7f8c8d;
+        }
+        .graph-node .node-label {
+            font-weight: bold;
+            font-size: 13px;
+        }
+        .graph-node .node-time {
+            font-size: 10px;
+            color: #95a5a6;
+        }
+        .graph-node.current {
+            border-color: #27ae60;
+            background: #eafaf1;
+        }
+        .graph-edge {
+            display: flex;
+            align-items: center;
+            color: #7f8c8d;
+            font-size: 20px;
+            padding: 0 5px;
+        }
+        .graph-row {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        
+        .session-detail-panel {
+            margin-top: 10px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .session-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin: 10px 0;
+        }
+        
+        .compare-result {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 10px;
+        }
+        .compare-result .diff-new {
+            border-left: 3px solid #27ae60;
+            padding-left: 12px;
+            margin: 5px 0;
+        }
+        
+        .tab-bar {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #ecf0f1;
+            flex-wrap: wrap;
+        }
+        .tab-bar .tab {
+            padding: 8px 16px;
+            cursor: pointer;
+            border-radius: 6px 6px 0 0;
+            background: #ecf0f1;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        .tab-bar .tab.active {
+            background: #3498db;
+            color: white;
+        }
+        .tab-bar .tab:hover:not(.active) {
+            background: #d5dbdb;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* 滚动条美化 */
+        .modal-content::-webkit-scrollbar {
+            width: 6px;
+        }
+        .modal-content::-webkit-scrollbar-thumb {
+            background: #bdc3c7;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🗄️ 数据库管理</h1>
+    
+    <!-- 统计 -->
+    <div class="stats" id="stats">
+        <div class="stat-card"><div class="number" id="dbSize">-</div><div class="label">数据库大小</div></div>
+        <div class="stat-card"><div class="number" id="tableCount">-</div><div class="label">表数量</div></div>
+        <div class="stat-card"><div class="number" id="totalRows">-</div><div class="label">总行数</div></div>
+        <div class="stat-card"><div class="number" id="sessionCount">-</div><div class="label">会话数</div></div>
+    </div>
+    
+    <!-- 操作按钮 -->
+    <div class="section">
+        <div class="btn-group" style="margin-bottom:10px;">
+            <button class="primary" onclick="refreshAll()">🔄 刷新</button>
+            <button class="success" onclick="vacuumDB()">🧹 压缩数据库</button>
+            <button class="danger" onclick="openSqlModal()">📝 执行 SQL</button>
+            <button class="danger" onclick="confirmClearAll()">⚠️ 清空所有数据</button>
+        </div>
+    </div>
+    
+    <!-- 会话列表 -->
+    <div class="section">
+        <h2 onclick="toggleSection('sessionsSection')">
+            📋 会话列表
+            <span class="toggle-icon" id="sessionsSectionToggle">▼</span>
+        </h2>
+        <div id="sessionsSection">
+            <div id="sessionsContainer"><div class="loading">加载中...</div></div>
+        </div>
+    </div>
+
+    <!-- 在会话列表下方添加 BLOB 大小分析 -->
+    <div class="section">
+        <h2 onclick="toggleSection('blobSection')">
+            📦 BLOB 大小分析
+            <span class="toggle-icon" id="blobSectionToggle">▼</span>
+        </h2>
+        <div id="blobSection">
+            <div class="search-box">
+                <select id="blobTableSelect" onchange="loadBlobAnalysis()">
+                    <option value="checkpoints">checkpoints</option>
+                    <option value="writes">writes</option>
+                </select>
+                <input type="number" id="blobLimit" value="20" style="width:80px;" onchange="loadBlobAnalysis()">
+                <button class="primary" onclick="loadBlobAnalysis()">分析</button>
+                <button class="danger" onclick="cleanTable()">清理旧记录</button>
+            </div>
+            <div id="blobAnalysisContainer"><div class="empty">点击分析查看</div></div>
+        </div>
+    </div>
+    
+    <!-- 表数据 -->
+    <div class="section">
+        <h2 onclick="toggleSection('tableSection')">
+            📊 表数据
+            <span class="toggle-icon" id="tableSectionToggle">▼</span>
+        </h2>
+        <div id="tableSection">
+            <div class="search-box">
+                <select id="tableSelect" onchange="loadTableData()">
+                    <option value="">选择表...</option>
+                </select>
+                <input type="text" id="threadIdFilter" placeholder="过滤 thread_id" oninput="loadTableData()">
+                <span style="font-size:14px;color:#7f8c8d;">共 <span id="totalRecords">0</span> 条</span>
+            </div>
+            <div id="tableDataContainer"><div class="empty">请选择表</div></div>
+            <div class="pagination" id="pagination"></div>
+        </div>
+    </div>
+</div>
+
+<!-- SQL 模态框 -->
+<div class="modal" id="sqlModal">
+    <div class="modal-content">
+        <h3>📝 执行 SQL</h3>
+        <p style="color:#7f8c8d;font-size:13px;">⚠️ 仅支持 SELECT 查询，不支持修改操作（安全限制）</p>
+        <textarea class="sql-input" id="sqlInput" placeholder="SELECT * FROM checkpoints LIMIT 10"></textarea>
+        <div class="modal-actions">
+            <button onclick="closeSqlModal()">取消</button>
+            <button class="primary" onclick="executeSql()">执行</button>
+        </div>
+        <div id="sqlResult" style="margin-top:15px;"></div>
+    </div>
+</div>
+
+<!-- Checkpoint 详情模态框 -->
+<div class="modal" id="checkpointModal">
+    <div class="modal-content">
+        <h3 id="checkpointModalTitle">📄 Checkpoint 详情</h3>
+        <div id="checkpointModalBody"><div class="loading">加载中...</div></div>
+        <div class="modal-actions">
+            <button onclick="closeCheckpointModal()">关闭</button>
+        </div>
+    </div>
+</div>
+
+<!-- Compare 模态框 -->
+<div class="modal" id="compareModal">
+    <div class="modal-content">
+        <h3>🔍 比较 Checkpoints</h3>
+        <div id="compareModalBody"><div class="loading">加载中...</div></div>
+        <div class="modal-actions">
+            <button onclick="closeCompareModal()">关闭</button>
+        </div>
+    </div>
+</div>
+
+<!-- Graph 模态框 -->
+<div class="modal" id="graphModal">
+    <div class="modal-content" style="max-width: 900px;">
+        <h3>🌐 Checkpoint 链可视化</h3>
+        <div id="graphModalBody"><div class="loading">加载中...</div></div>
+        <div class="modal-actions">
+            <button onclick="closeGraphModal()">关闭</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// ========== 全局变量 ==========
+let currentPage = 1;
+const limit = 20;
+let tableData = [];
+// 存储当前展开的会话详情
+let expandedSessions = new Set();
+
+// ========== 工具函数 ==========
+function formatSize(bytes) {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024*1024) return (bytes/1024).toFixed(2) + ' KB';
+    if (bytes < 1024*1024*1024) return (bytes/1024/1024).toFixed(2) + ' MB';
+    return (bytes/1024/1024/1024).toFixed(2) + ' GB';
+}
+
+function formatDate(ts) {
+    if (!ts) return '-';
+    try {
+        if (typeof ts === 'string'){
+            // ts= "2026-08-31T02:26:06.527491+00:00"
+            const matcher = ts.match(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}/);
+            if (matcher) ts = matcher[0];
+            return ts;
+        }
+        const d = new Date(ts);
+        return d.toLocaleString();
+    } catch { return ts; }
+}
+
+function showToast(msg, type = 'info') {
+    const old = document.querySelector('.toast');
+    if (old) old.remove();
+    const div = document.createElement('div');
+    div.className = `toast ${type}`;
+    div.textContent = msg;
+    document.body.appendChild(div);
+    setTimeout(() => div.remove(), 3000);
+}
+
+function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// 折叠/展开区块
+function toggleSection(id) {
+    const el = document.getElementById(id);
+    const toggle = document.getElementById(id + 'Toggle');
+    if (el.style.display === 'none') {
+        el.style.display = 'block';
+        toggle.textContent = '▼';
+    } else {
+        el.style.display = 'none';
+        toggle.textContent = '▶';
+    }
+}
+
+// ========== 加载数据 ==========
+async function refreshAll() {
+    await loadStats();
+    await loadSessions();
+    await loadTables();
+}
+
+async function loadStats() {
+    try {
+        const [sizeRes, tablesRes, sessionsRes] = await Promise.all([
+            fetch('/api/db/size'),
+            fetch('/api/db/tables'),
+            fetch('/api/db/sessions')
+        ]);
+        const size = await sizeRes.json();
+        const tables = await tablesRes.json();
+        const sessions = await sessionsRes.json();
+        
+        document.getElementById('dbSize').textContent = size.size_human || '0';
+        document.getElementById('tableCount').textContent = tables.tables?.length || 0;
+        let total = 0;
+        if (tables.tables) {
+            tables.tables.forEach(t => total += t.row_count);
+        }
+        document.getElementById('totalRows').textContent = total.toLocaleString();
+        document.getElementById('sessionCount').textContent = sessions.sessions?.length || 0;
+    } catch (e) {
+        console.error('加载统计失败:', e);
+    }
+}
+
+async function loadSessions() {
+    try {
+        const res = await fetch('/api/db/sessions');
+        const data = await res.json();
+        const container = document.getElementById('sessionsContainer');
+        
+        if (!data.sessions || data.sessions.length === 0) {
+            container.innerHTML = '<div class="empty">没有会话数据</div>';
+            return;
+        }
+        
+        let html = `<table>
+            <thead><tr>
+                <th>会话 ID</th>
+                <th>Checkpoint 数</th>
+                <th>最后更新</th>
+                <th>预览</th>
+                <th>操作</th>
+            </tr></thead><tbody>`;
+        data.sessions.forEach(s => {
+            const isExpanded = expandedSessions.has(s.thread_id);
+            html += `<tr>
+                <td><code style="font-size:12px;">${s.thread_id}</code></td>
+                <td><span class="badge">${s.checkpoint_count}</span></td>
+                <td>${formatDate(s.last_update)}</td>
+                <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${s.preview || '-'}</td>
+                <td>
+                    <button class="danger" onclick="deleteSession('${s.thread_id}')">删除</button>
+                    <button class="primary" onclick="filterByThread('${s.thread_id}')">查看</button>
+                    <button class="purple" onclick="toggleSessionDetail('${s.thread_id}')">${isExpanded ? '收起' : '展开'}</button>
+                    <button class="purple" onclick="exportSession('${s.thread_id}')">导出</button>
+                </td>
+            </tr>`;
+            if (isExpanded) {
+                html += `<tr><td colspan="5">
+                    <div class="session-detail-panel" id="detail-${s.thread_id}">
+                        <div class="loading" id="detail-loading-${s.thread_id}">加载 checkpoint 历史...</div>
+                        <div id="detail-content-${s.thread_id}" style="display:none;"></div>
+                    </div>
+                </td></tr>`;
+            }
+        });
+        html += '</tbody></table>';
+        container.innerHTML = html;
+        
+        sessionDetailQuery.sessions = data.sessions;
+        // 为展开的会话加载详情
+        for (const threadId of expandedSessions) {
+            await loadSessionDetail(threadId);
+        }
+    } catch (e) {
+        console.error('加载会话失败:', e);
+        document.getElementById('sessionsContainer').innerHTML = '<div class="empty">加载失败</div>';
+    }
+}
+
+async function toggleSessionDetail(threadId) {
+    if (expandedSessions.has(threadId)) {
+        expandedSessions.delete(threadId);
+    } else {
+        expandedSessions.add(threadId);
+    }
+    await loadSessions();
+}
+
+let sessionDetailQuery = 
+    {
+        limit : 50,
+        page : 1,
+        threadId : ''
+    }
+Object.defineProperty(sessionDetailQuery, 'total', {
+    get: function() {
+        this.sessions = this.sessions || [];
+        return this.sessions.find(s => s.thread_id == this.threadId)?.checkpoint_count || 0;
+    }
+});
+
+
+async function loadSessionDetail(threadId) {
+    if (sessionDetailQuery.threadId !== threadId){
+        sessionDetailQuery.threadId = threadId;
+        sessionDetailQuery.page = 1;
+        sessionDetailQuery.limit = 50;
+    }
+    try {
+        // 调用 getCheckpointHistory 获取会话的 checkpoint 历史
+        const data = await getCheckpointHistory(threadId, sessionDetailQuery.limit, sessionDetailQuery.page);
+        const container = document.getElementById(`detail-content-${threadId}`);
+        const loading = document.getElementById(`detail-loading-${threadId}`);
+        
+        if (loading) loading.style.display = 'none';
+        if (container) {
+            container.style.display = 'block';
+            
+            if (!data.checkpoints || data.checkpoints.length === 0) {
+                container.innerHTML = '<div class="empty">没有 checkpoint 记录</div>';
+                return;
+            }
+            
+            let html = `
+                <div class="session-actions">
+                    <button class="primary" onclick="viewGraph('${threadId}')">🌐 查看链图</button>
+                    <button class="primary" onclick="firstPage('${threadId}')">第一页</button>
+                    <button class="primary" onclick="nextPage('${threadId}')">下一页</button>
+                    <button class="primary" onclick="prePage('${threadId}')">上一页</button>
+                    <button class="primary" onclick="lastPage('${threadId}')">最后一页</button>
+                    <span style="font-size:13px;color:#7f8c8d;">共 ${data.checkpoints.length} 个 checkpoints</span>
+                </div>
+                <table style="font-size:13px;">
+                    <thead><tr>
+                        <th>Checkpoint ID</th>
+                        <th>时间</th>
+                        <th>父节点</th>
+                        <th>消息数</th>
+                        <th>操作</th>
+                    </tr></thead>
+                    <tbody>`;
+            
+            data.checkpoints.forEach(cp => {
+                const isLatest = cp.parent_checkpoint_id === null || data.checkpoints.indexOf(cp) === 0;
+                html += `<tr>
+                    <td><code style="font-size:11px;" class="checkpoint ${cp.checkpoint_ns ? 'sub' : 'main'}">${cp.checkpoint_id}</code></td>
+                    <td>${formatDate(cp.timestamp)}</td>
+                    <td><code style="font-size:11px;">${cp.parent_checkpoint_id || '—'}</code></td>
+                    <td><span class="badge ${isLatest ? 'success' : ''}">${cp.message_count}</span></td>
+                    <td>
+                        <button class="primary" onclick="viewCheckpoint('${threadId}','${cp.checkpoint_id}')">详情</button>
+                        <button class="warning" onclick="rollbackCheckpoint('${threadId}','${cp.checkpoint_id}')">回退</button>
+                        <button class="orange" onclick="openCompare('${threadId}','${cp.checkpoint_id}')">比较</button>
+                    </td>
+                </tr>`;
+            });
+            
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+    } catch (e) {
+        console.error('加载会话详情失败:', e);
+        const container = document.getElementById(`detail-content-${threadId}`);
+        if (container) {
+            container.innerHTML = `<div class="empty">加载失败: ${e.message}</div>`;
+            container.style.display = 'block';
+        }
+        const loading = document.getElementById(`detail-loading-${threadId}`);
+        if (loading) loading.style.display = 'none';
+    }
+}
+
+// ========== Checkpoint 功能函数（新增） ==========
+
+/**
+ * 获取会话的 Checkpoint 历史列表
+ * @param {string} sessionId - 会话 ID
+ * @returns {Promise<Object>} 包含 checkpoints 数组的对象
+ * response example:
+ * {"session_id": session_id, 
+ *  "checkpoints": [{
+ *      "checkpoint_id": row['checkpoint_id'],
+ *      "timestamp": row['timestamp'],
+ *      "parent_checkpoint_id": row['parent_checkpoint_id'],
+ *      "message_count": msg_count,
+ *      "thread_id": row['thread_id']
+ *  }]
+ * }
+ */
+async function getCheckpointHistory(sessionId, limit=50, page=1) {
+    const response = await fetch(`/api/db/table/sessions/${sessionId}/checkpoints?limit=${limit}&page=${page}`);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    return await response.json();
+}
+
+async function firstPage(sessionId) {
+    sessionDetailQuery.page = 1;
+    await loadSessionDetail(sessionId);
+}
+
+async function nextPage(sessionId) {
+    sessionDetailQuery.page += 1;
+    await loadSessionDetail(sessionId);
+}
+
+async function prePage(sessionId){
+    sessionDetailQuery.page -= 1;
+    sessionDetailQuery.page = sessionDetailQuery.page<1?1:sessionDetailQuery.page
+    await loadSessionDetail(sessionId);
+}
+
+async function lastPage(sessionId){
+    currentPage += 1;
+    let newPage = Math.max(1, Math.ceil(sessionDetailQuery.total / (sessionDetailQuery.limit || 1)));
+    sessionDetailQuery.page = newPage<1?1:newPage
+    await loadSessionDetail(sessionId);
+}
+
+/**
+ * 查看特定 Checkpoint 的详细信息
+ * @param {string} sessionId - 会话 ID
+ * @param {string} checkpointId - Checkpoint ID
+ * @returns {Promise<Object>} Checkpoint 详情
+ * response example:
+ * {
+ *     "checkpoint_id": row['checkpoint_id'],
+ *     "timestamp": row['timestamp'],
+ *     "parent_checkpoint_id": row['parent_checkpoint_id'],
+ *     "message_count": len(messages),
+ *     "messages": formatted_messages,
+ *     "raw_data": checkpoint_data
+ * }
+ */
+async function getCheckpointDetail(sessionId, checkpointId) {
+    const response = await fetch(`/api/db/table/sessions/${sessionId}/checkpoints/${checkpointId}`);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    return await response.json();
+}
+
+/**
+ * 回退到指定的 Checkpoint
+ * @param {string} sessionId - 会话 ID
+ * @param {string} checkpointId - 目标 Checkpoint ID
+ * @returns {Promise<Object>} 回退结果
+ * response example:
+ * {
+ *     "status": "success",
+ *     "message": "已回退到 checkpoint xxx",
+ *     "message_count": len(messages),
+ *     "used_tokens": used_tokens
+ * }
+ */
+async function rollbackToCheckpoint(sessionId, checkpointId) {
+    const response = await fetch(`/api/db/table/sessions/${sessionId}/rollback/${checkpointId}`, {
+        method: 'POST'
+    });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    return await response.json();
+}
+
+/**
+ * 比较两个 Checkpoint 的差异
+ * @param {string} sessionId - 会话 ID
+ * @param {string} cpA - Checkpoint A 的 ID
+ * @param {string} cpB - Checkpoint B 的 ID
+ * @returns {Promise<Object>} 比较结果
+ * response example:
+ * {
+ *     "checkpoint_a": checkpoint_a,
+ *     "timestamp_a": ts_a,
+ *     "checkpoint_b": checkpoint_b,
+ *     "timestamp_b": ts_b,
+ *     "diff": {
+ *         "message_count_a": len(msg_a),
+ *         "message_count_b": len(msg_b),
+ *         "difference": len(msg_b) - len(msg_a),
+ *         "new_messages": [{
+ *             "index": i,
+ *             "type": msg.get('type', 'unknown'),
+ *             "content": msg.get('content', '')[:100] + ("..." if len(msg.get('content', '')) > 100 else "")
+ *         }]
+ *     }
+ * }
+ */
+async function compareCheckpoints(sessionId, cpA, cpB) {
+    const response = await fetch(`/api/db/table/sessions/${sessionId}/checkpoints/compare?checkpoint_a=${cpA}&checkpoint_b=${cpB}`);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    return await response.json();
+}
+
+/**
+ * 获取 Checkpoint 链的图数据
+ * @param {string} sessionId - 会话 ID
+ * @returns {Promise<Object>} 节点和边数据
+ * response example:
+ * {
+ *     "session_id": session_id,
+ *     "nodes": [{
+ *         "id": row['checkpoint_id'],
+ *         "label": "#{row['checkpoint_id'][:8]}\n{msg_count} msg",
+ *         "timestamp": row['timestamp']
+ *     }],
+ *     "edges": [{
+ *         "from": row['parent_checkpoint_id'],
+ *         "to": row['checkpoint_id']
+ *     }],
+ *     "total": len(nodes)
+ * }
+ */
+async function getCheckpointGraph(sessionId) {
+    const response = await fetch(`/api/db/table/sessions/${sessionId}/checkpoints/graph`);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    return await response.json();
+}
+
+// ========== UI 操作函数（新增） ==========
+
+/**
+ * 查看 Checkpoint 详情（弹出模态框）
+ */
+async function viewCheckpoint(sessionId, checkpointId) {
+    const modal = document.getElementById('checkpointModal');
+    const title = document.getElementById('checkpointModalTitle');
+    const body = document.getElementById('checkpointModalBody');
+    
+    modal.classList.add('active');
+    title.textContent = `📄 Checkpoint: ${checkpointId.substring(0, 12)}...`;
+    body.innerHTML = '<div class="loading">加载中...</div>';
+    
+    try {
+        const data = await getCheckpointDetail(sessionId, checkpointId);
+        
+        let html = `
+            <div class="checkpoint-detail">
+                <p><strong>时间:</strong> ${formatDate(data.timestamp)}</p>
+                <p><strong>父节点:</strong> <code>${data.parent_checkpoint_id || '无'}</code></p>
+                <p><strong>消息数:</strong> <span class="badge success">${data.message_count}</span></p>
+                <hr>
+                <h4>💬 消息列表</h4>`;
+        
+        if (data.messages && data.messages.length > 0) {
+            data.messages.forEach((msg, idx) => {
+                const content = typeof msg.content === 'string' ? msg.content : JSON.stringify(msg.content);
+                html += `
+                    <div class="msg-item">
+                        <div class="msg-role">[${idx + 1}] ${msg.type || 'unknown'}</div>
+                        <div class="msg-content">${escapeHtml(content.substring(0, 500))}${content.length > 500 ? '...' : ''}</div>
+                    </div>`;
+            });
+        } else {
+            html += '<div class="empty">无消息</div>';
+        }
+        
+        if (data.raw_data) {
+            html += `
+                <hr>
+                <h4>📦 原始数据</h4>
+                <div class="json-view">${escapeHtml(JSON.stringify(data.raw_data, null, 2))}</div>`;
+        }
+        
+        html += `</div>`;
+        body.innerHTML = html;
+    } catch (e) {
+        body.innerHTML = `<div class="empty">加载失败: ${e.message}</div>`;
+    }
+}
+
+function closeCheckpointModal() {
+    document.getElementById('checkpointModal').classList.remove('active');
+}
+
+/**
+ * 回退到 Checkpoint（带确认）
+ */
+async function rollbackCheckpoint(sessionId, checkpointId) {
+    if (!confirm(`确定要回退到 checkpoint ${checkpointId.substring(0, 12)}... 吗？`)) return;
+    
+    try {
+        const data = await rollbackToCheckpoint(sessionId, checkpointId);
+        if (data.status === 'success') {
+            showToast(`✅ 回退成功！恢复到 ${data.message_count} 条消息`, 'success');
+            // 刷新会话列表
+            await loadSessions();
+        } else {
+            showToast(`回退失败: ${data.message || '未知错误'}`, 'error');
+        }
+    } catch (e) {
+        showToast(`回退失败: ${e.message}`, 'error');
+    }
+}
+
+/**
+ * 打开比较对话框
+ */
+async function openCompare(sessionId, checkpointA) {
+    const modal = document.getElementById('compareModal');
+    const body = document.getElementById('compareModalBody');
+    let checkpointResp = await getCheckpointHistory(sessionId, 1000);
+    let checkpoints = checkpointResp.checkpoints.map(e => `<option value="${e.checkpoint_id}">${e.label}</option>`).join(' ');
+
+    let selectHtml = `
+    <select id="compareBInput" placeholder="输入 checkpoint ID" style="width:250px;">
+        ${checkpoints}
+    </select>
+    `
+    
+    modal.classList.add('active');
+    body.innerHTML = `
+        <div class="search-box">
+            <label>Checkpoint A: <code>${checkpointA}</code></label>
+            <label>Checkpoint B:
+                ${selectHtml}
+                <input type="text" id="compareBInput2" placeholder="输入 checkpoint ID" style="width:250px;">
+            </label>
+            <button class="primary" onclick="doCompare('${sessionId}','${checkpointA}')">比较</button>
+        </div>
+        <div id="compareResult"><div class="empty">输入 Checkpoint B 的 ID 后点击比较</div></div>
+    `;
+}
+
+/**
+ * 执行比较
+ */
+async function doCompare(sessionId, checkpointA) {
+    const checkpointB = document.getElementById('compareBInput').value.trim();
+    if (!checkpointB) {
+        showToast('请输入 Checkpoint B 的 ID', 'warning');
+        return;
+    }
+    
+    const resultDiv = document.getElementById('compareResult');
+    resultDiv.innerHTML = '<div class="loading">比较中...</div>';
+    
+    try {
+        const data = await compareCheckpoints(sessionId, checkpointA, checkpointB);
+        
+        let html = `<div class="compare-result">
+            <div style="display:flex;gap:30px;flex-wrap:wrap;margin-bottom:15px;">
+                <div><strong>Checkpoint A:</strong> <code>${data.checkpoint_a}</code><br>
+                <span style="color:#7f8c8d;">${formatDate(data.timestamp_a)}</span></div>
+                <div><strong>Checkpoint B:</strong> <code>${data.checkpoint_b}</code><br>
+                <span style="color:#7f8c8d;">${formatDate(data.timestamp_b)}</span></div>
+            </div>
+            <div style="display:flex;gap:20px;flex-wrap:wrap;">
+                <span>📊 A: <strong>${data.diff.message_count_a}</strong> 条消息</span>
+                <span>📊 B: <strong>${data.diff.message_count_b}</strong> 条消息</span>
+                <span style="color:${data.diff.difference > 0 ? '#27ae60' : data.diff.difference < 0 ? '#e74c3c' : '#7f8c8d'};">
+                    📈 差异: ${data.diff.difference > 0 ? '+' : ''}${data.diff.difference} 条
+                </span>
+            </div>`;
+        
+        if (data.diff.new_messages && data.diff.new_messages.length > 0) {
+            html += `<hr><h4>🆕 新增消息 (B 相对于 A)</h4>`;
+            data.diff.new_messages.forEach(msg => {
+                html += `
+                    <div class="diff-new">
+                        <div><strong>#${msg.index}</strong> [${msg.type}]</div>
+                        <div style="color:#34495e;font-size:13px;">${escapeHtml(msg.content || '')}</div>
+                    </div>`;
+            });
+        } else {
+            html += `<hr><div class="empty">没有新增消息</div>`;
+        }
+        
+        html += `</div>`;
+        resultDiv.innerHTML = html;
+    } catch (e) {
+        resultDiv.innerHTML = `<div class="empty">比较失败: ${e.message}</div>`;
+    }
+}
+
+function closeCompareModal() {
+    document.getElementById('compareModal').classList.remove('active');
+}
+
+function exportSession(sessionId){
+    fetch(`/api/sessions/${sessionId}/export`, 
+        { method: 'POST' }
+    ).then(response => {
+        console.log('exportSession=',response)
+    })
+}
+
+/**
+ * 查看 Checkpoint 链图
+ */
+async function viewGraph(sessionId) {
+    const modal = document.getElementById('graphModal');
+    const body = document.getElementById('graphModalBody');
+    
+    modal.classList.add('active');
+    body.innerHTML = '<div class="loading">生成图中...</div>';
+    
+    try {
+        const data = await getCheckpointGraph(sessionId);
+        
+        if (!data.nodes || data.nodes.length === 0) {
+            body.innerHTML = '<div class="empty">没有 checkpoint 数据</div>';
+            return;
+        }
+        
+        // 构建节点和边
+        let html = `
+            <div style="margin-bottom:15px;">
+                <span class="badge">会话: ${data.session_id}</span>
+                <span class="badge success">节点数: ${data.total}</span>
+            </div>
+            <div class="graph-container">`;
+        
+        // 构建父子关系映射
+        const childrenMap = {};
+        data.edges.forEach(edge => {
+            if (!childrenMap[edge.from]) childrenMap[edge.from] = [];
+            childrenMap[edge.from].push(edge.to);
+        });
+        
+        // 找到根节点（没有父节点的）
+        const hasParent = new Set(data.edges.map(e => e.to));
+        const roots = data.nodes.filter(n => !hasParent.has(n.id));
+        
+        // 递归渲染树
+        function renderNode(nodeId, depth = 0) {
+            const node = data.nodes.find(n => n.id === nodeId);
+            if (!node) return '';
+            
+            const children = childrenMap[nodeId] || [];
+            const isLeaf = children.length === 0;
+            
+            let html = `<div style="display:flex;flex-direction:column;align-items:center;margin:5px 10px;">`;
+            html += `<div class="graph-node ${isLeaf ? 'current' : ''}" style="border-color:${isLeaf ? '#27ae60' : '#3498db'};">`;
+            html += `<div class="node-id">${node.id.substring(0, 12)}...</div>`;
+            html += `<div class="node-label">📌 ${node.label || 'Checkpoint'}</div>`;
+            html += `<div class="node-time">${formatDate(node.timestamp)}</div>`;
+            html += `</div>`;
+            
+            if (children.length > 0) {
+                html += `<div style="display:flex;flex-wrap:wrap;justify-content:center;gap:5px;">`;
+                children.forEach(childId => {
+                    html += `<div style="display:flex;align-items:center;">`;
+                    html += `<span style="color:#7f8c8d;">⬇</span>`;
+                    html += renderNode(childId, depth + 1);
+                    html += `</div>`;
+                });
+                html += `</div>`;
+            }
+            
+            html += `</div>`;
+            return html;
+        }
+        
+        // 渲染所有根节点
+        if (roots.length > 0) {
+            roots.forEach(root => {
+                html += renderNode(root.id);
+            });
+        } else if (data.nodes.length > 0) {
+            // 如果没有根节点（循环或孤立），显示所有节点
+            data.nodes.forEach(node => {
+                html += `<div class="graph-node">`;
+                html += `<div class="node-id">${node.id.substring(0, 12)}...</div>`;
+                html += `<div class="node-label">📌 ${node.label || 'Checkpoint'}</div>`;
+                html += `<div class="node-time">${formatDate(node.timestamp)}</div>`;
+                html += `</div>`;
+            });
+        }
+        
+        html += `</div>`;
+        body.innerHTML = html;
+    } catch (e) {
+        body.innerHTML = `<div class="empty">生成图失败: ${e.message}</div>`;
+    }
+}
+
+function closeGraphModal() {
+    document.getElementById('graphModal').classList.remove('active');
+}
+
+// ========== 原有函数（保留） ==========
+
+async function loadTables() {
+    try {
+        const res = await fetch('/api/db/tables');
+        const data = await res.json();
+        const select = document.getElementById('tableSelect');
+        select.innerHTML = '<option value="">选择表...</option>';
+        if (data.tables) {
+            data.tables.forEach(t => {
+                const opt = document.createElement('option');
+                opt.value = t.name;
+                opt.textContent = `${t.name} (${t.row_count.toLocaleString()} 行)`;
+                select.appendChild(opt);
+            });
+        }
+    } catch (e) {
+        console.error('加载表失败:', e);
+    }
+}
+
+async function loadTableData(page = 1) {
+    const table = document.getElementById('tableSelect').value;
+    const threadId = document.getElementById('threadIdFilter').value.trim();
+    if (!table) {
+        document.getElementById('tableDataContainer').innerHTML = '<div class="empty">请选择表</div>';
+        document.getElementById('pagination').innerHTML = '';
+        return;
+    }
+    
+    currentPage = page;
+    try {
+        let url = `/api/db/table/${table}?page=${page}&limit=${limit}`;
+        if (threadId) url += `&thread_id=${encodeURIComponent(threadId)}`;
+        
+        const res = await fetch(url);
+        const data = await res.json();
+        
+        document.getElementById('totalRecords').textContent = data.total || 0;
+        
+        if (data.error) {
+            document.getElementById('tableDataContainer').innerHTML = `<div class="empty">错误: ${data.error}</div>`;
+            return;
+        }
+        
+        if (!data.data || data.data.length === 0) {
+            document.getElementById('tableDataContainer').innerHTML = '<div class="empty">无数据</div>';
+            document.getElementById('pagination').innerHTML = '';
+            return;
+        }
+        
+        let html = `<table><thead><tr>`;
+        data.columns.forEach(col => {
+            html += `<th>${col}</th>`;
+        });
+        html += `</tr></thead><tbody>`;
+        data.data.forEach(row => {
+            html += `<tr>`;
+            data.columns.forEach(col => {
+                let val = row[col];
+                if (typeof val === 'string' && val.length > 100) {
+                    val = val.substring(0, 100) + '...';
+                }
+                if (typeof val === 'object' && val !== null) {
+                    val = JSON.stringify(val).substring(0, 100);
+                }
+                if (val === null || val === undefined) val = '-';
+                html += `<td style="max-width:300px;overflow:hidden;text-overflow:ellipsis;word-break:break-all;">${escapeHtml(String(val))}</td>`;
+            });
+            html += `</tr>`;
+        });
+        html += '</tbody></table>';
+        document.getElementById('tableDataContainer').innerHTML = html;
+        
+        const totalPages = Math.ceil(data.total / limit);
+        let pageHtml = '';
+        if (totalPages > 1) {
+            pageHtml += `<button onclick="loadTableData(1)" ${page===1?'disabled':''}>首页</button>`;
+            pageHtml += `<button onclick="loadTableData(${page-1})" ${page<=1?'disabled':''}>上一页</button>`;
+            pageHtml += `<span class="current">第 ${page}/${totalPages} 页</span>`;
+            pageHtml += `<button onclick="loadTableData(${page+1})" ${page>=totalPages?'disabled':''}>下一页</button>`;
+            pageHtml += `<button onclick="loadTableData(${totalPages})" ${page>=totalPages?'disabled':''}>末页</button>`;
+        }
+        document.getElementById('pagination').innerHTML = pageHtml;
+        
+    } catch (e) {
+        console.error('加载表数据失败:', e);
+        document.getElementById('tableDataContainer').innerHTML = '<div class="empty">加载失败</div>';
+    }
+}
+
+async function deleteSession(threadId) {
+    if (!confirm(`确定要删除会话 ${threadId} 吗？此操作不可恢复！`)) return;
+    try {
+        const res = await fetch(`/api/db/session/${threadId}`, { method: 'DELETE' });
+        const data = await res.json();
+        if (data.status === 'success') {
+            showToast(`已删除 ${data.deleted} 条记录`, 'success');
+            expandedSessions.delete(threadId);
+            refreshAll();
+        } else {
+            showToast('删除失败: ' + (data.error || '未知错误'), 'error');
+        }
+    } catch (e) {
+        showToast('删除失败: ' + e.message, 'error');
+    }
+}
+
+function filterByThread(threadId) {
+    document.getElementById('threadIdFilter').value = threadId;
+    loadTableData(1);
+}
+
+async function vacuumDB() {
+    if (!confirm('压缩数据库会释放空间，但可能需要较长时间。确定继续？')) return;
+    try {
+        const res = await fetch('/api/db/vacuum', { method: 'POST' });
+        const data = await res.json();
+        if (data.status === 'success') {
+            showToast(`压缩完成！释放了 ${formatSize(data.freed)} 空间`, 'success');
+            refreshAll();
+        } else {
+            showToast('压缩失败: ' + data.error, 'error');
+        }
+    } catch (e) {
+        showToast('压缩失败: ' + e.message, 'error');
+    }
+}
+
+function confirmClearAll() {
+    if (!confirm('⚠️ 确定要清空所有数据吗？此操作不可恢复！')) return;
+    if (!confirm('再次确认：清空所有会话数据？')) return;
+    // 实际清空操作
+    showToast('此功能暂未实现，请通过 SQL 手动操作', 'warning');
+}
+
+// ========== SQL 模态框 ==========
+function openSqlModal() {
+    document.getElementById('sqlModal').classList.add('active');
+    document.getElementById('sqlResult').innerHTML = '';
+    document.getElementById('sqlInput').value = 'SELECT * FROM checkpoints LIMIT 10';
+}
+
+function closeSqlModal() {
+    document.getElementById('sqlModal').classList.remove('active');
+}
+
+async function executeSql() {
+    const sql = document.getElementById('sqlInput').value.trim();
+    if (!sql) { showToast('请输入 SQL 语句', 'error'); return; }
+    
+    // 安全检查：只允许 SELECT
+    const upper = sql.toUpperCase().trim();
+    if (!upper.startsWith('SELECT')) {
+        showToast('⚠️ 只允许 SELECT 查询', 'error');
+        return;
+    }
+    
+    try {
+        const res = await fetch('/api/db/query', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ sql: sql })
+        });
+        const data = await res.json();
+        
+        const resultDiv = document.getElementById('sqlResult');
+        if (data.error) {
+            resultDiv.innerHTML = `<div style="color:#e74c3c;">错误: ${data.error}</div>`;
+        } else if (data.data && data.data.length > 0) {
+            let html = `<div style="font-size:13px;color:#7f8c8d;margin-bottom:10px;">返回 ${data.data.length} 行</div>`;
+            html += `<table><thead><tr>`;
+            data.columns.forEach(col => { html += `<th>${col}</th>`; });
+            html += `</tr></thead><tbody>`;
+            data.data.forEach(row => {
+                html += `<tr>`;
+                data.columns.forEach(col => {
+                    let val = row[col];
+                    if (typeof val === 'object') val = JSON.stringify(val).substring(0, 50);
+                    if (val === null || val === undefined) val = '-';
+                    html += `<td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(String(val))}</td>`;
+                });
+                html += `</tr>`;
+            });
+            html += '</tbody></table>';
+            resultDiv.innerHTML = html;
+        } else {
+            resultDiv.innerHTML = '<div class="empty">无数据</div>';
+        }
+    } catch (e) {
+        document.getElementById('sqlResult').innerHTML = `<div style="color:#e74c3c;">执行失败: ${e.message}</div>`;
+    }
+}
+
+// ========== BLOB 分析函数（保留） ==========
+
+async function loadBlobAnalysis() {
+    const table = document.getElementById('blobTableSelect').value;
+    const limit = document.getElementById('blobLimit').value || 20;
+    
+    try {
+        const res = await fetch(`/api/db/table/${table}/blob-size?limit=${limit}`);
+        const data = await res.json();
+        
+        if (data.error) {
+            document.getElementById('blobAnalysisContainer').innerHTML = `<div class="empty">错误: ${data.error}</div>`;
+            return;
+        }
+        
+        if (!data.records || data.records.length === 0) {
+            document.getElementById('blobAnalysisContainer').innerHTML = '<div class="empty">无数据</div>';
+            return;
+        }
+        
+        let html = `<table>
+            <thead><tr>
+                <th>thread_id</th>
+                <th>checkpoint_id</th>`;
+        
+        if (table === 'checkpoints') {
+            html += `<th>checkpoint (MB)</th>
+                    <th>metadata (MB)</th>
+                    <th>总计 (MB)</th>`;
+        } else {
+            html += `<th>task_id</th>
+                    <th>value (MB)</th>`;
+        }
+        html += `<th>操作</th></tr></thead><tbody>`;
+        
+        data.records.forEach(r => {
+            html += `<tr>`;
+            html += `<td><code style="font-size:11px;">${escapeHtml(r.thread_id)}</code></td>`;
+            html += `<td><code style="font-size:11px;">${escapeHtml(r.checkpoint_id)}</code></td>`;
+            if (table === 'checkpoints') {
+                html += `<td>${r.checkpoint_size_mb}</td>`;
+                html += `<td>${r.metadata_size_mb}</td>`;
+                html += `<td><strong>${r.total_mb}</strong></td>`;
+            } else {
+                html += `<td>${escapeHtml(r.task_id)}</td>`;
+                html += `<td><strong>${r.value_size_mb}</strong></td>`;
+            }
+            html += `<td>
+                <button class="danger" onclick="deleteRecord('${table}','${escapeHtml(r.thread_id)}','${escapeHtml(r.checkpoint_id)}')">删除</button>
+            </td>`;
+            html += `</tr>`;
+        });
+        html += '</tbody></table>';
+        
+        let totalSize = 0;
+        data.records.forEach(r => {
+            totalSize += table === 'checkpoints' ? r.total : r.value_size;
+        });
+        html += `<div style="margin-top:10px;font-size:14px;color:#7f8c8d;">
+            前 ${data.records.length} 条记录总大小: ${(totalSize / 1024 / 1024).toFixed(2)} MB
+        </div>`;
+        
+        document.getElementById('blobAnalysisContainer').innerHTML = html;
+    } catch (e) {
+        document.getElementById('blobAnalysisContainer').innerHTML = `<div class="empty">加载失败: ${e.message}</div>`;
+    }
+}
+
+async function deleteRecord(table, threadId, checkpointId) {
+    if (!confirm(`确定要删除该记录吗？`)) return;
+    try {
+        const res = await fetch(`/api/db/table/${table}/record?thread_id=${encodeURIComponent(threadId)}&checkpoint_id=${encodeURIComponent(checkpointId)}`, {
+            method: 'DELETE'
+        });
+        const data = await res.json();
+        if (data.status === 'success') {
+            showToast('删除成功', 'success');
+            loadBlobAnalysis();
+            refreshAll();
+        } else {
+            showToast('删除失败: ' + data.error, 'error');
+        }
+    } catch (e) {
+        showToast('删除失败: ' + e.message, 'error');
+    }
+}
+
+async function cleanTable() {
+    const table = document.getElementById('blobTableSelect').value;
+    const keep = prompt(`每个会话保留多少条记录？(默认 10)`, '10');
+    if (keep === null) return;
+    
+    if (!confirm(`确定要清理 ${table} 表，每个会话只保留 ${keep} 条记录吗？`)) return;
+    
+    try {
+        const res = await fetch(`/api/db/table/${table}/clean?keep_count=${parseInt(keep) || 10}`, {
+            method: 'POST'
+        });
+        const data = await res.json();
+        if (data.status === 'success') {
+            showToast(`清理完成，删除了 ${data.deleted} 条记录`, 'success');
+            loadBlobAnalysis();
+            refreshAll();
+        } else {
+            showToast('清理失败: ' + data.error, 'error');
+        }
+    } catch (e) {
+        showToast('清理失败: ' + e.message, 'error');
+    }
+}
+
+// ========== 模态框点击外部关闭 ==========
+document.getElementById('sqlModal').addEventListener('click', function(e) {
+    if (e.target === this) closeSqlModal();
+});
+document.getElementById('checkpointModal').addEventListener('click', function(e) {
+    if (e.target === this) closeCheckpointModal();
+});
+document.getElementById('compareModal').addEventListener('click', function(e) {
+    if (e.target === this) closeCompareModal();
+});
+document.getElementById('graphModal').addEventListener('click', function(e) {
+    if (e.target === this) closeGraphModal();
+});
+
+// ========== 初始化 ==========
+refreshAll();
+</script>
+
+<!-- ============ MCP 工具管理面板 ============ -->
+<div id="mcp-panel" style="
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    max-width: 1400px;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    background: #fafafa;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    margin: 0 auto;
+">
+    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;">
+        <h3 style="margin:0; font-size:16px; color:#333;">🔌 MCP 工具管理</h3>
+        <span id="mcp-status-badge" style="
+            font-size:12px; padding:3px 10px; border-radius:12px;
+            background:#e0e0e0; color:#666; font-weight:500;
+        ">未知</span>
+    </div>
+
+    <div style="display:flex; gap:10px; margin-bottom:16px;">
+        <button id="mcp-btn-reload" onclick="mcpReload()" style="
+            flex:1; padding:10px 16px; border:none; border-radius:8px;
+            background:#007bff; color:#fff; font-size:14px; cursor:pointer;
+            transition: background 0.2s;
+        ">🔄 刷新 MCP 工具</button>
+
+        <button id="mcp-btn-status" onclick="mcpFetchStatus()" style="
+            flex:1; padding:10px 16px; border:none; border-radius:8px;
+            background:#6c757d; color:#fff; font-size:14px; cursor:pointer;
+            transition: background 0.2s;
+        ">📋 查询状态</button>
+    </div>
+
+    <div id="mcp-message" style="
+        display:none; padding:10px 14px; border-radius:8px;
+        font-size:13px; margin-bottom:16px;
+    "></div>
+
+    <div id="mcp-tools-box" style="display:none;">
+        <div style="font-size:13px; color:#666; margin-bottom:8px;">
+            当前工具列表（<span id="mcp-tool-count">0</span> 个）：
+        </div>
+        <div id="mcp-tool-list" style="
+            display:flex; flex-wrap:wrap; gap:6px;
+            max-height:240px; overflow-y:auto;
+            padding:8px; background:#fff; border-radius:8px; border:1px solid #eee;
+        "></div>
+    </div>
+</div>
+
+<script>
+(function () {
+    const API_RELOAD = '/api/mcp/reload';
+    const API_STATUS = '/api/mcp/status';
+
+    const els = {
+        badge:    document.getElementById('mcp-status-badge'),
+        reload:   document.getElementById('mcp-btn-reload'),
+        status:   document.getElementById('mcp-btn-status'),
+        message:  document.getElementById('mcp-message'),
+        toolsBox: document.getElementById('mcp-tools-box'),
+        toolCount:document.getElementById('mcp-tool-count'),
+        toolList: document.getElementById('mcp-tool-list'),
+    };
+
+    function showMessage(text, type) {
+        const colors = {
+            info:    { bg:'#e7f3ff', color:'#004085', border:'#b8daff' },
+            success: { bg:'#d4edda', color:'#155724', border:'#c3e6cb' },
+            error:   { bg:'#f8d7da', color:'#721c24', border:'#f5c6cb' },
+        };
+        const c = colors[type] || colors.info;
+        els.message.style.display = 'block';
+        els.message.style.background = c.bg;
+        els.message.style.color = c.color;
+        els.message.style.border = '1px solid ' + c.border;
+        els.message.textContent = text;
+    }
+
+    function setBadge(text, color) {
+        const map = {
+            green:  { bg:'#d4edda', color:'#155724' },
+            red:    { bg:'#f8d7da', color:'#721c24' },
+            yellow: { bg:'#fff3cd', color:'#856404' },
+            gray:   { bg:'#e0e0e0', color:'#666' },
+        };
+        const c = map[color] || map.gray;
+        els.badge.textContent = text;
+        els.badge.style.background = c.bg;
+        els.badge.style.color = c.color;
+    }
+
+    function setBusy(busy) {
+        els.reload.disabled = busy;
+        els.status.disabled = busy;
+        els.reload.style.opacity = busy ? 0.6 : 1;
+        els.status.style.opacity = busy ? 0.6 : 1;
+        els.reload.style.cursor = busy ? 'not-allowed' : 'pointer';
+        els.status.style.cursor = busy ? 'not-allowed' : 'pointer';
+    }
+
+    function renderTools(details, count) {
+        els.toolsBox.style.display = 'block';
+        els.toolCount.textContent = count;
+        els.toolList.innerHTML = '';
+
+        if (!details || Object.keys(details).length === 0) {
+            els.toolList.innerHTML = '<span style="color:#999;font-size:13px;">（无工具）</span>';
+            return;
+        }
+
+        // 按 server 分组渲染
+        Object.entries(details).forEach(([serverName, toolNames]) => {
+            // 每个 server 一个容器
+            const group = document.createElement('div');
+            group.style.cssText = 'margin-bottom:14px;padding:10px 12px;background:#f8f9fa;border-radius:8px;border-left:3px solid #6c757d;width:100%;box-sizing:border-box;';
+
+            // server 标题行
+            const header = document.createElement('div');
+            header.style.cssText = 'display:flex;align-items:center;gap:8px;margin-bottom:8px;';
+
+            const title = document.createElement('span');
+            title.textContent = serverName;
+            title.style.cssText = 'font-weight:600;font-size:13px;color:#343a40;';
+
+            const badge = document.createElement('span');
+            const isValid = Array.isArray(toolNames) && toolNames.length > 0
+                && !(toolNames.length === 1 && toolNames[0] === '未加载');
+            badge.textContent = isValid ? `${toolNames.length} 个` : '未加载';
+            badge.style.cssText = `padding:1px 8px;border-radius:10px;font-size:11px;color:#fff;`
+                + `background:${isValid ? '#28a745' : '#dc3545'};`;
+
+            header.appendChild(title);
+            header.appendChild(badge);
+            group.appendChild(header);
+
+            // 工具标签
+            const tags = document.createElement('div');
+            tags.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px;';
+
+            if (!isValid) {
+                const placeholder = document.createElement('span');
+                placeholder.textContent = '该服务当前未连接';
+                placeholder.style.cssText = 'font-size:12px;color:#999;font-style:italic;';
+                tags.appendChild(placeholder);
+            } else {
+                toolNames.forEach(name => {
+                    const tag = document.createElement('span');
+                    tag.textContent = name;
+                    tag.style.cssText = 'padding:3px 10px;background:#fff;border:1px solid #dee2e6;border-radius:12px;font-size:12px;color:#495057;';
+                    tags.appendChild(tag);
+                });
+            }
+
+            group.appendChild(tags);
+            els.toolList.appendChild(group);
+        });
+    }
+
+    window.mcpFetchStatus = async function () {
+        setBusy(true);
+        showMessage('正在查询状态...', 'info');
+        try {
+            const res = await fetch(API_STATUS, { method: 'GET' });
+            const data = await res.json();
+
+            if (data.loading) {
+                setBadge('加载中', 'yellow');
+            } else if (data.loaded && data.tool_count > 0) {
+                setBadge('已加载', 'green');
+            } else if (data.loaded) {
+                setBadge('已加载（无工具）', 'yellow');
+            } else {
+                setBadge('未加载', 'red');
+            }
+
+            showMessage(
+                `状态：loaded=${data.loaded}, loading=${data.loading}, 工具数=${data.tool_count}`,
+                'success'
+            );
+            renderTools(data.tool_details, data.tool_count);
+        } catch (e) {
+            setBadge('查询失败', 'red');
+            showMessage('查询失败：' + e.message, 'error');
+        } finally {
+            setBusy(false);
+        }
+    };
+
+    window.mcpReload = async function () {
+        setBusy(true);
+        showMessage('正在重新加载 MCP 工具，请稍候...', 'info');
+        setBadge('刷新中', 'yellow');
+        try {
+            const res = await fetch(API_RELOAD, { method: 'POST' });
+            const data = await res.json();
+
+            if (data.success) {
+                setBadge('已加载', 'green');
+                showMessage(
+                    `✅ 刷新成功，共加载 ${data.tool_count} 个工具。`,
+                    'success'
+                );
+                mcpFetchStatus(); // 刷新状态
+            } else {
+                setBadge('刷新失败', 'red');
+                showMessage(
+                    '❌ 刷新失败：' + (data.error || '未知错误'),
+                    'error'
+                );
+                if (data.tool_names && data.tool_names.length) {
+                    mcpFetchStatus(); // 尝试刷新状态，显示已加载的工具
+                }
+            }
+        } catch (e) {
+            setBadge('刷新失败', 'red');
+            showMessage('刷新失败：' + e.message, 'error');
+        } finally {
+            setBusy(false);
+        }
+    };
+
+    // 面板加载后自动查询一次状态
+    setTimeout(mcpFetchStatus, 100);
+})();
+</script>
+<!-- ============ MCP 工具管理面板 END ============ -->
+
+<!-- ============ Skills 管理面板 ============ -->
+<div class="section" id="skillsPanel" style="
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    max-width: 1400px;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    background: #fafafa;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    margin: 20px auto;
+">
+    <h2 onclick="toggleSection('skillsSection')">
+        🧩 Skills 管理
+        <span class="toggle-icon" id="skillsSectionToggle">▼</span>
+    </h2>
+    <div id="skillsSection">
+
+        <!-- 统计 -->
+        <div class="stats" style="margin-bottom:15px;">
+            <div class="stat-card">
+                <div class="number" id="skillTotal">-</div>
+                <div class="label">Skill 总数</div>
+            </div>
+            <div class="stat-card success">
+                <div class="number" id="skillLoaded">-</div>
+                <div class="label">已加载来源</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="skillNamespaces">-</div>
+                <div class="label">命名空间</div>
+            </div>
+        </div>
+
+        <!-- 操作区 -->
+        <div class="search-box">
+            <input type="text" id="skillSearchInput" placeholder="搜索 skill 名称 / 描述..."
+                   oninput="renderSkillsFromCache()" style="flex:1;min-width:200px;">
+            <select id="skillSourceFilter" onchange="onSkillSourceChange()">
+                <option value="">全部来源</option>
+                <option value="__network__">🌐 网络市场</option>
+            </select>
+            <button class="primary" onclick="loadSkills()">🔄 刷新</button>
+            <button class="purple" onclick="expandAllSkills()">展开全部</button>
+            <button class="warning" onclick="collapseAllSkills()">收起全部</button>
+            <span style="font-size:13px;color:#7f8c8d;align-self:center;">
+                显示 <span id="skillShownCount">0</span> / <span id="skillTotalCount">0</span>
+            </span>
+        </div>
+
+        <!-- 列表容器 -->
+        <div id="skillsContainer">
+            <div class="loading">加载中...</div>
+        </div>
+    </div>
+</div>
+<!-- ============ Skills 管理面板 END ============ -->
+
+<script>
+(function () {
+    // ========== 配置 ==========
+    const API_SKILLS_LIST   = '/api/skills/list';
+    const API_SKILLS_SEARCH = '/api/skills/search';
+    const API_SKILLS_INSTALL= '/api/skills/install';
+    const NETWORK_SOURCE    = '__network__';   // “网络市场”的伪来源值
+
+    // ========== 状态 ==========
+    let skillsCache        = [];   // 本地 skills（composite.list_skills()）
+    let networkSkillsCache = [];   // 网络搜索结果
+    let expandedSkills     = new Set();
+    let searchDebounceTimer= null;
+
+    // ========== 工具函数 ==========
+    const _escapeHtml = (typeof escapeHtml === 'function')
+        ? escapeHtml
+        : (t) => {
+            if (t === null || t === undefined) return '';
+            return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;')
+                .replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+        };
+
+    const _showToast = (typeof showToast === 'function')
+        ? showToast
+        : (msg, type='info') => console.log(`[${type}] ${msg}`);
+
+    const _toggleSection = (typeof toggleSection === 'function')
+        ? toggleSection
+        : (id) => {
+            const el = document.getElementById(id);
+            const tg = document.getElementById(id + 'Toggle');
+            if (!el) return;
+            const hidden = el.style.display === 'none';
+            el.style.display = hidden ? 'block' : 'none';
+            if (tg) tg.textContent = hidden ? '▼' : '▶';
+        };
+    window.toggleSection = _toggleSection;
+
+    // ========== 数据适配 ==========
+    function normalizeSkills(raw) {
+        if (!raw) return [];
+        let arr = [];
+        if (Array.isArray(raw)) {
+            arr = raw;
+        } else if (typeof raw === 'object') {
+            if (Array.isArray(raw.skills))        arr = raw.skills;
+            else if (Array.isArray(raw.data))     arr = raw.data;
+            else if (Array.isArray(raw.items))    arr = raw.items;
+            else if (Array.isArray(raw.results))  arr = raw.results;
+            else if (Array.isArray(raw.list))     arr = raw.list;
+            else {
+                const vals = Object.values(raw);
+                if (vals.length && vals.every(v => v && typeof v === 'object')) {
+                    arr = vals;
+                }
+            }
+        }
+        return arr.filter(s => s && typeof s === 'object');
+    }
+
+    function pickSkillFields(skill, idx) {
+        const name        = skill.name || skill.id || skill.skill_name || `skill_${idx}`;
+        const id          = skill.id || skill.name || '';
+        const description = skill.description || skill.desc || skill.summary || '';
+        const version     = skill.version || skill.ver || '';
+        const source      = skill.source || skill.origin || skill.loader || skill.from || '默认';
+        const namespace   = skill.namespace || skill.ns || skill.group || '';
+        let tags          = skill.tags || skill.keywords || [];
+        if (typeof tags === 'string') tags = tags.split(/[,;\s]+/).filter(Boolean);
+        if (!Array.isArray(tags)) tags = [];
+        const root        = skill.root || skill.path || skill.dir || '';
+        const meta        = skill.metadata || skill.meta || null;
+        // 网络市场特有字段
+        const installs    = skill.installs ?? skill.install_count ?? 0;
+        const skillId     = skill.skillId || skill.skill_id || '';
+        const repoSource  = skill.source || '';   // 如 "mattpocock/skills"
+
+        return {
+            name, id, description, version, source, namespace, tags, root, meta,
+            installs, skillId, repoSource,
+            raw: skill,
+        };
+    }
+
+    function skillKey(s) {
+        return `${s.source || ''}::${s.id || s.name}`;
+    }
+
+    // ========== 输入 / 来源变化 ==========
+    window.onSkillSearchInput = function () {
+        const src = document.getElementById('skillSourceFilter')?.value || '';
+        if (src === NETWORK_SOURCE) {
+            // 网络市场：防抖后触发请求
+            if (searchDebounceTimer) clearTimeout(searchDebounceTimer);
+            searchDebounceTimer = setTimeout(() => {
+                const kw = (document.getElementById('skillSearchInput')?.value || '').trim();
+                if (kw.length < 2) {
+                    renderNetworkSkills([]);   // 提示至少 2 个字符
+                    return;
+                }
+                searchNetworkSkills(kw);
+            }, 350);
+        } else {
+            renderSkillsFromCache();
+        }
+    };
+
+    window.onSkillSourceChange = function () {
+        const src = document.getElementById('skillSourceFilter')?.value || '';
+        if (src === NETWORK_SOURCE) {
+            // 切到网络来源时不自动搜索，等用户点刷新
+            renderNetworkSkills([]);
+        } else {
+            renderSkillsFromCache();
+        }
+    };
+
+    // ========== 网络搜索 ==========
+    window.searchNetworkSkills = async function (query) {
+        const container = document.getElementById('skillsContainer');
+        if (container) container.innerHTML = '<div class="loading">正在搜索网络市场...</div>';
+
+        try {
+            const res = await fetch(
+                `${API_SKILLS_SEARCH}?q=${encodeURIComponent(query)}&limit=20`,
+                { headers: { 'Accept': 'application/json' } }
+            );
+            const data = await res.json();
+
+            if (!res.ok) {
+                throw new Error(data.detail || `HTTP ${res.status}`);
+            }
+
+            const raw = normalizeSkills(data);
+            networkSkillsCache = raw.map(pickSkillFields);
+            renderNetworkSkills(networkSkillsCache);
+        } catch (e) {
+            console.error('网络搜索失败:', e);
+            if (container) {
+                container.innerHTML = `
+                    <div class="empty" style="color:#e74c3c;">
+                        搜索失败: ${_escapeHtml(e.message)}
+                    </div>`;
+            }
+            _showToast('网络搜索失败: ' + e.message, 'error');
+        }
+    };
+
+    // ========== 渲染：网络搜索结果 ==========
+    window.renderNetworkSkills = function (list) {
+        const container = document.getElementById('skillsContainer');
+        if (!container) return;
+
+        const shownEl = document.getElementById('skillShownCount');
+        const totalEl = document.getElementById('skillTotalCount');
+        if (shownEl) shownEl.textContent = list.length;
+        if (totalEl) totalEl.textContent = list.length;
+
+        if (!list.length) {
+            container.innerHTML = `
+                <div class="empty">
+                    输入至少 2 个字符开始搜索网络市场<br>
+                    <span style="font-size:12px;color:#95a5a6;">（如：react performance、test-driven）</span>
+                </div>`;
+            return;
+        }
+
+        let html = `<table style="font-size:13px;">
+            <thead><tr>
+                <th style="width:36px;"></th>
+                <th>Skill 名称</th>
+                <th>仓库来源</th>
+                <th>安装量</th>
+                <th>操作</th>
+            </tr></thead><tbody>`;
+
+        list.forEach((s) => {
+            const key = skillKey(s);
+            const isExpanded = expandedSkills.has(key);
+            const installsText = s.installs
+                ? Number(s.installs).toLocaleString()
+                : '-';
+
+            // 解析 owner/repo
+            const [owner, repo] = (s.repoSource || '').split('/');
+
+            html += `<tr>
+                <td>
+                    <button class="primary" style="padding:2px 8px;font-size:12px;"
+                        onclick="toggleNetworkSkillDetail('${encodeURIComponent(key)}')">
+                        ${isExpanded ? '▼' : '▶'}
+                    </button>
+                </td>
+                <td>
+                    <strong>${_escapeHtml(s.name)}</strong>
+                    ${s.skillId && s.skillId !== s.name ? `<br><code style="font-size:11px;color:#7f8c8d;">${_escapeHtml(s.skillId)}</code>` : ''}
+                </td>
+                <td>
+                    <span class="badge purple">${_escapeHtml(s.repoSource || '-')}</span>
+                </td>
+                <td>
+                    <span class="badge success">⬇ ${installsText}</span>
+                </td>
+                <td>
+                    <button class="success" style="padding:3px 10px;font-size:12px;"
+                        onclick="installNetworkSkill('${encodeURIComponent(owner)}','${encodeURIComponent(repo)}','${encodeURIComponent(s.skillId)}')">
+                        📦 安装
+                    </button>
+                </td>
+            </tr>`;
+
+            if (isExpanded) {
+                html += `<tr><td colspan="5">
+                    <div class="session-detail-panel">
+                        <div style="margin-bottom:8px;"><strong>完整 ID：</strong>
+                            <code style="font-size:12px;">${_escapeHtml(s.id)}</code></div>
+                        <div style="margin-bottom:8px;"><strong>Skill ID：</strong>
+                            <code style="font-size:12px;">${_escapeHtml(s.skillId)}</code></div>
+                        <div style="margin-bottom:8px;"><strong>仓库：</strong>
+                            <code style="font-size:12px;">${_escapeHtml(s.repoSource)}</code></div>
+                        <div>
+                            <strong>原始数据：</strong>
+                            <div class="json-view" style="margin-top:4px;max-height:260px;">
+                                ${_escapeHtml(JSON.stringify(s.raw, null, 2))}
+                            </div>
+                        </div>
+                    </div>
+                </td></tr>`;
+            }
+        });
+
+        html += '</tbody></table>';
+        container.innerHTML = html;
+    };
+
+    window.toggleNetworkSkillDetail = function (encodedKey) {
+        const key = decodeURIComponent(encodedKey);
+        if (expandedSkills.has(key)) expandedSkills.delete(key);
+        else expandedSkills.add(key);
+        renderNetworkSkills(networkSkillsCache);
+    };
+
+    // ========== 安装 ==========
+    window.installNetworkSkill = async function (encodedOwner, encodedRepo, encodedSkillId) {
+        let skillsNames = skillsCache.map(s => s.name);
+        let localSkill = skillsNames.find(s => s == encodedSkillId)
+        if (localSkill){
+            _showToast('本地已经存在'+localSkill, 'error');
+            return;
+        }
+
+
+        const owner   = decodeURIComponent(encodedOwner);
+        const repo    = decodeURIComponent(encodedRepo);
+        const skillId = decodeURIComponent(encodedSkillId);
+
+        if (!owner || !repo || !skillId) {
+            _showToast('缺少 owner/repo/skillId，无法安装', 'error');
+            return;
+        }
+
+        if (!confirm(`确定要安装 ${owner}/${repo} → ${skillId} 吗？`)) return;
+
+        try {
+            const res = await fetch(API_SKILLS_INSTALL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    owner,
+                    repo,
+                    skill_name: skillId,
+                    branch: 'main',
+                }),
+            });
+            const data = await res.json();
+
+            if (res.ok && data.status === 'success') {
+                _showToast(`✅ 已安装 ${skillId}（${data.files_count || '?'} 个文件）`, 'success');
+                // 刷新本地列表，让新安装的 skill 出现
+                await loadSkills();
+            } else {
+                _showToast('安装失败: ' + (data.detail || data.message || '未知错误'), 'error');
+            }
+        } catch (e) {
+            _showToast('安装失败: ' + e.message, 'error');
+        }
+    };
+
+    // ========== 渲染：本地缓存 ==========
+    window.renderSkillsFromCache = function () {
+        const container    = document.getElementById('skillsContainer');
+        const keyword      = (document.getElementById('skillSearchInput')?.value || '').trim().toLowerCase();
+        const sourceFilter = document.getElementById('skillSourceFilter')?.value || '';
+
+        if (!container) return;
+
+        const filtered = skillsCache.filter(s => {
+            if (sourceFilter && s.source !== sourceFilter) return false;
+            if (!keyword) return true;
+            const hay = [s.name, s.id, s.description, s.namespace, ...(s.tags||[])]
+                .join(' ').toLowerCase();
+            return hay.includes(keyword);
+        });
+
+        const shownEl = document.getElementById('skillShownCount');
+        const totalEl = document.getElementById('skillTotalCount');
+        if (shownEl) shownEl.textContent = filtered.length;
+        if (totalEl) totalEl.textContent = skillsCache.length;
+
+        if (!skillsCache.length) {
+            container.innerHTML = '<div class="empty">暂无 skill 数据</div>';
+            return;
+        }
+        if (!filtered.length) {
+            container.innerHTML = '<div class="empty">没有匹配的 skill</div>';
+            return;
+        }
+
+        let html = `<table style="font-size:13px;">
+            <thead><tr>
+                <th style="width:36px;"></th>
+                <th>Skill 名称</th>
+                <th>来源</th>
+                <th>版本</th>
+                <th>描述</th>
+                <th>标签</th>
+                <th style="width:120px;">操作</th>
+            </tr></thead><tbody>`;
+
+        filtered.forEach((s) => {
+            const key = skillKey(s);
+            const isExpanded = expandedSkills.has(key);
+            const descFull = s.description || '';
+            const descShort = descFull.length > 80 ? descFull.substring(0, 80) + '...' : (descFull || '-');
+            const sourceBadge = `<span class="badge purple">${_escapeHtml(s.source)}</span>`;
+            const nsBadge = s.namespace ? `<span class="badge">${_escapeHtml(s.namespace)}</span>` : '';
+            const versionBadge = s.version ? `<span class="badge success">v${_escapeHtml(s.version)}</span>` : '-';
+            const tagsHtml = (s.tags || []).slice(0, 3)
+                .map(t => `<span class="badge orange" style="margin-right:3px;">${_escapeHtml(t)}</span>`)
+                .join('') || '-';
+
+            html += `<tr>
+                <td>
+                    <button class="primary" style="padding:2px 8px;font-size:12px;"
+                        onclick="toggleSkillDetail('${encodeURIComponent(key)}')">
+                        ${isExpanded ? '▼' : '▶'}
+                    </button>
+                </td>
+                <td>
+                    <strong>${_escapeHtml(s.name)}</strong>
+                    ${s.id && s.id !== s.name ? `<br><code style="font-size:11px;color:#7f8c8d;">${_escapeHtml(s.id)}</code>` : ''}
+                </td>
+                <td>${sourceBadge} ${nsBadge}</td>
+                <td>${versionBadge}</td>
+                <td style="max-width:340px;color:#34495e;" title="${_escapeHtml(descFull)}">
+                    ${_escapeHtml(descShort)}
+                </td>
+                <td>${tagsHtml}</td>
+                <td>
+                    <button class="primary" style="padding:3px 8px;font-size:12px;"
+                        onclick="toggleSkillDetail('${encodeURIComponent(key)}')">详情</button>
+                    <button class="warning" style="padding:3px 8px;font-size:12px;"
+                        onclick="copySkillName('${encodeURIComponent(s.name)}')">复制</button>
+                </td>
+            </tr>`;
+
+            if (isExpanded) {
+                html += `<tr><td colspan="7">
+                    <div class="session-detail-panel">
+                        <div style="margin-bottom:8px;">
+                            <strong>完整描述：</strong>
+                            <div style="color:#34495e;white-space:pre-wrap;word-break:break-all;margin-top:4px;">
+                                ${descFull ? _escapeHtml(descFull) : '<span style="color:#95a5a6;">（无描述）</span>'}
+                            </div>
+                        </div>
+                        ${s.root ? `<div style="margin-bottom:8px;"><strong>根目录：</strong>
+                            <code style="font-size:12px;">${_escapeHtml(s.root)}</code></div>` : ''}
+                        ${(s.tags && s.tags.length) ? `<div style="margin-bottom:8px;"><strong>全部标签：</strong>
+                            ${s.tags.map(t => `<span class="badge orange" style="margin-right:4px;">${_escapeHtml(t)}</span>`).join('')}
+                        </div>` : ''}
+                        <div>
+                            <strong>原始数据：</strong>
+                            <div class="json-view" style="margin-top:4px;max-height:260px;">
+                                ${_escapeHtml(JSON.stringify(s.raw, null, 2))}
+                            </div>
+                        </div>
+                    </div>
+                </td></tr>`;
+            }
+        });
+
+        html += '</tbody></table>';
+        container.innerHTML = html;
+    };
+
+    // ========== 展开 / 收起（本地） ==========
+    window.toggleSkillDetail = function (encodedKey) {
+        const key = decodeURIComponent(encodedKey);
+        if (expandedSkills.has(key)) expandedSkills.delete(key);
+        else expandedSkills.add(key);
+        renderSkillsFromCache();
+    };
+
+    window.expandAllSkills = function () {
+        const src = document.getElementById('skillSourceFilter')?.value || '';
+        if (src === NETWORK_SOURCE) {
+            networkSkillsCache.forEach(s => expandedSkills.add(skillKey(s)));
+            renderNetworkSkills(networkSkillsCache);
+        } else {
+            skillsCache.forEach(s => expandedSkills.add(skillKey(s)));
+            renderSkillsFromCache();
+        }
+    };
+
+    window.collapseAllSkills = function () {
+        expandedSkills.clear();
+        const src = document.getElementById('skillSourceFilter')?.value || '';
+        if (src === NETWORK_SOURCE) {
+            renderNetworkSkills(networkSkillsCache);
+        } else {
+            renderSkillsFromCache();
+        }
+    };
+
+    window.copySkillName = function (encodedName) {
+        const name = decodeURIComponent(encodedName);
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(name).then(
+                () => _showToast(`已复制: ${name}`, 'success'),
+                () => _showToast('复制失败', 'error')
+            );
+        } else {
+            const ta = document.createElement('textarea');
+            ta.value = name;
+            document.body.appendChild(ta);
+            ta.select();
+            try { document.execCommand('copy'); _showToast(`已复制: ${name}`, 'success'); }
+            catch { _showToast('复制失败', 'error'); }
+            ta.remove();
+        }
+    };
+
+    // ========== 加载本地数据 ==========
+    window.loadSkills = async function () {
+        const container = document.getElementById('skillsContainer');
+        if (container) container.innerHTML = '<div class="loading">加载中...</div>';
+
+        try {
+            const res = await fetch(API_SKILLS_LIST, {
+                method: 'GET',
+                headers: { 'Accept': 'application/json' }
+            });
+
+            if (!res.ok) {
+                throw new Error(`HTTP ${res.status} ${res.statusText}`);
+            }
+
+            const data = await res.json();
+            const rawSkills = normalizeSkills(data);
+            skillsCache = rawSkills.map(pickSkillFields);
+
+            // 更新统计
+            const totalEl = document.getElementById('skillTotal');
+            if (totalEl) totalEl.textContent = skillsCache.length;
+
+            const sources = new Set(skillsCache.map(s => s.source).filter(Boolean));
+            const loadedEl = document.getElementById('skillLoaded');
+            if (loadedEl) loadedEl.textContent = sources.size;
+
+            const namespaces = new Set(skillsCache.map(s => s.namespace).filter(Boolean));
+            const nsEl = document.getElementById('skillNamespaces');
+            if (nsEl) nsEl.textContent = namespaces.size;
+
+            // 更新来源筛选下拉（保留“网络市场”选项）
+            const filterSel = document.getElementById('skillSourceFilter');
+            if (filterSel) {
+                const current = filterSel.value;
+                filterSel.innerHTML = `
+                    <option value="">全部来源</option>
+                    <option value="${NETWORK_SOURCE}">🌐 网络市场</option>
+                `;
+                [...sources].sort().forEach(src => {
+                    const opt = document.createElement('option');
+                    opt.value = src;
+                    opt.textContent = src;
+                    filterSel.appendChild(opt);
+                });
+                if ([...filterSel.options].some(o => o.value === current)) {
+                    filterSel.value = current;
+                }
+            }
+
+            // 按当前选择的来源渲染
+            const currentSource = filterSel?.value || '';
+            if (currentSource === NETWORK_SOURCE) {
+                const kw = (document.getElementById('skillSearchInput')?.value || '').trim();
+                if (kw.length >= 2) {
+                    await searchNetworkSkills(kw);
+                } else {
+                    renderNetworkSkills([]);
+                }
+            } else {
+                renderSkillsFromCache();
+            }
+
+            if (skillsCache.length === 0) {
+                _showToast('未获取到任何 skill', 'warning');
+            } else {
+                _showToast(`已加载 ${skillsCache.length} 个 skill`, 'success');
+            }
+        } catch (e) {
+            console.error('加载 skills 失败:', e);
+            if (container) {
+                container.innerHTML = `
+                    <div class="empty" style="color:#e74c3c;">
+                        加载失败: ${_escapeHtml(e.message)}
+                        <br><br>
+                        <button class="primary" onclick="onRefreshClick()">重试</button>
+                    </div>`;
+            }
+            _showToast('加载 skills 失败: ' + e.message, 'error');
+        }
+    };
+
+    window.onRefreshClick = function () {
+        const src = document.getElementById('skillSourceFilter')?.value || '';
+        if (src === NETWORK_SOURCE) {
+            // 网络来源：用输入框关键词触发搜索
+            const kw = (document.getElementById('skillSearchInput')?.value || '').trim();
+            if (kw.length < 2) {
+                _showToast('请输入至少 2 个字符再搜索网络市场', 'warning');
+                return;
+            }
+            searchNetworkSkills(kw);
+        } else {
+            // 本地来源：重新拉取本地列表
+            loadSkills();
+        }
+    };
+
+    // ========== 自动首次加载 ==========
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => setTimeout(loadSkills, 150));
+    } else {
+        setTimeout(loadSkills, 150);
+    }
+})();
+</script>
+</body>
+</html>

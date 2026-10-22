@@ -1,0 +1,58 @@
+# main_graph.yaml 内容
+name: "主Agent"
+entry: "sanitize"
+
+nodes:
+  - id: sanitize
+    name: "输入清洗"
+    code: "agent.nodes.sanitize_input"
+    
+  - id: load_history1
+    name: "加载并压缩历史"
+    code: "agent.nodes.load_and_compress_history"
+    
+  - id: retrieve
+    name: "RAG检索"
+    code: "agent.nodes.retrieve_knowledge"
+    
+  - id: build
+    name: "组装消息"
+    code: "agent.nodes.build_messages_with_knowledge"
+    
+  - id: agent
+    type: "subgraph"
+    config: "config/llm_subgraph.yaml"  # 引用
+    
+  - id: validate
+    name: "响应校验"
+    code: "agent.nodes.validate_response"
+    
+  - id: error_handler
+    name: "错误处理"
+    code: "agent.nodes.handle_error"
+
+edges:
+  - from: sanitize
+    to: load_history1
+
+  - from: load_history1
+    to: retrieve
+
+  - from: retrieve
+    to: build
+
+  - from: build
+    to: agent
+
+  - from: agent
+    to: validate
+
+  - from: error_handler
+    to: __end__
+
+routers:
+  - from: validate
+    function: "agent.nodes.route_after_validation"
+    routes:
+      error_handler: "error_handler"
+      __end__: "__end__"

@@ -1,0 +1,103 @@
+# llm_subgraph_config.yaml
+name: "LLM调用子图"
+entry: "load_history"
+
+nodes:
+  - id: load_history
+    name: "📂 加载历史"
+    inputs: ["messages", "thread_id"]
+    outputs: ["full_messages", "context_messages"]
+    code: "agent.nodes.load_history"
+    
+  - id: check_interrupt
+    name: "⏸️ 中断检查"
+    inputs: ["thread_id"]
+    outputs: []
+    code: "agent.nodes.check_interrupt"
+    
+  - id: fix_tool_calls
+    name: "🔧 修复工具调用"
+    inputs: ["context_messages"]
+    outputs: ["context_messages"]
+    code: "agent.nodes.fix_tool_calls"
+    
+  - id: should_compress
+    name: "❓ 是否需要压缩"
+    type: "router"
+    inputs: ["full_messages", "context_messages"]
+    routes:
+      compress: "compress"
+      skip_compress: "ensure_system"
+    code: "agent.nodes.should_compress"
+    
+  - id: compress
+    name: "🗜️ 压缩消息"
+    inputs: ["full_messages"]
+    outputs: ["context_messages", "compression_info"]
+    code: "agent.nodes.compress_messages"
+    
+  - id: filter_groups
+    name: "🧹 过滤对话组"
+    inputs: ["context_messages"]
+    outputs: ["context_messages"]
+    code: "agent.nodes.filter_groups"
+    
+  - id: ensure_system
+    name: "📝 注入System提示"
+    inputs: ["context_messages"]
+    outputs: ["context_messages"]
+    code: "agent.nodes.ensure_system"
+    
+  - id: call_llm
+    name: "🤖 调用大模型"
+    inputs: ["context_messages"]
+    outputs: ["llm_response", "llm_start_time", "llm_duration_ms"]
+    code: "agent.nodes.call_llm"
+    
+  - id: process_response
+    name: "📊 处理响应"
+    inputs: ["llm_response", "context_messages"]
+    outputs: ["messages", "updated_context"]
+    code: "agent.nodes.process_response"
+
+  - id: handle_error
+    name: "📊 处理错误"
+    inputs: ["llm_response", "context_messages"]
+    outputs: ["messages"]
+    code: "agent.nodes.handle_llm_error"
+
+edges:
+  - from: "load_history"
+    to: "check_interrupt"
+
+  - from: "check_interrupt"
+    to: "fix_tool_calls"
+
+  - from: "fix_tool_calls"
+    to: "should_compress"
+
+  - from: "compress"
+    to: "filter_groups"
+
+  - from: "filter_groups"
+    to: "ensure_system"
+
+  - from: "ensure_system"
+    to: "call_llm"
+
+  - from: "call_llm"
+    to: "process_response"
+
+  - from: "process_response"
+    to: "__end__"
+
+  - from: "handle_error"
+    to: "__end__"
+
+
+routers:
+  - from: "should_compress"
+    function: "agent.nodes.route_tools"
+    routes:
+      tools: "compress"
+      skip_compress: "ensure_system"

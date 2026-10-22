@@ -1,0 +1,14 @@
+langgraph>=0.2.0
+langchain>=0.3.0
+langchain-deepseek>=0.1.0
+langgraph-checkpoint-sqlite>=0.1.0
+python-dotenv>=1.0.0
+rich>=13.0.0
+fastapi>=0.115.0
+uvicorn>=0.32.0
+aiofiles>=24.0.0
+langchain-mcp-adapters
+langchain-agentskills
+nb_langchain_agentskills
+fastmcp>=3.2.4,<4.0.0
+mcp>=1.27.0,<2.0.0

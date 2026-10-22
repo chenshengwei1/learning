@@ -1,0 +1,42 @@
+flowchart TD
+    %% 自动生成的 Mermaid 图
+    start([开始])
+    start --> sanitize
+    sanitize[输入清洗]
+    load_history1[加载并压缩历史]
+    retrieve[RAG检索]
+    build[组装消息]
+    validate[响应校验]
+    error_handler[错误处理]
+    subgraph agent["agent"]
+            load_history[加载历史]
+            check_interrupt[中断检查]
+            fix_tool_calls[修复工具调用]
+            should_compress{是否需要压缩}
+            compress[压缩消息]
+            filter_groups[过滤对话组]
+            ensure_system[注入System提示]
+            call_llm[调用大模型]
+            process_response[处理响应]
+            handle_error[处理错误]
+            load_history --> check_interrupt
+            check_interrupt --> fix_tool_calls
+            fix_tool_calls --> should_compress
+            compress --> filter_groups
+            filter_groups --> ensure_system
+            ensure_system --> call_llm
+            call_llm --> process_response
+            should_compress -->|tools| compress
+            should_compress -->|skip compress| ensure_system
+        style load_history fill:#00d4ff,stroke:#00d4ff,stroke-width:2px,color:#000
+        style handle_error fill:#ff6b6b,stroke:#ff6b6b,stroke-width:2px,color:#fff
+        style process_response fill:#ff6b6b,stroke:#ff6b6b,stroke-width:2px,color:#fff
+    end
+    sanitize --> load_history1
+    load_history1 --> retrieve
+    retrieve --> build
+    build --> agent
+    agent --> validate
+    error_handler --> END
+    validate -->|error handler| error_handler
+    validate -->|end| END

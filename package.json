@@ -1,0 +1,28 @@
+{
+  "name": "ta",
+  "version": "1.1.0",
+  "description": "t",
+  "main": "index.js",
+  "scripts": {
+    "test": "start"
+  },
+  "dependencies": {
+    "@bes/occore.ui.common": "2.710.0-B2B0010",
+    "archiver": "2.1.0",
+    "cheerio": "0.22.0",
+    "chokidar": "1.7.0",
+    "file-stream-rotator": "^0.5.7",
+    "fs-async-promise": "1.4.1",
+    "log4js": "^2.3.12",
+    "mongodb": "^4.2.0",
+    "mongoose": "^6.0.13",
+    "morgan": "^1.10.0",
+    "node-uuid": "^1.4.8",
+    "node-xlsx": "^0.16.1",
+    "rotating-file-stream": "^3.0.1",
+    "typescript": "3.0.1",
+    "xml2js": "0.4.19"
+  },
+  "author": "",
+  "license": "ISC"
+}

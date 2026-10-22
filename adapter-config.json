@@ -1,0 +1,8 @@
+{
+  "adapters": {
+    "default": {
+      "command": ["python3", "C:\\doc\\work\\dsagent\\skills\\short-drama-produce\\scripts\\provider_adapters.py", "gpt-image-2"],
+      "timeout_seconds": 300
+    }
+  }
+}

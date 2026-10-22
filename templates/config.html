@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>YAML 配置编辑器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #0f0f23;
+            color: #eee;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .app {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* 左侧面板 - 节点库 */
+        .palette {
+            width: 250px;
+            background: #1a1a3e;
+            padding: 15px;
+            border-right: 1px solid #333;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+        .palette h3 {
+            color: #00d4ff;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        .palette-item {
+            background: #0f0f23;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            cursor: grab;
+            font-size: 13px;
+            border-left: 3px solid #00d4ff;
+            transition: all 0.2s;
+            user-select: none;
+        }
+        .palette-item:hover {
+            background: #1a1a4e;
+            transform: translateX(4px);
+        }
+        .palette-item.router {
+            border-left-color: #ffd43b;
+        }
+        .palette-item.subgraph {
+            border-left-color: #ff6b6b;
+        }
+        .palette-item .type-badge {
+            font-size: 10px;
+            background: #333;
+            padding: 1px 8px;
+            border-radius: 10px;
+            margin-left: 6px;
+        }
+        .palette-section-title {
+            margin: 10px 0 6px 0;
+            color: #aaa;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        /* 中间 - 画布 */
+        .canvas {
+            flex: 1;
+            position: relative;
+            background: #0f0f23;
+            overflow: auto;
+            padding: 20px;
+        }
+        .canvas-grid {
+            position: relative;
+            min-height: 100%;
+            min-width: 100%;
+        }
+
+        /* 画布上的节点 */
+        .canvas-node {
+            position: absolute;
+            min-width: 120px;
+            padding: 10px 16px;
+            background: #0f0f23;
+            border: 2px solid #00d4ff;
+            border-radius: 8px;
+            color: #eee;
+            font-size: 13px;
+            text-align: center;
+            cursor: move;
+            user-select: none;
+            transition: box-shadow 0.2s;
+        }
+        .canvas-node:hover {
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.15);
+        }
+        .canvas-node.selected {
+            border-color: #00d4ff;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.25);
+        }
+        .canvas-node .node-label {
+            font-weight: bold;
+        }
+        .canvas-node .node-id {
+            font-size: 10px;
+            color: #888;
+            margin-top: 2px;
+        }
+        .canvas-node .node-delete {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 20px;
+            height: 20px;
+            background: #ff6b6b;
+            border: none;
+            border-radius: 50%;
+            color: #fff;
+            font-size: 12px;
+            cursor: pointer;
+            display: none;
+            line-height: 20px;
+            text-align: center;
+        }
+        .canvas-node:hover .node-delete {
+            display: block;
+        }
+        .canvas-node.router {
+            border-color: #ffd43b;
+        }
+        .canvas-node.subgraph {
+            border-color: #ff6b6b;
+        }
+        .canvas-node.start {
+            border-color: #51cf66;
+        }
+        .canvas-node.end {
+            border-color: #ff6b6b;
+        }
+
+        /* 连接线 */
+        .connection-line {
+            position: absolute;
+            pointer-events: none;
+            stroke: #666;
+            stroke-width: 2;
+            fill: none;
+        }
+        .connection-line .label {
+            fill: #888;
+            font-size: 11px;
+        }
+
+        /* 右侧 - 属性面板 */
+        .properties {
+            width: 320px;
+            background: #1a1a3e;
+            padding: 15px;
+            border-left: 1px solid #333;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+        .properties h3 {
+            color: #00d4ff;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        .property-group {
+            margin-bottom: 12px;
+        }
+        .property-group label {
+            display: block;
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 3px;
+        }
+        .property-group input,
+        .property-group select {
+            width: 100%;
+            padding: 6px 10px;
+            background: #0f0f23;
+            border: 1px solid #333;
+            border-radius: 4px;
+            color: #eee;
+            font-size: 13px;
+        }
+        .property-group input:focus,
+        .property-group select:focus {
+            outline: none;
+            border-color: #00d4ff;
+        }
+        .property-divider {
+            border-color: #333;
+            margin: 15px 0;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+        .btn-primary {
+            background: #00d4ff;
+            color: #000;
+        }
+        .btn-primary:hover {
+            background: #00b8d4;
+        }
+        .btn-danger {
+            background: #ff6b6b;
+            color: #fff;
+        }
+        .btn-danger:hover {
+            background: #e55a5a;
+        }
+        .btn-success {
+            background: #51cf66;
+            color: #000;
+        }
+        .btn-success:hover {
+            background: #40b057;
+        }
+        .btn-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .status-bar {
+            background: #1a1a3e;
+            padding: 6px 16px;
+            border-top: 1px solid #333;
+            font-size: 12px;
+            color: #888;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+        .empty-state {
+            color: #444;
+            text-align: center;
+            padding: 40px;
+            font-size: 14px;
+        }
+
+        /* 连接拖拽时的虚线 */
+        .drag-connection {
+            position: absolute;
+            pointer-events: none;
+            border: 2px dashed #00d4ff;
+            border-radius: 4px;
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f0f23;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- 左侧面板 -->
+        <div class="palette" id="palette">
+            <h3>📦 节点库</h3>
+            <div style="font-size:12px;color:#888;margin-bottom:10px;">拖拽到画布</div>
+            <div class="palette-section-title">── 节点 ──</div>
+            <div id="paletteNodes"></div>
+            <div class="palette-section-title">── 子图 ──</div>
+            <div id="paletteSubgraphs"></div>
+            <div class="palette-section-title">── 特殊 ──</div>
+            <div id="paletteSpecial"></div>
+        </div>
+
+        <!-- 中间画布 -->
+        <div class="canvas" id="canvas">
+            <div class="canvas-grid" id="canvasGrid">
+                <div class="empty-state" id="emptyState">拖拽左侧节点到此处</div>
+            </div>
+            <!-- SVG 用于画连接线 -->
+            <svg id="connectionsSvg" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;"></svg>
+        </div>
+
+        <!-- 右侧属性面板 -->
+        <div class="properties" id="properties">
+            <h3>⚙️ 属性</h3>
+            <div class="property-group">
+                <label>配置名称</label>
+                <input id="configName" value="主Agent" placeholder="主Agent">
+            </div>
+            <div class="property-group">
+                <label>入口节点 (entry)</label>
+                <select id="entrySelect">
+                    <option value="start">start</option>
+                </select>
+            </div>
+            <hr class="property-divider">
+            <div id="nodeProperties">
+                <div style="color:#666;font-size:13px;text-align:center;padding:20px 0;">点击画布上的节点查看属性</div>
+            </div>
+            <hr class="property-divider">
+            <div class="btn-row">
+                <button class="btn btn-success" id="saveBtn">💾 保存 YAML</button>
+                <button class="btn btn-primary" id="exportBtn">📥 导出 YAML</button>
+            </div>
+            <div class="status-bar" id="statusBar">已加载</div>
+        </div>
+    </div>
+
+    <script>
+        // ===== 预置节点 =====
+        const PRESET_NODES = {
+            "sanitize": { id: "sanitize", name: "输入清洗", type: "node", code: "agent.nodes.sanitize_input",
+            inputs: ["user_input"], outputs: ["clean_input"] },
+            "load_history": { id: "load_history", name: "加载并压缩历史", type: "node", code: "agent.nodes.load_and_compress_history",
+                inputs: ["messages", "thread_id"], outputs: ["full_messages", "context_messages"] },
+            "retrieve": { id: "retrieve", name: "RAG检索", type: "node", code: "agent.nodes.retrieve_knowledge",
+                inputs: ["query"], outputs: ["knowledge"] },
+            "build": { id: "build", name: "组装消息", type: "node", code: "agent.nodes.build_messages_with_knowledge",
+                inputs: ["messages", "knowledge", "history"], outputs: ["messages"] },
+            "call_model": { id: "call_model", name: "调用大模型", type: "node", code: "agent.nodes.call_model",
+                inputs: ["messages"], outputs: ["llm_response"] },
+            "validate": { id: "validate", name: "响应校验", type: "router", code: "agent.nodes.validate_response",
+                inputs: ["messages"], outputs: ["validation", "error_msg"] },
+            "execute_tools": { id: "execute_tools", name: "工具执行", type: "node", code: "agent.nodes.execute_tools",
+                inputs: ["messages"], outputs: ["tool_results"] },
+            "handle_error": { id: "handle_error", name: "错误处理", type: "node", code: "agent.nodes.handle_error",
+                inputs: ["error_msg"], outputs: ["messages"] }
+        };
+
+        const PRESET_SUBGRAPHS = {
+            "llm_subgraph": { id: "llm_subgraph", name: "LLM子图", type: "subgraph", config: "llm_subgraph.yaml",
+                inputs: ["messages", "thread_id"], outputs: ["messages"] }
+        };
+
+        const SPECIAL_NODES = {
+            "start": { id: "start", name: "开始", type: "node", code: "", inputs: [], outputs: ["flow_start"] },
+            "__end__": { id: "__end__", name: "结束", type: "node", code: "", inputs: ["flow_end"], outputs: [] }
+        };
+
+        // ===== 状态 =====
+        let nodes = [];
+        let edges = [];
+        let selectedNodeId = null;
+        let nextId = 1;
+        let nodeCounter = 1;
+
+        // 拖拽连接状态
+        let dragConnection = null;
+        let dragSourceId = null;
+        let isDraggingConnection = false;
+
+        // ===== DOM 引用 =====
+        const canvas = document.getElementById('canvas');
+        const canvasGrid = document.getElementById('canvasGrid');
+        const emptyState = document.getElementById('emptyState');
+        const connectionsSvg = document.getElementById('connectionsSvg');
+        const paletteNodes = document.getElementById('paletteNodes');
+        const paletteSubgraphs = document.getElementById('paletteSubgraphs');
+        const paletteSpecial = document.getElementById('paletteSpecial');
+        const nodeProperties = document.getElementById('nodeProperties');
+        const entrySelect = document.getElementById('entrySelect');
+        const configName = document.getElementById('configName');
+        const statusBar = document.getElementById('statusBar');
+
+        // ===== 渲染左侧面板 =====
+        function renderPalette() {
+            // 节点
+            paletteNodes.innerHTML = '';
+            Object.values(PRESET_NODES).forEach(node => {
+                const div = document.createElement('div');
+                div.className = 'palette-item' + (node.type === 'router' ? ' router' : '');
+                div.draggable = true;
+                div.dataset.nodeData = JSON.stringify(node);
+                div.innerHTML = `${node.name} <span class="type-badge">${node.type}</span>`;
+                div.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData('application/node', JSON.stringify(node));
+                    e.dataTransfer.effectAllowed = 'copy';
+                });
+                paletteNodes.appendChild(div);
+            });
+
+            // 子图
+            paletteSubgraphs.innerHTML = '';
+            Object.values(PRESET_SUBGRAPHS).forEach(node => {
+                const div = document.createElement('div');
+                div.className = 'palette-item subgraph';
+                div.draggable = true;
+                div.dataset.nodeData = JSON.stringify(node);
+                div.innerHTML = `${node.name} <span class="type-badge">subgraph</span>`;
+                div.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData('application/node', JSON.stringify(node));
+                    e.dataTransfer.effectAllowed = 'copy';
+                });
+                paletteSubgraphs.appendChild(div);
+            });
+
+            // 特殊节点
+            paletteSpecial.innerHTML = '';
+            Object.values(SPECIAL_NODES).forEach(node => {
+                const div = document.createElement('div');
+                const color = node.id === 'start' ? '#51cf66' : '#ff6b6b';
+                div.className = 'palette-item';
+                div.style.borderLeftColor = color;
+                div.draggable = true;
+                div.dataset.nodeData = JSON.stringify(node);
+                const emoji = node.id === 'start' ? '🟢' : '🔴';
+                div.innerHTML = `${emoji} ${node.name} <span class="type-badge">${node.id === 'start' ? 'start' : 'end'}</span>`;
+                div.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData('application/node', JSON.stringify(node));
+                    e.dataTransfer.effectAllowed = 'copy';
+                });
+                paletteSpecial.appendChild(div);
+            });
+        }
+
+        // ===== 画布操作 =====
+        function updateEmptyState() {
+            emptyState.style.display = nodes.length === 0 ? 'block' : 'none';
+        }
+
+        function addNodeToCanvas(nodeData, x, y) {
+            const nodeId = nodeData.id + '_' + (nodeCounter++);
+            const node = {
+                id: nodeId,
+                nodeId: nodeData.id,
+                label: nodeData.name,
+                type: nodeData.type || 'node',
+                code: nodeData.code || '',
+                config: nodeData.config || '',
+                inputs: nodeData.inputs || [],
+                outputs: nodeData.outputs || [],
+                x: x || 100 + Math.random() * 200,
+                y: y || 50 + Math.random() * 100
+            };
+            nodes.push(node);
+            renderCanvas();
+            updateProperties();
+            updateEntrySelect();
+            updateEmptyState();
+            setStatus('✅ 添加节点: ' + nodeData.name);
+            return node;
+        }
+
+        function deleteNode(nodeId) {
+            nodes = nodes.filter(n => n.id !== nodeId);
+            edges = edges.filter(e => e.source !== nodeId && e.target !== nodeId);
+            if (selectedNodeId === nodeId) selectedNodeId = null;
+            renderCanvas();
+            updateProperties();
+            updateEntrySelect();
+            updateEmptyState();
+            setStatus('🗑️ 删除节点');
+        }
+
+        function updateNode(nodeId, updates) {
+            const node = nodes.find(n => n.id === nodeId);
+            if (node) {
+                Object.assign(node, updates);
+                renderCanvas();
+                updateProperties();
+                updateEntrySelect();
+            }
+        }
+
+        function selectNode(nodeId) {
+            selectedNodeId = nodeId;
+            renderCanvas();
+            updateProperties();
+        }
+
+        // ===== 渲染画布 =====
+        function renderCanvas() {
+            // 清除旧节点（保留 emptyState）
+            const existingNodes = canvasGrid.querySelectorAll('.canvas-node');
+            existingNodes.forEach(el => el.remove());
+
+            // 清除旧 SVG 连接线
+            connectionsSvg.innerHTML = '';
+
+            // 渲染节点
+            nodes.forEach(node => {
+                const el = document.createElement('div');
+                el.className = `canvas-node${node.type === 'router' ? ' router' : ''}${node.type === 'subgraph' ? ' subgraph' : ''}${node.nodeId === 'start' ? ' start' : ''}${node.nodeId === '__end__' ? ' end' : ''}`;
+                if (selectedNodeId === node.id) el.classList.add('selected');
+                el.style.left = node.x + 'px';
+                el.style.top = node.y + 'px';
+                el.dataset.nodeId = node.id;
+
+                el.innerHTML = `
+                    <div class="node-label">${node.label}</div>
+                    <div class="node-id">${node.nodeId}</div>
+                    <button class="node-delete" data-id="${node.id}">×</button>
+                    <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);font-size:10px;color:#666;">⬇ 拖出连接</div>
+                `;
+
+                // 点击选中
+                el.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('node-delete')) return;
+                    selectNode(node.id);
+                });
+
+                // 删除按钮
+                el.querySelector('.node-delete').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    deleteNode(node.id);
+                });
+
+                // 拖拽移动
+                el.addEventListener('mousedown', (e) => {
+                    if (e.target.classList.contains('node-delete')) return;
+                    const rect = canvasGrid.getBoundingClientRect();
+                    const offsetX = e.clientX - rect.left - node.x;
+                    const offsetY = e.clientY - rect.top - node.y;
+
+                    function onMouseMove(ev) {
+                        const newX = ev.clientX - rect.left - offsetX;
+                        const newY = ev.clientY - rect.top - offsetY;
+                        node.x = Math.max(0, newX);
+                        node.y = Math.max(0, newY);
+                        renderCanvas();
+                    }
+
+                    function onMouseUp() {
+                        document.removeEventListener('mousemove', onMouseMove);
+                        document.removeEventListener('mouseup', onMouseUp);
+                    }
+
+                    document.addEventListener('mousemove', onMouseMove);
+                    document.addEventListener('mouseup', onMouseUp);
+                });
+
+                // 从节点拖出连接线
+                el.addEventListener('mousedown', (e) => {
+                    if (e.target.closest('.node-delete')) return;
+                    // 检测是否从底部拖出
+                    const rect = el.getBoundingClientRect();
+                    const canvasRect = canvas.getBoundingClientRect();
+                    // 如果是靠近底部区域，开始拖出连接
+                });
+
+                canvasGrid.appendChild(el);
+            });
+
+            // 渲染连接线
+            edges.forEach(edge => {
+                const sourceNode = nodes.find(n => n.id === edge.source);
+                const targetNode = nodes.find(n => n.id === edge.target);
+                if (!sourceNode || !targetNode) return;
+
+                const sourceEl = canvasGrid.querySelector(`[data-node-id="${edge.source}"]`);
+                const targetEl = canvasGrid.querySelector(`[data-node-id="${edge.target}"]`);
+                if (!sourceEl || !targetEl) return;
+
+                const sRect = sourceEl.getBoundingClientRect();
+                const tRect = targetEl.getBoundingClientRect();
+                const canvasRect = canvasGrid.getBoundingClientRect();
+
+                const x1 = sRect.left + sRect.width / 2 - canvasRect.left;
+                const y1 = sRect.top + sRect.height - canvasRect.top;
+                const x2 = tRect.left + tRect.width / 2 - canvasRect.left;
+                const y2 = tRect.top - canvasRect.top;
+
+                const svg = connectionsSvg;
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                const midY = (y1 + y2) / 2;
+                const d = `M ${x1} ${y1} C ${x1} ${midY}, ${x2} ${midY}, ${x2} ${y2}`;
+                path.setAttribute('d', d);
+                path.setAttribute('stroke', '#666');
+                path.setAttribute('stroke-width', '2');
+                path.setAttribute('fill', 'none');
+                path.setAttribute('stroke-dasharray', '4,4');
+                svg.appendChild(path);
+
+                // 标签
+                if (edge.label) {
+                    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                    const midX = (x1 + x2) / 2;
+                    text.setAttribute('x', midX);
+                    text.setAttribute('y', midY - 8);
+                    text.setAttribute('fill', '#888');
+                    text.setAttribute('font-size', '11px');
+                    text.setAttribute('text-anchor', 'middle');
+                    text.textContent = edge.label;
+                    svg.appendChild(text);
+                }
+            });
+
+            // 更新 connectionsSvg 尺寸
+            connectionsSvg.style.width = canvasGrid.scrollWidth + 'px';
+            connectionsSvg.style.height = canvasGrid.scrollHeight + 'px';
+
+            // 更新入口下拉
+            updateEntrySelect();
+        }
+
+        // ===== 连接拖拽 =====
+        // 实现从节点底部拖出连接线到另一个节点
+        let connectionStartNodeId = null;
+        let connectionLine = null;
+
+        document.addEventListener('mousedown', (e) => {
+            const nodeEl = e.target.closest('.canvas-node');
+            if (!nodeEl) return;
+            // 检测是否在节点底部区域
+            const rect = nodeEl.getBoundingClientRect();
+            const y = e.clientY - rect.top;
+            if (y < rect.height - 10) return;
+
+            connectionStartNodeId = nodeEl.dataset.nodeId;
+            const startNode = nodes.find(n => n.id === connectionStartNodeId);
+            if (!startNode) return;
+
+            // 创建临时连接线
+            const svg = connectionsSvg;
+            connectionLine = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            connectionLine.setAttribute('stroke', '#00d4ff');
+            connectionLine.setAttribute('stroke-width', '2');
+            connectionLine.setAttribute('fill', 'none');
+            connectionLine.setAttribute('stroke-dasharray', '6,4');
+            svg.appendChild(connectionLine);
+
+            function onMouseMove(ev) {
+                const canvasRect = canvasGrid.getBoundingClientRect();
+                const sRect = nodeEl.getBoundingClientRect();
+                const x1 = sRect.left + sRect.width / 2 - canvasRect.left;
+                const y1 = sRect.top + sRect.height - canvasRect.top;
+                const x2 = ev.clientX - canvasRect.left;
+                const y2 = ev.clientY - canvasRect.top;
+                const midY = (y1 + y2) / 2;
+                const d = `M ${x1} ${y1} C ${x1} ${midY}, ${x2} ${midY}, ${x2} ${y2}`;
+                connectionLine.setAttribute('d', d);
+
+                // 高亮悬停的目标节点
+                const targetEl = document.elementFromPoint(ev.clientX);
+                const targetNodeEl = targetEl?.closest('.canvas-node');
+                document.querySelectorAll('.canvas-node').forEach(el => el.style.boxShadow = 'none');
+                if (targetNodeEl && targetNodeEl.dataset.nodeId !== connectionStartNodeId) {
+                    targetNodeEl.style.boxShadow = '0 0 30px rgba(0,212,255,0.4)';
+                }
+            }
+
+            function onMouseUp(ev) {
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('mouseup', onMouseUp);
+
+                // 移除高亮
+                document.querySelectorAll('.canvas-node').forEach(el => el.style.boxShadow = 'none');
+
+                if (connectionLine) {
+                    connectionLine.remove();
+                    connectionLine = null;
+                }
+
+                // 检查目标
+                const targetEl = document.elementFromPoint(ev.clientX);
+                const targetNodeEl = targetEl?.closest('.canvas-node');
+                if (targetNodeEl && targetNodeEl.dataset.nodeId !== connectionStartNodeId) {
+                    const targetId = targetNodeEl.dataset.nodeId;
+                    // 检查是否已存在连接
+                    const exists = edges.some(e => e.source === connectionStartNodeId && e.target === targetId);
+                    if (!exists) {
+                        const label = prompt('输入连接标签（可选）：', '');
+                        edges.push({
+                            source: connectionStartNodeId,
+                            target: targetId,
+                            label: label || ''
+                        });
+                        renderCanvas();
+                        setStatus('✅ 连接: ' + connectionStartNodeId + ' → ' + targetId);
+                    } else {
+                        setStatus('⚠️ 连接已存在');
+                    }
+                }
+
+                connectionStartNodeId = null;
+            }
+
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+        });
+
+        // ===== 属性面板 =====
+        function updateProperties() {
+            if (!selectedNodeId) {
+                nodeProperties.innerHTML =
+                    '<div style="color:#666;font-size:13px;text-align:center;padding:20px 0;">点击画布上的节点查看属性</div>';
+                return;
+            }
+
+            const node = nodes.find(n => n.id === selectedNodeId);
+            if (!node) {
+                nodeProperties.innerHTML =
+                    '<div style="color:#666;font-size:13px;text-align:center;padding:20px 0;">节点未找到</div>';
+                return;
+            }
+
+            nodeProperties.innerHTML = `
+                <h4 style="color:#00d4ff;font-size:13px;margin-bottom:10px;">📌 ${node.label}</h4>
+                <div class="property-group">
+                    <label>节点名称</label>
+                    <input id="propLabel" value="${node.label}" onchange="updateNode('${node.id}', {label: this.value})">
+                </div>
+                <div class="property-group">
+                    <label>节点ID</label>
+                    <input id="propNodeId" value="${node.nodeId}" onchange="updateNode('${node.id}', {nodeId: this.value})">
+                </div>
+                <div class="property-group">
+                    <label>类型</label>
+                    <select id="propType" onchange="updateNode('${node.id}', {type: this.value})">
+                        <option value="node" ${node.type === 'node' ? 'selected' : ''}>node</option>
+                        <option value="router" ${node.type === 'router' ? 'selected' : ''}>router</option>
+                        <option value="subgraph" ${node.type === 'subgraph' ? 'selected' : ''}>subgraph</option>
+                    </select>
+                </div>
+                <div class="property-group">
+                    <label>Code (函数路径)</label>
+                    <input id="propCode" value="${node.code || ''}" placeholder="agent.nodes.xxx" onchange="updateNode('${node.id}', {code: this.value})">
+                </div>
+                <div class="property-group">
+                    <label>子图配置 (仅 subgraph)</label>
+                    <input id="propConfig" value="${node.config || ''}" placeholder="llm_subgraph.yaml" onchange="updateNode('${node.id}', {config: this.value})">
+                </div>
+                <div class="btn-row">
+                    <button class="btn btn-danger" onclick="deleteNode('${node.id}')">🗑️ 删除节点</button>
+                </div>
+            `;
+        }
+
+        function updateEntrySelect() {
+            const current = entrySelect.value;
+            entrySelect.innerHTML = '';
+            nodes.forEach(n => {
+                const opt = document.createElement('option');
+                opt.value = n.id;
+                opt.textContent = n.label + ' (' + n.nodeId + ')';
+                entrySelect.appendChild(opt);
+            });
+            if (nodes.some(n => n.id === current)) {
+                entrySelect.value = current;
+            } else if (nodes.length > 0) {
+                entrySelect.value = nodes[0].id;
+            }
+        }
+
+        function setStatus(msg) {
+            statusBar.textContent = msg;
+            setTimeout(() => { if (statusBar.textContent === msg) statusBar.textContent = '就绪'; }, 3000);
+        }
+
+        // ===== 保存和导出 =====
+        async function saveConfig() {
+            const graphNodes = nodes.map(n => ({
+                id: n.nodeId,
+                name: n.label,
+                type: n.type,
+                code: n.code || undefined,
+                config: n.config || undefined,
+                inputs: n.inputs || [],
+                outputs: n.outputs || []
+            }));
+
+            // 找出路由器
+            const routers = [];
+            const routerNodes = nodes.filter(n => n.type === 'router');
+            for (const rn of routerNodes) {
+                const outgoingEdges = edges.filter(e => e.source === rn.id);
+                const routes = {};
+                for (const e of outgoingEdges) {
+                    const targetNode = nodes.find(n => n.id === e.target);
+                    if (targetNode) {
+                        routes[targetNode.nodeId] = targetNode.nodeId;
+                    }
+                }
+                if (Object.keys(routes).length > 0) {
+                    routers.push({ from_node: rn.nodeId, routes });
+                }
+            }
+
+            const config = {
+                name: configName.value || '主Agent',
+                entry: entrySelect.value ? nodes.find(n => n.id === entrySelect.value)?.nodeId || 'start' : 'start',
+                nodes: graphNodes,
+                edges: edges.map(e => {
+                    const source = nodes.find(n => n.id === e.source);
+                    const target = nodes.find(n => n.id === e.target);
+                    return {
+                        from: source ? source.nodeId : e.source,
+                        to: target ? target.nodeId : e.target,
+                        ...(e.label ? { label: e.label } : {})
+                    };
+                }),
+                ...(routers.length > 0 ? { routers } : {})
+            };
+
+            try {
+                const response = await fetch('/api/config', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(config)
+                });
+                if (response.ok) {
+                    setStatus('✅ 配置已保存');
+                } else {
+                    const err = await response.json();
+                    setStatus('❌ 保存失败: ' + (err.detail || '未知错误'));
+                }
+            } catch (e) {
+                setStatus('❌ 保存失败: ' + e.message);
+            }
+        }
+
+        function exportYaml() {
+            // 直接用当前状态导出 YAML
+            const graphNodes = nodes.map(n => ({
+                id: n.nodeId,
+                name: n.label,
+                type: n.type,
+                code: n.code || undefined,
+                config: n.config || undefined,
+                inputs: n.inputs || [],
+                outputs: n.outputs || []
+            }));
+
+            const routers = [];
+            const routerNodes = nodes.filter(n => n.type === 'router');
+            for (const rn of routerNodes) {
+                const outgoingEdges = edges.filter(e => e.source === rn.id);
+                const routes = {};
+                for (const e of outgoingEdges) {
+                    const targetNode = nodes.find(n => n.id === e.target);
+                    if (targetNode) {
+                        routes[targetNode.nodeId] = targetNode.nodeId;
+                    }
+                }
+                if (Object.keys(routes).length > 0) {
+                    routers.push({ from_node: rn.nodeId, routes });
+                }
+            }
+
+            const config = {
+                name: configName.value || '主Agent',
+                entry: entrySelect.value ? nodes.find(n => n.id === entrySelect.value)?.nodeId || 'start' : 'start',
+                nodes: graphNodes,
+                edges: edges.map(e => {
+                    const source = nodes.find(n => n.id === e.source);
+                    const target = nodes.find(n => n.id === e.target);
+                    return {
+                        from: source ? source.nodeId : e.source,
+                        to: target ? target.nodeId : e.target,
+                        ...(e.label ? { label: e.label } : {})
+                    };
+                }),
+                ...(routers.length > 0 ? { routers } : {})
+            };
+
+            // 生成 YAML 字符串
+            let yaml = 'name: ' + config.name + '\n';
+            yaml += 'entry: ' + config.entry + '\n';
+            yaml += 'nodes:\n';
+            config.nodes.forEach(n => {
+                yaml += '  - id: ' + n.id + '\n';
+                yaml += '    name: ' + n.name + '\n';
+                yaml += '    type: ' + n.type + '\n';
+                if (n.code) yaml += '    code: ' + n.code + '\n';
+                if (n.config) yaml += '    config: ' + n.config + '\n';
+            });
+            yaml += 'edges:\n';
+            config.edges.forEach(e => {
+                yaml += '  - from: ' + e.from + '\n';
+                yaml += '    to: ' + e.to + '\n';
+                if (e.label) yaml += '    label: ' + e.label + '\n';
+            });
+            if (config.routers && config.routers.length > 0) {
+                yaml += 'routers:\n';
+                config.routers.forEach(r => {
+                    yaml += '  - from: ' + r.from_node + '\n';
+                    yaml += '    routes:\n';
+                    Object.entries(r.routes).forEach(([k, v]) => {
+                        yaml += '      ' + k + ': "' + v + '"\n';
+                    });
+                });
+            }
+
+            const blob = new Blob([yaml], { type: 'text/yaml' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'main_graph.yaml';
+            a.click();
+            URL.revokeObjectURL(url);
+            setStatus('✅ YAML 已导出');
+        }
+
+        // ===== 拖拽从左侧到画布 =====
+        canvas.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'copy';
+        });
+
+        canvas.addEventListener('drop', (e) => {
+            e.preventDefault();
+            const rawData = e.dataTransfer.getData('application/node');
+            if (!rawData) return;
+            try {
+                const nodeData = JSON.parse(rawData);
+                const rect = canvasGrid.getBoundingClientRect();
+                const x = e.clientX - rect.left - 60;
+                const y = e.clientY - rect.top - 30;
+                addNodeToCanvas(nodeData, Math.max(0, x), Math.max(0, y));
+            } catch (err) {
+                setStatus('❌ 添加失败: ' + err.message);
+            }
+        });
+
+        // ===== 加载配置 =====
+        async function loadConfig() {
+            try {
+                const response = await fetch('/api/config');
+                if (!response.ok) throw new Error('加载失败');
+                const config = await response.json();
+
+                // 清空现有节点
+                nodes = [];
+                edges = [];
+                nodeCounter = 1;
+
+                if (config.nodes) {
+                    config.nodes.forEach(n => {
+                        // 查找对应预置节点的坐标
+                        const preset = PRESET_NODES[n.id] || PRESET_SUBGRAPHS[n.id] || SPECIAL_NODES[n.id];
+                        const x = 100 + Math.random() * 200;
+                        const y = 50 + Math.random() * 100;
+                        nodes.push({
+                            id: n.id + '_' + (nodeCounter++),
+                            nodeId: n.id,
+                            label: n.name || n.id,
+                            type: n.type || 'node',
+                            code: n.code || '',
+                            config: n.config || '',
+                            inputs: n.inputs || [],
+                            outputs: n.outputs || [],
+                            x: x,
+                            y: y
+                        });
+                    });
+                }
+
+                if (config.edges) {
+                    // 查找节点 ID 映射
+                    const idMap = {};
+                    nodes.forEach(n => { idMap[n.nodeId] = n.id; });
+                    config.edges.forEach(e => {
+                        const sourceId = idMap[e.from];
+                        const targetId = idMap[e.to];
+                        if (sourceId && targetId) {
+                            edges.push({
+                                source: sourceId,
+                                target: targetId,
+                                label: e.label || ''
+                            });
+                        }
+                    });
+                }
+
+                if (config.name) configName.value = config.name;
+                renderCanvas();
+                updateProperties();
+                updateEntrySelect();
+                updateEmptyState();
+                setStatus('✅ 配置已加载');
+            } catch (e) {
+                setStatus('❌ 加载配置失败: ' + e.message);
+                // 使用默认节点
+                addNodeToCanvas({ id: 'sanitize', name: '输入清洗', type: 'node', code: 'agent.nodes.sanitize_input' },
+                100, 50);
+                addNodeToCanvas({ id: 'load_history', name: '加载历史', type: 'node', code: 'agent.nodes.load_history' },
+                    400, 50);
+                addNodeToCanvas({ id: 'call_model', name: '调用模型', type: 'node', code: 'agent.nodes.call_model' },
+                    250, 250);
+            }
+        }
+
+        // ===== 初始化 =====
+        document.addEventListener('DOMContentLoaded', () => {
+            renderPalette();
+            loadConfig();
+
+            document.getElementById('saveBtn').addEventListener('click', saveConfig);
+            document.getElementById('exportBtn').addEventListener('click', exportYaml);
+
+            // 全局暴露函数供 HTML onclick 调用
+            window.addNodeToCanvas = addNodeToCanvas;
+            window.deleteNode = deleteNode;
+            window.updateNode = updateNode;
+            window.selectNode = selectNode;
+            window.loadConfig = loadConfig;
+            window.saveConfig = saveConfig;
+            window.exportYaml = exportYaml;
+        });
+
+        // 修复 connectionsSvg 尺寸变化
+        window.addEventListener('resize', () => {
+            if (connectionsSvg) {
+                connectionsSvg.style.width = canvasGrid.scrollWidth + 'px';
+                connectionsSvg.style.height = canvasGrid.scrollHeight + 'px';
+            }
+        });
+
+        let contxt = [];
+        for (let i = 0; i < contxt.length; i++) {
+            let msg = contxt[i];
+            if (msg.type == 'AIMessage'){
+                if (msg.tool_calls){
+                    let tool_callIds = msg.tool_calls.map(cal => cal.id);
+                    let checkNextToolCallValid = true;
+                    let toolcallLength = tool_callIds.length;
+                    for (let j = i + 1; j < toolcallLength + i; j++) {
+                        let nextMsg = contxt[j];
+                        if (nextMsg.type == 'ToolMessage' && nextMsg.tool_call_id && tool_callIds.includes(nextMsg.tool_call_id)){
+                            // remove callid from tool_callIds
+                            tool_callIds = tool_callIds.filter(id => id !== nextMsg.tool_call_id);
+                            continue;
+                        }else{
+                            checkNextToolCallValid = false;
+                            break;
+                        }
+                    }
+                    if (checkNextToolCallValid && tool_callIds.length == 0){
+                        console.log("tool call valid ", tool_callIds, ' messeage index=', i);
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>

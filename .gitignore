@@ -1,0 +1,10 @@
+logs
+__pycache__
+temp
+*.pyc
+*.db
+*.db-shm
+*.db-wal
+*.pem
+$null
+.env
